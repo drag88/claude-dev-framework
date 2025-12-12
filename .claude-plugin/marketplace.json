@@ -1,0 +1,13 @@
+{
+  "name": "aswin-plugins",
+  "owner": {
+    "name": "Aswin Sreenivas"
+  },
+  "plugins": [
+    {
+      "name": "claude-dev-framework",
+      "source": "./claude-dev-framework",
+      "description": "Complete development framework with rules generation, task management, and 24+ specialized commands"
+    }
+  ]
+}

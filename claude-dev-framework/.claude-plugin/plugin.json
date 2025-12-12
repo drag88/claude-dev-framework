@@ -1,0 +1,9 @@
+{
+  "name": "claude-dev-framework",
+  "description": "Complete development framework with rules generation, task management, and 24 specialized commands",
+  "version": "1.0.0",
+  "author": {
+    "name": "Aswin Sreenivas"
+  },
+  "keywords": ["development", "rules", "devdocs", "workflow", "analysis"]
+}
