@@ -144,3 +144,13 @@ paths: src/api/**/*.py
 - Keep each file focused and scannable
 - Use tables for structured data
 - Include code examples for patterns
+
+## Auto-Chain: Generate CLAUDE.md
+
+After generating rules, automatically run `/generate-claude-md` to create `CLAUDE.generated.md`.
+
+This ensures the project has both:
+- Detailed rules in `.claude/rules/` (auto-loaded by Claude)
+- Concise `CLAUDE.generated.md` for quick reference
+
+Inform user to review `CLAUDE.generated.md` and rename to `CLAUDE.md` if satisfied.
