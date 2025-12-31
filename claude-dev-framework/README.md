@@ -1,11 +1,11 @@
-# Claude Dev Framework
+# CDF (Claude Dev Framework)
 
-A comprehensive development framework plugin for Claude Code with automatic rules generation, task management, and 29 specialized commands.
+Development framework plugin for Claude Code with 29 commands + 16 agent personas.
 
 ## Installation
 
 ```bash
-claude plugins:add aswin-plugins/claude-dev-framework
+claude plugins:add aswin-plugins/cdf
 ```
 
 ## Features
@@ -70,6 +70,31 @@ Auto-activated behaviors based on context:
 - **claudemd-generator** - Creates `CLAUDE.generated.md` from rules
 - **context-saver** - Preserves session context
 
+### Agent Personas
+
+16 specialized agents for domain expertise. Invoke with `/cdf:[agent-name]`:
+
+| Agent | Use Case |
+|-------|----------|
+| `/cdf:backend-architect` | APIs, databases, server-side |
+| `/cdf:frontend-architect` | UI, UX, components |
+| `/cdf:system-architect` | Full-stack, distributed systems |
+| `/cdf:devops-architect` | CI/CD, infrastructure |
+| `/cdf:python-expert` | Python best practices |
+| `/cdf:deep-research-agent` | Web research, synthesis |
+| `/cdf:requirements-analyst` | PRDs, specifications |
+| `/cdf:root-cause-analyst` | Debugging, investigation |
+| `/cdf:technical-writer` | Documentation |
+| `/cdf:socratic-mentor` | Teaching via questioning |
+| `/cdf:learning-guide` | Code explanation |
+| `/cdf:quality-engineer` | Testing strategies |
+| `/cdf:performance-engineer` | Optimization |
+| `/cdf:security-engineer` | Security audits |
+| `/cdf:refactoring-expert` | Code improvement |
+| `/cdf:business-panel-experts` | Strategy panel |
+
+**Chaining**: Combine agents with `/cdf:backend-architect,security-engineer`
+
 ## How It Works
 
 1. **Session Start**: Hook runs `analyze-codebase.py` to check project state
@@ -80,23 +105,24 @@ Auto-activated behaviors based on context:
 ## File Structure
 
 ```
-claude-dev-framework/
+cdf/
 ├── .claude-plugin/
 │   └── plugin.json          # Plugin metadata
 ├── commands/
-│   ├── dev-docs.md          # Strategic planning
-│   ├── dev-docs-update.md   # Update documentation
-│   ├── generate-claude-md.md # Generate CLAUDE.md
-│   ├── regenerate-rules.md  # Refresh rules
-│   └── sc/                  # 25 specialized commands
+│   ├── agents/              # 16 agent personas
+│   ├── sc/                  # 25 specialized commands
+│   ├── dev-docs.md
+│   ├── dev-docs-update.md
+│   ├── generate-claude-md.md
+│   └── regenerate-rules.md
 ├── hooks/
 │   └── hooks.json           # Session start hook
 ├── scripts/
 │   └── analyze-codebase.py  # Codebase analysis
 └── skills/
-    ├── claudemd-generator/  # Auto CLAUDE.md generation
-    ├── context-saver/       # Context preservation
-    └── rules-generator/     # Auto rules generation
+    ├── claudemd-generator/
+    ├── context-saver/
+    └── rules-generator/
 ```
 
 ## Requirements

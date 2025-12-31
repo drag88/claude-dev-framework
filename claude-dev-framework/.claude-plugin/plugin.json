@@ -1,9 +1,9 @@
 {
-  "name": "claude-dev-framework",
-  "description": "Complete development framework with rules generation, task management, and 29 specialized commands",
-  "version": "1.1.0",
+  "name": "cdf",
+  "description": "Dev framework with 29 commands + 17 agent personas",
+  "version": "1.2.0",
   "author": {
     "name": "Aswin Sreenivas"
   },
-  "keywords": ["development", "rules", "devdocs", "workflow", "analysis"]
+  "keywords": ["development", "rules", "devdocs", "workflow", "analysis", "agents"]
 }
