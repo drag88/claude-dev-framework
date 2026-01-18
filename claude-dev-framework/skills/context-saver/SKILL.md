@@ -48,5 +48,5 @@ Automatically save session progress before context limits are reached.
 
 ## Related Commands
 
-- `/dev-docs` - Create initial task documentation structure
-- `/dev-docs-update` - Manually trigger documentation update
+- `/cdf:docs plan` - Create initial task documentation structure
+- `/cdf:docs update` - Manually trigger documentation update

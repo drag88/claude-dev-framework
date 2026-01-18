@@ -1,9 +1,21 @@
 {
   "name": "cdf",
-  "description": "Dev framework with 29 commands + 17 agent personas",
-  "version": "1.2.0",
+  "description": "Complete development framework with 22 commands, 19 agent personas, 6 auto-invoked skills, and 4 lifecycle hooks for intelligent code analysis and generation",
+  "version": "1.4.0",
   "author": {
     "name": "Aswin Sreenivas"
   },
-  "keywords": ["development", "rules", "devdocs", "workflow", "analysis", "agents"]
+  "homepage": "https://github.com/aswinsreenivas/claude-dev-framework",
+  "keywords": [
+    "development",
+    "framework",
+    "agents",
+    "commands",
+    "skills",
+    "hooks",
+    "code-analysis",
+    "rules-generation",
+    "workflow",
+    "automation"
+  ]
 }

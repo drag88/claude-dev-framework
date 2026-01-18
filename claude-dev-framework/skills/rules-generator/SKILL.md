@@ -41,5 +41,5 @@ paths: src/api/**/*.py
 
 ## Related Commands
 
-- `/regenerate-rules` - Manually refresh all rules
-- `/dev-docs` - Create task documentation structure
+- `/cdf:rules generate` - Manually refresh all rules
+- `/cdf:docs plan` - Create task documentation structure

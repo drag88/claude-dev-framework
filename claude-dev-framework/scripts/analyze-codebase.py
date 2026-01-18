@@ -173,13 +173,13 @@ def check_rules_exist(project_dir: Path) -> dict:
 
         claude_md_note = ""
         if not has_claude_md and not has_claude_generated:
-            claude_md_note = "\n\nNo CLAUDE.md found. Run /generate-claude-md to create one from your rules."
+            claude_md_note = "\n\nNo CLAUDE.md found. Run /cdf:rules claudemd to create one from your rules."
 
         return {
             "additionalContext": f"""Project rules loaded from .claude/rules/:
 {files_list}
 
-These rules are automatically applied. Run /regenerate-rules to refresh after major changes.{claude_md_note}"""
+These rules are automatically applied. Run /cdf:rules generate to refresh after major changes.{claude_md_note}"""
         }
     elif has_code(project_dir):
         # Has code but no rules - trigger automatic generation

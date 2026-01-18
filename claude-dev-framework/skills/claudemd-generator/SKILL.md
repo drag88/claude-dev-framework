@@ -7,13 +7,13 @@ Auto-generate `CLAUDE.generated.md` from project rules.
 - `.claude/rules/` exists but no `CLAUDE.md` or `CLAUDE.generated.md` in project root
 - User asks "generate claude.md" or similar
 - User asks "create project documentation"
-- After `/regenerate-rules` completes (auto-chain)
+- After `/cdf:rules generate` completes (auto-chain)
 
 ## Actions
 
 1. **Verify rules exist**
    - Check `.claude/rules/` has at least one `.md` file
-   - If not, suggest running `/regenerate-rules` first
+   - If not, suggest running `/cdf:rules generate` first
 
 2. **Read rule files**
    - `architecture.md` → project name, description, key dirs
@@ -44,5 +44,5 @@ Required sections in generated file:
 
 ## Related Commands
 
-- `/generate-claude-md` - Manually trigger generation
-- `/regenerate-rules` - Regenerate rules (auto-chains to this)
+- `/cdf:rules claudemd` - Manually trigger generation
+- `/cdf:rules generate` - Regenerate rules (auto-chains to claudemd)
