@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$PLUGIN_DIR/scripts/analyze-codebase.py\"",
+            "command": "python3 \"$CLAUDE_PLUGIN_ROOT/scripts/analyze-codebase.py\"",
             "timeout": 60
           }
         ]
@@ -16,7 +16,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$PLUGIN_DIR/scripts/keyword-amplifier.py\"",
+            "command": "python3 \"$CLAUDE_PLUGIN_ROOT/scripts/keyword-amplifier.py\"",
             "timeout": 10
           }
         ]
@@ -28,7 +28,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$PLUGIN_DIR/scripts/comment-checker.py\"",
+            "command": "python3 \"$CLAUDE_PLUGIN_ROOT/scripts/comment-checker.py\"",
             "timeout": 30
           }
         ]

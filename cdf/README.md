@@ -1,6 +1,6 @@
 # CDF (Claude Dev Framework)
 
-A comprehensive development framework plugin for Claude Code featuring **22 commands**, **19 agent personas**, **6 skills**, and **4 lifecycle hooks**.
+A comprehensive development framework plugin for Claude Code featuring **23 commands**, **19 agent personas**, **6 skills**, and **3 lifecycle hooks**.
 
 ---
 
@@ -49,6 +49,17 @@ claude --plugin-dir ./claude-dev-framework/claude-dev-framework
 # Inside Claude Code
 /cdf:help
 ```
+
+### Set Up Agents
+
+After installing CDF, run the setup command to enable `@agent-name` syntax:
+
+```bash
+# Inside Claude Code
+/cdf:setup
+```
+
+This creates symlinks from the plugin's agents to `~/.claude/agents/`, making them accessible globally.
 
 ---
 
@@ -139,6 +150,7 @@ All commands are prefixed with `/cdf:`. See [commands/INDEX.md](commands/INDEX.m
 | `/cdf:rules` | Generate and manage project rules |
 | `/cdf:session` | Session management and context handling |
 | `/cdf:select-tool` | Intelligent MCP tool selection |
+| `/cdf:setup` | Set up agents for @agent-name usage |
 
 ---
 
@@ -241,14 +253,13 @@ Every request is classified before action:
 
 ## Hooks
 
-CDF uses 4 lifecycle hooks for automation:
+CDF uses 3 lifecycle hooks for automation:
 
 | Event | Script | Purpose |
 |-------|--------|---------|
 | **SessionStart** | `analyze-codebase.py` | Analyze project, generate rules |
 | **PreToolUse** | `keyword-amplifier.py` | Detect mode keywords, inject context |
 | **PostToolUse** | `comment-checker.py` | Warn if comment ratio > 25% |
-| **Stop** | `task-completeness-check.sh` | Warn about incomplete tasks |
 
 ### Keyword Amplification
 
@@ -290,10 +301,6 @@ Example:
    │
    └── PostToolUse Hook: comment-checker.py
        └── Validate code quality
-
-3. SESSION END
-   └── Hook: task-completeness-check.sh
-       └── Warn about incomplete tasks
 ```
 
 ### Auto-Generated Rules
@@ -347,13 +354,13 @@ claude-dev-framework/
 │       └── SKILL.md
 │
 ├── hooks/
-│   └── hooks.json            # 4 lifecycle hooks
+│   └── hooks.json            # 3 lifecycle hooks
 │
-├── scripts/                  # Hook implementations
-│   ├── analyze-codebase.py   # SessionStart
-│   ├── keyword-amplifier.py  # PreToolUse
-│   ├── comment-checker.py    # PostToolUse
-│   └── task-completeness-check.sh  # Stop
+├── scripts/                  # Hook implementations & utilities
+│   ├── analyze-codebase.py   # SessionStart hook
+│   ├── keyword-amplifier.py  # PreToolUse hook
+│   ├── comment-checker.py    # PostToolUse hook
+│   └── setup-agents.sh       # Agent symlink setup
 │
 └── README.md                 # This file
 ```
@@ -399,11 +406,11 @@ Edit `hooks/hooks.json` to modify hook behavior:
 
 ### Environment Variables
 
-Hooks use `$PLUGIN_DIR` to reference plugin-relative paths:
+Hooks use `$CLAUDE_PLUGIN_ROOT` to reference plugin-relative paths:
 
 ```json
 {
-  "command": "python3 \"$PLUGIN_DIR/scripts/analyze-codebase.py\""
+  "command": "python3 \"$CLAUDE_PLUGIN_ROOT/scripts/analyze-codebase.py\""
 }
 ```
 
