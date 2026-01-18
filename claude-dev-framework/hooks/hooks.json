@@ -33,17 +33,6 @@
           }
         ]
       }
-    ],
-    "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "bash \"$PLUGIN_DIR/scripts/task-completeness-check.sh\"",
-            "timeout": 15
-          }
-        ]
-      }
     ]
   }
 }
