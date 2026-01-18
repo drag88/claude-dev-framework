@@ -1,10 +1,5 @@
 ---
-name: explain
 description: "Provide clear explanations of code, concepts, and system behavior with educational clarity"
-category: workflow
-complexity: standard
-mcp-servers: [sequential, context7]
-personas: [educator, architect, security]
 ---
 
 # /cdf:explain - Code and Concept Explanation

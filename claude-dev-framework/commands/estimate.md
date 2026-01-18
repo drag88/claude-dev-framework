@@ -1,10 +1,5 @@
 ---
-name: estimate
 description: "Provide development estimates for tasks, features, or projects with intelligent analysis"
-category: special
-complexity: standard
-mcp-servers: [sequential, context7]
-personas: [architect, performance, project-manager]
 ---
 
 # /cdf:estimate - Development Estimation

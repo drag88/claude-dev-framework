@@ -1,10 +1,5 @@
 ---
-name: cleanup
 description: "Systematically clean up code, remove dead code, and optimize project structure"
-category: workflow
-complexity: standard
-mcp-servers: [sequential, context7]
-personas: [architect, quality, security]
 ---
 
 # /cdf:cleanup - Code and Project Cleanup

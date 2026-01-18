@@ -1,10 +1,5 @@
 ---
-name: help
 description: "List all available CDF commands and their functionality"
-category: utility
-complexity: low
-mcp-servers: []
-personas: []
 ---
 
 # /cdf:help - Command Reference Documentation

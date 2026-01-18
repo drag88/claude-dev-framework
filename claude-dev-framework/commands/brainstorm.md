@@ -1,10 +1,5 @@
 ---
-name: brainstorm
 description: "Interactive requirements discovery through Socratic dialogue and systematic exploration"
-category: orchestration
-complexity: advanced
-mcp-servers: [sequential, context7, magic, playwright, morphllm, serena]
-personas: [architect, analyzer, frontend, backend, security, devops, project-manager]
 ---
 
 # /cdf:brainstorm - Interactive Requirements Discovery

@@ -1,10 +1,5 @@
 ---
-name: implement
 description: "Feature and code implementation with intelligent persona activation and MCP integration"
-category: workflow
-complexity: standard
-mcp-servers: [context7, sequential, magic, playwright]
-personas: [architect, frontend, backend, security, qa-specialist]
 ---
 
 # /cdf:implement - Feature Implementation

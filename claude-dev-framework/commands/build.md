@@ -1,10 +1,5 @@
 ---
-name: build
 description: "Build, compile, and package projects with intelligent error handling and optimization"
-category: utility
-complexity: enhanced
-mcp-servers: [playwright]
-personas: [devops-engineer]
 ---
 
 # /cdf:build - Project Building and Packaging

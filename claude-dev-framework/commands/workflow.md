@@ -1,10 +1,5 @@
 ---
-name: workflow
 description: "Generate structured implementation workflows from PRDs and feature requirements"
-category: orchestration
-complexity: advanced
-mcp-servers: [sequential, context7, magic, playwright, morphllm, serena]
-personas: [architect, analyzer, frontend, backend, security, devops, project-manager]
 ---
 
 # /cdf:workflow - Implementation Workflow Generator

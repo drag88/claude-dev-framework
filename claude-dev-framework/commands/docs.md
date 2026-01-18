@@ -1,18 +1,5 @@
 ---
-name: docs
-description: |
-  Unified documentation generation: component docs, project docs, strategic planning, and session updates.
-  Use when creating documentation at any scope from inline comments to strategic plans.
-category: utility
-complexity: standard
-mcp-servers:
-  - sequential
-  - context7
-personas:
-  - architect
-  - technical-writer
-  - quality-engineer
-argument-hint: Target path or task name for documentation
+description: "Unified documentation generation: component docs, project docs, strategic planning, and session updates"
 ---
 
 # /cdf:docs - Unified Documentation System

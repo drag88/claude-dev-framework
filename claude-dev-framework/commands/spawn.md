@@ -1,10 +1,5 @@
 ---
-name: spawn
 description: "Meta-system task orchestration with intelligent breakdown and delegation"
-category: special
-complexity: high
-mcp-servers: []
-personas: []
 ---
 
 # /cdf:spawn - Meta-System Task Orchestration

@@ -1,13 +1,5 @@
 ---
-name: troubleshoot
 description: "Diagnose and resolve issues in code, builds, deployments, and system behavior"
-category: utility
-complexity: standard
-mcp-servers:
-  - sequential
-personas:
-  - system-architect
-  - devops-engineer
 ---
 
 # /cdf:troubleshoot - Issue Diagnosis and Resolution

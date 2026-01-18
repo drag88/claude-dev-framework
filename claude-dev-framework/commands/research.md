@@ -1,10 +1,5 @@
 ---
-name: research
-description: Deep web research with adaptive planning and intelligent search
-category: command
-complexity: advanced
-mcp-servers: [tavily, sequential, playwright, serena]
-personas: [deep-research-agent]
+description: "Deep web research with adaptive planning and intelligent search"
 ---
 
 # /cdf:research - Deep Research Command

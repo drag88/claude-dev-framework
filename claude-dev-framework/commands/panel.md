@@ -1,17 +1,5 @@
 ---
-name: panel
-description: |
-  Multi-expert panel discussions for business strategy and software specification analysis.
-  Use when you need expert perspectives on business decisions, specifications, or technical designs.
-category: analysis
-complexity: enhanced
-mcp-servers:
-  - sequential
-  - context7
-personas:
-  - technical-writer
-  - system-architect
-  - quality-engineer
+description: "Multi-expert panel discussions for business strategy and software specification analysis"
 ---
 
 # /cdf:panel - Expert Panel Analysis System

@@ -1,12 +1,5 @@
 ---
-name: rules
-description: |
-  Project rules management: generate .claude/rules/ and CLAUDE.md documentation.
-  Use when setting up a new project, after major refactors, or to refresh project rules.
-category: utility
-complexity: standard
-mcp-servers: []
-personas: []
+description: "Project rules management: generate .claude/rules/ and CLAUDE.md documentation"
 ---
 
 # /cdf:rules - Project Rules Management

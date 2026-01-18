@@ -1,14 +1,5 @@
 ---
-name: design
 description: "Design system architecture, APIs, and component interfaces with comprehensive specifications"
-category: utility
-complexity: standard
-mcp-servers:
-  - context7
-personas:
-  - system-architect
-  - frontend-architect
-  - backend-architect
 ---
 
 # /cdf:design - System and Component Design

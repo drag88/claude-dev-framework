@@ -1,10 +1,5 @@
 ---
-name: git
 description: "Git operations with intelligent commit messages and workflow optimization"
-category: utility
-complexity: basic
-mcp-servers: []
-personas: []
 ---
 
 # /cdf:git - Git Operations

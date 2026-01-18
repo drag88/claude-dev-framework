@@ -1,10 +1,5 @@
 ---
-name: task
 description: "Execute complex tasks with intelligent workflow management and delegation"
-category: special
-complexity: advanced
-mcp-servers: [sequential, context7, magic, playwright, morphllm, serena]
-personas: [architect, analyzer, frontend, backend, security, devops, project-manager]
 ---
 
 # /cdf:task - Enhanced Task Management

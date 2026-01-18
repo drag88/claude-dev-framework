@@ -1,10 +1,5 @@
 ---
-name: select-tool
 description: "Intelligent MCP tool selection based on complexity scoring and operation analysis"
-category: special
-complexity: high
-mcp-servers: [serena, morphllm]
-personas: []
 ---
 
 # /cdf:select-tool - Intelligent MCP Tool Selection

@@ -1,13 +1,5 @@
 ---
-name: session
-description: |
-  Session lifecycle management with Serena MCP integration for loading, saving, and reflecting.
-  Use when starting a session, ending work, or validating task progress.
-category: session
-complexity: standard
-mcp-servers:
-  - serena
-personas: []
+description: "Session lifecycle management: load context, save progress, reflect on work"
 ---
 
 # /cdf:session - Session Lifecycle Management

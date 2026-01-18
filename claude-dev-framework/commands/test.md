@@ -1,10 +1,5 @@
 ---
-name: test
 description: "Execute tests with coverage analysis and automated quality reporting"
-category: utility
-complexity: enhanced
-mcp-servers: [playwright]
-personas: [qa-specialist]
 ---
 
 # /cdf:test - Testing and Quality Assurance

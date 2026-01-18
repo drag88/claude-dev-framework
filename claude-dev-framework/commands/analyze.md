@@ -1,15 +1,5 @@
 ---
-name: analyze
 description: "Comprehensive code analysis across quality, security, performance, and architecture domains"
-category: utility
-complexity: standard
-mcp-servers:
-  - sequential
-  - context7
-personas:
-  - system-architect
-  - security-engineer
-  - quality-engineer
 ---
 
 # /cdf:analyze - Code Analysis and Quality Assessment
