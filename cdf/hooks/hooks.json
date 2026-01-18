@@ -5,6 +5,11 @@
         "hooks": [
           {
             "type": "command",
+            "command": "bash \"$CLAUDE_PLUGIN_ROOT/scripts/setup-agents.sh\"",
+            "timeout": 30
+          },
+          {
+            "type": "command",
             "command": "python3 \"$CLAUDE_PLUGIN_ROOT/scripts/analyze-codebase.py\"",
             "timeout": 60
           }

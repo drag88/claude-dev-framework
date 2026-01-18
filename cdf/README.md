@@ -50,16 +50,14 @@ claude --plugin-dir ./claude-dev-framework/claude-dev-framework
 /cdf:help
 ```
 
-### Set Up Agents
+### Agents (Automatic Setup)
 
-After installing CDF, run the setup command to enable `@agent-name` syntax:
+Agents are automatically configured on first session start. The plugin creates symlinks from its agents to `~/.claude/agents/`, making them accessible globally via `@agent-name` syntax.
 
+If you need to manually re-run setup:
 ```bash
-# Inside Claude Code
 /cdf:setup
 ```
-
-This creates symlinks from the plugin's agents to `~/.claude/agents/`, making them accessible globally.
 
 ---
 
