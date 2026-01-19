@@ -25,12 +25,12 @@ A comprehensive development framework plugin for Claude Code featuring **23 comm
 
 ```bash
 # Inside Claude Code
-/plugin install drag88-plugins/cdf
+/plugin install drag88/claude-dev-framework
 ```
 
 Or via CLI:
 ```bash
-claude plugin marketplace add drag88-plugins/cdf
+claude plugin marketplace add drag88/claude-dev-framework
 ```
 
 ### Local Development
@@ -427,7 +427,7 @@ claude plugin marketplace list
 
 # Reinstall if needed
 claude plugin marketplace remove cdf
-claude plugin marketplace add drag88-plugins/cdf
+claude plugin marketplace add drag88/claude-dev-framework
 ```
 
 ### Commands Not Found

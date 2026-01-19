@@ -69,7 +69,7 @@ If needed, you can run the setup script directly:
 bash "$CLAUDE_PLUGIN_ROOT/scripts/setup-agents.sh"
 
 # Or from known install location
-bash ~/.claude/plugins/marketplaces/drag88-plugins/cdf/scripts/setup-agents.sh
+bash ~/.claude/plugins/marketplaces/drag88/claude-dev-framework/scripts/setup-agents.sh
 ```
 
 ## Troubleshooting

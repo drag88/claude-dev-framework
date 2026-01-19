@@ -1,11 +1,11 @@
 {
-  "name": "drag88-plugins",
+  "name": "drag88",
   "owner": {
     "name": "Aswin Sreenivas"
   },
   "plugins": [
     {
-      "name": "cdf",
+      "name": "claude-dev-framework",
       "source": ".",
       "description": "Complete development framework with 22 commands, 19 agent personas, 6 skills, and lifecycle hooks"
     }
