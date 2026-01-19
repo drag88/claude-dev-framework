@@ -20,8 +20,8 @@ echo ""
 # Determine plugin directory
 if [ -n "$CLAUDE_PLUGIN_ROOT" ]; then
     PLUGIN_DIR="$CLAUDE_PLUGIN_ROOT"
-elif [ -d "$HOME/.claude/plugins/marketplaces/drag88/claude-dev-framework" ]; then
-    PLUGIN_DIR="$HOME/.claude/plugins/marketplaces/drag88/claude-dev-framework"
+elif [ -d "$HOME/.claude/plugins/marketplaces/claude-dev-framework" ]; then
+    PLUGIN_DIR="$HOME/.claude/plugins/marketplaces/claude-dev-framework"
 else
     # Try to find it relative to this script
     SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"

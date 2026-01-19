@@ -23,15 +23,19 @@ A comprehensive development framework plugin for Claude Code featuring **23 comm
 
 ### From Marketplace (Recommended)
 
+**Step 1: Add the marketplace**
 ```bash
-# Inside Claude Code
-/plugin install drag88/claude-dev-framework
-```
-
-Or via CLI:
-```bash
+# Via CLI (outside Claude Code)
 claude plugin marketplace add drag88/claude-dev-framework
 ```
+
+**Step 2: Install the plugin**
+```bash
+# Inside Claude Code
+/plugin install cdf@claude-dev-framework
+```
+
+Or browse in `/plugin > Discover` and select CDF.
 
 ### Local Development
 
@@ -40,7 +44,7 @@ claude plugin marketplace add drag88/claude-dev-framework
 git clone https://github.com/drag88/claude-dev-framework.git
 
 # Run Claude with the plugin
-claude --plugin-dir ./claude-dev-framework/claude-dev-framework
+claude --plugin-dir ./claude-dev-framework
 ```
 
 ### Verify Installation
@@ -426,8 +430,9 @@ claude plugin marketplace list
 /plugin list
 
 # Reinstall if needed
-claude plugin marketplace remove cdf
+claude plugin marketplace remove claude-dev-framework
 claude plugin marketplace add drag88/claude-dev-framework
+/plugin install cdf@claude-dev-framework
 ```
 
 ### Commands Not Found
