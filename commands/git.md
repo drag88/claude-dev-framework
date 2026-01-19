@@ -40,6 +40,30 @@ Key behaviors:
 - **Branch Strategy**: Consistent naming and workflow enforcement
 - **Error Recovery**: Conflict resolution and state restoration guidance
 
+## Commit Message Rules
+
+### No Claude Attribution
+Do NOT include Claude attribution in commits:
+```
+# BAD - Don't include this:
+Co-Authored-By: Claude <noreply@anthropic.com>
+```
+
+### Conventional Format
+Follow conventional commit format:
+- `feat:` - new feature
+- `fix:` - bug fix
+- `docs:` - documentation
+- `refactor:` - code refactoring
+- `test:` - adding tests
+- `chore:` - maintenance
+
+### Message Guidelines
+- Use imperative mood ("Add feature" not "Added feature")
+- Keep subject line under 50 characters
+- Add body for complex changes explaining WHY, not WHAT
+- Reference issue numbers when applicable
+
 ## Examples
 
 ### Smart Status Analysis

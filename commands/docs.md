@@ -119,6 +119,29 @@ dev/active/[task-name]/
 - Success Metrics
 - Timeline Estimates
 
+**Task Breakdown Structure:**
+- Each major section represents a phase or component
+- Number and prioritize tasks within sections
+- Include clear acceptance criteria for each task
+- Specify dependencies between tasks
+- Estimate effort levels (S/M/L/XL)
+
+**Quality Standards:**
+- Plans must be self-contained with all necessary context
+- Use clear, actionable language
+- Include specific technical details where relevant
+- Consider both technical and business perspectives
+- Account for potential risks and edge cases
+
+**Context References (check if exists):**
+- `PROJECT_KNOWLEDGE.md` - Architecture overview
+- `BEST_PRACTICES.md` - Coding standards
+- `TROUBLESHOOTING.md` - Common issues to avoid
+- `dev/README.md` - Task management guidelines
+- `CLAUDE.md` - Project-specific development standards
+
+**Note**: Ideal to use AFTER exiting plan mode when you have a clear vision. Creates persistent task structure that survives context resets.
+
 **Examples:**
 ```bash
 # Plan a major refactor
@@ -143,8 +166,47 @@ Update development documentation before context compaction or session end.
 4. **Preserve Learning**: Store patterns and solutions
 
 **What Gets Updated:**
-- `[task-name]-context.md`: Implementation state, decisions, files modified
-- `[task-name]-tasks.md`: Task completion status, new tasks discovered
+
+1. **Active Task Documentation** (`dev/active/[task-name]/`):
+   - `[task-name]-context.md`:
+     - Current implementation state
+     - Key decisions made this session
+     - Files modified and why
+     - Any blockers or issues discovered
+     - Next immediate steps
+     - Last Updated timestamp
+   - `[task-name]-tasks.md`:
+     - Mark completed tasks as ✅
+     - Add any new tasks discovered
+     - Update in-progress tasks with current status
+     - Reorder priorities if needed
+
+2. **Capture Session Context** (include relevant info about):
+   - Complex problems solved
+   - Architectural decisions made
+   - Tricky bugs found and fixed
+   - Integration points discovered
+   - Testing approaches used
+   - Performance optimizations made
+
+3. **Update Memory** (if applicable):
+   - Store any new patterns or solutions in project memory/documentation
+   - Update entity relationships discovered
+   - Add observations about system behavior
+
+4. **Document Unfinished Work**:
+   - What was being worked on when context limit approached
+   - Exact state of any partially completed features
+   - Commands that need to be run on restart
+   - Any temporary workarounds that need permanent fixes
+
+5. **Create Handoff Notes** (if switching conversations):
+   - Exact file and line being edited
+   - The goal of current changes
+   - Any uncommitted changes that need attention
+   - Test commands to verify work
+
+**Priority**: Focus on capturing information that would be hard to rediscover or reconstruct from code alone.
 
 **Examples:**
 ```bash

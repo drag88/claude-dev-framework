@@ -204,6 +204,23 @@ Generate a concise `CLAUDE.generated.md` file from existing `.claude/rules/`.
 3. **No backwards compat** - delete deprecated code immediately
 4. **Tests required** - no feature complete without tests
 
+<plans_instruction>
+## Plans Format
+
+At end of plans, provide concise unresolved questions:
+```
+Unresolved Questions:
+- [Question]?
+```
+
+Requirements:
+- Make questions EXTREMELY concise
+- Sacrifice grammar for concision
+</plans_instruction>
+
+## Commit Messages
+See `/cdf:git` for commit message rules (conventional format, no Claude attribution).
+
 ## Project Rules
 Auto-generated rules in `.claude/rules/` - Claude loads automatically.
 Run `/cdf:rules generate` to refresh after major changes.
@@ -213,13 +230,30 @@ Run `/cdf:rules generate` to refresh after major changes.
 - `[dir2]/` - [brief purpose]
 ```
 
+**Required Template Sections:**
+1. **Overview** - 1-2 sentence description
+2. **Quick Start** - 4-5 bash commands (setup, test, lint, run)
+3. **Critical Rules** - 4 standard rules (read before edit, DRY, no backwards compat, tests required)
+4. **Plans Format** - Plans instruction block for unresolved questions
+5. **Commit Messages** - Pointer to `/cdf:git` command
+6. **Project Rules** - Pointer to `.claude/rules/`
+7. **Key Directories** - Max 5-7 most important directories
+
 **Guidelines:**
 - Keep < 100 lines, never exceed 150
 - WHY/WHAT/HOW: Purpose → Stack/Structure → Commands
 - Progressive disclosure: Point to `.claude/rules/` for details
 - Quick Start first: Most used commands at top
+- **No code style**: Let linters handle formatting rules - don't include style guides
+- **Key dirs only**: Don't list every subdirectory - max 5-7 most important
 
 **Output Location**: Always writes to `CLAUDE.generated.md` (not `CLAUDE.md`) to preserve manual edits.
+
+**Inform User After Generation:**
+After generating `CLAUDE.generated.md`, inform the user:
+- File created at `CLAUDE.generated.md`
+- Review the content and rename to `CLAUDE.md` if satisfied
+- Or merge changes into existing `CLAUDE.md`
 
 ### status - Check Rules Status
 
@@ -270,6 +304,57 @@ Check if rules exist and whether they may need refresh.
 ```bash
 # Rules are current, just need new CLAUDE.md
 /cdf:rules claudemd
+```
+
+### Example Output (FastAPI Project)
+
+```markdown
+# TaskFlow API
+
+## Overview
+FastAPI-based task management API with PostgreSQL storage and Redis caching.
+
+## Quick Start
+```bash
+uv sync                    # Install dependencies
+uv run pytest              # Run tests
+uv run ruff check .        # Lint
+uv run uvicorn app.main:app --reload  # Start dev server
+```
+
+## Critical Rules
+1. **Read before edit** - understand code before changes
+2. **DRY** - search with `rg` before writing similar code
+3. **No backwards compat** - delete deprecated code immediately
+4. **Tests required** - no feature complete without tests
+
+<plans_instruction>
+## Plans Format
+
+At end of plans, provide concise unresolved questions:
+```
+Unresolved Questions:
+- [Question]?
+```
+
+Requirements:
+- Make questions EXTREMELY concise
+- Sacrifice grammar for concision
+</plans_instruction>
+
+## Commit Messages
+See `/cdf:git` for commit message rules (conventional format, no Claude attribution).
+
+## Project Rules
+Auto-generated rules in `.claude/rules/` - Claude loads automatically.
+Run `/cdf:rules generate` to refresh after major changes.
+
+## Key Directories
+- `app/` - FastAPI application code
+- `app/api/` - API route handlers
+- `app/models/` - SQLAlchemy models
+- `app/services/` - Business logic
+- `tests/` - Test suite
 ```
 
 ## Boundaries
