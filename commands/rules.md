@@ -39,25 +39,43 @@ Analyze the codebase and generate comprehensive `.claude/rules/` documentation.
 /cdf:rules generate [--force]
 ```
 
+**CRITICAL: Deep Analysis with Sub-Agents**
+
+This command requires **extremely thorough analysis**. Use sub-agents liberally to ensure comprehensive understanding:
+
+- **Spawn multiple Explore agents** in parallel to analyze different parts of the codebase
+- **Use codebase-navigator agent** to trace dependencies and understand component relationships
+- **Spawn system-architect agent** to identify architectural patterns and design decisions
+- **Don't rush** - quality rules require deep understanding of the entire codebase
+
+The goal is to produce rules that capture the project's true architecture, patterns, and conventions - not surface-level observations.
+
 **Behavioral Flow:**
-1. **Explore**: Analyze project structure using Explore agent
+1. **Explore** (use Explore sub-agents in parallel):
+   - Spawn agent to analyze `src/` or main source directory
+   - Spawn agent to analyze `tests/` and testing patterns
+   - Spawn agent to analyze config files and build setup
    - Identify key directories and their purposes
    - Find main entry points and configuration files
    - Understand the project's domain
 
-2. **Analyze Tech Stack**
+2. **Analyze Tech Stack** (thorough investigation):
    - Read pyproject.toml, package.json, Gemfile, Cargo.toml, go.mod, etc.
    - Identify frameworks, libraries, and tools
    - Note testing and linting setup
+   - Understand dependency relationships
 
-3. **Understand Patterns**
+3. **Understand Patterns** (spawn codebase-navigator if needed):
    - Read key source files (main.py, app.py, index.ts, etc.)
+   - Trace how components interact
    - Identify architectural patterns
    - Note naming conventions and code style
+   - Document error handling approaches
 
-4. **Extract Commands**
+4. **Extract Commands**:
    - Find how to run tests, lint, and start the app
    - Document environment setup requirements
+   - Note any custom scripts or workflows
 
 5. **Generate Files** in `.claude/rules/`:
 
