@@ -1,11 +1,16 @@
 {
   "name": "claude-dev-framework",
-  "description": "CDF - Complete Development Framework for Claude Code",
+  "owner": {
+    "name": "Aswin Sreenivas"
+  },
   "plugins": [
     {
       "name": "cdf",
       "description": "Complete development framework with 22 commands, 19 agent personas, 6 skills, and lifecycle hooks",
-      "source": ".."
+      "source": {
+        "type": "local",
+        "path": ".."
+      }
     }
   ]
 }
