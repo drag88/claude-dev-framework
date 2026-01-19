@@ -1,5 +1,27 @@
 {
   "hooks": {
+    "Install": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PLUGIN_ROOT/scripts/setup-agents.sh\"",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
+    "PostInstall": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PLUGIN_ROOT/scripts/setup-agents.sh\"",
+            "timeout": 30
+          }
+        ]
+      }
+    ],
     "SessionStart": [
       {
         "hooks": [
@@ -12,29 +34,6 @@
             "type": "command",
             "command": "python3 \"$CLAUDE_PLUGIN_ROOT/scripts/analyze-codebase.py\"",
             "timeout": 60
-          }
-        ]
-      }
-    ],
-    "PreToolUse": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 \"$CLAUDE_PLUGIN_ROOT/scripts/keyword-amplifier.py\"",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "Edit|Write|MultiEdit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 \"$CLAUDE_PLUGIN_ROOT/scripts/comment-checker.py\"",
-            "timeout": 30
           }
         ]
       }

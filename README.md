@@ -25,19 +25,19 @@ A comprehensive development framework plugin for Claude Code featuring **23 comm
 
 ```bash
 # Inside Claude Code
-/plugin install aswin-plugins/cdf
+/plugin install drag88-plugins/cdf
 ```
 
 Or via CLI:
 ```bash
-claude plugin marketplace add aswin-plugins/cdf
+claude plugin marketplace add drag88-plugins/cdf
 ```
 
 ### Local Development
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/claude-dev-framework.git
+git clone https://github.com/drag88/claude-dev-framework.git
 
 # Run Claude with the plugin
 claude --plugin-dir ./claude-dev-framework/claude-dev-framework
@@ -427,7 +427,7 @@ claude plugin marketplace list
 
 # Reinstall if needed
 claude plugin marketplace remove cdf
-claude plugin marketplace add aswin-plugins/cdf
+claude plugin marketplace add drag88-plugins/cdf
 ```
 
 ### Commands Not Found
