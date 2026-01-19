@@ -1,14 +1,14 @@
 ---
-description: "Set up CDF agents for @agent-name usage"
+description: "View CDF setup information and available agents"
 ---
 
-# /cdf:setup - Agent Setup
+# /cdf:setup - Setup Information
 
-> Configure CDF agent personas for use with @agent-name syntax.
+> View CDF plugin configuration and available agents.
 
 ## Overview
 
-Claude Code looks for agents in `~/.claude/agents/` (global) or `.claude/agents/` (project-level). Since CDF installs agents in the plugin directory, this command creates symlinks to make them accessible.
+CDF agents are automatically available from the plugin - no manual setup required. This command displays setup information and lists available agents.
 
 ## Usage
 
@@ -16,27 +16,9 @@ Claude Code looks for agents in `~/.claude/agents/` (global) or `.claude/agents/
 /cdf:setup
 ```
 
-## What It Does
-
-1. Locates the CDF plugin installation directory
-2. Creates `~/.claude/agents/` if it doesn't exist
-3. Symlinks all agent `.md` files from `cdf/agents/` to `~/.claude/agents/`
-4. Reports created, updated, and skipped symlinks
-
-## After Setup
-
-You can use CDF agents directly:
-
-```bash
-@backend-architect "design an API for user management"
-@system-architect "review this architecture"
-@security-engineer "audit authentication flow"
-@performance-engineer "optimize database queries"
-```
-
 ## Available Agents
 
-After setup, these agents become available:
+When the CDF plugin is enabled, these agents are available via `@agent-name` syntax:
 
 | Agent | Domain |
 |-------|--------|
@@ -60,46 +42,34 @@ After setup, these agents become available:
 | `@system-architect` | High-level system design |
 | `@technical-writer` | Documentation |
 
-## Manual Setup
-
-If needed, you can run the setup script directly:
+## Example Usage
 
 ```bash
-# Via plugin environment variable
-bash "$CLAUDE_PLUGIN_ROOT/scripts/setup-agents.sh"
-
-# Or from known install location
-bash ~/.claude/plugins/marketplaces/claude-dev-framework/scripts/setup-agents.sh
+@backend-architect "design an API for user management"
+@system-architect "review this architecture"
+@security-engineer "audit authentication flow"
+@performance-engineer "optimize database queries"
 ```
 
 ## Troubleshooting
 
-### Agents still not recognized
+### Agents not recognized
 
-1. Verify symlinks exist:
+1. Verify the CDF plugin is enabled:
    ```bash
-   ls -la ~/.claude/agents/
+   /plugin list
    ```
 
-2. Restart Claude Code session after setup
+2. Restart Claude Code session
 
-3. Check that agent files have `.md` extension
+3. Browse available agents:
+   ```bash
+   /agents
+   ```
 
-### Permission issues
+## Plugin Location
 
-Ensure the script has execute permission:
-```bash
-chmod +x "$CLAUDE_PLUGIN_ROOT/scripts/setup-agents.sh"
+The plugin is installed at:
 ```
-
-## Boundaries
-
-**Will:**
-- Create symlinks for agent files
-- Report setup status
-- Create `~/.claude/agents/` directory if missing
-
-**Will Not:**
-- Copy files (uses symlinks to stay in sync)
-- Overwrite existing non-symlink files
-- Modify plugin installation
+~/.claude/plugins/marketplaces/claude-dev-framework/
+```

@@ -356,13 +356,13 @@ claude-dev-framework/
 │       └── SKILL.md
 │
 ├── hooks/
-│   └── hooks.json            # 3 lifecycle hooks
+│   └── hooks.json            # Lifecycle hooks
 │
 ├── scripts/                  # Hook implementations & utilities
 │   ├── analyze-codebase.py   # SessionStart hook
 │   ├── keyword-amplifier.py  # PreToolUse hook
 │   ├── comment-checker.py    # PostToolUse hook
-│   └── setup-agents.sh       # Agent symlink setup
+│   └── task-completeness-check.sh
 │
 └── README.md                 # This file
 ```
