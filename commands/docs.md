@@ -1,34 +1,44 @@
 ---
-description: "Unified documentation generation: component docs, project docs, strategic planning, and session updates"
+description: "Strategic planning with task breakdown, or documentation generation"
+argument-hint: "Describe what you need planned (e.g., 'refactor auth system', 'implement payments')"
 ---
 
-# /cdf:docs - Unified Documentation System
+# /cdf:docs - Strategic Planning & Documentation
 
-> Generate documentation at any scope: component, project, strategic planning, or session updates.
+> Create strategic plans with task breakdown, or generate documentation at various scopes.
+
+## Default Behavior
+
+**When invoked without a subcommand, `/cdf:docs` defaults to strategic planning mode.**
+
+```bash
+# These are equivalent:
+/cdf:docs "refactor authentication system"
+/cdf:docs plan "refactor authentication system"
+```
+
+If no arguments provided, ask the user what they want to plan or document.
 
 ## Quick Start
 
 ```bash
-# Component-level documentation (inline, API)
-/cdf:docs src/auth --scope component --type api
+# Strategic planning (DEFAULT) - describe what needs planning
+/cdf:docs "refactor authentication system"
+/cdf:docs "implement payment gateway"
 
-# Project-level documentation (structure, README)
-/cdf:docs . --scope project --type structure
-
-# Strategic planning with task breakdown
-/cdf:docs plan "refactor authentication system"
-
-# Update dev docs before context limit
-/cdf:docs update
+# Explicit subcommands
+/cdf:docs plan "migrate to microservices"    # Strategic planning
+/cdf:docs update                              # Update dev docs before context limit
+/cdf:docs src/api --scope component --type api  # Component docs
 ```
 
 ## When to Use
 
 Use `/cdf:docs` when:
-- Generating inline documentation or API references (component scope)
-- Creating project documentation or knowledge bases (project scope)
-- Planning complex features with task breakdown (planning scope)
-- Preserving session context before context compaction (update)
+- **Planning complex features** with structured task breakdown (default behavior)
+- Preserving session context before context compaction (`update`)
+- Generating inline documentation or API references (`--scope component`)
+- Creating project documentation or knowledge bases (`--scope project`)
 
 **Don't use this command for**: Project rules generation (use `/cdf:rules` instead).
 
