@@ -10,29 +10,6 @@
           }
         ]
       }
-    ],
-    "PreToolUse": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 \"$CLAUDE_PLUGIN_ROOT/scripts/keyword-amplifier.py\"",
-            "timeout": 10
-          }
-        ]
-      }
-    ],
-    "PostToolUse": [
-      {
-        "matcher": "Edit|Write|MultiEdit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "python3 \"$CLAUDE_PLUGIN_ROOT/scripts/comment-checker.py\"",
-            "timeout": 30
-          }
-        ]
-      }
     ]
   }
 }

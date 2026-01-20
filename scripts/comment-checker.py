@@ -13,6 +13,7 @@ import os
 import sys
 import re
 from pathlib import Path
+from typing import Optional, Tuple, Dict
 
 # Comment threshold (25%)
 COMMENT_THRESHOLD = 0.25
@@ -110,7 +111,7 @@ COMMENT_PATTERNS = {
 }
 
 
-def count_comment_lines(content: str, patterns: dict) -> tuple[int, int]:
+def count_comment_lines(content: str, patterns: Dict) -> Tuple[int, int]:
     """
     Count comment lines and total non-empty lines in content.
     Returns (comment_lines, total_lines).
@@ -167,7 +168,7 @@ def count_comment_lines(content: str, patterns: dict) -> tuple[int, int]:
     return comment_lines, total_lines
 
 
-def check_file(file_path: str) -> dict | None:
+def check_file(file_path: str) -> Optional[Dict]:
     """
     Check a file's comment ratio and return warning if too high.
     """

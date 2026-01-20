@@ -18,6 +18,7 @@ import json
 import os
 import sys
 import re
+from typing import Optional
 
 # Mode amplification instructions
 AMPLIFICATION_MODES = {
@@ -119,7 +120,7 @@ KEYWORD_PATTERNS = [
 ]
 
 
-def detect_mode(text: str) -> str | None:
+def detect_mode(text: str) -> Optional[str]:
     """Detect which mode keyword is present in the text."""
     text_lower = text.lower()
 
