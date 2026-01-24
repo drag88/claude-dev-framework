@@ -1,6 +1,6 @@
 # CDF (Claude Dev Framework)
 
-A comprehensive development framework plugin for Claude Code featuring **23 commands**, **19 agent personas**, **6 skills**, and **3 lifecycle hooks**.
+A comprehensive development framework plugin for Claude Code featuring **26 commands**, **21 agent personas**, **16 skills**, and **7 lifecycle hooks**.
 
 ---
 
@@ -12,6 +12,9 @@ A comprehensive development framework plugin for Claude Code featuring **23 comm
 - [Agents](#agents)
 - [Skills](#skills)
 - [Hooks](#hooks)
+- [Context Modes](#context-modes)
+- [Rules Templates](#rules-templates)
+- [MCP Configurations](#mcp-configurations)
 - [How It Works](#how-it-works)
 - [Plugin Structure](#plugin-structure)
 - [Configuration](#configuration)
@@ -57,11 +60,6 @@ claude --plugin-dir ./claude-dev-framework
 ### Agents (Automatic Setup)
 
 Agents are automatically configured on first session start. The plugin creates symlinks from its agents to `~/.claude/agents/`, making them accessible globally via `@agent-name` syntax.
-
-If you need to manually re-run setup:
-```bash
-/cdf:setup
-```
 
 ---
 
@@ -113,6 +111,7 @@ All commands are prefixed with `/cdf:`. See [commands/INDEX.md](commands/INDEX.m
 | `/cdf:implement` | Feature implementation with persona activation and MCP integration |
 | `/cdf:build` | Build, compile, and package projects with error handling |
 | `/cdf:test` | Execute tests with coverage analysis and quality reporting |
+| `/cdf:tdd` | Test-Driven Development with RED-GREEN-REFACTOR workflow |
 | `/cdf:git` | Git operations with intelligent commit messages |
 | `/cdf:cleanup` | Clean up code, remove dead code, optimize structure |
 | `/cdf:improve` | Apply systematic improvements to code quality |
@@ -125,6 +124,7 @@ All commands are prefixed with `/cdf:`. See [commands/INDEX.md](commands/INDEX.m
 | `/cdf:explain` | Clear explanations of code and concepts |
 | `/cdf:research` | Deep web research with adaptive planning |
 | `/cdf:troubleshoot` | Diagnose and resolve issues |
+| `/cdf:e2e` | End-to-end testing with Playwright patterns |
 
 ### Planning & Design
 
@@ -152,13 +152,14 @@ All commands are prefixed with `/cdf:`. See [commands/INDEX.md](commands/INDEX.m
 | `/cdf:rules` | Generate and manage project rules |
 | `/cdf:session` | Session management and context handling |
 | `/cdf:select-tool` | Intelligent MCP tool selection |
-| `/cdf:setup` | Set up agents for @agent-name usage |
+| `/cdf:verify` | Pre-PR quality verification (build, types, lint, tests) |
+| `/cdf:learn` | Continuous learning and pattern extraction |
 
 ---
 
 ## Agents
 
-CDF includes 19 specialized agent personas. See [agents/INDEX.md](agents/INDEX.md) for the complete reference.
+CDF includes 21 specialized agent personas. See [agents/INDEX.md](agents/INDEX.md) for the complete reference.
 
 ### Architecture & Design
 
@@ -196,6 +197,13 @@ CDF includes 19 specialized agent personas. See [agents/INDEX.md](agents/INDEX.m
 | `learning-guide` | Teaching through examples |
 | `socratic-mentor` | Learning through questions |
 
+### Testing Specialists
+
+| Agent | Use Case |
+|-------|----------|
+| `tdd-guide` | Test-Driven Development enforcement |
+| `e2e-specialist` | End-to-end testing with Playwright |
+
 ### Specialized
 
 | Agent | Use Case |
@@ -222,14 +230,36 @@ Agents are automatically activated based on task context, or you can reference t
 
 Skills are automatically invoked based on context. They provide specialized behaviors without explicit commands.
 
+### Core Skills
+
 | Skill | Trigger | Purpose |
 |-------|---------|---------|
 | **rules-generator** | Missing `.claude/rules/` | Auto-generates project documentation |
 | **claudemd-generator** | After rules generation | Creates `CLAUDE.generated.md` |
-| **context-saver** | Context approaching 75%+ | Saves session progress |
+| **context-saver** | Context approaching 75%+ | Saves session progress with strategic compaction |
 | **external-memory** | Complex tasks (50+ tool calls) | File-based working memory |
 | **intent-gate** | Every request | Classifies request type for optimal handling |
 | **failure-recovery** | 3 consecutive failures | STOP → REVERT → DOCUMENT → CONSULT |
+
+### Development Pattern Skills
+
+| Skill | Trigger | Purpose |
+|-------|---------|---------|
+| **coding-standards** | Code implementation | Enforces code quality, naming, immutability patterns |
+| **backend-patterns** | Backend development | API design, database, authentication patterns |
+| **frontend-patterns** | Frontend development | React patterns, hooks, state management |
+| **tdd-workflow** | TDD mode | RED-GREEN-REFACTOR cycle enforcement |
+| **e2e-patterns** | E2E testing | Playwright patterns, Page Object Model |
+| **continuous-learning** | Session end | Pattern extraction and persistence |
+
+### Specialized Skills
+
+| Skill | Trigger | Purpose |
+|-------|---------|---------|
+| **pptx** | Presentation tasks | PowerPoint creation and editing |
+| **skill-creator** | Creating skills | Guide for building new skills |
+| **social-writing** | LinkedIn/Twitter posts | Authentic social media content |
+| **starhub-presentation** | StarHub decks | Executive presentations with templates |
 
 ### External Memory Pattern
 
@@ -255,32 +285,76 @@ Every request is classified before action:
 
 ## Hooks
 
-CDF uses 3 lifecycle hooks for automation:
+CDF uses 7 lifecycle hooks for automation:
 
 | Event | Script | Purpose |
 |-------|--------|---------|
 | **SessionStart** | `analyze-codebase.py` | Analyze project, generate rules |
-| **PreToolUse** | `keyword-amplifier.py` | Detect mode keywords, inject context |
+| **PreToolUse** | `keyword-amplifier.py` | Inject mode-specific context based on keywords |
+| **PreToolUse** | `git-push-review.py` | Remind to review before `git push` |
+| **PostToolUse** | `console-log-detector.py` | Warn on debugging statements in .ts/.tsx |
 | **PostToolUse** | `comment-checker.py` | Warn if comment ratio > 25% |
+| **Stop** | `session-end.py` | Persist session state on exit |
+| **Stop** | `task-completeness-check.sh` | Verify all tasks completed before stop |
 
-### Keyword Amplification
+---
 
-Use natural language triggers for enhanced behavior:
+## Context Modes
 
-| Keyword | Effect |
-|---------|--------|
-| `ultrawork` | Maximum focus mode with comprehensive analysis |
-| `deep work` | Single-task focus, minimize context switching |
-| `think deeply` | Extended reasoning with multiple perspectives |
-| `search` / `find` | Multi-strategy search approach |
-| `analyze` | Structured analytical framework |
-| `investigate` | Root cause analysis protocol |
-| `quick` / `fast` | Efficient execution, minimal overhead |
+CDF supports behavioral modes that adjust Claude's focus and approach.
 
-Example:
+| Mode | Behavior | Use Case |
+|------|----------|----------|
+| **dev** | Implementation-focused, code-first | Building features |
+| **review** | Quality assessment, thorough checks | Code reviews, audits |
+| **research** | Exploration, broad investigation | Learning, research |
+
+Activate with session command:
+```bash
+/cdf:session load --mode dev
 ```
-"ultrawork: implement a secure authentication system"
+
+Context files located in `contexts/` directory.
+
+---
+
+## Rules Templates
+
+Pre-built rule templates for common project standards. Copy to `.claude/rules/` and customize.
+
+| Template | Purpose |
+|----------|---------|
+| `security.md` | OWASP guidelines, secrets handling, input validation |
+| `testing.md` | 80% coverage requirement, TDD enforcement |
+| `git-workflow.md` | Conventional commits, PR workflow |
+| `performance.md` | Model selection, context management |
+| `coding-style.md` | Immutability patterns, file size limits |
+
+Generate with:
+```bash
+/cdf:rules generate --template security
 ```
+
+Templates located in `rules-templates/` directory.
+
+---
+
+## MCP Configurations
+
+Pre-configured MCP server templates for common integrations.
+
+| Server | Purpose |
+|--------|---------|
+| GitHub | Repository management |
+| Supabase | Database and auth |
+| Vercel | Deployment |
+| Cloudflare | Workers, KV, R2 |
+| PostgreSQL | Database access |
+| Redis | Cache and data store |
+| Context7 | Library documentation |
+| Memory | Persistent memory |
+
+Copy `mcp-configs/mcp-servers.template.json` to `.mcp/settings.json` and configure your credentials.
 
 ---
 
@@ -326,43 +400,47 @@ These rules are automatically loaded as context for Claude.
 ```
 claude-dev-framework/
 ├── .claude-plugin/
-│   └── plugin.json           # Plugin metadata (name: "cdf", version: "1.3.0")
+│   └── plugin.json           # Plugin metadata (name: "cdf", version: "1.6.0")
 │
-├── commands/                 # 22 slash commands
-│   ├── INDEX.md              # Categorized command reference
-│   ├── analyze.md
-│   ├── brainstorm.md
-│   ├── build.md
-│   └── ... (19 more)
+├── commands/                 # 26 slash commands
+│   ├── README.md             # Categorized command reference
+│   ├── implement.md, build.md, test.md, tdd.md, ...
+│   └── verify.md, learn.md, e2e.md (new)
 │
-├── agents/                   # 19 agent personas
-│   ├── INDEX.md              # Categorized agent reference
-│   ├── system-architect.md
-│   ├── backend-architect.md
-│   └── ... (17 more)
+├── agents/                   # 21 agent personas
+│   ├── README.md             # Categorized agent reference
+│   ├── system-architect.md, backend-architect.md, ...
+│   └── tdd-guide.md, e2e-specialist.md (new)
 │
-├── skills/                   # 6 auto-invoked skills
-│   ├── rules-generator/
-│   │   └── SKILL.md
-│   ├── claudemd-generator/
-│   │   └── SKILL.md
-│   ├── context-saver/
-│   │   └── SKILL.md
-│   ├── external-memory/
-│   │   └── SKILL.md
-│   ├── intent-gate/
-│   │   └── SKILL.md
-│   └── failure-recovery/
-│       └── SKILL.md
+├── skills/                   # 16 auto-invoked skills
+│   ├── rules-generator/, claudemd-generator/, ...
+│   ├── coding-standards/, backend-patterns/, frontend-patterns/ (new)
+│   ├── tdd-workflow/, e2e-patterns/, continuous-learning/ (new)
+│   └── pptx/, skill-creator/, social-writing/, starhub-presentation/
+│
+├── contexts/                 # Behavioral modes (new)
+│   ├── dev.md                # Implementation focus
+│   ├── review.md             # Quality assessment focus
+│   └── research.md           # Exploration focus
+│
+├── rules-templates/          # Best practice templates (new)
+│   ├── security.md, testing.md, git-workflow.md
+│   ├── performance.md, coding-style.md
+│
+├── mcp-configs/              # MCP server templates (new)
+│   └── mcp-servers.template.json
 │
 ├── hooks/
-│   └── hooks.json            # Lifecycle hooks
+│   └── hooks.json            # 7 lifecycle hooks
 │
-├── scripts/                  # Hook implementations & utilities
+├── scripts/
 │   ├── analyze-codebase.py   # SessionStart hook
-│   ├── keyword-amplifier.py  # PreToolUse hook
-│   ├── comment-checker.py    # PostToolUse hook
-│   └── task-completeness-check.sh
+│   ├── hooks/                # Additional hook scripts (new)
+│   │   ├── git-push-review.py
+│   │   ├── console-log-detector.py
+│   │   └── session-end.py
+│   └── lib/                  # Shared utilities (new)
+│       └── utils.py
 │
 └── README.md                 # This file
 ```

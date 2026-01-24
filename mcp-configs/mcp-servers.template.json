@@ -1,0 +1,161 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "_comment": "MCP Server Configuration Template - Copy to .mcp/settings.json and fill in your values",
+  "_instructions": "Remove the $schema, _comment, and _instructions fields before use",
+
+  "mcpServers": {
+    "github": {
+      "_description": "GitHub integration for repository management",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "<your-github-pat>"
+      }
+    },
+
+    "supabase": {
+      "_description": "Supabase database and auth integration",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-supabase"],
+      "env": {
+        "SUPABASE_URL": "<your-supabase-url>",
+        "SUPABASE_KEY": "<your-supabase-anon-key>"
+      }
+    },
+
+    "vercel": {
+      "_description": "Vercel deployment and project management",
+      "command": "npx",
+      "args": ["-y", "@vercel/mcp-server-vercel"],
+      "env": {
+        "VERCEL_TOKEN": "<your-vercel-token>"
+      }
+    },
+
+    "cloudflare": {
+      "_description": "Cloudflare Workers, KV, and R2 management",
+      "command": "npx",
+      "args": ["-y", "@cloudflare/mcp-server-cloudflare"],
+      "env": {
+        "CLOUDFLARE_API_TOKEN": "<your-cloudflare-token>",
+        "CLOUDFLARE_ACCOUNT_ID": "<your-account-id>"
+      }
+    },
+
+    "postgres": {
+      "_description": "PostgreSQL database access",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-postgres"],
+      "env": {
+        "POSTGRES_CONNECTION_STRING": "postgresql://user:password@localhost:5432/database"
+      }
+    },
+
+    "redis": {
+      "_description": "Redis cache and data store access",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-redis"],
+      "env": {
+        "REDIS_URL": "redis://localhost:6379"
+      }
+    },
+
+    "context7": {
+      "_description": "Library documentation and code examples",
+      "command": "npx",
+      "args": ["-y", "@context7/mcp-server"],
+      "env": {}
+    },
+
+    "memory": {
+      "_description": "Persistent memory across sessions",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-memory"],
+      "env": {
+        "MEMORY_STORE_PATH": ".claude/memory"
+      }
+    },
+
+    "sequential-thinking": {
+      "_description": "Step-by-step reasoning for complex problems",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-sequential-thinking"],
+      "env": {}
+    },
+
+    "filesystem": {
+      "_description": "Enhanced filesystem operations",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-filesystem"],
+      "env": {
+        "ALLOWED_DIRECTORIES": "/path/to/project"
+      }
+    },
+
+    "brave-search": {
+      "_description": "Web search via Brave Search API",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-brave-search"],
+      "env": {
+        "BRAVE_API_KEY": "<your-brave-api-key>"
+      }
+    },
+
+    "slack": {
+      "_description": "Slack workspace integration",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-slack"],
+      "env": {
+        "SLACK_BOT_TOKEN": "<your-slack-bot-token>",
+        "SLACK_TEAM_ID": "<your-team-id>"
+      }
+    },
+
+    "playwright": {
+      "_description": "Browser automation for E2E testing",
+      "command": "npx",
+      "args": ["-y", "@playwright/mcp-server"],
+      "env": {
+        "PLAYWRIGHT_HEADLESS": "true"
+      }
+    },
+
+    "sentry": {
+      "_description": "Error tracking and performance monitoring",
+      "command": "npx",
+      "args": ["-y", "@sentry/mcp-server"],
+      "env": {
+        "SENTRY_AUTH_TOKEN": "<your-sentry-token>",
+        "SENTRY_ORG": "<your-org-slug>"
+      }
+    },
+
+    "linear": {
+      "_description": "Linear issue tracking integration",
+      "command": "npx",
+      "args": ["-y", "@linear/mcp-server"],
+      "env": {
+        "LINEAR_API_KEY": "<your-linear-api-key>"
+      }
+    },
+
+    "notion": {
+      "_description": "Notion workspace integration",
+      "command": "npx",
+      "args": ["-y", "@modelcontextprotocol/server-notion"],
+      "env": {
+        "NOTION_API_KEY": "<your-notion-integration-token>"
+      }
+    }
+  },
+
+  "_setup_instructions": {
+    "github": "Create a Personal Access Token at https://github.com/settings/tokens with repo, workflow, and user scopes",
+    "supabase": "Get your project URL and anon key from https://app.supabase.com/project/_/settings/api",
+    "vercel": "Create a token at https://vercel.com/account/tokens",
+    "cloudflare": "Create an API token at https://dash.cloudflare.com/profile/api-tokens",
+    "brave-search": "Get an API key at https://brave.com/search/api/",
+    "linear": "Create an API key at https://linear.app/settings/api",
+    "notion": "Create an integration at https://www.notion.so/my-integrations"
+  }
+}

@@ -10,6 +10,90 @@
           }
         ]
       }
+    ],
+    "PreToolUse": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PLUGIN_ROOT/scripts/keyword-amplifier.py\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": {
+          "tool_name": "Bash",
+          "command_pattern": "^git push"
+        },
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/git-push-review.py\" \"$TOOL_INPUT\"",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": {
+          "tool_name": "Edit",
+          "file_pattern": "\\.(ts|tsx)$"
+        },
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/console-log-detector.py\" \"$TOOL_INPUT\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": {
+          "tool_name": "Write",
+          "file_pattern": "\\.(ts|tsx)$"
+        },
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/console-log-detector.py\" \"$TOOL_INPUT\"",
+            "timeout": 5
+          }
+        ]
+      },
+      {
+        "matcher": {
+          "tool_name": "Edit|Write|MultiEdit"
+        },
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PLUGIN_ROOT/scripts/comment-checker.py\"",
+            "timeout": 5
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/session-end.py\"",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash \"$CLAUDE_PLUGIN_ROOT/scripts/task-completeness-check.sh\"",
+            "timeout": 10
+          }
+        ]
+      }
     ]
   }
 }

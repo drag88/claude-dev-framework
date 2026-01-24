@@ -38,6 +38,15 @@ Quick reference for all available agent personas, organized by category.
 
 ---
 
+## Testing Specialists (2)
+
+| Agent | Description |
+|-------|-------------|
+| [tdd-guide](tdd-guide.md) | Test-Driven Development enforcement with RED-GREEN-REFACTOR workflow |
+| [e2e-specialist](e2e-specialist.md) | End-to-end testing expert with Playwright patterns and Page Object Model |
+
+---
+
 ## Communication & Education (3)
 
 | Agent | Description |
@@ -81,3 +90,5 @@ Quick reference for all available agent personas, organized by category.
 | Python-specific help | python-expert |
 | Gather requirements | requirements-analyst |
 | Business strategy | business-panel-experts |
+| Test-Driven Development | tdd-guide |
+| E2E testing with Playwright | e2e-specialist |

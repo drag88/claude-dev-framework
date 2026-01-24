@@ -9,8 +9,8 @@
   "plugins": [
     {
       "name": "cdf",
-      "description": "Complete development framework with 22 commands, 19 agent personas, 6 skills, and lifecycle hooks",
-      "version": "1.5.0",
+      "description": "Complete development framework with 26 commands, 21 agent personas, 16 skills, and lifecycle hooks",
+      "version": "1.6.0",
       "author": {
         "name": "Aswin Sreenivas",
         "email": "awinsreenivas@gmail.com"

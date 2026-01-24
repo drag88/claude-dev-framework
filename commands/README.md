@@ -4,20 +4,21 @@ Quick reference for all available `/cdf` commands, organized by purpose.
 
 ---
 
-## Core Development (6)
+## Core Development (7)
 
 | Command | Description | Complexity |
 |---------|-------------|------------|
 | [/cdf:implement](implement.md) | Feature and code implementation with persona activation and MCP integration | standard |
 | [/cdf:build](build.md) | Build, compile, and package projects with intelligent error handling | enhanced |
 | [/cdf:test](test.md) | Execute tests with coverage analysis and automated quality reporting | enhanced |
+| [/cdf:tdd](tdd.md) | Test-Driven Development with RED-GREEN-REFACTOR workflow | advanced |
 | [/cdf:git](git.md) | Git operations with intelligent commit messages and workflow optimization | basic |
 | [/cdf:cleanup](cleanup.md) | Systematically clean up code, remove dead code, optimize structure | standard |
 | [/cdf:improve](improve.md) | Apply systematic improvements to code quality and performance | standard |
 
 ---
 
-## Analysis & Understanding (4)
+## Analysis & Understanding (5)
 
 | Command | Description | Complexity |
 |---------|-------------|------------|
@@ -25,6 +26,7 @@ Quick reference for all available `/cdf` commands, organized by purpose.
 | [/cdf:explain](explain.md) | Clear explanations of code, concepts, and system behavior | standard |
 | [/cdf:research](research.md) | Deep web research with adaptive planning and intelligent search | advanced |
 | [/cdf:troubleshoot](troubleshoot.md) | Diagnose and resolve issues in code, builds, deployments | standard |
+| [/cdf:e2e](e2e.md) | End-to-end testing with Playwright patterns and Page Object Model | advanced |
 
 ---
 
@@ -49,7 +51,7 @@ Quick reference for all available `/cdf` commands, organized by purpose.
 
 ---
 
-## Utilities (5)
+## Utilities (7)
 
 | Command | Description | Complexity |
 |---------|-------------|------------|
@@ -58,6 +60,8 @@ Quick reference for all available `/cdf` commands, organized by purpose.
 | [/cdf:rules](rules.md) | Generate and manage project-specific rules | standard |
 | [/cdf:session](session.md) | Session management and context handling | standard |
 | [/cdf:select-tool](select-tool.md) | Intelligent MCP tool selection based on complexity scoring | high |
+| [/cdf:verify](verify.md) | Pre-PR quality verification (build, types, lint, tests, security) | enhanced |
+| [/cdf:learn](learn.md) | Continuous learning and mid-session pattern extraction | standard |
 
 ---
 
@@ -68,6 +72,7 @@ Quick reference for all available `/cdf` commands, organized by purpose.
 | Write new code | `/cdf:implement` |
 | Build a project | `/cdf:build` |
 | Run tests | `/cdf:test` |
+| Test-first development | `/cdf:tdd` |
 | Commit changes | `/cdf:git` |
 | Clean up code | `/cdf:cleanup` |
 | Refactor code | `/cdf:improve` |
@@ -75,6 +80,7 @@ Quick reference for all available `/cdf` commands, organized by purpose.
 | Learn how something works | `/cdf:explain` |
 | Research a topic | `/cdf:research` |
 | Fix a bug | `/cdf:troubleshoot` |
+| E2E testing with Playwright | `/cdf:e2e` |
 | Explore an idea | `/cdf:brainstorm` |
 | Design a system | `/cdf:design` |
 | Estimate effort | `/cdf:estimate` |
@@ -87,6 +93,8 @@ Quick reference for all available `/cdf` commands, organized by purpose.
 | Generate rules | `/cdf:rules` |
 | Save/load context | `/cdf:session` |
 | Pick the right MCP tool | `/cdf:select-tool` |
+| Pre-PR quality check | `/cdf:verify` |
+| Extract patterns learned | `/cdf:learn` |
 
 ---
 
