@@ -239,6 +239,30 @@ Requirements:
 ## Commit Messages
 See `/cdf:git` for commit message rules (conventional format, no Claude attribution).
 
+## CDF Agents
+
+When working in this project, use the appropriate CDF agent for specialized tasks:
+
+| Task Type | Agent | Command |
+|-----------|-------|---------|
+| System design | system-architect | `/cdf:spawn` |
+| API/backend work | backend-architect | `/cdf:spawn` |
+| UI development | frontend-architect | `/cdf:spawn` |
+| CI/CD setup | devops-architect | `/cdf:spawn` |
+| Research topics | deep-research-agent | `/cdf:research` |
+| Find code/patterns | codebase-navigator | `/cdf:spawn` |
+| Evaluate libraries | library-researcher | `/cdf:spawn` |
+| Debug issues | root-cause-analyst | `/cdf:troubleshoot` |
+| Write tests | quality-engineer | `/cdf:test` |
+| Security audit | security-engineer | `/cdf:analyze` |
+| Performance | performance-engineer | `/cdf:analyze` |
+| Refactor code | refactoring-expert | `/cdf:improve` |
+| Documentation | technical-writer | `/cdf:docs` |
+| TDD workflow | tdd-guide | `/cdf:tdd` |
+| E2E testing | e2e-specialist | `/cdf:e2e` |
+
+**Auto-activation**: Agents activate automatically via `/cdf:spawn` and `/cdf:task` based on task context.
+
 ## Project Rules
 Auto-generated rules in `.claude/rules/` - Claude loads automatically.
 Run `/cdf:rules generate` to refresh after major changes.
@@ -254,8 +278,9 @@ Run `/cdf:rules generate` to refresh after major changes.
 3. **Critical Rules** - 4 standard rules (read before edit, DRY, no backwards compat, tests required)
 4. **Plans Format** - Plans instruction block for unresolved questions
 5. **Commit Messages** - Pointer to `/cdf:git` command
-6. **Project Rules** - Pointer to `.claude/rules/`
-7. **Key Directories** - Max 5-7 most important directories
+6. **CDF Agents** - Agent selection guide for specialized tasks
+7. **Project Rules** - Pointer to `.claude/rules/`
+8. **Key Directories** - Max 5-7 most important directories
 
 **Guidelines:**
 - Keep < 100 lines, never exceed 150
@@ -362,6 +387,9 @@ Requirements:
 
 ## Commit Messages
 See `/cdf:git` for commit message rules (conventional format, no Claude attribution).
+
+## CDF Agents
+[Agent table - see template above]
 
 ## Project Rules
 Auto-generated rules in `.claude/rules/` - Claude loads automatically.
