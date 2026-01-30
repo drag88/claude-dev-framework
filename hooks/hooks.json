@@ -9,6 +9,15 @@
             "timeout": 60
           }
         ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/memory-init.py\"",
+            "timeout": 10
+          }
+        ]
       }
     ],
     "PreToolUse": [
@@ -71,6 +80,11 @@
             "type": "command",
             "command": "python3 \"$CLAUDE_PLUGIN_ROOT/scripts/comment-checker.py\"",
             "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/memory-logger.py\" \"$TOOL_INPUT\"",
+            "timeout": 3
           }
         ]
       }
@@ -81,6 +95,15 @@
           {
             "type": "command",
             "command": "python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/session-end.py\"",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/memory-summarize.py\"",
             "timeout": 10
           }
         ]

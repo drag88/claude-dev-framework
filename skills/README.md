@@ -4,7 +4,7 @@ Quick reference for all auto-invoked skills, organized by category.
 
 ---
 
-## Core Skills (6)
+## Core Skills (7)
 
 | Skill | Trigger | Description |
 |-------|---------|-------------|
@@ -12,6 +12,7 @@ Quick reference for all auto-invoked skills, organized by category.
 | [claudemd-generator](claudemd-generator/SKILL.md) | After rules generation | Creates `CLAUDE.generated.md` |
 | [context-saver](context-saver/SKILL.md) | Context 75%+ or 50+ tool calls | Saves session progress with strategic compaction |
 | [external-memory](external-memory/SKILL.md) | Complex tasks (50+ tool calls) | File-based working memory in `dev/memory/` |
+| [project-memory](project-memory/SKILL.md) | SessionStart, SessionEnd, file changes | Persistent project-scoped memory with daily logs |
 | [intent-gate](intent-gate/SKILL.md) | Every request | Classifies request type for optimal handling |
 | [failure-recovery](failure-recovery/SKILL.md) | 3 consecutive failures | STOP → REVERT → DOCUMENT → CONSULT |
 
@@ -75,6 +76,7 @@ Skills are automatically invoked based on context triggers. They provide special
 | Project rules generated | rules-generator |
 | Session context saved | context-saver |
 | Working memory for complex task | external-memory |
+| Persistent project memory | project-memory |
 | Code quality patterns | coding-standards |
 | API design guidance | backend-patterns |
 | React component patterns | frontend-patterns |
