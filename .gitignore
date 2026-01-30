@@ -2,3 +2,10 @@
 installed_plugins.json
 installed_plugins_v2.json
 marketplaces/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# Project memory (each project has its own)
+.claude/memory/
