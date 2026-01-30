@@ -9,3 +9,6 @@ __pycache__/
 
 # Project memory (each project has its own)
 .claude/memory/
+
+# Auto-generated context files
+.claude/rules/memory-context.md

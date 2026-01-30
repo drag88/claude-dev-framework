@@ -110,15 +110,37 @@ Each project gets its own memory in `.claude/memory/`:
    - Create MEMORY.md with project overview if missing
    - Create daily/ directory if missing
 
-2. **Load Context**
+2. **Load Context (Progressive Disclosure)**
    - Read MEMORY.md for long-term context
    - Read today's daily log if exists
    - Read yesterday's log for continuity
 
-3. **Inject Context**
-   - Provide summary of recent activity
-   - Highlight any open TODOs or follow-ups
-   - Surface relevant decisions
+3. **Inject Context → `.claude/rules/memory-context.md`**
+   - Claude auto-loads this file at session start
+   - Uses progressive disclosure to prioritize:
+     - **Level 1 (Critical)**: Open TODOs, Known Issues
+     - **Level 2 (Recent)**: Yesterday's summary, Today's activity
+     - **Level 3 (Background)**: Key decisions
+   - Keeps context concise to preserve token budget
+   - Points to full memory files for deep dives
+
+### Progressive Disclosure Hierarchy
+
+```
+Priority 1 (Always shown):
+├── 🎯 Open TODOs (max 5)
+└── ⚠️ Known Issues
+
+Priority 2 (Recent context):
+├── 📅 Yesterday's Summary
+└── 🕐 Recent Activity (today, last 10)
+
+Priority 3 (Background):
+└── 📋 Key Decisions
+
+Footer:
+└── Pointer to full memory files
+```
 
 ### During Session
 

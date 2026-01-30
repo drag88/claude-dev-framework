@@ -1,11 +1,12 @@
 #!/usr/bin/env python3
 """
-SessionStart hook: Initialize project memory structure and load context.
-Creates .claude/memory/ directory and files if they don't exist.
+SessionStart hook: Initialize project memory structure and inject context.
+Creates .claude/memory/ directory and loads relevant context via progressive disclosure.
 """
 
 import json
 import os
+import re
 import sys
 from datetime import datetime, timedelta
 from pathlib import Path
@@ -28,6 +29,11 @@ def get_daily_dir() -> Path:
 def get_decisions_dir() -> Path:
     """Get the decisions directory path."""
     return get_memory_dir() / 'decisions'
+
+
+def get_rules_dir() -> Path:
+    """Get the rules directory path."""
+    return get_project_root() / '.claude' / 'rules'
 
 
 def init_memory_structure():
@@ -181,34 +187,56 @@ def init_daily_log():
     return True
 
 
-def load_recent_context() -> str:
-    """Load relevant context from recent memory."""
-    context_parts = []
+def extract_section(content: str, section_name: str, max_lines: int = 20) -> str:
+    """Extract a section from markdown content."""
+    pattern = rf'^## {re.escape(section_name)}\s*\n(.*?)(?=^## |\Z)'
+    match = re.search(pattern, content, re.MULTILINE | re.DOTALL)
+    if match:
+        lines = match.group(1).strip().split('\n')[:max_lines]
+        text = '\n'.join(lines)
+        # Skip if it's just placeholder text
+        if text.startswith('*') and text.endswith('*') and len(text) < 100:
+            return ''
+        return text
+    return ''
+
+
+def load_memory_context() -> dict:
+    """Load relevant memory context with progressive disclosure."""
+    context = {
+        'project_overview': '',
+        'key_decisions': '',
+        'known_issues': '',
+        'recent_activity': '',
+        'open_todos': [],
+        'yesterday_summary': ''
+    }
     
-    # Load MEMORY.md summary (first 50 lines or until first ---)
+    # Load from MEMORY.md
     memory_file = get_memory_dir() / 'MEMORY.md'
     if memory_file.exists():
         with open(memory_file) as f:
-            lines = f.readlines()
-            summary_lines = []
-            for line in lines[:50]:
-                if line.strip() == '---':
-                    break
-                summary_lines.append(line)
-            if summary_lines:
-                context_parts.append("## From MEMORY.md\n" + ''.join(summary_lines))
+            content = f.read()
+        
+        context['project_overview'] = extract_section(content, 'Project Overview', 10)
+        context['key_decisions'] = extract_section(content, 'Key Decisions', 15)
+        context['known_issues'] = extract_section(content, 'Known Issues & Workarounds', 10)
     
-    # Load today's log if exists
+    # Load today's TODOs
     today = datetime.now().strftime('%Y-%m-%d')
     today_file = get_daily_dir() / f'{today}.md'
     if today_file.exists():
         with open(today_file) as f:
             content = f.read()
-            # Extract TODO section if present
-            if '## TODO' in content:
-                todo_section = content.split('## TODO')[1].split('##')[0]
-                if todo_section.strip():
-                    context_parts.append(f"## Today's TODOs\n{todo_section.strip()}")
+        
+        # Extract unchecked TODOs
+        todos = re.findall(r'^- \[ \] (.+)$', content, re.MULTILINE)
+        context['open_todos'] = [t for t in todos if not t.startswith('*')]
+        
+        # Extract today's activity (last 10 entries)
+        activity = extract_section(content, 'Activity Log', 10)
+        if activity:
+            context['recent_activity'] = activity
     
     # Load yesterday's summary
     yesterday = (datetime.now() - timedelta(days=1)).strftime('%Y-%m-%d')
@@ -216,13 +244,86 @@ def load_recent_context() -> str:
     if yesterday_file.exists():
         with open(yesterday_file) as f:
             content = f.read()
-            # Extract summary section
-            if '## Session Summary' in content:
-                summary = content.split('## Session Summary')[1].split('##')[0]
-                if summary.strip() and '*Session in progress*' not in summary:
-                    context_parts.append(f"## Yesterday's Summary\n{summary.strip()}")
+        
+        summary = extract_section(content, 'Session Summary', 10)
+        if summary and '*Session in progress*' not in summary:
+            context['yesterday_summary'] = summary
     
-    return '\n\n'.join(context_parts) if context_parts else ''
+    return context
+
+
+def generate_context_rule(context: dict) -> str:
+    """Generate the memory context rule file content."""
+    parts = []
+    
+    parts.append("# Project Memory Context")
+    parts.append("")
+    parts.append("*Auto-loaded from `.claude/memory/` - Progressive disclosure of project context.*")
+    parts.append("")
+    
+    # Level 1: Critical context (always show)
+    if context['open_todos']:
+        parts.append("## 🎯 Open TODOs")
+        for todo in context['open_todos'][:5]:  # Max 5 TODOs
+            parts.append(f"- [ ] {todo}")
+        parts.append("")
+    
+    if context['known_issues']:
+        parts.append("## ⚠️ Known Issues")
+        parts.append(context['known_issues'])
+        parts.append("")
+    
+    # Level 2: Recent context
+    if context['yesterday_summary']:
+        parts.append("## 📅 Yesterday's Summary")
+        parts.append(context['yesterday_summary'])
+        parts.append("")
+    
+    if context['recent_activity']:
+        parts.append("## 🕐 Recent Activity (Today)")
+        parts.append(context['recent_activity'])
+        parts.append("")
+    
+    # Level 3: Background context (condensed)
+    if context['key_decisions']:
+        parts.append("## 📋 Key Decisions")
+        parts.append(context['key_decisions'])
+        parts.append("")
+    
+    # Footer with pointer to full memory
+    parts.append("---")
+    parts.append("*Full memory: `.claude/memory/MEMORY.md` | Daily logs: `.claude/memory/daily/`*")
+    
+    return '\n'.join(parts)
+
+
+def inject_memory_context():
+    """Generate memory context rule file for Claude to auto-load."""
+    context = load_memory_context()
+    
+    # Check if there's any meaningful content
+    has_content = (
+        context['open_todos'] or
+        context['known_issues'] or
+        context['yesterday_summary'] or
+        context['recent_activity'] or
+        context['key_decisions']
+    )
+    
+    if not has_content:
+        return False
+    
+    # Generate and write the context rule
+    rules_dir = get_rules_dir()
+    rules_dir.mkdir(parents=True, exist_ok=True)
+    
+    rule_content = generate_context_rule(context)
+    rule_file = rules_dir / 'memory-context.md'
+    
+    with open(rule_file, 'w') as f:
+        f.write(rule_content)
+    
+    return True
 
 
 def main():
@@ -241,12 +342,10 @@ def main():
         if daily_created:
             print_info(f"📅 Daily log created for {datetime.now().strftime('%Y-%m-%d')}")
         
-        # Load and output context (for Claude to pick up)
-        context = load_recent_context()
-        if context:
-            print_info("📚 Memory context loaded")
-            # Output context summary to stdout for potential use
-            # print(f"\n--- PROJECT MEMORY CONTEXT ---\n{context}\n--- END CONTEXT ---\n")
+        # Inject memory context into rules (progressive disclosure)
+        context_injected = inject_memory_context()
+        if context_injected:
+            print_info("🧠 Memory context loaded → .claude/rules/memory-context.md")
         
     except Exception as e:
         print_warning(f"Memory init warning: {e}")
