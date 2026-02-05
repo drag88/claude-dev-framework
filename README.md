@@ -1,6 +1,6 @@
 # CDF (Claude Dev Framework)
 
-A comprehensive development framework plugin for Claude Code featuring **26 commands**, **21 agent personas**, **16 skills**, and **7 lifecycle hooks**.
+A comprehensive development framework plugin for Claude Code featuring **29 commands**, **21 agent personas**, **16 skills**, and **13 lifecycle hooks**.
 
 ---
 
@@ -142,6 +142,14 @@ All commands are prefixed with `/cdf:`. See [commands/INDEX.md](commands/INDEX.m
 | `/cdf:task` | Execute complex tasks with delegation |
 | `/cdf:spawn` | Break down complex tasks into subtasks |
 | `/cdf:panel` | Multi-expert panel discussions |
+
+### Workflow Orchestration
+
+| Command | Description |
+|---------|-------------|
+| `/cdf:flow` | Unified workflow: brainstorm → docs → implement → verify → compound |
+| `/cdf:compound` | Capture institutional knowledge from solved problems |
+| `/cdf:deepen` | Parallel agent saturation for comprehensive analysis |
 
 ### Utilities
 
@@ -285,16 +293,22 @@ Every request is classified before action:
 
 ## Hooks
 
-CDF uses 7 lifecycle hooks for automation:
+CDF uses 13 lifecycle hooks for automation:
 
 | Event | Script | Purpose |
 |-------|--------|---------|
 | **SessionStart** | `analyze-codebase.py` | Analyze project, generate rules |
+| **SessionStart** | `memory-init.py` | Initialize session memory context |
 | **PreToolUse** | `keyword-amplifier.py` | Inject mode-specific context based on keywords |
 | **PreToolUse** | `git-push-review.py` | Remind to review before `git push` |
 | **PostToolUse** | `console-log-detector.py` | Warn on debugging statements in .ts/.tsx |
 | **PostToolUse** | `comment-checker.py` | Warn if comment ratio > 25% |
+| **PostToolUse** | `memory-logger.py` | Log file changes to session memory |
+| **PostToolUse** | `flow-checkpoint.py` | Auto-checkpoint every 20 tool calls during flow |
+| **PostToolUse** | `flow-verify-gate.py` | Track test results during flow verify phase |
 | **Stop** | `session-end.py` | Persist session state on exit |
+| **Stop** | `memory-summarize.py` | Summarize session memory on exit |
+| **Stop** | `flow-session-save.py` | Save flow state with resume instructions |
 | **Stop** | `task-completeness-check.sh` | Verify all tasks completed before stop |
 
 ---
@@ -400,9 +414,9 @@ These rules are automatically loaded as context for Claude.
 ```
 claude-dev-framework/
 ├── .claude-plugin/
-│   └── plugin.json           # Plugin metadata (name: "cdf", version: "1.6.0")
+│   └── plugin.json           # Plugin metadata (name: "cdf", version: "1.7.0")
 │
-├── commands/                 # 26 slash commands
+├── commands/                 # 29 slash commands
 │   ├── README.md             # Categorized command reference
 │   ├── implement.md, build.md, test.md, tdd.md, ...
 │   └── verify.md, learn.md, e2e.md (new)
@@ -430,8 +444,14 @@ claude-dev-framework/
 ├── mcp-configs/              # MCP server templates (new)
 │   └── mcp-servers.template.json
 │
+├── docs/
+│   └── solutions/            # Institutional knowledge from /cdf:compound
+│       ├── build-errors/
+│       ├── runtime-errors/
+│       └── ...
+│
 ├── hooks/
-│   └── hooks.json            # 7 lifecycle hooks
+│   └── hooks.json            # 13 lifecycle hooks
 │
 ├── scripts/
 │   ├── analyze-codebase.py   # SessionStart hook

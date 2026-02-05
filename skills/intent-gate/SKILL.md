@@ -8,6 +8,45 @@ Classify user requests before taking action to ensure appropriate response strat
 - When request scope is unclear
 - Before executing potentially large changes
 - When multiple valid interpretations exist
+- When `/cdf:flow` needs complexity classification
+
+## Task Complexity Classification
+
+For `/cdf:flow` and multi-phase workflows, classify task complexity:
+
+### Simple
+**Signals**:
+- Keywords: "fix", "typo", "update", "correct", "rename", "remove"
+- Single-file scope
+- Estimated changes < 50 lines
+- Clear, specific instructions
+- Bug fixes with known location
+
+**Workflow**: docs(lite) -> implement -> verify(quick)
+
+### Standard
+**Signals**:
+- Keywords: "add", "implement", "create", "extend"
+- Multi-file scope (2-5 files)
+- Estimated changes 50-500 lines
+- Feature additions to existing systems
+- Clear requirements
+
+**Workflow**: docs -> implement -> verify -> compound(optional)
+
+### Complex
+**Signals**:
+- Keywords: "design", "architect", "migrate", "restructure", "refactor"
+- Multi-domain scope (>5 files, multiple directories)
+- Estimated changes > 500 lines
+- New systems or major refactors
+- Ambiguous requirements
+- Architectural decisions required
+
+**Workflow**: brainstorm -> docs -> implement -> verify -> compound
+
+### Complexity Override
+User can override with `--complexity simple|standard|complex` flag.
 
 ## Intent Categories
 

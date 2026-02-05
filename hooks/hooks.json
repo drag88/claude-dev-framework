@@ -85,6 +85,24 @@
             "type": "command",
             "command": "python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/memory-logger.py\" \"$TOOL_INPUT\"",
             "timeout": 3
+          },
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/flow-checkpoint.py\" \"$TOOL_INPUT\"",
+            "timeout": 3
+          }
+        ]
+      },
+      {
+        "matcher": {
+          "tool_name": "Bash",
+          "command_pattern": "^(npm test|npm run test|yarn test|pnpm test|pytest|python -m pytest|cargo test|go test)"
+        },
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/flow-verify-gate.py\" \"$TOOL_INPUT\"",
+            "timeout": 5
           }
         ]
       }
@@ -104,6 +122,15 @@
           {
             "type": "command",
             "command": "python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/memory-summarize.py\"",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/flow-session-save.py\"",
             "timeout": 10
           }
         ]

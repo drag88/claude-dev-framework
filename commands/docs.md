@@ -136,6 +136,35 @@ dev/active/[task-name]/
 - Specify dependencies between tasks
 - Estimate effort levels (S/M/L/XL)
 
+**Checkbox Format for /cdf:flow Integration:**
+When creating plans for `/cdf:flow`, use checkbox format for tracking:
+
+```markdown
+## Phase 1: Setup [0/2]
+- [ ] Create module directory structure
+- [ ] Add dependencies to package.json
+
+## Phase 2: Implementation [0/4]
+- [ ] Implement core service class
+- [ ] Add API endpoints
+- [ ] Create database migrations
+- [ ] Add validation logic
+
+## Phase 3: Testing [0/2]
+- [ ] Write unit tests
+- [ ] Add integration tests
+
+---
+**Progress**: 0/8 tasks (0%)
+**Last Updated**: YYYY-MM-DD HH:MM
+```
+
+The checkbox format enables:
+- Visual progress tracking during implementation
+- Automatic updates by `/cdf:flow` ([ ] -> [x])
+- Easy resume after interruption
+- Progress percentage calculation
+
 **Quality Standards:**
 - Plans must be self-contained with all necessary context
 - Use clear, actionable language
