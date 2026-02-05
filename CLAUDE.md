@@ -39,7 +39,7 @@ Auto-generated rules in `.claude/rules/` - Claude loads automatically.
 Run `/cdf:rules generate` to refresh after major changes.
 
 ## Key Directories
-- `commands/` - 29 slash command definitions
+- `commands/` - 29 slash command definitions (with MANDATORY FIRST ACTIONS enforcement)
 - `agents/` - 21 specialized agent personas
 - `skills/` - 16 auto-invoked behaviors
 - `hooks/` - Lifecycle hook configuration (13 hooks)
@@ -47,3 +47,11 @@ Run `/cdf:rules generate` to refresh after major changes.
 - `contexts/` - Behavioral modes (dev/review/research)
 - `rules-templates/` - Best practice templates
 - `docs/solutions/` - Institutional knowledge from /cdf:compound
+- `dev/active/` - Flow state files (created by workflow commands)
+- `dev/sessions/` - Session state files (created by /cdf:session)
+
+## Command Enforcement
+All workflow commands use MANDATORY FIRST ACTIONS pattern:
+1. Create state file BEFORE any exploration
+2. Follow explicit anti-patterns (DO NOT use .claude/plans/ for /cdf:flow)
+3. Complete all steps before proceeding

@@ -2,6 +2,52 @@
 description: "Test-Driven Development workflow with RED-GREEN-REFACTOR cycle enforcement"
 ---
 
+## MANDATORY FIRST ACTIONS (DO NOT SKIP)
+
+**THE INVIOLABLE TDD RULE**: NEVER write implementation code before a failing test exists.
+
+### Step 1: Create TDD State File
+```bash
+mkdir -p dev/active/[feature-slug]
+```
+
+Write `dev/active/[feature-slug]/tdd-state.md`:
+```yaml
+---
+feature: "[feature description]"
+created: [ISO timestamp]
+current_phase: red
+cycle: 1
+tests_written: 0
+coverage_target: 80
+---
+
+# TDD: [Feature]
+
+## Cycle 1
+- [ ] RED: Write failing test
+- [ ] RED: Verify test fails correctly
+- [ ] GREEN: Write minimal implementation
+- [ ] GREEN: Verify test passes
+- [ ] REFACTOR: Improve code quality
+- [ ] REFACTOR: Verify still green
+```
+
+### Step 2: Write Test File FIRST
+Before ANY implementation code exists, create the test file with a failing test.
+
+### Step 3: Verify RED State
+Run the test and CONFIRM it fails before proceeding to GREEN.
+
+**CRITICAL ANTI-PATTERNS - DO NOT:**
+- Write ANY implementation before test exists
+- Write a test that passes immediately
+- Skip failure verification (must see RED output)
+- Proceed to GREEN without documented RED phase
+- Refactor without re-running ALL tests
+
+---
+
 # /cdf:tdd - Test-Driven Development
 
 ## Triggers

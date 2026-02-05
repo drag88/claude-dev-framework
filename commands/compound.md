@@ -7,6 +7,51 @@ argument-hint: "[problem-description] [--category auto|build|test|runtime|perfor
 
 > Transform solved problems into searchable institutional knowledge that compounds over time.
 
+## MANDATORY FIRST ACTIONS (DO NOT SKIP)
+
+**BEFORE writing any solution document**, you MUST:
+
+### Step 1: Verify the Fix Works
+DO NOT document a solution until you have confirmed the fix is successful (tests pass, build works, issue resolved).
+
+### Step 2: Classify Category
+Determine category from these signals:
+- build-errors: compilation, bundling, dependency failures
+- runtime-errors: exceptions, crashes, undefined behavior
+- test-failures: failing tests, coverage issues
+- performance-issues: slow queries, memory leaks
+- security-issues: vulnerabilities, auth problems
+- integration-issues: API mismatches, service communication
+- ui-bugs: rendering, styling, interaction issues
+- database-issues: migrations, queries, connections
+
+### Step 3: Create Solution Directory
+```bash
+mkdir -p docs/solutions/[category]
+```
+
+### Step 4: Write Solution File with ALL Frontmatter
+Create `docs/solutions/[category]/[YYYY-MM-DD]-[slug].md` with COMPLETE frontmatter:
+
+```yaml
+---
+title: "[descriptive title]"           # REQUIRED
+date: YYYY-MM-DD                       # REQUIRED
+category: [category]                   # REQUIRED
+tags: [tag1, tag2]                     # REQUIRED - min 2 tags
+severity: critical|high|medium|low    # REQUIRED
+root_cause: "[one-line cause]"        # REQUIRED
+symptom: "[what user observed]"       # REQUIRED
+resolution_time: "[e.g., 2 hours]"    # REQUIRED
+---
+```
+
+### CRITICAL ANTI-PATTERNS - DO NOT:
+- Document before verifying fix works
+- Skip ANY frontmatter field
+- Assume category without classification
+- Create solutions for trivial fixes (<5 min, no debugging)
+
 ## Philosophy
 
 **Each solved problem should make future problems easier.** This command extracts patterns, documents decisions, and creates reusable knowledge from your work.

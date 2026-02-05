@@ -2,6 +2,31 @@
 description: "Meta-system task orchestration with intelligent breakdown and delegation"
 ---
 
+## MANDATORY FIRST ACTIONS (DO NOT SKIP)
+
+**BEFORE spawning ANY subagent**, you MUST:
+
+### Step 1: Create Task Tracking
+Create `dev/active/[task-slug]/spawn-state.md` with task breakdown.
+
+### Step 2: Use Complete 7-Section Format
+Every Task tool call MUST include ALL 7 sections:
+1. TASK (atomic, specific goal)
+2. EXPECTED OUTCOME (concrete deliverables)
+3. REQUIRED SKILLS (which CDF skill/agent)
+4. REQUIRED TOOLS (explicit tool whitelist)
+5. MUST DO (exhaustive requirements list)
+6. MUST NOT DO (forbidden actions)
+7. CONTEXT (file paths, patterns, constraints)
+
+**CRITICAL ANTI-PATTERNS - DO NOT:**
+- Delegate vague tasks like "figure out the problem"
+- Use abbreviated delegation (missing sections)
+- Spawn without task tracking file
+- Delegate without explicit tool whitelist
+
+---
+
 # /cdf:spawn - Meta-System Task Orchestration
 
 > Break down complex operations into coordinated subtask hierarchies.

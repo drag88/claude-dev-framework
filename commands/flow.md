@@ -7,6 +7,73 @@ argument-hint: "[task] [--complexity simple|standard|complex] [--skip phases] [-
 
 > Orchestrate the complete development lifecycle from idea to verified, documented code.
 
+---
+
+## MANDATORY FIRST ACTIONS (DO NOT SKIP)
+
+**BEFORE doing ANYTHING else** - no exploration, no spawning agents, no reading files - you MUST complete these steps in order:
+
+### Step 1: Classify Complexity
+
+Determine complexity from the task description:
+- **Simple**: "fix", "typo", "update", single-file changes
+- **Standard**: "add", "implement", "create", multi-file (50-500 lines)
+- **Complex**: "design", "architect", "migrate", >500 lines
+
+### Step 2: Create Flow State Directory
+
+```bash
+mkdir -p dev/active/[task-slug]
+```
+
+Where `[task-slug]` is a kebab-case version of the task (e.g., "redesign-recommendations-tab").
+
+### Step 3: Write flow-state.md IMMEDIATELY
+
+Use the Write tool to create `dev/active/[task-slug]/flow-state.md`:
+
+```markdown
+---
+task: "[full task description from user]"
+task_slug: [task-slug]
+complexity: [simple|standard|complex]
+created: [current ISO timestamp]
+current_phase: docs
+tool_calls: 0
+phases:
+  brainstorm: { status: skipped }
+  docs: { status: in_progress }
+  implement: { status: pending }
+  verify: { status: pending }
+  compound: { status: pending }
+---
+
+# Flow: [Task Description]
+
+## Current Phase: DOCS (Planning)
+
+Starting documentation and planning phase...
+
+## Quick Resume
+1. Read this file to understand current state
+2. Check flow-plan.md for task breakdown
+3. Continue from current phase
+```
+
+### Step 4: Invoke Planning Phase
+
+**Call `/cdf:docs plan "[task]"` explicitly.**
+
+CRITICAL ANTI-PATTERNS - DO NOT:
+- Use the built-in plan mode (`.claude/plans/`)
+- Spawn Plan agents directly
+- Skip to exploration before creating flow state
+- Use EnterPlanMode tool
+
+Only AFTER these 4 steps are complete should you proceed with the workflow phases.
+
+---
+
 ## Default Behavior
 
 **When invoked, `/cdf:flow` classifies task complexity and chains appropriate phases with quality gates.**

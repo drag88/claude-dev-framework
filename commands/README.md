@@ -41,13 +41,16 @@ Quick reference for all available `/cdf` commands, organized by purpose.
 
 ---
 
-## Orchestration (3)
+## Orchestration (6)
 
 | Command | Description | Complexity |
 |---------|-------------|------------|
+| [/cdf:flow](flow.md) | Unified workflow: brainstorm -> docs -> implement -> verify -> compound | advanced |
 | [/cdf:task](task.md) | Execute complex tasks with intelligent workflow management and delegation | advanced |
 | [/cdf:spawn](spawn.md) | Meta-system task orchestration with intelligent breakdown and delegation | high |
 | [/cdf:panel](panel.md) | Multi-expert panel discussions for complex decisions | advanced |
+| [/cdf:compound](compound.md) | Capture institutional knowledge from solved problems | standard |
+| [/cdf:deepen](deepen.md) | Parallel agent saturation for comprehensive analysis | advanced |
 
 ---
 
@@ -85,9 +88,12 @@ Quick reference for all available `/cdf` commands, organized by purpose.
 | Design a system | `/cdf:design` |
 | Estimate effort | `/cdf:estimate` |
 | Plan implementation | `/cdf:workflow` |
+| Run full development workflow | `/cdf:flow` |
 | Execute a complex task | `/cdf:task` |
 | Break down a big task | `/cdf:spawn` |
 | Get multiple perspectives | `/cdf:panel` |
+| Capture knowledge from solved problems | `/cdf:compound` |
+| Deep analysis with all agents | `/cdf:deepen` |
 | See available commands | `/cdf:help` |
 | Manage documentation | `/cdf:docs` |
 | Generate rules | `/cdf:rules` |

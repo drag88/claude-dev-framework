@@ -393,6 +393,30 @@ Copy `mcp-configs/mcp-servers.template.json` to `.mcp/settings.json` and configu
        └── Validate code quality
 ```
 
+### Command Enforcement Pattern
+
+All workflow commands (flow, tdd, spawn, task, deepen, compound, session) use a **MANDATORY FIRST ACTIONS** pattern to ensure Claude doesn't skip critical steps:
+
+```markdown
+## MANDATORY FIRST ACTIONS (DO NOT SKIP)
+
+**BEFORE doing ANYTHING else**, you MUST:
+
+### Step 1: Create State File
+mkdir -p dev/active/[task-slug]
+Write state file with YAML frontmatter...
+
+### Step 2: [Required Action]
+...
+
+CRITICAL ANTI-PATTERNS - DO NOT:
+- Skip state file creation
+- Use alternative paths (.claude/plans/ instead of dev/active/)
+- Proceed without completing mandatory steps
+```
+
+This pattern prevents Claude from taking shortcuts or using built-in behaviors that bypass the workflow.
+
 ### Auto-Generated Rules
 
 On session start, CDF analyzes your codebase and generates:
@@ -414,7 +438,7 @@ These rules are automatically loaded as context for Claude.
 ```
 claude-dev-framework/
 ├── .claude-plugin/
-│   └── plugin.json           # Plugin metadata (name: "cdf", version: "1.7.0")
+│   └── plugin.json           # Plugin metadata (name: "cdf", version: "1.8.0")
 │
 ├── commands/                 # 29 slash commands
 │   ├── README.md             # Categorized command reference

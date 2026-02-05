@@ -2,6 +2,46 @@
 description: "Session lifecycle management: load context, save progress, reflect on work"
 ---
 
+## MANDATORY FIRST ACTIONS (DO NOT SKIP)
+
+### For New Sessions
+Run `/cdf:session load` BEFORE any other commands or exploration.
+
+### For All Subcommands
+Verify Serena MCP connection first. If unavailable, use file-based fallback.
+
+### State File Location
+Session state stored in `dev/sessions/`:
+```
+dev/sessions/
+├── current-session.md    # Active session state
+├── checkpoints/          # Saved checkpoints
+│   └── [timestamp].md
+└── history/              # Past session summaries
+```
+
+### Subcommand Requirements
+
+**load**:
+1. Check if checkpoint exists before restore
+2. Verify project path is valid
+3. Create `dev/sessions/current-session.md` if missing
+
+**save**:
+1. Create checkpoint at `dev/sessions/checkpoints/[timestamp].md`
+2. Update `dev/sessions/current-session.md`
+3. Verify save by reading back
+
+**reflect**:
+1. Load current session state first
+2. Require active task context
+
+CRITICAL ANTI-PATTERNS - DO NOT:
+- Start work without loading session context
+- Save without creating recoverable checkpoint file
+- Assume checkpoints exist without checking
+- Proceed if Serena MCP fails without fallback
+
 # /cdf:session - Session Lifecycle Management
 
 > Unified session management: load context, save progress, reflect on work.

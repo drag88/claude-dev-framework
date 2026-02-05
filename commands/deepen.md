@@ -3,6 +3,44 @@ description: "Parallel agent saturation for comprehensive analysis of plans or c
 argument-hint: "[plan-file-or-task] [--agents all|review|research] [--synthesize]"
 ---
 
+## MANDATORY FIRST ACTIONS (DO NOT SKIP)
+
+**BEFORE doing ANYTHING else**, you MUST follow these steps exactly:
+
+### Step 1: Discover ALL Agent Files
+
+```bash
+# Run ALL of these to discover every available agent:
+find .claude/agents -name "*.md" 2>/dev/null
+find ~/.claude/agents -name "*.md" 2>/dev/null
+find ~/.claude/plugins/cache -path "*/agents/*.md" 2>/dev/null
+```
+
+### Step 2: Spawn ALL Agents in Parallel
+
+**MANDATORY**: Spawn ALL discovered agents using the Task tool - NO pre-filtering allowed.
+
+```
+Task @agent-1: "Review this plan: [content]"
+Task @agent-2: "Review this plan: [content]"
+Task @agent-3: "Review this plan: [content]"
+... (ALL agents simultaneously)
+```
+
+### ANTI-PATTERNS - DO NOT DO THESE:
+
+- **DO NOT** skip agents based on perceived relevance to the task
+- **DO NOT** spawn agents one at a time (must be parallel)
+- **DO NOT** decide "this agent probably won't have useful input"
+- **DO NOT** filter to a "reasonable subset" - spawn ALL of them
+- **DO NOT** wait for one agent before spawning the next
+
+### Why This Matters
+
+Claude naturally pre-filters agents based on perceived relevance. This defeats the purpose of `/cdf:deepen`. The whole point is saturation - let EVERY agent see the plan and self-determine relevance. You cannot predict which agents will surface unexpected insights.
+
+---
+
 # /cdf:deepen - Parallel Agent Saturation
 
 > Spawn all available agents in parallel to comprehensively analyze a plan or task. Let agents self-filter for relevance rather than pre-filtering.

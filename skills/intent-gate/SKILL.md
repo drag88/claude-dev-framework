@@ -10,6 +10,25 @@ Classify user requests before taking action to ensure appropriate response strat
 - When multiple valid interpretations exist
 - When `/cdf:flow` needs complexity classification
 
+## Flow State Detection
+
+**Before classifying any intent, check if a flow is active:**
+
+1. Look for `dev/active/*/flow-state.md`
+2. If found, read the current phase from YAML frontmatter
+3. Inject phase context into response strategy
+
+**Active Flow Behavior:**
+- If `current_phase: docs` → Planning mode, use `/cdf:docs plan`
+- If `current_phase: implement` → Implementation mode, follow task checkboxes
+- If `current_phase: verify` → Verification mode, run checks
+- If `current_phase: compound` → Knowledge capture mode
+
+**CRITICAL**: When flow is active, do NOT:
+- Use EnterPlanMode or `.claude/plans/`
+- Skip to implementation without completing docs phase
+- Ignore the flow-state.md tracking
+
 ## Task Complexity Classification
 
 For `/cdf:flow` and multi-phase workflows, classify task complexity:
@@ -170,3 +189,4 @@ When request is ambiguous, ask:
 - `/cdf:explain` - For exploratory intents
 - `/cdf:analyze` - For understanding codebase structure
 - `/cdf:brainstorm` - When multiple approaches exist
+- `/cdf:flow` - For multi-phase development workflows

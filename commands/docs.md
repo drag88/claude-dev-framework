@@ -106,6 +106,38 @@ Create strategic plans with structured task breakdown for complex features.
 /cdf:docs plan [task-description] [--strategy systematic|agile] [--detail brief|full]
 ```
 
+### Plan Subcommand - MANDATORY STEPS
+
+**BEFORE analyzing codebase or creating plan content**, you MUST:
+
+#### Step 1: Create Plan Directory
+```bash
+mkdir -p dev/active/[task-name]
+```
+
+#### Step 2: Check Flow Context
+If called from `/cdf:flow`, read `dev/active/[task-slug]/flow-state.md` for context.
+
+#### Step 3: Use Checkbox Format
+ALL plans MUST use checkbox format for trackable tasks:
+
+```markdown
+## Phase 1: [Name] [0/N]
+- [ ] Task 1
+- [ ] Task 2
+
+## Phase 2: [Name] [0/N]
+- [ ] Task 3
+
+**Progress**: 0/N tasks (0%)
+```
+
+CRITICAL ANTI-PATTERNS - DO NOT:
+- Create plans without checkbox format
+- Skip directory creation
+- Write to `.claude/plans/` when called from `/cdf:flow`
+- Create untrackable prose-only plans
+
 **Behavioral Flow:**
 1. **Analyze**: Understand request scope and examine relevant codebase
 2. **Plan**: Create structured plan with phases and tasks

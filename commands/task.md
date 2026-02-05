@@ -2,6 +2,34 @@
 description: "Execute complex tasks with intelligent workflow management and delegation"
 ---
 
+## MANDATORY FIRST ACTIONS (DO NOT SKIP)
+
+**BEFORE executing any task with delegation**, you MUST:
+
+### Step 1: Create Task State (for --delegate or --parallel)
+```bash
+mkdir -p dev/active/[task-slug]
+```
+Write `dev/active/[task-slug]/task-state.md` with task definition.
+
+### Step 2: Use Complete Delegation Format
+When using Task tool, ALWAYS include:
+1. Context - What the agent needs to know
+2. Objective - Specific measurable goal
+3. Requirements - Constraints and acceptance criteria
+4. Approach - Suggested methodology
+5. Deliverables - What to produce
+6. Tools Allowed - Explicit whitelist
+7. Boundaries - What NOT to do
+
+CRITICAL ANTI-PATTERNS - DO NOT:
+- Execute without state tracking (for delegated tasks)
+- Use abbreviated Task tool calls
+- Delegate without tool whitelist
+- Skip the Boundaries section
+
+---
+
 # /cdf:task - Enhanced Task Management
 
 > Execute defined tasks with intelligent coordination and multi-agent delegation.
