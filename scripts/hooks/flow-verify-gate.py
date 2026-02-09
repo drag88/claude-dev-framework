@@ -12,13 +12,14 @@ import re
 import sys
 from datetime import datetime
 from pathlib import Path
+from typing import Optional
 
 # Add parent directory to path for utils import
 sys.path.insert(0, str(Path(__file__).parent.parent))
 from lib.utils import get_project_root, print_info, print_warning, print_success, print_error
 
 
-def get_active_flow_dir() -> Path | None:
+def get_active_flow_dir() -> Optional[Path]:
     """Find the active flow directory."""
     project_root = get_project_root()
     dev_active = project_root / "dev" / "active"
