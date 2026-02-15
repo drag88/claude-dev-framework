@@ -103,8 +103,8 @@ def append_to_daily_log(entry: str):
         f.write(entry + '\n')
 
 
-def log_file_change(change_type: str, tool_input: dict):
-    """Log a file change to the daily log."""
+def log_file_change(tool_input: dict):
+    """Log a file change (Edit/Write/MultiEdit) to the daily log."""
     timestamp = datetime.now().strftime('%H:%M:%S')
 
     file_path = tool_input.get('file_path') or tool_input.get('notebook_path', '')
@@ -113,7 +113,41 @@ def log_file_change(change_type: str, tool_input: dict):
         return
 
     relative_path = get_relative_path(file_path)
-    entry = f"- `{timestamp}` - {change_type}: `{relative_path}`"
+
+    # Build rich entry based on tool input shape
+    if 'old_string' in tool_input or 'new_string' in tool_input:
+        # Edit/MultiEdit
+        snippet = (tool_input.get('new_string') or '')[:60]
+        suffix = '...' if len(tool_input.get('new_string') or '') > 60 else ''
+        entry = f'- `{timestamp}` - edited: `{relative_path}` | "{snippet}{suffix}"'
+    else:
+        # Write
+        content = tool_input.get('content', '')
+        entry = f'- `{timestamp}` - created/updated: `{relative_path}` | ~{len(content)} chars'
+
+    append_to_daily_log(entry)
+
+
+def log_bash_command(tool_input: dict):
+    """Log a Bash command execution to the daily log."""
+    timestamp = datetime.now().strftime('%H:%M:%S')
+    command = tool_input.get('command', '')
+    if not command:
+        return
+
+    # Skip logging commands that touch memory files
+    if '.claude/memory/' in command:
+        return
+
+    cmd_display = command[:80]
+    suffix = '...' if len(command) > 80 else ''
+
+    entry = f'- `{timestamp}` - ran: `{cmd_display}{suffix}`'
+
+    # Include exit code if available
+    exit_code = tool_input.get('exit_code')
+    if exit_code is not None:
+        entry += f' | exit:{exit_code}'
 
     append_to_daily_log(entry)
 
@@ -128,17 +162,16 @@ def main():
     except (json.JSONDecodeError, Exception):
         return
 
+    # Distinguish Bash vs file operations by checking for 'command' key
+    if 'command' in tool_input:
+        log_bash_command(tool_input)
+        return
+
     file_path = tool_input.get('file_path', '') or tool_input.get('notebook_path', '')
     if not file_path:
         return
 
-    # Infer change type from tool input shape (matcher already filters to Edit|Write|MultiEdit)
-    if 'old_string' in tool_input or 'new_string' in tool_input:
-        change_type = 'edited'
-    else:
-        change_type = 'created/updated'
-
-    log_file_change(change_type, tool_input)
+    log_file_change(tool_input)
 
 
 if __name__ == '__main__':

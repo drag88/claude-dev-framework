@@ -91,6 +91,16 @@
             "timeout": 5
           }
         ]
+      },
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/memory-logger.py\" \"$TOOL_INPUT\"",
+            "timeout": 3
+          }
+        ]
       }
     ],
     "Stop": [
@@ -99,6 +109,15 @@
           {
             "type": "command",
             "command": "python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/session-end.py\"",
+            "timeout": 10
+          }
+        ]
+      },
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/memory-learner.py\"",
             "timeout": 10
           }
         ]

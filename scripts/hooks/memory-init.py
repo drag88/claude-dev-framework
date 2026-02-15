@@ -13,7 +13,7 @@ from pathlib import Path
 
 # Add lib to path
 sys.path.insert(0, str(Path(__file__).parent.parent / 'lib'))
-from utils import get_project_root, print_info, print_warning
+from utils import get_project_root, read_json_file, print_info, print_warning
 
 
 def get_memory_dir() -> Path:
@@ -201,6 +201,48 @@ def extract_section(content: str, section_name: str, max_lines: int = 20) -> str
     return ''
 
 
+def load_recent_learnings(max_count: int = 5) -> list:
+    """Load the most recent learnings from learnings.json.
+
+    Returns up to max_count learnings sorted by date descending.
+    Returns empty list if file doesn't exist or is malformed.
+    """
+    learnings_file = get_memory_dir() / 'learnings.json'
+    data = read_json_file(learnings_file)
+    if not data or 'learnings' not in data or not isinstance(data['learnings'], list):
+        return []
+
+    try:
+        # Sort by date descending, take most recent
+        sorted_learnings = sorted(
+            data['learnings'],
+            key=lambda x: x.get('date', ''),
+            reverse=True
+        )
+        return sorted_learnings[:max_count]
+    except (TypeError, KeyError):
+        return []
+
+
+def get_last_session_date():
+    """Get the most recent session date from .index.json.
+
+    Returns datetime or None if unavailable.
+    """
+    index_file = get_memory_dir() / '.index.json'
+    data = read_json_file(index_file)
+    if not data or 'sessions' not in data:
+        return None
+
+    try:
+        dates = sorted(data['sessions'].keys(), reverse=True)
+        if not dates:
+            return None
+        return datetime.strptime(dates[0], '%Y-%m-%d')
+    except (ValueError, AttributeError):
+        return None
+
+
 def load_memory_context() -> dict:
     """Load relevant memory context with progressive disclosure."""
     context = {
@@ -209,7 +251,9 @@ def load_memory_context() -> dict:
         'known_issues': '',
         'recent_activity': '',
         'open_todos': [],
-        'yesterday_summary': ''
+        'yesterday_summary': '',
+        'recent_learnings': [],
+        'session_gap_days': 0
     }
     
     # Load from MEMORY.md
@@ -246,9 +290,35 @@ def load_memory_context() -> dict:
             content = f.read()
         
         summary = extract_section(content, 'Session Summary', 10)
-        if summary and '*Session in progress*' not in summary:
+        if summary and '*Session in progress...*' not in summary:
             context['yesterday_summary'] = summary
-    
+
+    # Load recent learnings
+    context['recent_learnings'] = load_recent_learnings()
+
+    # Detect session staleness
+    last_session = get_last_session_date()
+    if last_session:
+        gap = (datetime.now() - last_session).days
+        context['session_gap_days'] = gap
+
+        # For stale sessions (>1 day), force-load Key Decisions and Known Issues
+        # even if they contain placeholder text
+        if gap > 1:
+            memory_file = get_memory_dir() / 'MEMORY.md'
+            if memory_file.exists():
+                with open(memory_file) as f:
+                    content = f.read()
+
+                # Re-extract without placeholder filtering
+                for section_name, key in [('Key Decisions', 'key_decisions'), ('Known Issues & Workarounds', 'known_issues')]:
+                    pattern = rf'^## {re.escape(section_name)}\s*\n(.*?)(?=^## |\Z)'
+                    match = re.search(pattern, content, re.MULTILINE | re.DOTALL)
+                    if match:
+                        text = '\n'.join(match.group(1).strip().split('\n')[:20])
+                        if text:
+                            context[key] = text
+
     return context
 
 
@@ -260,7 +330,12 @@ def generate_context_rule(context: dict) -> str:
     parts.append("")
     parts.append("*Auto-loaded from `.claude/memory/` - Progressive disclosure of project context.*")
     parts.append("")
-    
+
+    # Session gap notice
+    if context.get('session_gap_days', 0) > 3:
+        parts.append(f"> Note: {context['session_gap_days']} days since last session. Review MEMORY.md for full context.")
+        parts.append("")
+
     # Level 1: Critical context (always show)
     if context['open_todos']:
         parts.append("## 🎯 Open TODOs")
@@ -284,6 +359,16 @@ def generate_context_rule(context: dict) -> str:
         parts.append(context['recent_activity'])
         parts.append("")
     
+    # Level 2.5: Recent learnings
+    if context.get('recent_learnings'):
+        parts.append("## 💡 Recent Learnings")
+        for l in context['recent_learnings']:
+            ltype = l.get('type', 'general')
+            desc = l.get('description', '')
+            conf = l.get('confidence', 'medium')
+            parts.append(f"- [{ltype}] {desc} (confidence: {conf})")
+        parts.append("")
+
     # Level 3: Background context (condensed)
     if context['key_decisions']:
         parts.append("## 📋 Key Decisions")
@@ -307,7 +392,9 @@ def inject_memory_context():
         context['known_issues'] or
         context['yesterday_summary'] or
         context['recent_activity'] or
-        context['key_decisions']
+        context['key_decisions'] or
+        context.get('recent_learnings') or
+        context.get('session_gap_days', 0) > 3
     )
     
     if not has_content:
