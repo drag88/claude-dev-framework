@@ -5,7 +5,6 @@ Tracks file edits, creates, and deletes with timestamps.
 """
 
 import json
-import os
 import sys
 from datetime import datetime
 from pathlib import Path
@@ -19,14 +18,6 @@ def get_daily_log_path() -> Path:
     """Get today's daily log path."""
     today = datetime.now().strftime('%Y-%m-%d')
     return get_project_root() / '.claude' / 'memory' / 'daily' / f'{today}.md'
-
-
-def parse_tool_input(tool_input_json: str) -> dict:
-    """Parse the tool input JSON."""
-    try:
-        return json.loads(tool_input_json)
-    except:
-        return {}
 
 
 def get_relative_path(file_path: str) -> str:
@@ -112,50 +103,42 @@ def append_to_daily_log(entry: str):
         f.write(entry + '\n')
 
 
-def log_file_change(tool_name: str, tool_input: dict):
+def log_file_change(change_type: str, tool_input: dict):
     """Log a file change to the daily log."""
     timestamp = datetime.now().strftime('%H:%M:%S')
-    
-    # Determine file path based on tool
-    file_path = None
-    change_type = None
-    
-    if tool_name in ['Write', 'Edit', 'MultiEdit']:
-        file_path = tool_input.get('file_path') or tool_input.get('path')
-        change_type = 'edited' if tool_name == 'Edit' else 'created/updated'
-    
-    if not file_path:
+
+    file_path = tool_input.get('file_path') or tool_input.get('notebook_path', '')
+
+    if not file_path or not should_log_file(file_path):
         return
-    
-    if not should_log_file(file_path):
-        return
-    
+
     relative_path = get_relative_path(file_path)
     entry = f"- `{timestamp}` - {change_type}: `{relative_path}`"
-    
+
     append_to_daily_log(entry)
 
 
 def main():
     """Main entry point."""
-    # Get tool information from environment or arguments
-    tool_name = os.environ.get('TOOL_NAME', '')
-    tool_input_raw = sys.argv[1] if len(sys.argv) > 1 else '{}'
-    
-    # Also check environment variable
-    if not tool_input_raw or tool_input_raw == '{}':
-        tool_input_raw = os.environ.get('TOOL_INPUT', '{}')
-    
+    if len(sys.argv) < 2:
+        return
+
     try:
-        tool_input = parse_tool_input(tool_input_raw)
-        
-        # Log file changes
-        if tool_name in ['Write', 'Edit', 'MultiEdit']:
-            log_file_change(tool_name, tool_input)
-            
-    except Exception as e:
-        # Silent failure - don't interrupt the tool operation
-        pass
+        tool_input = json.loads(sys.argv[1])
+    except (json.JSONDecodeError, Exception):
+        return
+
+    file_path = tool_input.get('file_path', '') or tool_input.get('notebook_path', '')
+    if not file_path:
+        return
+
+    # Infer change type from tool input shape (matcher already filters to Edit|Write|MultiEdit)
+    if 'old_string' in tool_input or 'new_string' in tool_input:
+        change_type = 'edited'
+    else:
+        change_type = 'created/updated'
+
+    log_file_change(change_type, tool_input)
 
 
 if __name__ == '__main__':
