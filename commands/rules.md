@@ -80,9 +80,9 @@ The goal is to produce rules that capture the project's true architecture, patte
    - Document environment setup requirements
    - Note any custom scripts or workflows
 
-5. **Generate Files** in `.claude/rules/`:
+5. **Generate Files** — ALL of the following are REQUIRED:
 
-**Output Files:**
+**Output Files (all must be generated):**
 
 #### `architecture.md` (matklad-inspired)
 ```markdown
@@ -186,8 +186,8 @@ The goal is to produce rules that capture the project's true architecture, patte
 | Monorepo | `workspace-map.md`, `change-impact.md` | Package Dependency Graph |
 | Infrastructure | `iac-conventions.md`, `security-baseline.md` | Infra Topology, Module Tree |
 
-#### `soul.md` - Project Soul
-Always generated at `.claude/rules/soul.md`. Captures project personality:
+#### `soul.md` - Project Soul (REQUIRED)
+MUST generate at `.claude/rules/soul.md`. Captures project personality:
 ```markdown
 # Project Soul
 
@@ -208,8 +208,8 @@ Always generated at `.claude/rules/soul.md`. Captures project personality:
 - Never commit: [.env, secrets, artifacts]
 ```
 
-#### Root `AGENTS.md`
-Always generated at project root for cross-tool AI agent compatibility (Cursor, Windsurf, etc.):
+#### Root `AGENTS.md` (REQUIRED)
+MUST generate at project root (not in `.claude/`) for cross-tool AI agent compatibility (Cursor, Windsurf, etc.):
 ```markdown
 # AGENTS.md
 
@@ -241,7 +241,16 @@ paths: src/api/**/*.py
 - Use standard error response format
 ```
 
-**Auto-Chain**: After generating rules, automatically runs `/cdf:rules claudemd` and generates root `AGENTS.md`.
+6. **Verify** all files were created:
+   - `.claude/rules/architecture.md`
+   - `.claude/rules/tech-stack.md`
+   - `.claude/rules/patterns.md`
+   - `.claude/rules/commands.md`
+   - `.claude/rules/soul.md`
+   - `AGENTS.md` (project root)
+   - Any project-type-specific files
+
+**Auto-Chain**: After generating rules, automatically runs `/cdf:rules claudemd`.
 
 ### claudemd - Generate CLAUDE.md from Rules
 

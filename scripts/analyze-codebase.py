@@ -158,24 +158,20 @@ Before doing anything else, analyze this codebase and generate `.claude/rules/` 
 **`tech-stack.md`** - Languages, frameworks, libraries (with purpose), dev tools
 **`patterns.md`** - Architectural patterns, service init, error handling, config, testing patterns
 **`commands.md`** - Setup, test, lint, run commands
-{type_sections}
 
-### Additional Files to Generate
-
-#### `soul.md` - Project Soul
-Generate `.claude/rules/soul.md` capturing the project's personality:
+**`soul.md`** - MUST generate `.claude/rules/soul.md` capturing the project's personality:
 - **Identity**: What this project IS (from README/package.json)
 - **Values**: Speed vs correctness, simplicity vs features (from code patterns)
 - **Naming Conventions**: Variable/file/DB naming patterns detected from code
 - **Boundaries**: Sacred files (migrations, lock files, generated code), never-commit patterns
 
-#### Root `AGENTS.md`
-Generate `AGENTS.md` at project root for cross-tool AI agent compatibility:
+**Root `AGENTS.md`** - MUST generate `AGENTS.md` at project root (not in .claude/) for cross-tool AI agent compatibility:
 - **Project Overview**: 1-2 sentence elevator pitch
 - **Development Setup**: Key commands
 - **Architecture**: Condensed codemap
 - **Coding Standards**: Key patterns
 - **Agent Guidelines**: Sacred files, required commands after changes
+{type_sections}
 
 Use concise technical language. Base on actual code analysis, not README.
 
@@ -427,11 +423,22 @@ def check_rules_exist(project_dir: Path) -> dict:
         if not has_claude_md and not has_claude_generated:
             claude_md_note = "\n\nNo CLAUDE.md found. Run /cdf:rules claudemd to create one from your rules."
 
+        # Check for missing recommended files
+        missing = []
+        if not (rules_dir / "soul.md").exists():
+            missing.append(".claude/rules/soul.md")
+        if not (project_dir / "AGENTS.md").exists():
+            missing.append("AGENTS.md (project root)")
+
+        missing_note = ""
+        if missing:
+            missing_note = f"\n\nRecommended files missing: {', '.join(missing)}. Run /cdf:rules generate to create them."
+
         return {
             "additionalContext": f"""Project rules loaded from .claude/rules/:
 {files_list}
 {types_note}
-These rules are automatically applied. Run /cdf:rules generate to refresh after major changes.{claude_md_note}"""
+These rules are automatically applied. Run /cdf:rules generate to refresh after major changes.{claude_md_note}{missing_note}"""
         }
     elif has_code(project_dir):
         # Has code but no rules - trigger automatic generation
