@@ -57,4 +57,4 @@
 | Skills | 18 | Markdown + directories |
 | Hooks | 16 | JSON + Python/Bash |
 | Context Modes | 3 | Markdown |
-| Rule Templates | 5 | Markdown |
+| Rule Templates | 15 | Markdown |

@@ -1,5 +1,5 @@
 ---
-description: "Project rules management: generate .claude/rules/ and CLAUDE.md documentation"
+description: "Project rules management: generate .claude/rules/, SOUL.md, AGENTS.md, and CLAUDE.md documentation"
 ---
 
 # /cdf:rules - Project Rules Management
@@ -9,8 +9,11 @@ description: "Project rules management: generate .claude/rules/ and CLAUDE.md do
 ## Quick Start
 
 ```bash
-# Generate full rules from codebase analysis
+# Generate full rules from codebase analysis (now project-type aware)
 /cdf:rules generate
+
+# Interactive soul interview to refine project personality
+/cdf:rules soul-interview
 
 # Generate CLAUDE.md from existing rules
 /cdf:rules claudemd
@@ -81,24 +84,28 @@ The goal is to produce rules that capture the project's true architecture, patte
 
 **Output Files:**
 
-#### `architecture.md`
+#### `architecture.md` (matklad-inspired)
 ```markdown
 # Architecture
 
-## Directory Structure
-- `src/` - [description]
-- `tests/` - [description]
+## Bird's Eye View
+[1-2 sentences: what problem this solves and how]
 
-## Key Files
-| File | Role |
-|------|------|
-| `app.py` | [role] |
+## Codemap
+[Coarse-grained modules/directories, what each does, key types/files to know about]
+- `src/module_a/` - [what it does]. Key type: `WidgetManager`. Depends on `module_b`.
+- `src/module_b/` - [what it does]. Entry point: `main.rs`.
 
-## Component Relationships
-[How different parts interact]
+## Cross-Cutting Concerns
+[Logging, error handling, auth, config patterns that span modules]
 
-## Data Flow
-[How data flows through the system]
+## Architectural Invariants
+[Things that must NOT happen - constraints, absences, hard rules]
+- Module A never directly accesses the database
+- All external API calls go through the client wrapper
+
+## [Project-Type Sections]
+[Detected automatically — e.g., Data Flow for ML, Component Hierarchy for Frontend]
 ```
 
 #### `tech-stack.md`
@@ -166,6 +173,63 @@ The goal is to produce rules that capture the project's true architecture, patte
 ```
 ```
 
+**Project-Type-Specific Files** (generated only when detected):
+
+| Project Type | Additional Files | Architecture Sections |
+|-------------|-----------------|----------------------|
+| ML/Data Science | `experiment-tracking.md`, `data-contracts.md` | Data Flow, Environment Matrix |
+| Frontend | `component-conventions.md`, `accessibility.md` | Component Hierarchy, Route Structure |
+| Backend API | `api-conventions.md`, `database-rules.md` | Request Lifecycle, DB Schema |
+| Data Engineering | `pipeline-conventions.md`, `data-quality.md` | Pipeline DAG, Data Lineage |
+| Mobile | `platform-rules.md`, `navigation.md` | Screen Flow, Native Bridge |
+| CLI/Library | `public-api.md`, `versioning.md` | API Surface Map |
+| Monorepo | `workspace-map.md`, `change-impact.md` | Package Dependency Graph |
+| Infrastructure | `iac-conventions.md`, `security-baseline.md` | Infra Topology, Module Tree |
+
+#### `soul.md` - Project Soul
+Always generated at `.claude/rules/soul.md`. Captures project personality:
+```markdown
+# Project Soul
+
+## Identity
+- What this project IS and who it serves
+
+## Values
+- Speed vs correctness bias (detected from code patterns)
+- Simplicity vs features
+- Convention vs configuration
+
+## Naming Conventions
+- Variables: camelCase/snake_case (detected)
+- Files: kebab-case/PascalCase (detected)
+
+## Boundaries
+- Sacred files: [migrations, lock files, generated code]
+- Never commit: [.env, secrets, artifacts]
+```
+
+#### Root `AGENTS.md`
+Always generated at project root for cross-tool AI agent compatibility (Cursor, Windsurf, etc.):
+```markdown
+# AGENTS.md
+
+## Project Overview
+[1-2 sentence elevator pitch]
+
+## Development Setup
+[Key commands to get started]
+
+## Architecture
+[Condensed codemap from architecture.md]
+
+## Coding Standards
+[Key patterns from patterns.md]
+
+## Agent Guidelines
+- Never modify: [sacred files]
+- Always run after changes: [test/lint commands]
+```
+
 **Path-Specific Rules** (Optional):
 ```markdown
 ---
@@ -177,7 +241,7 @@ paths: src/api/**/*.py
 - Use standard error response format
 ```
 
-**Auto-Chain**: After generating rules, automatically runs `/cdf:rules claudemd`.
+**Auto-Chain**: After generating rules, automatically runs `/cdf:rules claudemd` and generates root `AGENTS.md`.
 
 ### claudemd - Generate CLAUDE.md from Rules
 
@@ -200,6 +264,7 @@ Generate a concise `CLAUDE.generated.md` file from existing `.claude/rules/`.
 - From `tech-stack.md`: Language, framework, key libraries
 - From `commands.md`: Setup, test, lint, run commands
 - From `patterns.md`: Critical coding patterns/rules
+- From `soul.md`: Project identity, values, boundaries
 
 **Output Template:**
 ```markdown
@@ -297,6 +362,26 @@ After generating `CLAUDE.generated.md`, inform the user:
 - File created at `CLAUDE.generated.md`
 - Review the content and rename to `CLAUDE.md` if satisfied
 - Or merge changes into existing `CLAUDE.md`
+
+### soul-interview - Refine Project Soul Interactively
+
+Interactively refine `.claude/rules/soul.md` through focused questions.
+
+```bash
+/cdf:rules soul-interview
+```
+
+**Prerequisites**: Run `/cdf:rules generate` first to create initial soul.md.
+
+**Behavioral Flow:**
+1. **Read** existing `soul.md` if present
+2. **Ask** 4 focused questions via AskUserQuestion:
+   - What's the project's core mission? (1 sentence)
+   - What does this project value most? (speed/correctness/simplicity/flexibility)
+   - What tone should code reviews and docs use? (formal/casual/direct)
+   - Any hard boundaries? (things AI should never do in this project)
+3. **Merge** answers with auto-detected values
+4. **Write** updated `soul.md`
 
 ### status - Check Rules Status
 
@@ -407,6 +492,9 @@ Run `/cdf:rules generate` to refresh after major changes.
 
 **Will:**
 - Analyze codebase to generate accurate rules
+- Detect project type and generate type-specific rules
+- Generate SOUL.md capturing project personality
+- Generate root AGENTS.md for cross-tool compatibility
 - Create comprehensive `.claude/rules/` documentation
 - Generate concise `CLAUDE.generated.md` from rules
 - Auto-chain from generate to claudemd

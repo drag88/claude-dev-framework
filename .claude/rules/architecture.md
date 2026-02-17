@@ -14,7 +14,7 @@ CDF (Claude Dev Framework) is a comprehensive plugin for Claude Code that provid
 | `contexts/` | Behavioral context modes (dev/review/research) |
 | `hooks/` | Lifecycle hook configuration (JSON) |
 | `scripts/` | Hook implementation scripts (Python/Bash) |
-| `rules-templates/` | Best practice rule templates for projects |
+| `rules-templates/` | 15 rule templates: 5 best-practice + 10 project-type-specific (ML, frontend, backend, data-eng, mobile, CLI, monorepo, infra, soul, agents) |
 | `mcp-configs/` | MCP server configuration templates |
 | `.claude-plugin/` | Plugin metadata (plugin.json, marketplace.json) |
 | `.claude/` | Plugin settings and permissions |
