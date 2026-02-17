@@ -108,27 +108,61 @@ Apply rapid execution principles:
 5. **Fast Feedback**: Execute and iterate quickly"""
 }
 
-# Keyword patterns mapped to modes
+# Keyword patterns mapped to modes (compiled once at import time)
 KEYWORD_PATTERNS = [
-    (r'\bultrawork\b', 'ultrawork'),
-    (r'\bdeep\s*work\b', 'deep_work'),
-    (r'\bthink\s*(deeply|hard|harder|carefully)\b', 'think_deeply'),
-    (r'\b(search|find)\s*(for|through|across|in|the)?\b', 'search'),
-    (r'\banalyze|analyse|analysis\b', 'analyze'),
-    (r'\binvestigate\b', 'investigate'),
-    (r'\b(quick|quickly|fast|rapid)\b', 'quick'),
+    (re.compile(r'\bultrawork\b'), 'ultrawork'),
+    (re.compile(r'\bdeep\s*work\b'), 'deep_work'),
+    (re.compile(r'\bthink\s*(deeply|hard|harder|carefully)\b'), 'think_deeply'),
+    (re.compile(r'\b(search|find)\s*(for|through|across|in|the)?\b'), 'search'),
+    (re.compile(r'\banalyze|analyse|analysis\b'), 'analyze'),
+    (re.compile(r'\binvestigate\b'), 'investigate'),
+    (re.compile(r'\b(quick|quickly|fast|rapid)\b'), 'quick'),
 ]
+
+# Fast pre-filter: if none of these substrings appear, skip regex entirely
+_FAST_KEYWORDS = frozenset([
+    'ultrawork', 'deep', 'work', 'think', 'search', 'find',
+    'analyze', 'analyse', 'analysis', 'investigate',
+    'quick', 'quickly', 'fast', 'rapid',
+])
+
+
+def _has_potential_keyword(text_lower: str) -> bool:
+    """Fast substring check before expensive regex matching."""
+    words = text_lower.split()
+    return bool(_FAST_KEYWORDS.intersection(words))
 
 
 def detect_mode(text: str) -> Optional[str]:
     """Detect which mode keyword is present in the text."""
     text_lower = text.lower()
 
+    # Fast exit: no potential keywords found via substring check
+    if not _has_potential_keyword(text_lower):
+        return None
+
     for pattern, mode in KEYWORD_PATTERNS:
-        if re.search(pattern, text_lower):
+        if pattern.search(text_lower):
             return mode
 
     return None
+
+
+def _extract_user_text(hook_input: dict) -> str:
+    """Extract all recent user message text as a single lowercase string for fast keyword check."""
+    session_messages = hook_input.get("session_messages", [])
+    parts = []
+    for msg in session_messages[-5:]:
+        if msg.get("role") != "user":
+            continue
+        content = msg.get("content", "")
+        if isinstance(content, str):
+            parts.append(content)
+        elif isinstance(content, list):
+            for block in content:
+                if isinstance(block, dict) and block.get("type") == "text":
+                    parts.append(block.get("text", ""))
+    return " ".join(parts)
 
 
 def main() -> None:
@@ -137,14 +171,15 @@ def main() -> None:
     try:
         hook_input = json.load(sys.stdin)
     except json.JSONDecodeError:
-        # No input or invalid JSON, exit silently
-        print(json.dumps({}))
         return
 
-    # Get the session transcript or last message
-    session_messages = hook_input.get("session_messages", [])
+    # Early exit: check if any keywords exist in user messages before doing anything else
+    combined_text = _extract_user_text(hook_input)
+    if not combined_text or not _has_potential_keyword(combined_text.lower()):
+        return
 
-    # Look for keywords in recent user messages (last 3)
+    # Keywords detected - find which mode matches (check most recent message first)
+    session_messages = hook_input.get("session_messages", [])
     user_messages = [
         msg.get("content", "")
         for msg in session_messages[-5:]
@@ -158,7 +193,6 @@ def main() -> None:
             if detected_mode:
                 break
         elif isinstance(message, list):
-            # Handle message with multiple content blocks
             for block in message:
                 if isinstance(block, dict) and block.get("type") == "text":
                     detected_mode = detect_mode(block.get("text", ""))
@@ -168,13 +202,7 @@ def main() -> None:
                 break
 
     if detected_mode and detected_mode in AMPLIFICATION_MODES:
-        result = {
-            "additionalContext": AMPLIFICATION_MODES[detected_mode]
-        }
-    else:
-        result = {}
-
-    print(json.dumps(result))
+        print(json.dumps({"additionalContext": AMPLIFICATION_MODES[detected_mode]}))
 
 
 if __name__ == "__main__":

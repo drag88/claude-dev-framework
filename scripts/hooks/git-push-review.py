@@ -38,6 +38,19 @@ def get_current_branch() -> str:
 
 def main():
     """Main entry point."""
+    # Early exit: only run git checks when the bash command involves "push"
+    if len(sys.argv) > 1:
+        try:
+            tool_input = json.loads(sys.argv[1])
+            command = tool_input.get('command', '')
+        except (json.JSONDecodeError, TypeError):
+            command = ''
+    else:
+        command = ''
+
+    if 'push' not in command:
+        return
+
     branch = get_current_branch()
     commits = get_unpushed_commits()
 

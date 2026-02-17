@@ -43,17 +43,7 @@
     ],
     "PostToolUse": [
       {
-        "matcher": "Edit",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/console-log-detector.py\" && python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/console-log-detector.py\" \"$TOOL_INPUT\" || true",
-            "timeout": 5
-          }
-        ]
-      },
-      {
-        "matcher": "Write",
+        "matcher": "Edit|Write",
         "hooks": [
           {
             "type": "command",
@@ -89,12 +79,7 @@
             "type": "command",
             "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/flow-verify-gate.py\" && python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/flow-verify-gate.py\" \"$TOOL_INPUT\" || true",
             "timeout": 5
-          }
-        ]
-      },
-      {
-        "matcher": "Bash",
-        "hooks": [
+          },
           {
             "type": "command",
             "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/memory-logger.py\" && python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/memory-logger.py\" \"$TOOL_INPUT\" || true",
@@ -108,26 +93,8 @@
         "hooks": [
           {
             "type": "command",
-            "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/session-end.py\" && python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/session-end.py\" || true",
-            "timeout": 10
-          }
-        ]
-      },
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/memory-learner.py\" && python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/memory-learner.py\" || true",
-            "timeout": 10
-          }
-        ]
-      },
-      {
-        "hooks": [
-          {
-            "type": "command",
             "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/memory-summarize.py\" && python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/memory-summarize.py\" || true",
-            "timeout": 10
+            "timeout": 15
           }
         ]
       },
