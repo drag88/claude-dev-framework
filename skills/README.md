@@ -31,10 +31,11 @@ Quick reference for all auto-invoked skills, organized by category.
 
 ---
 
-## Specialized Skills (4)
+## Specialized Skills (5)
 
 | Skill | Trigger | Description |
 |-------|---------|-------------|
+| [frontend-slides](frontend-slides/SKILL.md) | HTML presentation tasks | Zero-dependency HTML presentations with style presets and PPT conversion |
 | [pptx](pptx/SKILL.md) | Presentation tasks | PowerPoint creation, editing, and analysis |
 | [skill-creator](skill-creator/SKILL.md) | Creating new skills | Guide for building effective skills |
 | [social-writing](social-writing/SKILL.md) | LinkedIn/Twitter posts | Authentic, human-centered social content |

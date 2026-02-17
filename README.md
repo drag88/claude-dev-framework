@@ -1,6 +1,6 @@
 # CDF (Claude Dev Framework)
 
-A comprehensive development framework plugin for Claude Code featuring **29 commands**, **21 agent personas**, **16 skills**, and **13 lifecycle hooks**.
+A comprehensive development framework plugin for Claude Code featuring **29 commands**, **21 agent personas**, **18 skills**, and **13 lifecycle hooks**.
 
 ---
 
@@ -264,6 +264,7 @@ Skills are automatically invoked based on context. They provide specialized beha
 
 | Skill | Trigger | Purpose |
 |-------|---------|---------|
+| **frontend-slides** | HTML presentation tasks | Zero-dependency HTML presentations with style presets and PPT conversion |
 | **pptx** | Presentation tasks | PowerPoint creation and editing |
 | **skill-creator** | Creating skills | Guide for building new skills |
 | **social-writing** | LinkedIn/Twitter posts | Authentic social media content |
@@ -450,10 +451,11 @@ claude-dev-framework/
 │   ├── system-architect.md, backend-architect.md, ...
 │   └── tdd-guide.md, e2e-specialist.md (new)
 │
-├── skills/                   # 16 auto-invoked skills
+├── skills/                   # 18 auto-invoked skills
 │   ├── rules-generator/, claudemd-generator/, ...
 │   ├── coding-standards/, backend-patterns/, frontend-patterns/ (new)
 │   ├── tdd-workflow/, e2e-patterns/, continuous-learning/ (new)
+│   ├── frontend-slides/ (HTML presentations with style presets)
 │   └── pptx/, skill-creator/, social-writing/, starhub-presentation/
 │
 ├── contexts/                 # Behavioral modes (new)
