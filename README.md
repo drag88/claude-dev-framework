@@ -1,6 +1,6 @@
 # CDF (Claude Dev Framework)
 
-A comprehensive development framework plugin for Claude Code featuring **29 commands**, **21 agent personas**, **18 skills**, and **13 lifecycle hooks**.
+A comprehensive development framework plugin for Claude Code featuring **29 commands**, **21 agent personas**, **19 skills**, and **13 lifecycle hooks**.
 
 ---
 
@@ -269,6 +269,8 @@ Skills are automatically invoked based on context. They provide specialized beha
 | **skill-creator** | Creating skills | Guide for building new skills |
 | **social-writing** | LinkedIn/Twitter posts | Authentic social media content |
 | **starhub-presentation** | StarHub decks | Executive presentations with templates |
+| **frontend-design** | UI/UX design tasks | Design system guidance and component patterns |
+| **project-memory** | Session persistence | Cross-session project memory and context |
 
 ### External Memory Pattern
 
@@ -339,15 +341,34 @@ Pre-built rule templates for common project standards. Copy to `.claude/rules/` 
 
 | Template | Purpose |
 |----------|---------|
+### Best Practice Templates
+
+| Template | Purpose |
+|----------|---------|
 | `security.md` | OWASP guidelines, secrets handling, input validation |
 | `testing.md` | 80% coverage requirement, TDD enforcement |
 | `git-workflow.md` | Conventional commits, PR workflow |
 | `performance.md` | Model selection, context management |
 | `coding-style.md` | Immutability patterns, file size limits |
 
+### Project-Type Templates
+
+| Template | Purpose |
+|----------|---------|
+| `ml-rules.md` | ML/Data Science conventions (experiments, data contracts) |
+| `frontend-rules.md` | Frontend conventions (components, accessibility) |
+| `backend-rules.md` | Backend API conventions (endpoints, database) |
+| `data-eng-rules.md` | Data engineering (pipelines, data quality) |
+| `mobile-rules.md` | Mobile development (platform rules, navigation) |
+| `cli-rules.md` | CLI/Library conventions (public API, versioning) |
+| `monorepo-rules.md` | Monorepo management (workspaces, change impact) |
+| `infra-rules.md` | Infrastructure as code (IaC, security baseline) |
+| `soul-template.md` | Project soul/personality template |
+| `agents-template.md` | Cross-tool AGENTS.md template |
+
 Generate with:
 ```bash
-/cdf:rules generate --template security
+/cdf:rules generate  # Auto-detects project type and applies relevant templates
 ```
 
 Templates located in `rules-templates/` directory.
@@ -427,8 +448,13 @@ On session start, CDF analyzes your codebase and generates:
 ├── architecture.md   # Directory structure, components, data flow
 ├── tech-stack.md     # Languages, frameworks, libraries
 ├── patterns.md       # Code conventions, patterns
-└── commands.md       # Setup, build, test, run commands
+├── commands.md       # Setup, build, test, run commands
+└── soul.md           # Project personality, values, boundaries
+
+AGENTS.md             # Cross-tool AI agent compatibility (root)
 ```
+
+Project type is auto-detected (ML, frontend, backend, data-eng, mobile, CLI, monorepo, infra) and type-specific rule files are generated alongside the standard ones. A root `AGENTS.md` is also generated for cross-tool compatibility with Cursor, Windsurf, etc.
 
 These rules are automatically loaded as context for Claude.
 
@@ -439,7 +465,7 @@ These rules are automatically loaded as context for Claude.
 ```
 claude-dev-framework/
 ├── .claude-plugin/
-│   └── plugin.json           # Plugin metadata (name: "cdf", version: "1.8.0")
+│   └── plugin.json           # Plugin metadata (name: "cdf", version: "1.9.0")
 │
 ├── commands/                 # 29 slash commands
 │   ├── README.md             # Categorized command reference
@@ -451,7 +477,7 @@ claude-dev-framework/
 │   ├── system-architect.md, backend-architect.md, ...
 │   └── tdd-guide.md, e2e-specialist.md (new)
 │
-├── skills/                   # 18 auto-invoked skills
+├── skills/                   # 19 auto-invoked skills
 │   ├── rules-generator/, claudemd-generator/, ...
 │   ├── coding-standards/, backend-patterns/, frontend-patterns/ (new)
 │   ├── tdd-workflow/, e2e-patterns/, continuous-learning/ (new)
@@ -463,9 +489,11 @@ claude-dev-framework/
 │   ├── review.md             # Quality assessment focus
 │   └── research.md           # Exploration focus
 │
-├── rules-templates/          # Best practice templates (new)
-│   ├── security.md, testing.md, git-workflow.md
-│   ├── performance.md, coding-style.md
+├── rules-templates/          # 15 rule templates (5 best-practice + 10 project-type)
+│   ├── security.md, testing.md, git-workflow.md, performance.md, coding-style.md
+│   ├── ml-rules.md, frontend-rules.md, backend-rules.md, data-eng-rules.md
+│   ├── mobile-rules.md, cli-rules.md, monorepo-rules.md, infra-rules.md
+│   └── soul-template.md, agents-template.md
 │
 ├── mcp-configs/              # MCP server templates (new)
 │   └── mcp-servers.template.json

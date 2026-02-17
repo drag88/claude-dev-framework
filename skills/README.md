@@ -31,7 +31,7 @@ Quick reference for all auto-invoked skills, organized by category.
 
 ---
 
-## Specialized Skills (5)
+## Specialized Skills (6)
 
 | Skill | Trigger | Description |
 |-------|---------|-------------|
@@ -40,6 +40,7 @@ Quick reference for all auto-invoked skills, organized by category.
 | [skill-creator](skill-creator/SKILL.md) | Creating new skills | Guide for building effective skills |
 | [social-writing](social-writing/SKILL.md) | LinkedIn/Twitter posts | Authentic, human-centered social content |
 | [starhub-presentation](starhub-presentation/SKILL.md) | StarHub decks | Executive presentations with official templates |
+| [frontend-design](frontend-design/SKILL.md) | UI/UX design tasks | Design system guidance and component patterns |
 
 ---
 
@@ -85,3 +86,4 @@ Skills are automatically invoked based on context triggers. They provide special
 | Playwright E2E patterns | e2e-patterns |
 | Pattern extraction | continuous-learning |
 | Recovery from failures | failure-recovery |
+| UI/UX design guidance | frontend-design |
