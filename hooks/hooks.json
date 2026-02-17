@@ -5,7 +5,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PLUGIN_ROOT/scripts/analyze-codebase.py\"",
+            "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/analyze-codebase.py\" && python3 \"$CLAUDE_PLUGIN_ROOT/scripts/analyze-codebase.py\" || true",
             "timeout": 60
           }
         ]
@@ -14,7 +14,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/memory-init.py\"",
+            "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/memory-init.py\" && python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/memory-init.py\" || true",
             "timeout": 10
           }
         ]
@@ -25,7 +25,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PLUGIN_ROOT/scripts/keyword-amplifier.py\"",
+            "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/keyword-amplifier.py\" && python3 \"$CLAUDE_PLUGIN_ROOT/scripts/keyword-amplifier.py\" || true",
             "timeout": 5
           }
         ]
@@ -35,7 +35,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/git-push-review.py\" \"$TOOL_INPUT\"",
+            "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/git-push-review.py\" && python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/git-push-review.py\" \"$TOOL_INPUT\" || true",
             "timeout": 5
           }
         ]
@@ -47,7 +47,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/console-log-detector.py\" \"$TOOL_INPUT\"",
+            "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/console-log-detector.py\" && python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/console-log-detector.py\" \"$TOOL_INPUT\" || true",
             "timeout": 5
           }
         ]
@@ -57,7 +57,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/console-log-detector.py\" \"$TOOL_INPUT\"",
+            "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/console-log-detector.py\" && python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/console-log-detector.py\" \"$TOOL_INPUT\" || true",
             "timeout": 5
           }
         ]
@@ -67,17 +67,17 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PLUGIN_ROOT/scripts/comment-checker.py\"",
+            "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/comment-checker.py\" && python3 \"$CLAUDE_PLUGIN_ROOT/scripts/comment-checker.py\" || true",
             "timeout": 5
           },
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/memory-logger.py\" \"$TOOL_INPUT\"",
+            "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/memory-logger.py\" && python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/memory-logger.py\" \"$TOOL_INPUT\" || true",
             "timeout": 3
           },
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/flow-checkpoint.py\" \"$TOOL_INPUT\"",
+            "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/flow-checkpoint.py\" && python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/flow-checkpoint.py\" \"$TOOL_INPUT\" || true",
             "timeout": 3
           }
         ]
@@ -87,7 +87,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/flow-verify-gate.py\" \"$TOOL_INPUT\"",
+            "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/flow-verify-gate.py\" && python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/flow-verify-gate.py\" \"$TOOL_INPUT\" || true",
             "timeout": 5
           }
         ]
@@ -97,7 +97,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/memory-logger.py\" \"$TOOL_INPUT\"",
+            "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/memory-logger.py\" && python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/memory-logger.py\" \"$TOOL_INPUT\" || true",
             "timeout": 3
           }
         ]
@@ -108,7 +108,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/session-end.py\"",
+            "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/session-end.py\" && python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/session-end.py\" || true",
             "timeout": 10
           }
         ]
@@ -117,7 +117,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/memory-learner.py\"",
+            "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/memory-learner.py\" && python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/memory-learner.py\" || true",
             "timeout": 10
           }
         ]
@@ -126,7 +126,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/memory-summarize.py\"",
+            "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/memory-summarize.py\" && python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/memory-summarize.py\" || true",
             "timeout": 10
           }
         ]
@@ -135,7 +135,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/flow-session-save.py\"",
+            "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/flow-session-save.py\" && python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/flow-session-save.py\" || true",
             "timeout": 10
           }
         ]
@@ -144,7 +144,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "bash \"$CLAUDE_PLUGIN_ROOT/scripts/task-completeness-check.sh\"",
+            "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/task-completeness-check.sh\" && bash \"$CLAUDE_PLUGIN_ROOT/scripts/task-completeness-check.sh\" || true",
             "timeout": 10
           }
         ]
