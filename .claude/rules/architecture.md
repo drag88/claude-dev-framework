@@ -14,7 +14,7 @@ CDF (Claude Dev Framework) is a comprehensive plugin for Claude Code that provid
 | `contexts/` | Behavioral context modes (dev/review/research) |
 | `hooks/` | Lifecycle hook configuration (JSON) |
 | `scripts/` | Hook implementation scripts (Python/Bash) |
-| `rules-templates/` | 15 rule templates: 5 best-practice + 10 project-type-specific (ML, frontend, backend, data-eng, mobile, CLI, monorepo, infra, soul, agents) |
+| `rules-templates/` | 16 rule templates: 5 best-practice + 11 project-type/generation-specific (ML, frontend, backend, data-eng, mobile, CLI, monorepo, infra, soul, agents, workflow) |
 | `mcp-configs/` | MCP server configuration templates |
 | `.claude-plugin/` | Plugin metadata (plugin.json, marketplace.json) |
 | `.claude/` | Plugin settings and permissions |
@@ -28,6 +28,9 @@ CDF (Claude Dev Framework) is a comprehensive plugin for Claude Code that provid
 | `scripts/analyze-codebase.py` | SessionStart hook - codebase analysis |
 | `scripts/keyword-amplifier.py` | PreToolUse hook - context injection |
 | `scripts/lib/utils.py` | Shared utility functions |
+| `scripts/hooks/memory-init.py` | SessionStart hook - memory initialization and context injection |
+| `scripts/hooks/memory-logger.py` | PostToolUse hook - logs file changes to daily memory |
+| `scripts/hooks/memory-summarize.py` | Stop hook - session summarization and learnings propagation |
 
 ## Component Relationships
 

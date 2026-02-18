@@ -390,25 +390,44 @@ def propagate_learnings_to_memory():
     section_map = {
         'decision': '## Key Decisions',
         'issue': '## Known Issues & Workarounds',
-        'pattern': '## Patterns & Conventions',
-        'correction': '## Patterns & Conventions',
+        'pattern': '## Lessons Learned',
+        'correction': '## Lessons Learned',
     }
 
     # Placeholder text to replace when first entry is added
     placeholders = {
         '## Key Decisions': '*No decisions recorded yet.*',
         '## Known Issues & Workarounds': '*No known issues documented yet.*',
+        '## Lessons Learned': '*No lessons recorded yet.*',
+        # Legacy placeholders for existing MEMORY.md files
         '## Patterns & Conventions': '*Project-specific patterns will be documented here.*',
     }
+
+    # Ensure Lessons Learned section exists in MEMORY.md (migration for older files)
+    if '## Lessons Learned' not in memory_content:
+        # Add before Known Issues if possible, or before --- footer
+        if '## Known Issues' in memory_content:
+            memory_content = memory_content.replace(
+                '## Known Issues',
+                '## Lessons Learned\n\n## Known Issues'
+            )
+        elif '\n---\n' in memory_content:
+            memory_content = memory_content.replace(
+                '\n---\n',
+                '\n## Lessons Learned\n\n---\n'
+            )
 
     modified = False
 
     for learning in learnings:
         confidence = learning.get('confidence', 0)
-        if confidence <= 0.7:
+        learning_type = learning.get('type', '')
+
+        # Decisions are always high-signal; others need higher confidence
+        min_confidence = 0.6 if learning_type == 'decision' else 0.7
+        if confidence < min_confidence:
             continue
 
-        learning_type = learning.get('type', '')
         description = learning.get('description', '')
         date = learning.get('date', datetime.now().strftime('%Y-%m-%d'))
 
@@ -417,8 +436,9 @@ def propagate_learnings_to_memory():
 
         section_header = section_map[learning_type]
 
-        # Deduplicate: skip if description substring already in MEMORY.md
-        if description in memory_content:
+        # Deduplicate: check if first 50 chars of description already present
+        dedup_key = description[:50]
+        if dedup_key in memory_content:
             continue
 
         entry = f"- [{date}] {description}"

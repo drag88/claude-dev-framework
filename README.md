@@ -365,6 +365,7 @@ Pre-built rule templates for common project standards. Copy to `.claude/rules/` 
 | `infra-rules.md` | Infrastructure as code (IaC, security baseline) |
 | `soul-template.md` | Project soul/personality template |
 | `agents-template.md` | Cross-tool AGENTS.md template |
+| `workflow-template.md` | Workflow orchestration rules (subagents, plan mode, verification) |
 
 Generate with:
 ```bash
@@ -465,7 +466,7 @@ These rules are automatically loaded as context for Claude.
 ```
 claude-dev-framework/
 ├── .claude-plugin/
-│   └── plugin.json           # Plugin metadata (name: "cdf", version: "1.9.0")
+│   └── plugin.json           # Plugin metadata (name: "cdf", version: "1.10.0")
 │
 ├── commands/                 # 29 slash commands
 │   ├── README.md             # Categorized command reference
@@ -489,11 +490,11 @@ claude-dev-framework/
 │   ├── review.md             # Quality assessment focus
 │   └── research.md           # Exploration focus
 │
-├── rules-templates/          # 15 rule templates (5 best-practice + 10 project-type)
+├── rules-templates/          # 16 rule templates (5 best-practice + 11 project-type/generation)
 │   ├── security.md, testing.md, git-workflow.md, performance.md, coding-style.md
 │   ├── ml-rules.md, frontend-rules.md, backend-rules.md, data-eng-rules.md
 │   ├── mobile-rules.md, cli-rules.md, monorepo-rules.md, infra-rules.md
-│   └── soul-template.md, agents-template.md
+│   └── soul-template.md, agents-template.md, workflow-template.md
 │
 ├── mcp-configs/              # MCP server templates (new)
 │   └── mcp-servers.template.json

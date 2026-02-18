@@ -208,6 +208,9 @@ MUST generate at `.claude/rules/soul.md`. Captures project personality:
 - Never commit: [.env, secrets, artifacts]
 ```
 
+#### `.claude/rules/workflow.md` (REQUIRED)
+MUST generate at `.claude/rules/workflow.md`. Use `rules-templates/workflow-template.md` as the source template. Customize only the "Project-Specific Spawn Patterns" section based on the detected project type — replace the placeholder block with 2-3 concrete subagent patterns relevant to this project's domain and tech stack. If project type is undetected, use the generic patterns. Keep all other sections verbatim from the template.
+
 #### Root `AGENTS.md` (REQUIRED)
 MUST generate at project root (not in `.claude/`) for cross-tool AI agent compatibility (Cursor, Windsurf, etc.):
 ```markdown
@@ -247,6 +250,7 @@ paths: src/api/**/*.py
    - `.claude/rules/patterns.md`
    - `.claude/rules/commands.md`
    - `.claude/rules/soul.md`
+   - `.claude/rules/workflow.md`
    - `AGENTS.md` (project root)
    - Any project-type-specific files
 
@@ -274,6 +278,7 @@ Generate a concise `CLAUDE.generated.md` file from existing `.claude/rules/`.
 - From `commands.md`: Setup, test, lint, run commands
 - From `patterns.md`: Critical coding patterns/rules
 - From `soul.md`: Project identity, values, boundaries
+- From `workflow.md`: One-line pointer only ("Workflow rules in .claude/rules/workflow.md")
 
 **Output Template:**
 ```markdown
@@ -295,6 +300,9 @@ Generate a concise `CLAUDE.generated.md` file from existing `.claude/rules/`.
 2. **DRY** - search with `rg` before writing similar code
 3. **No backwards compat** - delete deprecated code immediately
 4. **Tests required** - no feature complete without tests
+
+## Workflow
+Orchestration rules (plan mode, subagents, verification): `.claude/rules/workflow.md`
 
 <plans_instruction>
 ## Plans Format

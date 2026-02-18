@@ -92,15 +92,33 @@ def init_memory_md():
     
     # Detect project type
     project_type = "Unknown"
-    if (project_root / 'package.json').exists():
-        project_type = "Node.js/JavaScript"
+    if (project_root / '.claude-plugin' / 'plugin.json').exists():
+        project_type = "Claude Code Plugin"
+    elif (project_root / 'package.json').exists():
+        pkg = project_root / 'package.json'
+        try:
+            with open(pkg) as f:
+                pkg_data = json.load(f)
+            deps = {**pkg_data.get('dependencies', {}), **pkg_data.get('devDependencies', {})}
+            if 'next' in deps:
+                project_type = "Next.js"
+            elif 'react' in deps:
+                project_type = "React"
+            elif 'express' in deps or 'fastify' in deps:
+                project_type = "Node.js API"
+            else:
+                project_type = "Node.js/JavaScript"
+        except:
+            project_type = "Node.js/JavaScript"
     elif (project_root / 'pyproject.toml').exists() or (project_root / 'setup.py').exists():
         project_type = "Python"
     elif (project_root / 'Cargo.toml').exists():
         project_type = "Rust"
     elif (project_root / 'go.mod').exists():
         project_type = "Go"
-    
+    elif (project_root / 'Gemfile').exists():
+        project_type = "Ruby"
+
     content = f"""# Project Memory
 
 ## Project Overview
@@ -109,27 +127,11 @@ def init_memory_md():
 **Type**: {project_type}
 **Root**: {project_root}
 
-[Add project description here]
-
 ## Key Decisions
 
-*No decisions recorded yet.*
-
-## Architecture Notes
-
-*Architecture documentation will be added as the project evolves.*
-
-## Patterns & Conventions
-
-*Project-specific patterns will be documented here.*
+## Lessons Learned
 
 ## Known Issues & Workarounds
-
-*No known issues documented yet.*
-
-## Important Context
-
-*Domain knowledge and business rules will be captured here.*
 
 ---
 *Memory initialized: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}*
@@ -246,9 +248,9 @@ def get_last_session_date():
 def load_memory_context() -> dict:
     """Load relevant memory context with progressive disclosure."""
     context = {
-        'project_overview': '',
         'key_decisions': '',
         'known_issues': '',
+        'lessons_learned': '',
         'recent_activity': '',
         'open_todos': [],
         'yesterday_summary': '',
@@ -262,9 +264,9 @@ def load_memory_context() -> dict:
         with open(memory_file) as f:
             content = f.read()
         
-        context['project_overview'] = extract_section(content, 'Project Overview', 10)
         context['key_decisions'] = extract_section(content, 'Key Decisions', 15)
         context['known_issues'] = extract_section(content, 'Known Issues & Workarounds', 10)
+        context['lessons_learned'] = extract_section(content, 'Lessons Learned', 15)
     
     # Load today's TODOs
     today = datetime.now().strftime('%Y-%m-%d')
@@ -311,7 +313,7 @@ def load_memory_context() -> dict:
                     content = f.read()
 
                 # Re-extract without placeholder filtering
-                for section_name, key in [('Key Decisions', 'key_decisions'), ('Known Issues & Workarounds', 'known_issues')]:
+                for section_name, key in [('Key Decisions', 'key_decisions'), ('Known Issues & Workarounds', 'known_issues'), ('Lessons Learned', 'lessons_learned')]:
                     pattern = rf'^## {re.escape(section_name)}\s*\n(.*?)(?=^## |\Z)'
                     match = re.search(pattern, content, re.MULTILINE | re.DOTALL)
                     if match:
@@ -374,6 +376,11 @@ def generate_context_rule(context: dict) -> str:
         parts.append("## 📋 Key Decisions")
         parts.append(context['key_decisions'])
         parts.append("")
+
+    if context.get('lessons_learned'):
+        parts.append("## 📖 Lessons Learned")
+        parts.append(context['lessons_learned'])
+        parts.append("")
     
     # Footer with pointer to full memory
     parts.append("---")
@@ -386,12 +393,12 @@ def inject_memory_context():
     """Generate memory context rule file for Claude to auto-load."""
     context = load_memory_context()
     
-    # Check if there's any meaningful content
+    # Check if there's any meaningful content (skip if only timestamps)
     has_content = (
         context['open_todos'] or
         context['known_issues'] or
+        context['lessons_learned'] or
         context['yesterday_summary'] or
-        context['recent_activity'] or
         context['key_decisions'] or
         context.get('recent_learnings') or
         context.get('session_gap_days', 0) > 3
