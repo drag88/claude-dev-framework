@@ -35,7 +35,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/git-push-review.py\" && python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/git-push-review.py\" \"$TOOL_INPUT\" || true",
+            "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/git-push-review.py\" && python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/git-push-review.py\" || true",
             "timeout": 5
           }
         ]
@@ -47,7 +47,7 @@
         "hooks": [
           {
             "type": "command",
-            "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/console-log-detector.py\" && python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/console-log-detector.py\" \"$TOOL_INPUT\" || true",
+            "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/console-log-detector.py\" && python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/console-log-detector.py\" || true",
             "timeout": 5
           }
         ]
@@ -62,12 +62,12 @@
           },
           {
             "type": "command",
-            "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/memory-logger.py\" && python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/memory-logger.py\" \"$TOOL_INPUT\" || true",
+            "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/memory-logger.py\" && python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/memory-logger.py\" || true",
             "timeout": 3
           },
           {
             "type": "command",
-            "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/flow-checkpoint.py\" && python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/flow-checkpoint.py\" \"$TOOL_INPUT\" || true",
+            "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/flow-checkpoint.py\" && python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/flow-checkpoint.py\" || true",
             "timeout": 3
           }
         ]
@@ -77,12 +77,12 @@
         "hooks": [
           {
             "type": "command",
-            "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/flow-verify-gate.py\" && python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/flow-verify-gate.py\" \"$TOOL_INPUT\" || true",
+            "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/flow-verify-gate.py\" && python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/flow-verify-gate.py\" || true",
             "timeout": 5
           },
           {
             "type": "command",
-            "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/memory-logger.py\" && python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/memory-logger.py\" \"$TOOL_INPUT\" || true",
+            "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/memory-logger.py\" && python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/memory-logger.py\" || true",
             "timeout": 3
           }
         ]

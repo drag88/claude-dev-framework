@@ -154,12 +154,13 @@ def log_bash_command(tool_input: dict):
 
 def main():
     """Main entry point."""
-    if len(sys.argv) < 2:
+    try:
+        hook_data = json.load(sys.stdin)
+    except (json.JSONDecodeError, Exception):
         return
 
-    try:
-        tool_input = json.loads(sys.argv[1])
-    except (json.JSONDecodeError, Exception):
+    tool_input = hook_data.get('tool_input', {})
+    if not tool_input:
         return
 
     # Distinguish Bash vs file operations by checking for 'command' key

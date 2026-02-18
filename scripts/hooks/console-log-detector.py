@@ -53,12 +53,13 @@ def check_for_console_logs(content: str, file_path: str) -> list:
 
 def main():
     """Main entry point."""
-    if len(sys.argv) < 2:
+    try:
+        hook_data = json.load(sys.stdin)
+        tool_input = hook_data.get('tool_input', {})
+    except (json.JSONDecodeError, Exception):
         return
 
-    try:
-        tool_input = json.loads(sys.argv[1])
-    except json.JSONDecodeError:
+    if not tool_input:
         return
 
     file_path = tool_input.get('file_path', '')

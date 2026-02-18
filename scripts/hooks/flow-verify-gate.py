@@ -42,13 +42,14 @@ def main():
     if not (project_root / "dev" / "active").exists():
         return
 
-    # Check if we have tool output
-    if len(sys.argv) < 2:
+    # Read tool input from stdin (Claude Code hook input mechanism)
+    try:
+        hook_data = json.load(sys.stdin)
+        tool_input = hook_data.get('tool_input', {})
+    except (json.JSONDecodeError, Exception):
         return
 
-    try:
-        tool_input = json.loads(sys.argv[1])
-    except (json.JSONDecodeError, IndexError):
+    if not tool_input:
         return
 
     # Get active flow in verify phase
