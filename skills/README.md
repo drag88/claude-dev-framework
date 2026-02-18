@@ -31,10 +31,11 @@ Quick reference for all auto-invoked skills, organized by category.
 
 ---
 
-## Specialized Skills (6)
+## Specialized Skills (7)
 
 | Skill | Trigger | Description |
 |-------|---------|-------------|
+| [visual-explainer](visual-explainer/SKILL.md) | Diagrams, tables (4+ rows/3+ cols), architecture/diff/plan reviews | Self-contained HTML visualizations — replaces ASCII art and plain-text tables |
 | [frontend-slides](frontend-slides/SKILL.md) | HTML presentation tasks | Zero-dependency HTML presentations with style presets and PPT conversion |
 | [pptx](pptx/SKILL.md) | Presentation tasks | PowerPoint creation, editing, and analysis |
 | [skill-creator](skill-creator/SKILL.md) | Creating new skills | Guide for building effective skills |
@@ -87,3 +88,4 @@ Skills are automatically invoked based on context triggers. They provide special
 | Pattern extraction | continuous-learning |
 | Recovery from failures | failure-recovery |
 | UI/UX design guidance | frontend-design |
+| Diagram, table, or visual output | visual-explainer |

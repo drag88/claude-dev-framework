@@ -1064,8 +1064,9 @@ class TiltEffect {
 
 ## Related Skills
 
+- **learn** — Generate FORZARA.md documentation for the presentation
 - **frontend-design** — For more complex interactive pages beyond slides
-- **pptx** — For PowerPoint creation and editing workflows
+- **design-and-refine:design-lab** — For iterating on component designs
 
 ---
 

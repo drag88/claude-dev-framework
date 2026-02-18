@@ -1,14 +1,15 @@
 # CDF (Claude Dev Framework)
 
 ## Overview
-Comprehensive Claude Code plugin with 29 commands, 21 agents, 19 skills, and 13 hooks for intelligent development assistance.
+Comprehensive Claude Code plugin providing 29 commands, 21 agents, 19 skills, and 13 lifecycle hooks for intelligent development assistance. Transforms Claude into an opinionated development assistant with codebase memory, specialized expertise on demand, and reproducible workflows.
 
 ## Quick Start
 ```bash
-claude --plugin-dir .        # Run with plugin
-/cdf:help                    # List commands
-/cdf:rules generate          # Generate project rules
-/cdf:implement "feature"     # Implement feature
+claude --plugin-dir .         # Run with plugin (local dev)
+/cdf:help                     # List all commands
+/cdf:rules generate           # Generate project rules
+/cdf:implement "feature"      # Implement a feature
+python3 -m json.tool hooks/hooks.json  # Validate hooks
 ```
 
 ## Critical Rules
@@ -16,6 +17,15 @@ claude --plugin-dir .        # Run with plugin
 2. **DRY** - search with `rg` before writing similar code
 3. **No backwards compat** - delete deprecated code immediately
 4. **Tests required** - no feature complete without tests
+
+## Project Soul
+- **Values**: Correctness over speed, composability over monoliths, explicit over implicit
+- **Boundaries**: Never commit `dev/active/`, `.claude/memory/daily/`, `*.local.json`
+- **Sacred files**: `hooks/hooks.json`, `scripts/lib/utils.py`, `.claude-plugin/plugin.json`
+- Full details: `.claude/rules/soul.md`
+
+## Workflow
+Orchestration rules (plan mode, subagents, verification): `.claude/rules/workflow.md`
 
 <plans_instruction>
 ## Plans Format
@@ -34,24 +44,32 @@ Requirements:
 ## Commit Messages
 See `/cdf:git` for commit message rules (conventional format, no Claude attribution).
 
+## CDF Agents
+
+When working in this project, use the appropriate CDF agent for specialized tasks:
+
+| Task Type | Agent | Command |
+|-----------|-------|---------|
+| System design | system-architect | `/cdf:spawn` |
+| API/backend work | backend-architect | `/cdf:spawn` |
+| UI development | frontend-architect | `/cdf:spawn` |
+| CI/CD setup | devops-architect | `/cdf:spawn` |
+| Research topics | deep-research-agent | `/cdf:research` |
+| Find code/patterns | codebase-navigator | `/cdf:spawn` |
+| Debug issues | root-cause-analyst | `/cdf:troubleshoot` |
+| Write tests | quality-engineer | `/cdf:test` |
+| Refactor code | refactoring-expert | `/cdf:improve` |
+
+**Auto-activation**: Agents activate automatically via `/cdf:spawn` and `/cdf:task` based on task context.
+
 ## Project Rules
 Auto-generated rules in `.claude/rules/` - Claude loads automatically.
 Run `/cdf:rules generate` to refresh after major changes.
 
 ## Key Directories
-- `commands/` - 29 slash command definitions (with MANDATORY FIRST ACTIONS enforcement)
-- `agents/` - 21 specialized agent personas
-- `skills/` - 19 auto-invoked behaviors
-- `hooks/` - Lifecycle hook configuration (13 hooks)
-- `scripts/` - Hook implementation (Python/Bash)
-- `contexts/` - Behavioral modes (dev/review/research)
-- `rules-templates/` - Best practice templates
-- `docs/solutions/` - Institutional knowledge from /cdf:compound
-- `dev/active/` - Flow state files (created by workflow commands)
-- `dev/sessions/` - Session state files (created by /cdf:session)
-
-## Command Enforcement
-All workflow commands use MANDATORY FIRST ACTIONS pattern:
-1. Create state file BEFORE any exploration
-2. Follow explicit anti-patterns (DO NOT use .claude/plans/ for /cdf:flow)
-3. Complete all steps before proceeding
+- `commands/` - 29 slash command definitions (markdown + YAML frontmatter)
+- `agents/` - 21 agent persona definitions
+- `skills/` - 19 auto-invoked skill directories
+- `scripts/` - Hook implementation (Python)
+- `hooks/` - Lifecycle hook configuration (JSON)
+- `rules-templates/` - 15 rule templates for project-type-aware generation

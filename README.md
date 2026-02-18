@@ -1,6 +1,6 @@
 # CDF (Claude Dev Framework)
 
-A comprehensive development framework plugin for Claude Code featuring **29 commands**, **21 agent personas**, **19 skills**, and **13 lifecycle hooks**.
+A comprehensive development framework plugin for Claude Code featuring **29 commands**, **21 agent personas**, **20 skills**, and **13 lifecycle hooks**.
 
 ---
 
@@ -264,6 +264,7 @@ Skills are automatically invoked based on context. They provide specialized beha
 
 | Skill | Trigger | Purpose |
 |-------|---------|---------|
+| **visual-explainer** | Diagrams, tables, architecture reviews, diffs | Self-contained HTML visualizations — replaces ASCII art and plain-text tables |
 | **frontend-slides** | HTML presentation tasks | Zero-dependency HTML presentations with style presets and PPT conversion |
 | **pptx** | Presentation tasks | PowerPoint creation and editing |
 | **skill-creator** | Creating skills | Guide for building new skills |
@@ -478,10 +479,11 @@ claude-dev-framework/
 │   ├── system-architect.md, backend-architect.md, ...
 │   └── tdd-guide.md, e2e-specialist.md (new)
 │
-├── skills/                   # 19 auto-invoked skills
+├── skills/                   # 20 auto-invoked skills
 │   ├── rules-generator/, claudemd-generator/, ...
-│   ├── coding-standards/, backend-patterns/, frontend-patterns/ (new)
-│   ├── tdd-workflow/, e2e-patterns/, continuous-learning/ (new)
+│   ├── coding-standards/, backend-patterns/, frontend-patterns/
+│   ├── tdd-workflow/, e2e-patterns/, continuous-learning/
+│   ├── visual-explainer/ (HTML diagrams, architecture overviews, diff reviews)
 │   ├── frontend-slides/ (HTML presentations with style presets)
 │   └── pptx/, skill-creator/, social-writing/, starhub-presentation/
 │
