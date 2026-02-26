@@ -318,6 +318,12 @@ Requirements:
 - Sacrifice grammar for concision
 </plans_instruction>
 
+## Memory
+- Check your auto-memory for prior context at session start
+- Save key decisions, debugging insights, and project patterns to auto-memory during work
+- Daily activity logs at `.claude/memory/daily/` are auto-maintained by hooks
+- Before ending a session, reflect: what's worth remembering for next time?
+
 ## Commit Messages
 See `/cdf:git` for commit message rules (conventional format, no Claude attribution).
 
@@ -359,10 +365,11 @@ Run `/cdf:rules generate` to refresh after major changes.
 2. **Quick Start** - 4-5 bash commands (setup, test, lint, run)
 3. **Critical Rules** - 4 standard rules (read before edit, DRY, no backwards compat, tests required)
 4. **Plans Format** - Plans instruction block for unresolved questions
-5. **Commit Messages** - Pointer to `/cdf:git` command
-6. **CDF Agents** - Agent selection guide for specialized tasks
-7. **Project Rules** - Pointer to `.claude/rules/`
-8. **Key Directories** - Max 5-7 most important directories
+5. **Memory** - Auto-memory usage guidance for cross-session context
+6. **Commit Messages** - Pointer to `/cdf:git` command
+7. **CDF Agents** - Agent selection guide for specialized tasks
+8. **Project Rules** - Pointer to `.claude/rules/`
+9. **Key Directories** - Max 5-7 most important directories
 
 **Guidelines:**
 - Keep < 100 lines, never exceed 150
@@ -486,6 +493,12 @@ Requirements:
 - Make questions EXTREMELY concise
 - Sacrifice grammar for concision
 </plans_instruction>
+
+## Memory
+- Check your auto-memory for prior context at session start
+- Save key decisions, debugging insights, and project patterns to auto-memory during work
+- Daily activity logs at `.claude/memory/daily/` are auto-maintained by hooks
+- Before ending a session, reflect: what's worth remembering for next time?
 
 ## Commit Messages
 See `/cdf:git` for commit message rules (conventional format, no Claude attribution).

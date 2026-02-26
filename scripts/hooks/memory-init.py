@@ -2,10 +2,10 @@
 """
 SessionStart hook: Initialize project memory structure and inject context.
 Creates .claude/memory/ directory and loads relevant context via progressive disclosure.
+Bridges with Claude's native auto-memory (~/.claude/projects/<project>/memory/).
 """
 
 import json
-import os
 import re
 import sys
 from datetime import datetime, timedelta
@@ -50,97 +50,58 @@ def init_memory_structure():
     return memory_dir
 
 
-def get_project_name() -> str:
-    """Get the project name from directory or package.json."""
+def get_native_auto_memory_path() -> Path:
+    """Resolve the native auto-memory MEMORY.md path.
+
+    Claude's auto-memory lives at ~/.claude/projects/<project-key>/memory/MEMORY.md
+    where <project-key> replaces all non-alphanumeric chars (except -) with '-'.
+    Example: /Users/foo/my_project -> ~/.claude/projects/-Users-foo-my-project/memory/
+    """
     project_root = get_project_root()
-    
-    # Try package.json
-    package_json = project_root / 'package.json'
-    if package_json.exists():
-        try:
-            with open(package_json) as f:
-                data = json.load(f)
-                if 'name' in data:
-                    return data['name']
-        except:
-            pass
-    
-    # Try pyproject.toml
-    pyproject = project_root / 'pyproject.toml'
-    if pyproject.exists():
-        try:
-            with open(pyproject) as f:
-                for line in f:
-                    if line.startswith('name'):
-                        return line.split('=')[1].strip().strip('"\'')
-        except:
-            pass
-    
-    # Fall back to directory name
-    return project_root.name
+    # Convert path to Claude's format: replace all non-alphanumeric chars (except -) with '-'
+    project_key = re.sub(r'[^a-zA-Z0-9-]', '-', str(project_root))
+    return Path.home() / '.claude' / 'projects' / project_key / 'memory' / 'MEMORY.md'
 
 
-def init_memory_md():
-    """Create MEMORY.md if it doesn't exist."""
-    memory_file = get_memory_dir() / 'MEMORY.md'
-    
-    if memory_file.exists():
+def migrate_memory_to_native():
+    """One-time migration: copy Key Decisions from in-project MEMORY.md to native auto-memory.
+
+    Only runs if:
+    - Native auto-memory MEMORY.md does NOT exist
+    - In-project .claude/memory/MEMORY.md exists and has Key Decisions content
+    """
+    native_path = get_native_auto_memory_path()
+    if native_path.exists():
         return False
-    
-    project_name = get_project_name()
-    project_root = get_project_root()
-    
-    # Detect project type
-    project_type = "Unknown"
-    if (project_root / '.claude-plugin' / 'plugin.json').exists():
-        project_type = "Claude Code Plugin"
-    elif (project_root / 'package.json').exists():
-        pkg = project_root / 'package.json'
-        try:
-            with open(pkg) as f:
-                pkg_data = json.load(f)
-            deps = {**pkg_data.get('dependencies', {}), **pkg_data.get('devDependencies', {})}
-            if 'next' in deps:
-                project_type = "Next.js"
-            elif 'react' in deps:
-                project_type = "React"
-            elif 'express' in deps or 'fastify' in deps:
-                project_type = "Node.js API"
-            else:
-                project_type = "Node.js/JavaScript"
-        except:
-            project_type = "Node.js/JavaScript"
-    elif (project_root / 'pyproject.toml').exists() or (project_root / 'setup.py').exists():
-        project_type = "Python"
-    elif (project_root / 'Cargo.toml').exists():
-        project_type = "Rust"
-    elif (project_root / 'go.mod').exists():
-        project_type = "Go"
-    elif (project_root / 'Gemfile').exists():
-        project_type = "Ruby"
 
-    content = f"""# Project Memory
+    old_memory = get_memory_dir() / 'MEMORY.md'
+    if not old_memory.exists():
+        return False
 
-## Project Overview
+    with open(old_memory) as f:
+        content = f.read()
 
-**Name**: {project_name}
-**Type**: {project_type}
-**Root**: {project_root}
+    # Check if there's actual Key Decisions content (not just placeholder)
+    decisions = extract_section(content, 'Key Decisions', 50)
+    if not decisions:
+        return False
+
+    # Create the native auto-memory directory and write migrated content
+    native_path.parent.mkdir(parents=True, exist_ok=True)
+
+    migrated = f"""# Project Memory (migrated from in-project .claude/memory/)
 
 ## Key Decisions
 
-## Lessons Learned
-
-## Known Issues & Workarounds
+{decisions}
 
 ---
-*Memory initialized: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}*
-*Last updated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}*
+*Migrated: {datetime.now().strftime('%Y-%m-%d %H:%M:%S')}*
 """
-    
-    with open(memory_file, 'w') as f:
-        f.write(content)
-    
+    with open(native_path, 'w') as f:
+        f.write(migrated)
+
+    print_info("Migrated Key Decisions from in-project MEMORY.md to native auto-memory")
     return True
 
 
@@ -258,12 +219,12 @@ def load_memory_context() -> dict:
         'session_gap_days': 0
     }
     
-    # Load from MEMORY.md
-    memory_file = get_memory_dir() / 'MEMORY.md'
-    if memory_file.exists():
-        with open(memory_file) as f:
+    # Load from native auto-memory MEMORY.md (~/.claude/projects/<project>/memory/)
+    native_memory = get_native_auto_memory_path()
+    if native_memory.exists():
+        with open(native_memory) as f:
             content = f.read()
-        
+
         context['key_decisions'] = extract_section(content, 'Key Decisions', 15)
         context['known_issues'] = extract_section(content, 'Known Issues & Workarounds', 10)
         context['lessons_learned'] = extract_section(content, 'Lessons Learned', 15)
@@ -307,9 +268,9 @@ def load_memory_context() -> dict:
         # For stale sessions (>1 day), force-load Key Decisions and Known Issues
         # even if they contain placeholder text
         if gap > 1:
-            memory_file = get_memory_dir() / 'MEMORY.md'
-            if memory_file.exists():
-                with open(memory_file) as f:
+            native_memory = get_native_auto_memory_path()
+            if native_memory.exists():
+                with open(native_memory) as f:
                     content = f.read()
 
                 # Re-extract without placeholder filtering
@@ -329,6 +290,8 @@ def generate_context_rule(context: dict) -> str:
     parts = []
     
     parts.append("# Project Memory Context")
+    parts.append("")
+    parts.append("> **Action**: Save key decisions and insights to your auto-memory during this session.")
     parts.append("")
     parts.append("*Auto-loaded from `.claude/memory/` - Progressive disclosure of project context.*")
     parts.append("")
@@ -384,7 +347,7 @@ def generate_context_rule(context: dict) -> str:
     
     # Footer with pointer to full memory
     parts.append("---")
-    parts.append("*Full memory: `.claude/memory/MEMORY.md` | Daily logs: `.claude/memory/daily/`*")
+    parts.append("*Auto-memory: `~/.claude/projects/<project>/memory/` | Daily logs: `.claude/memory/daily/`*")
     
     return '\n'.join(parts)
 
@@ -393,20 +356,7 @@ def inject_memory_context():
     """Generate memory context rule file for Claude to auto-load."""
     context = load_memory_context()
     
-    # Check if there's any meaningful content (skip if only timestamps)
-    has_content = (
-        context['open_todos'] or
-        context['known_issues'] or
-        context['lessons_learned'] or
-        context['yesterday_summary'] or
-        context['key_decisions'] or
-        context.get('recent_learnings') or
-        context.get('session_gap_days', 0) > 3
-    )
-    
-    if not has_content:
-        return False
-    
+    # Always generate the rule file — the auto-memory directive should always be present
     # Generate and write the context rule
     rules_dir = get_rules_dir()
     rules_dir.mkdir(parents=True, exist_ok=True)
@@ -425,12 +375,10 @@ def main():
     try:
         # Initialize structure
         memory_dir = init_memory_structure()
-        
-        # Initialize MEMORY.md
-        memory_created = init_memory_md()
-        if memory_created:
-            print_info("📝 Project memory initialized")
-        
+
+        # One-time migration from in-project MEMORY.md to native auto-memory
+        migrated = migrate_memory_to_native()
+
         # Initialize today's log
         daily_created = init_daily_log()
         if daily_created:

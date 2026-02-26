@@ -128,6 +128,69 @@ def log_file_change(tool_input: dict):
     append_to_daily_log(entry)
 
 
+def should_log_read(file_path: str) -> bool:
+    """Determine if this file read should be logged. Only log actual source/content files."""
+    skip_patterns = [
+        '.claude/',
+        'node_modules/',
+        '__pycache__/',
+        '.git/',
+        'package-lock.json',
+        'yarn.lock',
+        'pnpm-lock.yaml',
+        'bun.lockb',
+        'package.json',
+        'tsconfig',
+        '.eslintrc',
+        '.prettierrc',
+        '.babelrc',
+        'jest.config',
+        'vite.config',
+        'webpack.config',
+        '.env',
+    ]
+
+    file_lower = file_path.lower()
+    for pattern in skip_patterns:
+        if pattern in file_lower:
+            return False
+
+    return True
+
+
+def log_web_search(tool_input: dict):
+    """Log a web search to the daily log."""
+    timestamp = datetime.now().strftime('%H:%M:%S')
+    query = tool_input.get('query', '')
+    if not query:
+        return
+    entry = f'- `{timestamp}` - searched: "{query}"'
+    append_to_daily_log(entry)
+
+
+def log_web_fetch(tool_input: dict):
+    """Log a web fetch to the daily log."""
+    timestamp = datetime.now().strftime('%H:%M:%S')
+    url = tool_input.get('url', '')
+    if not url:
+        return
+    prompt = tool_input.get('prompt', '')
+    prompt_display = prompt[:60] + ('...' if len(prompt) > 60 else '') if prompt else ''
+    entry = f'- `{timestamp}` - fetched: {url} | "{prompt_display}"'
+    append_to_daily_log(entry)
+
+
+def log_file_read(tool_input: dict):
+    """Log a file read to the daily log."""
+    timestamp = datetime.now().strftime('%H:%M:%S')
+    file_path = tool_input.get('file_path', '')
+    if not file_path or not should_log_read(file_path):
+        return
+    relative_path = get_relative_path(file_path)
+    entry = f'- `{timestamp}` - read: `{relative_path}`'
+    append_to_daily_log(entry)
+
+
 def log_bash_command(tool_input: dict):
     """Log a Bash command execution to the daily log."""
     timestamp = datetime.now().strftime('%H:%M:%S')
@@ -163,7 +226,21 @@ def main():
     if not tool_input:
         return
 
-    # Distinguish Bash vs file operations by checking for 'command' key
+    tool_name = hook_data.get('tool_name', '')
+
+    # Route by tool_name first, fall back to key-based detection
+    if tool_name == 'WebSearch' or (not tool_name and 'query' in tool_input and 'url' not in tool_input):
+        log_web_search(tool_input)
+        return
+
+    if tool_name == 'WebFetch' or (not tool_name and 'url' in tool_input and 'prompt' in tool_input):
+        log_web_fetch(tool_input)
+        return
+
+    if tool_name == 'Read' or (not tool_name and 'file_path' in tool_input and 'old_string' not in tool_input and 'command' not in tool_input and 'content' not in tool_input):
+        log_file_read(tool_input)
+        return
+
     if 'command' in tool_input:
         log_bash_command(tool_input)
         return

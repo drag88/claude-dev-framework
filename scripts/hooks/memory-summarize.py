@@ -9,7 +9,7 @@ import os
 import re
 import shutil
 import sys
-from collections import Counter, defaultdict
+from collections import Counter
 from datetime import datetime, timedelta
 from pathlib import Path
 
@@ -203,148 +203,19 @@ def parse_activity_log(content: str) -> list:
     return activities
 
 
-def detect_corrections(activities: list) -> list:
-    """Files edited 3+ times suggest correction patterns."""
-    learnings = []
+def get_native_auto_memory_path() -> Path:
+    """Get path to native auto-memory MEMORY.md.
 
-    edit_counts = Counter()
-    for act in activities:
-        if act['type'] in ('edited', 'created/updated', 'updated'):
-            if act['path']:
-                edit_counts[act['path']] += 1
-
-    for filepath, count in edit_counts.items():
-        if count >= 3:
-            learnings.append({
-                'type': 'correction',
-                'description': f"File '{filepath}' was edited {count} times in one session, suggesting iterative corrections",
-                'confidence': 0.6,
-                'date': datetime.now().strftime('%Y-%m-%d'),
-                'files': [filepath],
-                'source': 'activity-log'
-            })
-
-    return learnings
+    Native auto-memory lives at ~/.claude/projects/<project-key>/memory/MEMORY.md
+    where <project-key> replaces all non-alphanumeric chars (except -) with '-'.
+    """
+    project_root = str(get_project_root())
+    project_key = re.sub(r'[^a-zA-Z0-9-]', '-', project_root)
+    return Path.home() / '.claude' / 'projects' / project_key / 'memory' / 'MEMORY.md'
 
 
-def detect_related_patterns(activities: list) -> list:
-    """3+ files in the same directory suggest related component patterns."""
-    learnings = []
-
-    dir_files = defaultdict(set)
-    for act in activities:
-        if act['type'] in ('edited', 'created/updated', 'updated', 'created'):
-            if act['path']:
-                parent = str(Path(act['path']).parent)
-                if parent and parent != '.':
-                    dir_files[parent].add(act['path'])
-
-    for directory, files in dir_files.items():
-        if len(files) >= 3:
-            learnings.append({
-                'type': 'pattern',
-                'description': f"Multiple related files ({len(files)}) edited in '{directory}', indicating tightly coupled components",
-                'confidence': 0.5,
-                'date': datetime.now().strftime('%Y-%m-%d'),
-                'files': sorted(files),
-                'source': 'activity-log'
-            })
-
-    return learnings
-
-
-def _is_placeholder(text: str) -> bool:
-    """Check if section content is placeholder text (wrapped in *)."""
-    stripped = text.strip()
-    lines = [l.strip() for l in stripped.split('\n') if l.strip()]
-    return all(l.startswith('*') and l.endswith('*') for l in lines) if lines else True
-
-
-def _extract_section(content: str, section_name: str) -> str:
-    """Extract content of a named ## section."""
-    pattern = rf'## {re.escape(section_name)}\s*\n(.*?)(?=\n## |\Z)'
-    match = re.search(pattern, content, re.DOTALL)
-    return match.group(1).strip() if match else ''
-
-
-def extract_decisions(content: str) -> list:
-    """Read 'Decisions Made' section and extract as learnings."""
-    learnings = []
-    section = _extract_section(content, 'Decisions Made')
-
-    if not section or _is_placeholder(section):
-        return learnings
-
-    for line in section.split('\n'):
-        line = line.strip()
-        if not line or line.startswith('|') or line.startswith('---'):
-            continue
-        line = re.sub(r'^[-*]\s+', '', line)
-        if line:
-            learnings.append({
-                'type': 'decision',
-                'description': line,
-                'confidence': 0.9,
-                'date': datetime.now().strftime('%Y-%m-%d'),
-                'files': [],
-                'source': 'decisions-section'
-            })
-
-    return learnings
-
-
-def extract_issues(content: str) -> list:
-    """Read 'Issues Encountered' section and extract as learnings."""
-    learnings = []
-    section = _extract_section(content, 'Issues Encountered')
-
-    if not section or _is_placeholder(section):
-        return learnings
-
-    for line in section.split('\n'):
-        line = line.strip()
-        if not line or line.startswith('|') or line.startswith('---'):
-            continue
-        line = re.sub(r'^[-*]\s+', '', line)
-        if line:
-            learnings.append({
-                'type': 'issue',
-                'description': line,
-                'confidence': 0.8,
-                'date': datetime.now().strftime('%Y-%m-%d'),
-                'files': [],
-                'source': 'issues-section'
-            })
-
-    return learnings
-
-
-def save_learnings(new_learnings: list):
-    """Load existing learnings.json, append new, cap at 100, save."""
-    learnings_path = get_memory_dir() / 'learnings.json'
-
-    data = {'learnings': [], 'last_updated': ''}
-    if learnings_path.exists():
-        try:
-            with open(learnings_path) as f:
-                data = json.load(f)
-        except (json.JSONDecodeError, KeyError):
-            data = {'learnings': [], 'last_updated': ''}
-
-    data['learnings'].extend(new_learnings)
-
-    if len(data['learnings']) > 100:
-        data['learnings'] = data['learnings'][-100:]
-
-    data['last_updated'] = datetime.now().isoformat()
-
-    learnings_path.parent.mkdir(parents=True, exist_ok=True)
-    with open(learnings_path, 'w') as f:
-        json.dump(data, f, indent=2)
-
-
-def extract_and_save_learnings(log_path: Path):
-    """Extract learnings from daily log and save to learnings.json."""
+def write_session_recap_to_auto_memory(log_path: Path):
+    """Write a 2-3 line session recap to native auto-memory MEMORY.md."""
     if not log_path.exists():
         return
 
@@ -352,181 +223,77 @@ def extract_and_save_learnings(log_path: Path):
         content = f.read()
 
     activities = parse_activity_log(content)
-
-    all_learnings = []
-    all_learnings.extend(detect_corrections(activities))
-    all_learnings.extend(detect_related_patterns(activities))
-    all_learnings.extend(extract_decisions(content))
-    all_learnings.extend(extract_issues(content))
-
-    if all_learnings:
-        save_learnings(all_learnings)
-        print_info(f"Extracted {len(all_learnings)} learning(s) from today's session")
-
-
-def propagate_learnings_to_memory():
-    """Propagate high-confidence learnings from learnings.json to MEMORY.md."""
-    memory_dir = get_memory_dir()
-    learnings_file = memory_dir / 'learnings.json'
-    memory_file = memory_dir / 'MEMORY.md'
-
-    if not learnings_file.exists() or not memory_file.exists():
+    if not activities:
         return
 
-    try:
-        with open(learnings_file) as f:
-            data = json.load(f)
-    except (json.JSONDecodeError, KeyError):
-        return
+    # Count files edited and searches done
+    files_edited = set()
+    searches = []
+    dirs_touched = set()
 
-    learnings = data.get('learnings', [])
-    if not learnings:
-        return
+    for act in activities:
+        if act['type'] in ('edited', 'created/updated', 'updated', 'created'):
+            if act['path']:
+                files_edited.add(act['path'])
+                parent = str(Path(act['path']).parent)
+                if parent and parent != '.':
+                    dirs_touched.add(parent)
+        elif act['type'] in ('searched', 'grepped', 'search'):
+            if act['detail']:
+                searches.append(act['detail'].strip('"').strip("'"))
 
-    with open(memory_file) as f:
-        memory_content = f.read()
+    # Build recap lines
+    today = datetime.now().strftime('%Y-%m-%d')
+    parts = []
 
-    # Map learning types to MEMORY.md sections
-    section_map = {
-        'decision': '## Key Decisions',
-        'issue': '## Known Issues & Workarounds',
-        'pattern': '## Lessons Learned',
-        'correction': '## Lessons Learned',
-    }
+    if files_edited:
+        # Show up to 4 file basenames
+        basenames = [Path(f).name for f in sorted(files_edited)]
+        if len(basenames) <= 4:
+            files_str = ', '.join(basenames)
+        else:
+            files_str = ', '.join(basenames[:4]) + f', +{len(basenames) - 4} more'
+        parts.append(f"Edited {len(files_edited)} files ({files_str}).")
 
-    # Placeholder text to replace when first entry is added
-    placeholders = {
-        '## Key Decisions': '*No decisions recorded yet.*',
-        '## Known Issues & Workarounds': '*No known issues documented yet.*',
-        '## Lessons Learned': '*No lessons recorded yet.*',
-        # Legacy placeholders for existing MEMORY.md files
-        '## Patterns & Conventions': '*Project-specific patterns will be documented here.*',
-    }
+    if searches:
+        unique_searches = list(dict.fromkeys(searches))[:3]
+        parts.append(f"Researched: {', '.join(unique_searches)}.")
 
-    # Ensure Lessons Learned section exists in MEMORY.md (migration for older files)
-    if '## Lessons Learned' not in memory_content:
-        # Add before Known Issues if possible, or before --- footer
-        if '## Known Issues' in memory_content:
-            memory_content = memory_content.replace(
-                '## Known Issues',
-                '## Lessons Learned\n\n## Known Issues'
-            )
-        elif '\n---\n' in memory_content:
-            memory_content = memory_content.replace(
-                '\n---\n',
-                '\n## Lessons Learned\n\n---\n'
-            )
+    if dirs_touched:
+        sorted_dirs = sorted(dirs_touched)
+        if len(sorted_dirs) <= 3:
+            dirs_str = ', '.join(sorted_dirs)
+        else:
+            dirs_str = ', '.join(sorted_dirs[:3]) + f', +{len(sorted_dirs) - 3} more'
+        parts.append(f"Key areas: {dirs_str}.")
 
-    modified = False
+    if not parts:
+        parts.append(f"{len(activities)} activities logged.")
 
-    for learning in learnings:
-        confidence = learning.get('confidence', 0)
-        learning_type = learning.get('type', '')
+    recap = f"## Session: {today}\n" + ' '.join(parts) + "\n"
 
-        # Decisions are always high-signal; others need higher confidence
-        min_confidence = 0.6 if learning_type == 'decision' else 0.7
-        if confidence < min_confidence:
-            continue
+    # Write to native auto-memory
+    memory_path = get_native_auto_memory_path()
+    memory_path.parent.mkdir(parents=True, exist_ok=True)
 
-        description = learning.get('description', '')
-        date = learning.get('date', datetime.now().strftime('%Y-%m-%d'))
+    if memory_path.exists():
+        with open(memory_path) as f:
+            existing = f.read()
+    else:
+        existing = "# Project Memory\n\n*Auto-maintained by CDF hooks.*\n\n"
 
-        if not description or learning_type not in section_map:
-            continue
+    existing += '\n' + recap
 
-        section_header = section_map[learning_type]
+    # Cap at 200 lines (native auto-memory only loads first 200)
+    lines = existing.split('\n')
+    if len(lines) > 200:
+        lines = lines[:200]
+        existing = '\n'.join(lines)
 
-        # Deduplicate: check if first 50 chars of description already present
-        dedup_key = description[:50]
-        if dedup_key in memory_content:
-            continue
+    with open(memory_path, 'w') as f:
+        f.write(existing)
 
-        entry = f"- [{date}] {description}"
-
-        # Find section and append entry
-        if section_header in memory_content:
-            # Check if placeholder needs replacing
-            placeholder = placeholders.get(section_header, '')
-            if placeholder and placeholder in memory_content:
-                memory_content = memory_content.replace(placeholder, entry)
-            else:
-                # Append after last line in section (before next ## or ---)
-                # Find position after section header
-                section_start = memory_content.index(section_header) + len(section_header)
-                # Find next section or end marker
-                rest = memory_content[section_start:]
-                next_section = re.search(r'\n## |\n---', rest)
-                if next_section:
-                    insert_pos = section_start + next_section.start()
-                else:
-                    insert_pos = len(memory_content)
-
-                memory_content = memory_content[:insert_pos] + '\n' + entry + memory_content[insert_pos:]
-
-            modified = True
-
-    if modified:
-        with open(memory_file, 'w') as f:
-            f.write(memory_content)
-        print_info("Propagated learnings to MEMORY.md")
-
-
-def cap_memory_md_size(max_bytes: int = 4096):
-    """Cap MEMORY.md size by trimming oldest bullet entries from each section."""
-    memory_file = get_memory_dir() / 'MEMORY.md'
-
-    if not memory_file.exists():
-        return
-
-    with open(memory_file) as f:
-        content = f.read()
-
-    if len(content.encode('utf-8')) <= max_bytes:
-        return
-
-    # Split into sections, trim oldest bullets (first bullet in each section) iteratively
-    lines = content.split('\n')
-
-    # Keep trimming until under limit
-    max_iterations = 50  # Safety guard
-    iteration = 0
-    while len('\n'.join(lines).encode('utf-8')) > max_bytes and iteration < max_iterations:
-        iteration += 1
-        trimmed = False
-
-        # Find sections with bullet entries, trim the oldest (first) bullet in longest section
-        sections = []  # (section_name, first_bullet_line_index)
-        current_section = None
-        bullet_indices = []
-
-        for i, line in enumerate(lines):
-            if line.startswith('## '):
-                if current_section and bullet_indices:
-                    sections.append((current_section, bullet_indices))
-                current_section = line
-                bullet_indices = []
-            elif line.startswith('- ') and current_section:
-                bullet_indices.append(i)
-
-        # Don't forget last section
-        if current_section and bullet_indices:
-            sections.append((current_section, bullet_indices))
-
-        # Find section with most bullets and remove its oldest (first) entry
-        if sections:
-            sections.sort(key=lambda x: len(x[1]), reverse=True)
-            longest_section, indices = sections[0]
-            if len(indices) > 1:  # Keep at least one entry
-                lines.pop(indices[0])
-                trimmed = True
-
-        if not trimmed:
-            break
-
-    with open(memory_file, 'w') as f:
-        f.write('\n'.join(lines))
-
-    print_info("Trimmed MEMORY.md to stay under size cap")
+    print_info(f"Session recap written to native auto-memory")
 
 
 def archive_old_logs():
@@ -563,31 +330,6 @@ def archive_old_logs():
     if archived_count > 0:
         print_info(f"Archived {archived_count} old daily log(s)")
 
-
-def update_memory_md_timestamp():
-    """Update the 'Last updated' timestamp in MEMORY.md."""
-    memory_file = get_memory_dir() / 'MEMORY.md'
-
-    if not memory_file.exists():
-        return
-
-    with open(memory_file) as f:
-        content = f.read()
-
-    # Update last updated timestamp
-    timestamp = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-
-    if '*Last updated:' in content:
-        content = re.sub(
-            r'\*Last updated: [^*]+\*',
-            f'*Last updated: {timestamp}*',
-            content
-        )
-    else:
-        content += f"\n---\n*Last updated: {timestamp}*\n"
-
-    with open(memory_file, 'w') as f:
-        f.write(content)
 
 
 def generate_session_stats() -> dict:
@@ -678,20 +420,11 @@ def main():
         stats = generate_session_stats()
         save_session_index(stats)
 
-        # 5. Extract learnings from daily log into learnings.json
-        extract_and_save_learnings(log_path)
+        # 5. Write session recap to native auto-memory
+        write_session_recap_to_auto_memory(log_path)
 
-        # 6. Propagate learnings to MEMORY.md
-        propagate_learnings_to_memory()
-
-        # 7. Cap MEMORY.md size
-        cap_memory_md_size()
-
-        # 8. Archive old logs
+        # 6. Archive old logs
         archive_old_logs()
-
-        # 9. Update MEMORY.md timestamp
-        update_memory_md_timestamp()
 
         # Print summary
         if stats['activity_count'] > 0:

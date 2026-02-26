@@ -86,6 +86,26 @@
             "timeout": 3
           }
         ]
+      },
+      {
+        "matcher": "WebSearch|WebFetch",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/memory-logger.py\" && python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/memory-logger.py\" || true",
+            "timeout": 3
+          }
+        ]
+      },
+      {
+        "matcher": "Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/memory-logger.py\" && python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/memory-logger.py\" || true",
+            "timeout": 3
+          }
+        ]
       }
     ],
     "Stop": [

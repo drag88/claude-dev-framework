@@ -69,18 +69,13 @@ For anything requiring more than ~5 steps:
 
 ## Self-Improvement Loop
 
-When corrected — on approach, on a fact, on a code pattern — record it immediately.
+When corrected — on approach, on a fact, on a code pattern — save it to your auto-memory immediately.
 
-**How to record**: Use the Edit tool to append to today's daily log at `.claude/memory/daily/{YYYY-MM-DD}.md`:
-- Corrections and decisions → append to the `## Decisions Made` section
-- Issues and workarounds → append to the `## Issues Encountered` section
+**What to save**: Key decisions, corrections, debugging insights, project patterns, and architectural notes.
 
-Format:
-```
-- [short description of what was wrong and what's right]
-```
+**Where to save**: Your auto-memory (`~/.claude/projects/<project>/memory/MEMORY.md` and topic files). Use the Write or Edit tool to update these files.
 
-These entries are automatically propagated to MEMORY.md by the session-end hook, creating persistent cross-session memory.
+**Daily activity logs** at `.claude/memory/daily/` are auto-maintained by hooks — don't manually edit them for activity tracking.
 
 **Read learnings at session start** — check `.claude/rules/memory-context.md` (auto-loaded) for recent decisions and known issues.
 
