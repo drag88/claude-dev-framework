@@ -1,6 +1,6 @@
 # CDF (Claude Dev Framework)
 
-A comprehensive development framework plugin for Claude Code featuring **29 commands**, **21 agent personas**, **20 skills**, and **13 lifecycle hooks**.
+A comprehensive development framework plugin for Claude Code featuring **29 commands**, **22 agent personas**, **20 skills**, and **13 lifecycle hooks**.
 
 ---
 
@@ -167,7 +167,7 @@ All commands are prefixed with `/cdf:`. See [commands/INDEX.md](commands/INDEX.m
 
 ## Agents
 
-CDF includes 21 specialized agent personas. See [agents/INDEX.md](agents/INDEX.md) for the complete reference.
+CDF includes 22 specialized agent personas. See [agents/INDEX.md](agents/INDEX.md) for the complete reference.
 
 ### Architecture & Design
 
@@ -187,6 +187,7 @@ CDF includes 21 specialized agent personas. See [agents/INDEX.md](agents/INDEX.m
 | `library-researcher` | Evaluate open-source libraries |
 | `root-cause-analyst` | Debug complex issues |
 | `media-interpreter` | Interpret PDFs, images, diagrams |
+| `business-research-strategist` | Business research, market & competitive analysis |
 
 ### Quality & Performance
 
@@ -474,7 +475,7 @@ claude-dev-framework/
 │   ├── implement.md, build.md, test.md, tdd.md, ...
 │   └── verify.md, learn.md, e2e.md (new)
 │
-├── agents/                   # 21 agent personas
+├── agents/                   # 22 agent personas
 │   ├── README.md             # Categorized agent reference
 │   ├── system-architect.md, backend-architect.md, ...
 │   └── tdd-guide.md, e2e-specialist.md (new)

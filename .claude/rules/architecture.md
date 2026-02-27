@@ -9,7 +9,7 @@ CDF (Claude Dev Framework) is a comprehensive plugin for Claude Code that provid
 | Directory | Purpose |
 |-----------|---------|
 | `commands/` | 29 slash command definitions (markdown with YAML frontmatter) |
-| `agents/` | 21 agent persona definitions for specialized expertise |
+| `agents/` | 22 agent persona definitions for specialized expertise |
 | `skills/` | 20 auto-invoked skills with trigger-based activation |
 | `contexts/` | Behavioral context modes (dev/review/research) |
 | `hooks/` | Lifecycle hook configuration (JSON) |

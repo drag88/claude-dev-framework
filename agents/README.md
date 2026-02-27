@@ -15,7 +15,7 @@ Quick reference for all available agent personas, organized by category.
 
 ---
 
-## Analysis & Research (5)
+## Analysis & Research (6)
 
 | Agent | Description |
 |-------|-------------|
@@ -24,6 +24,7 @@ Quick reference for all available agent personas, organized by category.
 | [library-researcher](library-researcher.md) | Research open-source libraries with evidence-backed analysis using GitHub permalinks |
 | [root-cause-analyst](root-cause-analyst.md) | Investigate complex problems to identify underlying causes through evidence-based analysis |
 | [media-interpreter](media-interpreter.md) | Interpret and extract information from PDFs, images, diagrams, and other media files |
+| [business-research-strategist](business-research-strategist.md) | Deep business research with Socratic interview, parallel sub-agent teams, and strategic frameworks |
 
 ---
 
@@ -90,5 +91,6 @@ Quick reference for all available agent personas, organized by category.
 | Python-specific help | python-expert |
 | Gather requirements | requirements-analyst |
 | Business strategy | business-panel-experts |
+| Business research & market analysis | business-research-strategist |
 | Test-Driven Development | tdd-guide |
 | E2E testing with Playwright | e2e-specialist |

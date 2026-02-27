@@ -53,7 +53,7 @@
 | Component | Count | Format |
 |-----------|-------|--------|
 | Commands | 29 | Markdown + YAML |
-| Agents | 21 | Markdown + YAML |
+| Agents | 22 | Markdown + YAML |
 | Skills | 19 | Markdown + directories |
 | Hooks | 13 | JSON + Python/Bash |
 | Context Modes | 3 | Markdown |

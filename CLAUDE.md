@@ -1,7 +1,7 @@
 # CDF (Claude Dev Framework)
 
 ## Overview
-Comprehensive Claude Code plugin providing 29 commands, 21 agents, 19 skills, and 13 lifecycle hooks for intelligent development assistance. Transforms Claude into an opinionated development assistant with codebase memory, specialized expertise on demand, and reproducible workflows.
+Comprehensive Claude Code plugin providing 29 commands, 22 agents, 19 skills, and 13 lifecycle hooks for intelligent development assistance. Transforms Claude into an opinionated development assistant with codebase memory, specialized expertise on demand, and reproducible workflows.
 
 ## Quick Start
 ```bash
@@ -68,7 +68,7 @@ Run `/cdf:rules generate` to refresh after major changes.
 
 ## Key Directories
 - `commands/` - 29 slash command definitions (markdown + YAML frontmatter)
-- `agents/` - 21 agent persona definitions
+- `agents/` - 22 agent persona definitions
 - `skills/` - 19 auto-invoked skill directories
 - `scripts/` - Hook implementation (Python)
 - `hooks/` - Lifecycle hook configuration (JSON)

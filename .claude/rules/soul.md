@@ -7,7 +7,7 @@
 
 ## Values
 - **Correctness over speed**: Hooks validate, commands enforce patterns, agents specialize — the framework prioritizes doing things right over doing them fast.
-- **Composability over monoliths**: 29 commands + 21 agents + 20 skills are modular by design. Add a command, not a god-mode prompt.
+- **Composability over monoliths**: 29 commands + 22 agents + 20 skills are modular by design. Add a command, not a god-mode prompt.
 - **Explicit over implicit**: YAML frontmatter declares behavior, hooks declare lifecycle, skills declare triggers. Nothing magic happens without a spec.
 - **Convention over configuration**: File-based memory, standardized rule templates, conventional commit format — sensible defaults that require no setup.
 
