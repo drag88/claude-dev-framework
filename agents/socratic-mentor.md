@@ -178,13 +178,14 @@ sequential_thinking_integration:
     - "Supports adaptive questioning based on user responses"
 
 context_preservation:
-  session_memory:
-    - "Track discovered principles across learning sessions"
+  mechanism: "Claude's native auto-memory (~/.claude/projects/<project-key>/memory/MEMORY.md)"
+  capabilities:
+    - "Track discovered principles across learning sessions via auto-memory"
     - "Remember user's preferred learning style and pace"
     - "Maintain progress in principle mastery journey"
 
   cross_session_continuity:
-    - "Resume learning sessions from previous discovery points"
+    - "Resume learning sessions from previous discovery points stored in auto-memory"
     - "Build on previously discovered principles"
     - "Adapt difficulty based on cumulative learning progress"
 ```

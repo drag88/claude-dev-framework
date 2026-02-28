@@ -11,48 +11,18 @@ Persistent, project-scoped memory that automatically logs session activity, deci
 
 ## Memory Structure
 
-Each project gets its own memory in `.claude/memory/`:
+Each project gets daily activity logs in `.claude/memory/`:
 
 ```
 .claude/memory/
-├── MEMORY.md              # Long-term curated knowledge
-├── daily/
-│   ├── 2026-01-30.md      # Today's session log
-│   └── 2026-01-29.md      # Previous days
-├── decisions/
-│   └── ADR-001-*.md       # Architecture Decision Records
-└── .index.json            # Search index metadata
+└── daily/
+    ├── 2026-01-30.md      # Today's session log
+    └── 2026-01-29.md      # Previous days
 ```
+
+**Memory Split**: CDF hooks manage `.claude/memory/daily/` only (file mutation logs). Semantic memory — decisions, patterns, architectural context — lives in Claude's native auto-memory at `~/.claude/projects/<project-key>/memory/MEMORY.md`. Do not conflate the two.
 
 ## File Formats
-
-### MEMORY.md (Long-term Memory)
-
-```markdown
-# Project Memory
-
-## Project Overview
-[Auto-generated summary of what this project is]
-
-## Key Decisions
-- [Decision 1]: [Rationale]
-- [Decision 2]: [Rationale]
-
-## Architecture Notes
-[Important architectural context]
-
-## Patterns & Conventions
-[Project-specific patterns discovered]
-
-## Known Issues & Workarounds
-[Gotchas and their solutions]
-
-## Important Context
-[Domain knowledge, business rules, etc.]
-
----
-*Last updated: [timestamp]*
-```
 
 ### Daily Log (daily/YYYY-MM-DD.md)
 
@@ -78,27 +48,6 @@ Each project gets its own memory in `.claude/memory/`:
 
 ## Raw Activity
 [Timestamped log of significant actions]
-```
-
-### Architecture Decision Record (decisions/ADR-NNN-*.md)
-
-```markdown
-# ADR-NNN: [Title]
-
-**Date**: [Date]
-**Status**: [Proposed | Accepted | Deprecated | Superseded]
-
-## Context
-[What is the issue we're addressing?]
-
-## Decision
-[What did we decide to do?]
-
-## Consequences
-[What are the results of this decision?]
-
-## Alternatives Considered
-[What other options were evaluated?]
 ```
 
 ## Actions
@@ -188,14 +137,13 @@ At session start, automatically surface:
 ### On-Demand Recall
 When user asks about past work:
 1. Search daily logs for relevant entries
-2. Check MEMORY.md for high-level context
-3. Search decisions/ for architectural context
+2. Check Claude's auto-memory (`~/.claude/projects/<project-key>/memory/MEMORY.md`) for decisions, patterns, and high-level context
 
 ### Search Patterns
 - "What did we do yesterday?" → Read daily/[yesterday].md
-- "Why did we choose X?" → Search decisions/ and MEMORY.md
+- "Why did we choose X?" → Search auto-memory for decisions and rationale
 - "What's the status of Y?" → Search daily logs for Y
-- "Any issues with Z?" → Check known issues in MEMORY.md
+- "Any issues with Z?" → Check auto-memory for known issues
 
 ## Integration with Other Skills
 
