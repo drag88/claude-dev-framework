@@ -278,7 +278,7 @@ Generate a concise `CLAUDE.generated.md` file from existing `.claude/rules/`.
 - From `commands.md`: Setup, test, lint, run commands
 - From `patterns.md`: Critical coding patterns/rules
 - From `soul.md`: Project identity, values, boundaries
-- From `workflow.md`: One-line pointer only ("Workflow rules in .claude/rules/workflow.md")
+- From `workflow.md`: Subagent routing table + pointer to full rules
 
 **Output Template:**
 ```markdown
@@ -301,8 +301,23 @@ Generate a concise `CLAUDE.generated.md` file from existing `.claude/rules/`.
 3. **No backwards compat** - delete deprecated code immediately
 4. **Tests required** - no feature complete without tests
 
-## Workflow
-Orchestration rules (plan mode, subagents, verification): `.claude/rules/workflow.md`
+## Subagent Strategy
+
+**Default to subagents for exploration. Main context is for implementation.**
+
+| Task | Use Subagent? | Why |
+|------|:---:|-----|
+| Exploring unfamiliar code | Yes | Returns summary, not raw files |
+| Researching library/API | Yes | Returns verdict + key facts |
+| Parallel analysis (multiple dirs) | Yes | Multiple agents, simultaneous |
+| Tracing bugs across files | Yes | Reads 10+ files without polluting context |
+| Single targeted grep/read | No | Faster inline |
+| Writing/editing files | No | Must stay in main context |
+
+**Rules:**
+- One atomic goal per subagent. Return summaries, not raw dumps.
+- For complex problems, spawn 3-5 agents in parallel covering different angles.
+- Full workflow details: `.claude/rules/workflow.md`
 
 <plans_instruction>
 ## Plans Format
@@ -333,13 +348,13 @@ When working in this project, use the appropriate CDF agent for specialized task
 
 | Task Type | Agent | Command |
 |-----------|-------|---------|
-| System design | system-architect | `/cdf:spawn` |
-| API/backend work | backend-architect | `/cdf:spawn` |
-| UI development | frontend-architect | `/cdf:spawn` |
-| CI/CD setup | devops-architect | `/cdf:spawn` |
+| System design | system-architect | `/cdf:task` |
+| API/backend work | backend-architect | `/cdf:task` |
+| UI development | frontend-architect | `/cdf:task` |
+| CI/CD setup | devops-architect | `/cdf:task` |
 | Research topics | deep-research-agent | `/cdf:research` |
-| Find code/patterns | codebase-navigator | `/cdf:spawn` |
-| Evaluate libraries | library-researcher | `/cdf:spawn` |
+| Find code/patterns | codebase-navigator | `/cdf:task` |
+| Evaluate libraries | library-researcher | `/cdf:task` |
 | Debug issues | root-cause-analyst | `/cdf:troubleshoot` |
 | Write tests | quality-engineer | `/cdf:test` |
 | Security audit | security-engineer | `/cdf:analyze` |
@@ -349,7 +364,7 @@ When working in this project, use the appropriate CDF agent for specialized task
 | TDD workflow | tdd-guide | `/cdf:tdd` |
 | E2E testing | e2e-specialist | `/cdf:e2e` |
 
-**Auto-activation**: Agents activate automatically via `/cdf:spawn` and `/cdf:task` based on task context.
+**Auto-activation**: Agents activate automatically via `/cdf:task` based on task context.
 
 ## Project Rules
 Auto-generated rules in `.claude/rules/` - Claude loads automatically.
@@ -364,12 +379,13 @@ Run `/cdf:rules generate` to refresh after major changes.
 1. **Overview** - 1-2 sentence description
 2. **Quick Start** - 4-5 bash commands (setup, test, lint, run)
 3. **Critical Rules** - 4 standard rules (read before edit, DRY, no backwards compat, tests required)
-4. **Plans Format** - Plans instruction block for unresolved questions
-5. **Memory** - Auto-memory usage guidance for cross-session context
-6. **Commit Messages** - Pointer to `/cdf:git` command
-7. **CDF Agents** - Agent selection guide for specialized tasks
-8. **Project Rules** - Pointer to `.claude/rules/`
-9. **Key Directories** - Max 5-7 most important directories
+4. **Subagent Strategy** - When to delegate to subagents vs work inline
+5. **Plans Format** - Plans instruction block for unresolved questions
+6. **Memory** - Auto-memory usage guidance for cross-session context
+7. **Commit Messages** - Pointer to `/cdf:git` command
+8. **CDF Agents** - Agent selection guide for specialized tasks
+9. **Project Rules** - Pointer to `.claude/rules/`
+10. **Key Directories** - Max 5-7 most important directories
 
 **Guidelines:**
 - Keep < 100 lines, never exceed 150
@@ -479,6 +495,24 @@ uv run uvicorn app.main:app --reload  # Start dev server
 2. **DRY** - search with `rg` before writing similar code
 3. **No backwards compat** - delete deprecated code immediately
 4. **Tests required** - no feature complete without tests
+
+## Subagent Strategy
+
+**Default to subagents for exploration. Main context is for implementation.**
+
+| Task | Use Subagent? | Why |
+|------|:---:|-----|
+| Exploring unfamiliar code | Yes | Returns summary, not raw files |
+| Researching library/API | Yes | Returns verdict + key facts |
+| Parallel analysis (multiple dirs) | Yes | Multiple agents, simultaneous |
+| Tracing bugs across files | Yes | Reads 10+ files without polluting context |
+| Single targeted grep/read | No | Faster inline |
+| Writing/editing files | No | Must stay in main context |
+
+**Rules:**
+- One atomic goal per subagent. Return summaries, not raw dumps.
+- For complex problems, spawn 3-5 agents in parallel covering different angles.
+- Full workflow details: `.claude/rules/workflow.md`
 
 <plans_instruction>
 ## Plans Format

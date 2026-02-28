@@ -6,8 +6,7 @@ Triggers on Stop event. Saves complete flow state and creates
 resume instructions for next session.
 """
 
-import json
-import os
+import re
 import sys
 from datetime import datetime
 from pathlib import Path
@@ -67,7 +66,6 @@ def get_current_phase(flow_dir: Path) -> str:
 
     content = state_file.read_text()
 
-    import re
     match = re.search(r'current_phase:\s*(\w+)', content)
     if match:
         return match.group(1)
@@ -84,8 +82,6 @@ def update_flow_state_on_stop(flow_dir: Path) -> None:
 
     content = state_file.read_text()
     now = datetime.now().isoformat()
-
-    import re
 
     # Update last_updated
     content = re.sub(r'last_updated:\s*[\w\-:.]+', f'last_updated: {now}', content)
@@ -139,7 +135,6 @@ To continue this flow, run:
 
     # Update or append resume section
     if "## Quick Resume" in content:
-        import re
         content = re.sub(
             r'## Quick Resume.*?(?=\n## |\Z)',
             resume_section,

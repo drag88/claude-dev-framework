@@ -46,7 +46,7 @@ Use for:
 ### Strategic Compaction
 - Compact after major task completion
 - Save state before compaction
-- Use `/cdf:session save` first
+- Save state before compaction
 
 ---
 

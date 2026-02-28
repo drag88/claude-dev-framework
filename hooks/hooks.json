@@ -71,41 +71,6 @@
             "timeout": 3
           }
         ]
-      },
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/flow-verify-gate.py\" && python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/flow-verify-gate.py\" || true",
-            "timeout": 5
-          },
-          {
-            "type": "command",
-            "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/memory-logger.py\" && python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/memory-logger.py\" || true",
-            "timeout": 3
-          }
-        ]
-      },
-      {
-        "matcher": "WebSearch|WebFetch",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/memory-logger.py\" && python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/memory-logger.py\" || true",
-            "timeout": 3
-          }
-        ]
-      },
-      {
-        "matcher": "Read",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/memory-logger.py\" && python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/memory-logger.py\" || true",
-            "timeout": 3
-          }
-        ]
       }
     ],
     "Stop": [

@@ -1,6 +1,6 @@
 # Development Context Mode
 
-Active when `/cdf:session load --mode dev` is used.
+Development-focused behavioral mode.
 
 ## Behavioral Priorities
 

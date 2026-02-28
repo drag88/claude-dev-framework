@@ -6,8 +6,7 @@ Triggers on Edit/Write/MultiEdit tools. Creates checkpoints every 20 tool calls
 to enable workflow recovery.
 """
 
-import json
-import os
+import re
 import sys
 from datetime import datetime
 from pathlib import Path
@@ -47,7 +46,6 @@ def parse_flow_state(state_file: Path) -> dict:
     if content.startswith("---"):
         parts = content.split("---", 2)
         if len(parts) >= 3:
-            import re
             frontmatter = parts[1].strip()
 
             # Simple YAML parsing for key fields
@@ -70,7 +68,6 @@ def update_tool_call_count(state_file: Path) -> int:
     content = state_file.read_text()
 
     # Find and increment tool_calls
-    import re
     match = re.search(r'tool_calls:\s*(\d+)', content)
 
     if match:

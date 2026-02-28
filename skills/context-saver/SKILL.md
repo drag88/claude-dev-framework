@@ -31,11 +31,8 @@ This session has been highly productive with 52 tool calls.
 Consider compacting to preserve context for continued work.
 
 Recommended actions:
-1. Run `/cdf:session save --checkpoint` to preserve state
-2. Run `/compact` to reclaim context space
-3. Continue with fresh context
-
-Current progress saved in: .claude/sessions/current-context.md
+1. Run `/compact` to reclaim context space
+2. Continue with fresh context
 ```
 
 ---
@@ -185,24 +182,12 @@ When `/cdf:implement`, `/cdf:test`, or similar completes:
 2. Assess context usage
 3. Suggest checkpoint if > 50 calls
 
-### Checkpoint vs Full Save
-- **Checkpoint**: Quick snapshot, minimal overhead
-- **Full Save**: Comprehensive state, all context
-
-```bash
-# Quick checkpoint
-/cdf:session save --checkpoint
-
-# Full save with all context
-/cdf:session save --type all
-```
-
 ---
 
 ## Related Commands
 
 - `/cdf:docs plan` - Create initial task documentation structure
 - `/cdf:docs update` - Manually trigger documentation update
-- `/cdf:session save` - Save session state
-- `/cdf:session load` - Resume from checkpoint
 - `/compact` - Reclaim context space
+- Native `/resume` - Resume previous sessions
+- Native `--continue` - Continue last session

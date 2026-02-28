@@ -1,6 +1,6 @@
 {
   "name": "cdf",
-  "description": "Complete development framework with 29 commands, 22 agent personas, 20 skills, and 13 lifecycle hooks. All commands enforce mandatory state management and anti-patterns.",
+  "description": "Complete development framework with 19 commands, 22 agent personas, 20 skills, and 11 lifecycle hooks. All commands enforce mandatory state management and anti-patterns.",
   "version": "1.10.0",
   "author": {
     "name": "Aswin Sreenivas"

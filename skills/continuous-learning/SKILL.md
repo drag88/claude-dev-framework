@@ -4,7 +4,6 @@ Automatically extract and persist valuable patterns discovered during developmen
 
 ## When to Activate
 
-- When `/cdf:learn` command is invoked
 - At session end (via Stop hook)
 - When significant problem is solved
 - When user says "remember this", "save this pattern", or similar

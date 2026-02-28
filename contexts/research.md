@@ -1,6 +1,6 @@
 # Research Context Mode
 
-Active when `/cdf:session load --mode research` is used.
+Exploration and research behavioral mode.
 
 ## Behavioral Priorities
 

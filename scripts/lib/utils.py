@@ -4,7 +4,6 @@ Cross-platform utility functions for CDF hook scripts.
 """
 
 import json
-import os
 import subprocess
 import sys
 from pathlib import Path
@@ -26,16 +25,6 @@ def get_project_root() -> Path:
         current = current.parent
 
     return cwd
-
-
-def get_plugin_root() -> Path:
-    """Get the CDF plugin root directory."""
-    env_root = os.environ.get('CLAUDE_PLUGIN_ROOT')
-    if env_root:
-        return Path(env_root)
-
-    # Fallback: assume we're in scripts/lib
-    return Path(__file__).parent.parent.parent
 
 
 def read_json_file(path: Path) -> Optional[Dict[str, Any]]:
@@ -77,66 +66,14 @@ def run_command(cmd: list, cwd: Optional[Path] = None, timeout: int = 30) -> tup
         return (False, '', str(e))
 
 
-def detect_package_manager() -> str:
-    """Detect which package manager is used in the project."""
-    root = get_project_root()
-
-    # Check for lock files
-    if (root / 'pnpm-lock.yaml').exists():
-        return 'pnpm'
-    elif (root / 'yarn.lock').exists():
-        return 'yarn'
-    elif (root / 'bun.lockb').exists():
-        return 'bun'
-    elif (root / 'package-lock.json').exists():
-        return 'npm'
-
-    # Default to npm if package.json exists
-    if (root / 'package.json').exists():
-        return 'npm'
-
-    return 'npm'
-
-
 def print_warning(message: str) -> None:
     """Print a warning message to stderr."""
     print(f"⚠️  Warning: {message}", file=sys.stderr)
 
 
-def print_error(message: str) -> None:
-    """Print an error message to stderr."""
-    print(f"❌ Error: {message}", file=sys.stderr)
-
-
 def print_info(message: str) -> None:
     """Print an info message to stderr."""
     print(f"ℹ️  {message}", file=sys.stderr)
-
-
-def print_success(message: str) -> None:
-    """Print a success message to stderr."""
-    print(f"✅ {message}", file=sys.stderr)
-
-
-def is_ci_environment() -> bool:
-    """Check if running in a CI environment."""
-    ci_vars = ['CI', 'GITHUB_ACTIONS', 'GITLAB_CI', 'CIRCLECI', 'JENKINS_URL']
-    return any(os.environ.get(var) for var in ci_vars)
-
-
-def get_file_extension(path: str) -> str:
-    """Get the file extension from a path."""
-    return Path(path).suffix.lower()
-
-
-def is_typescript_file(path: str) -> bool:
-    """Check if a file is TypeScript."""
-    return get_file_extension(path) in ['.ts', '.tsx']
-
-
-def is_javascript_file(path: str) -> bool:
-    """Check if a file is JavaScript."""
-    return get_file_extension(path) in ['.js', '.jsx', '.mjs', '.cjs']
 
 
 def is_test_file(path: str) -> bool:
@@ -149,3 +86,27 @@ def is_test_file(path: str) -> bool:
         '/test/' in path.lower(),
         '/__tests__/' in path.lower()
     ])
+
+
+def get_memory_dir() -> Path:
+    """Get the .claude/memory directory path."""
+    return get_project_root() / '.claude' / 'memory'
+
+
+def get_daily_log_path() -> Path:
+    """Get today's daily log path."""
+    from datetime import datetime
+    today = datetime.now().strftime('%Y-%m-%d')
+    return get_memory_dir() / 'daily' / f'{today}.md'
+
+
+def get_native_auto_memory_path() -> Path:
+    """Resolve the native auto-memory MEMORY.md path.
+
+    Claude's auto-memory lives at ~/.claude/projects/<project-key>/memory/MEMORY.md
+    where <project-key> replaces all non-alphanumeric chars (except -) with '-'.
+    """
+    import re
+    project_root = str(get_project_root())
+    project_key = re.sub(r'[^a-zA-Z0-9-]', '-', project_root)
+    return Path.home() / '.claude' / 'projects' / project_key / 'memory' / 'MEMORY.md'

@@ -1,6 +1,6 @@
 # Solutions Directory
 
-Institutional knowledge captured from solved problems. Created by `/cdf:compound` command.
+Institutional knowledge captured from solved problems.
 
 ## Directory Structure
 
@@ -52,8 +52,8 @@ grep -l "severity: high" docs/solutions/**/*.md
 ## Creating Solutions
 
 Solutions are created by:
-1. `/cdf:compound` - After solving a problem
-2. `/cdf:flow` - Final phase captures learnings
+1. `/cdf:flow` - Knowledge capture during workflow
+2. Auto-memory hooks (`memory-summarize.py`) - Session-end pattern extraction
 3. Manual creation following the template
 
 ## Template

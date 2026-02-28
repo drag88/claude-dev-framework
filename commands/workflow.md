@@ -27,13 +27,13 @@ Use `/cdf:workflow` when:
 - Converting requirements into actionable workflows
 - Planning multi-phase development projects
 
-**Don't use this command for**: Exploring unclear ideas (use `/cdf:brainstorm`), breaking down known tasks (use `/cdf:spawn`), executing tasks (use `/cdf:task`).
+**Don't use this command for**: Exploring unclear ideas (use `/cdf:brainstorm`), breaking down known tasks (use `/cdf:task --breakdown`), executing tasks (use `/cdf:task`).
 
 | Scenario | Command |
 |----------|---------|
 | Have an idea, need requirements | `/cdf:brainstorm` |
 | Have a PRD/spec, need workflow | `/cdf:workflow` |
-| Have complex task, need breakdown | `/cdf:spawn` |
+| Have complex task, need breakdown | `/cdf:task --breakdown` |
 | Have defined task, ready to execute | `/cdf:task` |
 
 ## Triggers
@@ -65,8 +65,6 @@ Key behaviors:
 - **Context7 MCP**: Framework-specific workflow patterns and implementation best practices
 - **Magic MCP**: UI/UX workflow generation and design system integration strategies
 - **Playwright MCP**: Testing workflow integration and quality assurance automation
-- **Morphllm MCP**: Large-scale workflow transformation and pattern-based optimization
-- **Serena MCP**: Cross-session workflow persistence, memory management, and project context
 
 ## Tool Coordination
 - **Read/Write/Edit**: PRD analysis and workflow documentation generation
@@ -107,7 +105,7 @@ Key behaviors:
 ### Cross-Session Workflow Management
 ```
 /cdf:workflow project-brief.md --depth normal
-# Serena MCP manages cross-session workflow context and persistence
+# File-based persistence manages cross-session workflow context
 # Progressive workflow enhancement with memory-driven insights
 ```
 

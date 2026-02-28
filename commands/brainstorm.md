@@ -27,13 +27,13 @@ Use `/cdf:brainstorm` when:
 - You need multi-persona analysis before implementation
 - Starting a new project without clear specifications
 
-**Don't use this command for**: Executing defined tasks (use `/cdf:task`), generating workflows from existing PRDs (use `/cdf:workflow`), breaking down known tasks (use `/cdf:spawn`).
+**Don't use this command for**: Executing defined tasks (use `/cdf:task`), generating workflows from existing PRDs (use `/cdf:workflow`), breaking down known tasks (use `/cdf:task --breakdown`).
 
 | Scenario | Command |
 |----------|---------|
 | Have an idea, need requirements | `/cdf:brainstorm` |
 | Have a PRD/spec, need workflow | `/cdf:workflow` |
-| Have complex task, need breakdown | `/cdf:spawn` |
+| Have complex task, need breakdown | `/cdf:task --breakdown` |
 | Have defined task, ready to execute | `/cdf:task` |
 
 ## Triggers
@@ -66,8 +66,6 @@ Key behaviors:
 - **Context7 MCP**: Framework-specific feasibility assessment and pattern analysis
 - **Magic MCP**: UI/UX feasibility and design system integration analysis
 - **Playwright MCP**: User experience validation and interaction pattern testing
-- **Morphllm MCP**: Large-scale content analysis and pattern-based transformation
-- **Serena MCP**: Cross-session persistence, memory management, and project context enhancement
 
 ## Tool Coordination
 - **Read/Write/Edit**: Requirements documentation and specification generation
@@ -102,13 +100,11 @@ Key behaviors:
 ```
 /cdf:brainstorm "enterprise data analytics platform" --strategy enterprise --validate
 # Comprehensive validation with security, devops, and architect personas
-# Serena MCP for cross-session persistence and enterprise requirements tracking
 ```
 
 ### Cross-Session Refinement
 ```
 /cdf:brainstorm "mobile app monetization strategy" --depth normal
-# Serena MCP manages cross-session context and iterative refinement
 # Progressive dialogue enhancement with memory-driven insights
 ```
 

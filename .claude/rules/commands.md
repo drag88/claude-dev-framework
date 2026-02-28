@@ -7,7 +7,7 @@
 claude --plugin-dir ./claude-dev-framework
 
 # Verify installation
-/cdf:help
+/cdf:rules generate
 ```
 
 ## Plugin Usage
@@ -15,7 +15,6 @@ claude --plugin-dir ./claude-dev-framework
 ```bash
 # Core development
 /cdf:implement "feature description"
-/cdf:build
 /cdf:test
 /cdf:tdd
 /cdf:git commit
@@ -33,14 +32,12 @@ claude --plugin-dir ./claude-dev-framework
 
 # Orchestration
 /cdf:task execute "complex task"
-/cdf:spawn "multi-step task"
-/cdf:panel "strategy discussion"
+/cdf:task --breakdown "multi-step task"
 
 # Utilities
 /cdf:rules generate
 /cdf:rules soul-interview
 /cdf:docs plan
-/cdf:session load --mode dev
 /cdf:verify --mode pre-pr
 ```
 
@@ -79,5 +76,5 @@ git commit -m "docs: update README"
 
 ```bash
 # Test plugin loading
-claude --plugin-dir . -c "/cdf:help"
+claude --plugin-dir . -c "/cdf:rules generate"
 ```

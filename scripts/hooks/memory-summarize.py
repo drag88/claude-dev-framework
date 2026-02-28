@@ -15,18 +15,19 @@ from pathlib import Path
 
 # Add lib to path
 sys.path.insert(0, str(Path(__file__).parent.parent / 'lib'))
-from utils import get_project_root, print_info, print_warning, write_json_file
+from utils import get_project_root, get_memory_dir, get_daily_log_path, print_info, print_warning, write_json_file
 
 
-def get_memory_dir() -> Path:
-    """Get the memory directory path."""
-    return get_project_root() / '.claude' / 'memory'
+def has_already_summarized(log_path: Path) -> bool:
+    """Check if this session was already summarized (duplicate-fire guard)."""
+    if not log_path.exists():
+        return False
 
+    with open(log_path) as f:
+        content = f.read()
 
-def get_daily_log_path() -> Path:
-    """Get today's daily log path."""
-    today = datetime.now().strftime('%Y-%m-%d')
-    return get_memory_dir() / 'daily' / f'{today}.md'
+    # If "Session ended" already appears in today's log, we've already run
+    return '- Session ended' in content or 'Session ended' in content.split('## Activity Log')[-1] if '## Activity Log' in content else False
 
 
 def update_session_end_timestamp():
@@ -170,132 +171,6 @@ def fill_changes_table(log_path: Path):
             f.write(content)
 
 
-def parse_activity_log(content: str) -> list:
-    """Extract activity entries from the Activity Log section.
-
-    Returns list of dicts: {timestamp, type, path, detail}
-    """
-    activities = []
-
-    if '## Activity Log' not in content:
-        return activities
-
-    activity_section = content.split('## Activity Log')[-1]
-
-    # Match entries like: - `HH:MM` - edited: `path/file`
-    pattern = r'-\s+`([^`]+)`\s+-\s+([\w/]+)(?::\s+`([^`]+)`)?(?:\s*-?\s*(.*))?'
-
-    for line in activity_section.split('\n'):
-        line = line.strip()
-        if not line.startswith('- `'):
-            continue
-
-        match = re.match(pattern, line)
-        if match:
-            timestamp, action_type, path, detail = match.groups()
-            activities.append({
-                'timestamp': timestamp,
-                'type': action_type.strip(),
-                'path': path or '',
-                'detail': (detail or '').strip()
-            })
-
-    return activities
-
-
-def get_native_auto_memory_path() -> Path:
-    """Get path to native auto-memory MEMORY.md.
-
-    Native auto-memory lives at ~/.claude/projects/<project-key>/memory/MEMORY.md
-    where <project-key> replaces all non-alphanumeric chars (except -) with '-'.
-    """
-    project_root = str(get_project_root())
-    project_key = re.sub(r'[^a-zA-Z0-9-]', '-', project_root)
-    return Path.home() / '.claude' / 'projects' / project_key / 'memory' / 'MEMORY.md'
-
-
-def write_session_recap_to_auto_memory(log_path: Path):
-    """Write a 2-3 line session recap to native auto-memory MEMORY.md."""
-    if not log_path.exists():
-        return
-
-    with open(log_path) as f:
-        content = f.read()
-
-    activities = parse_activity_log(content)
-    if not activities:
-        return
-
-    # Count files edited and searches done
-    files_edited = set()
-    searches = []
-    dirs_touched = set()
-
-    for act in activities:
-        if act['type'] in ('edited', 'created/updated', 'updated', 'created'):
-            if act['path']:
-                files_edited.add(act['path'])
-                parent = str(Path(act['path']).parent)
-                if parent and parent != '.':
-                    dirs_touched.add(parent)
-        elif act['type'] in ('searched', 'grepped', 'search'):
-            if act['detail']:
-                searches.append(act['detail'].strip('"').strip("'"))
-
-    # Build recap lines
-    today = datetime.now().strftime('%Y-%m-%d')
-    parts = []
-
-    if files_edited:
-        # Show up to 4 file basenames
-        basenames = [Path(f).name for f in sorted(files_edited)]
-        if len(basenames) <= 4:
-            files_str = ', '.join(basenames)
-        else:
-            files_str = ', '.join(basenames[:4]) + f', +{len(basenames) - 4} more'
-        parts.append(f"Edited {len(files_edited)} files ({files_str}).")
-
-    if searches:
-        unique_searches = list(dict.fromkeys(searches))[:3]
-        parts.append(f"Researched: {', '.join(unique_searches)}.")
-
-    if dirs_touched:
-        sorted_dirs = sorted(dirs_touched)
-        if len(sorted_dirs) <= 3:
-            dirs_str = ', '.join(sorted_dirs)
-        else:
-            dirs_str = ', '.join(sorted_dirs[:3]) + f', +{len(sorted_dirs) - 3} more'
-        parts.append(f"Key areas: {dirs_str}.")
-
-    if not parts:
-        parts.append(f"{len(activities)} activities logged.")
-
-    recap = f"## Session: {today}\n" + ' '.join(parts) + "\n"
-
-    # Write to native auto-memory
-    memory_path = get_native_auto_memory_path()
-    memory_path.parent.mkdir(parents=True, exist_ok=True)
-
-    if memory_path.exists():
-        with open(memory_path) as f:
-            existing = f.read()
-    else:
-        existing = "# Project Memory\n\n*Auto-maintained by CDF hooks.*\n\n"
-
-    existing += '\n' + recap
-
-    # Cap at 200 lines (native auto-memory only loads first 200)
-    lines = existing.split('\n')
-    if len(lines) > 200:
-        lines = lines[:200]
-        existing = '\n'.join(lines)
-
-    with open(memory_path, 'w') as f:
-        f.write(existing)
-
-    print_info(f"Session recap written to native auto-memory")
-
-
 def archive_old_logs():
     """Archive daily logs older than 14 days."""
     memory_dir = get_memory_dir()
@@ -329,7 +204,6 @@ def archive_old_logs():
 
     if archived_count > 0:
         print_info(f"Archived {archived_count} old daily log(s)")
-
 
 
 def generate_session_stats() -> dict:
@@ -407,6 +281,11 @@ def main():
 
         log_path = get_daily_log_path()
 
+        # Duplicate-fire guard: skip if already summarized this session
+        if has_already_summarized(log_path):
+            print_info("Session already summarized, skipping duplicate")
+            return
+
         # 1. Update session end timestamp
         update_session_end_timestamp()
 
@@ -420,10 +299,7 @@ def main():
         stats = generate_session_stats()
         save_session_index(stats)
 
-        # 5. Write session recap to native auto-memory
-        write_session_recap_to_auto_memory(log_path)
-
-        # 6. Archive old logs
+        # 5. Archive old logs
         archive_old_logs()
 
         # Print summary

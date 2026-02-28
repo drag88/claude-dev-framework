@@ -1,6 +1,6 @@
 # Review Context Mode
 
-Active when `/cdf:session load --mode review` is used.
+Quality assessment behavioral mode.
 
 ## Behavioral Priorities
 

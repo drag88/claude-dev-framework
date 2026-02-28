@@ -1,6 +1,6 @@
 ---
-description: "Unified development workflow: brainstorm -> docs -> implement -> verify -> compound"
-argument-hint: "[task] [--complexity simple|standard|complex] [--skip phases] [--resume] [--deepen]"
+description: "Unified development workflow: brainstorm -> docs -> implement -> verify"
+argument-hint: "[task] [--complexity simple|standard|complex] [--skip phases] [--resume]"
 ---
 
 # /cdf:flow - Unified Development Workflow
@@ -45,7 +45,6 @@ phases:
   docs: { status: in_progress }
   implement: { status: pending }
   verify: { status: pending }
-  compound: { status: pending }
 ---
 
 # Flow: [Task Description]
@@ -98,9 +97,6 @@ Only AFTER these 4 steps are complete should you proceed with the workflow phase
 # Resume interrupted work
 /cdf:flow --resume
 
-# Parallel agent saturation for complex tasks
-/cdf:flow "migrate to microservices" --deepen
-
 # Skip specific phases
 /cdf:flow "add API endpoint" --skip brainstorm
 ```
@@ -125,11 +121,11 @@ Before executing, classify task complexity using intent-gate patterns:
 
 ### Standard
 **Signals**: "add", "implement", "create", multi-file, 50-500 estimated lines
-**Phases**: docs -> implement -> verify -> compound(optional)
+**Phases**: docs -> implement -> verify
 
 ### Complex
 **Signals**: "design", "architect", "migrate", "restructure", >500 lines, multi-domain
-**Phases**: brainstorm -> docs -> implement -> verify -> compound
+**Phases**: brainstorm -> docs -> implement -> verify
 
 **Override**: Use `--complexity` flag to force a level.
 
@@ -194,16 +190,6 @@ Delegate to `/cdf:verify` with mode based on complexity:
 
 **Escape**: User says "accept with warnings" or "commit anyway"
 
-### Phase 5: COMPOUND (Knowledge Capture)
-
-Delegate to `/cdf:compound`:
-1. Extract patterns from implementation
-2. Document decisions with rationale
-3. Create solution doc in `docs/solutions/[category]/`
-4. **Gate**: At least one pattern captured
-
-**Escape**: User says "no compound needed" or auto-skip for simple tasks
-
 ## State Persistence
 
 All state saved in `dev/active/[task-slug]/`:
@@ -213,8 +199,7 @@ dev/active/[task-slug]/
 ├── flow-state.md      # Phase status with YAML frontmatter
 ├── flow-plan.md       # Implementation plan with checkboxes
 ├── flow-tasks.md      # Task tracking (mirrors plan checkboxes)
-├── flow-context.md    # Decisions, dependencies, key files
-└── flow-compound.md   # Knowledge capture (created at end)
+└── flow-context.md    # Decisions, dependencies, key files
 ```
 
 ### flow-state.md Format
@@ -233,7 +218,6 @@ phases:
   docs: { status: completed, gate_passed: true }
   implement: { status: in_progress, progress: 65 }
   verify: { status: pending }
-  compound: { status: pending }
 ---
 
 # Flow: Implement User Authentication
@@ -255,9 +239,8 @@ phases:
 |----------|-------------|
 | `[task]` | Description of what to build/fix |
 | `--complexity` | Override auto-detection: `simple`, `standard`, `complex` |
-| `--skip` | Skip phases (comma-separated): `brainstorm`, `compound` |
+| `--skip` | Skip phases (comma-separated): `brainstorm` |
 | `--resume` | Resume interrupted workflow |
-| `--deepen` | Activate parallel agent saturation (see `/cdf:deepen`) |
 | `--list` | Show resumable workflows |
 
 ## Escape Hatches
@@ -282,23 +265,11 @@ Each phase has gates that must pass before proceeding:
 | Docs | Plan created, tasks defined with checkboxes |
 | Implement | All tasks checked, code compiles |
 | Verify | Tests pass, lint clean, security OK (by mode) |
-| Compound | At least one pattern captured |
 
 **Gate Failure Handling**:
 - First failure: Report issue, suggest fix
 - Second failure: Offer alternative approach
 - Third failure: Pause workflow, present options (fix, override, abort)
-
-## Deepen Mode
-
-When `--deepen` is specified, activate parallel agent saturation:
-
-1. Discover ALL agents from project, user, and plugins
-2. Spawn agents in parallel WITHOUT filtering
-3. Let agents self-filter for relevance
-4. Synthesize findings with deduplication
-
-See `/cdf:deepen` for standalone usage.
 
 ## MCP Integration
 
@@ -313,7 +284,7 @@ See `/cdf:deepen` for standalone usage.
 | `Read/Grep/Glob` | Codebase analysis |
 | `Write/Edit` | Code generation with checkpoint tracking |
 | `Bash` | Build, test, verification commands |
-| `Task` | Agent delegation for deepen mode |
+| `Task` | Agent delegation for complex tasks |
 | `TodoWrite` | Internal task tracking |
 
 ## Persona Activation
@@ -330,7 +301,7 @@ Automatically activated based on task domain:
 ### New Feature (Complex)
 ```bash
 /cdf:flow "implement real-time notifications with WebSocket"
-# Phases: brainstorm -> docs -> implement -> verify -> compound
+# Phases: brainstorm -> docs -> implement -> verify
 # Creates dev/active/realtime-notifications/
 ```
 
@@ -338,14 +309,7 @@ Automatically activated based on task domain:
 ```bash
 /cdf:flow "fix null pointer exception in UserService.getProfile()"
 # Phases: docs(lite) -> implement -> verify(quick)
-# No brainstorm or compound
-```
-
-### Major Refactor with Deep Analysis
-```bash
-/cdf:flow "migrate from REST to GraphQL API" --deepen
-# All phases with parallel agent saturation
-# 20-40 agents analyze in parallel during docs phase
+# No brainstorm phase
 ```
 
 ### Resume After Interruption
@@ -383,6 +347,3 @@ Automatically activated based on task domain:
 - `/cdf:docs plan` - Standalone planning
 - `/cdf:implement` - Standalone implementation
 - `/cdf:verify` - Standalone verification
-- `/cdf:compound` - Standalone knowledge capture
-- `/cdf:deepen` - Standalone parallel agent saturation
-- `/cdf:session` - Manual session management

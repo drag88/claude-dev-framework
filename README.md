@@ -1,6 +1,6 @@
 # CDF (Claude Dev Framework)
 
-A comprehensive development framework plugin for Claude Code featuring **29 commands**, **22 agent personas**, **20 skills**, and **13 lifecycle hooks**.
+A comprehensive development framework plugin for Claude Code featuring **19 commands**, **22 agent personas**, **20 skills**, and **11 lifecycle hooks**.
 
 ---
 
@@ -54,7 +54,7 @@ claude --plugin-dir ./claude-dev-framework
 
 ```bash
 # Inside Claude Code
-/cdf:help
+/cdf:rules generate
 ```
 
 ### Agents (Automatic Setup)
@@ -92,7 +92,7 @@ When you start a Claude session in any project, CDF automatically:
 
 ```bash
 # Get architecture guidance
-/cdf:spawn "design microservices architecture"
+/cdf:task --breakdown "design microservices architecture"
 
 # Debug complex issues
 /cdf:troubleshoot "API returning 500 errors"
@@ -109,12 +109,10 @@ All commands are prefixed with `/cdf:`. See [commands/INDEX.md](commands/INDEX.m
 | Command | Description |
 |---------|-------------|
 | `/cdf:implement` | Feature implementation with persona activation and MCP integration |
-| `/cdf:build` | Build, compile, and package projects with error handling |
 | `/cdf:test` | Execute tests with coverage analysis and quality reporting |
 | `/cdf:tdd` | Test-Driven Development with RED-GREEN-REFACTOR workflow |
 | `/cdf:git` | Git operations with intelligent commit messages |
-| `/cdf:cleanup` | Clean up code, remove dead code, optimize structure |
-| `/cdf:improve` | Apply systematic improvements to code quality |
+| `/cdf:improve` | Apply systematic improvements to code quality, performance, and cleanup |
 
 ### Analysis & Understanding
 
@@ -139,29 +137,16 @@ All commands are prefixed with `/cdf:`. See [commands/INDEX.md](commands/INDEX.m
 
 | Command | Description |
 |---------|-------------|
-| `/cdf:task` | Execute complex tasks with delegation |
-| `/cdf:spawn` | Break down complex tasks into subtasks |
-| `/cdf:panel` | Multi-expert panel discussions |
-
-### Workflow Orchestration
-
-| Command | Description |
-|---------|-------------|
-| `/cdf:flow` | Unified workflow: brainstorm → docs → implement → verify → compound |
-| `/cdf:compound` | Capture institutional knowledge from solved problems |
-| `/cdf:deepen` | Parallel agent saturation for comprehensive analysis |
+| `/cdf:task` | Execute complex tasks with breakdown, delegation, and workflow management |
+| `/cdf:flow` | Unified workflow: brainstorm → docs → implement → verify |
 
 ### Utilities
 
 | Command | Description |
 |---------|-------------|
-| `/cdf:help` | List all available commands |
 | `/cdf:docs` | Documentation management |
 | `/cdf:rules` | Generate and manage project rules |
-| `/cdf:session` | Session management and context handling |
-| `/cdf:select-tool` | Intelligent MCP tool selection |
 | `/cdf:verify` | Pre-PR quality verification (build, types, lint, tests) |
-| `/cdf:learn` | Continuous learning and pattern extraction |
 
 ---
 
@@ -226,11 +211,11 @@ CDF includes 22 specialized agent personas. See [agents/INDEX.md](agents/INDEX.m
 Agents are automatically activated based on task context, or you can reference them in commands:
 
 ```bash
-# Spawn activates relevant agents automatically
-/cdf:spawn "design authentication system"
+# Task activates relevant agents automatically
+/cdf:task execute "design authentication system"
 
-# Task delegates to appropriate agents
-/cdf:task execute "security audit" --delegate
+# Task with breakdown delegates to appropriate agents
+/cdf:task --breakdown "security audit" --delegate
 ```
 
 ---
@@ -298,7 +283,7 @@ Every request is classified before action:
 
 ## Hooks
 
-CDF uses 13 lifecycle hooks for automation:
+CDF uses 11 lifecycle hooks for automation:
 
 | Event | Script | Purpose |
 |-------|--------|---------|
@@ -310,9 +295,7 @@ CDF uses 13 lifecycle hooks for automation:
 | **PostToolUse** | `comment-checker.py` | Warn if comment ratio > 25% |
 | **PostToolUse** | `memory-logger.py` | Log file changes to session memory |
 | **PostToolUse** | `flow-checkpoint.py` | Auto-checkpoint every 20 tool calls during flow |
-| **PostToolUse** | `flow-verify-gate.py` | Track test results during flow verify phase |
-| **Stop** | `session-end.py` | Persist session state on exit |
-| **Stop** | `memory-summarize.py` | Summarize session memory on exit |
+| **Stop** | `memory-summarize.py` | Summarize session memory and persist state on exit |
 | **Stop** | `flow-session-save.py` | Save flow state with resume instructions |
 | **Stop** | `task-completeness-check.sh` | Verify all tasks completed before stop |
 
@@ -328,12 +311,7 @@ CDF supports behavioral modes that adjust Claude's focus and approach.
 | **review** | Quality assessment, thorough checks | Code reviews, audits |
 | **research** | Exploration, broad investigation | Learning, research |
 
-Activate with session command:
-```bash
-/cdf:session load --mode dev
-```
-
-Context files located in `contexts/` directory.
+Context files located in `contexts/` directory. Modes are activated by loading the relevant context file.
 
 ---
 
@@ -420,7 +398,7 @@ Copy `mcp-configs/mcp-servers.template.json` to `.mcp/settings.json` and configu
 
 ### Command Enforcement Pattern
 
-All workflow commands (flow, tdd, spawn, task, deepen, compound, session) use a **MANDATORY FIRST ACTIONS** pattern to ensure Claude doesn't skip critical steps:
+Workflow commands (flow, tdd, task) use a **MANDATORY FIRST ACTIONS** pattern to ensure Claude doesn't skip critical steps:
 
 ```markdown
 ## MANDATORY FIRST ACTIONS (DO NOT SKIP)
@@ -470,10 +448,10 @@ claude-dev-framework/
 ├── .claude-plugin/
 │   └── plugin.json           # Plugin metadata (name: "cdf", version: "1.10.0")
 │
-├── commands/                 # 29 slash commands
+├── commands/                 # 19 slash commands
 │   ├── README.md             # Categorized command reference
-│   ├── implement.md, build.md, test.md, tdd.md, ...
-│   └── verify.md, learn.md, e2e.md (new)
+│   ├── implement.md, test.md, tdd.md, ...
+│   └── verify.md, e2e.md
 │
 ├── agents/                   # 22 agent personas
 │   ├── README.md             # Categorized agent reference
@@ -503,20 +481,19 @@ claude-dev-framework/
 │   └── mcp-servers.template.json
 │
 ├── docs/
-│   └── solutions/            # Institutional knowledge from /cdf:compound
+│   └── solutions/            # Institutional knowledge from solved problems
 │       ├── build-errors/
 │       ├── runtime-errors/
 │       └── ...
 │
 ├── hooks/
-│   └── hooks.json            # 13 lifecycle hooks
+│   └── hooks.json            # 11 lifecycle hooks
 │
 ├── scripts/
 │   ├── analyze-codebase.py   # SessionStart hook
 │   ├── hooks/                # Additional hook scripts (new)
 │   │   ├── git-push-review.py
-│   │   ├── console-log-detector.py
-│   │   └── session-end.py
+│   │   └── console-log-detector.py
 │   └── lib/                  # Shared utilities (new)
 │       └── utils.py
 │
@@ -594,9 +571,6 @@ claude plugin marketplace add drag88/claude-dev-framework
 ### Commands Not Found
 
 ```bash
-# List available commands
-/cdf:help
-
 # Check command namespace
 /plugin list  # Should show "cdf" namespace
 ```

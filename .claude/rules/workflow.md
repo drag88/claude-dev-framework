@@ -73,11 +73,11 @@ When corrected — on approach, on a fact, on a code pattern — save it to your
 
 **What to save**: Key decisions, corrections, debugging insights, project patterns, and architectural notes.
 
-**Where to save**: Your auto-memory (`~/.claude/projects/<project>/memory/MEMORY.md` and topic files). Use the Write or Edit tool to update these files.
+**Where to save**: Your native auto-memory (`~/.claude/projects/<project>/memory/MEMORY.md` and topic files). Use the Write or Edit tool to update these files. This is Claude's domain — CDF hooks never write here.
 
-**Daily activity logs** at `.claude/memory/daily/` are auto-maintained by hooks — don't manually edit them for activity tracking.
+**CDF daily logs** at `.claude/memory/daily/` track file mutations only (edits/writes). Auto-maintained by hooks — don't manually edit.
 
-**Read learnings at session start** — check `.claude/rules/memory-context.md` (auto-loaded) for recent decisions and known issues.
+**Session continuity** — `.claude/rules/memory-context.md` (auto-loaded) provides yesterday's summary, today's activity, and open TODOs.
 
 ---
 

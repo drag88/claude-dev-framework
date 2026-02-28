@@ -1,5 +1,6 @@
 ---
-description: "Execute complex tasks with intelligent workflow management and delegation"
+description: "Execute complex tasks with intelligent workflow management, breakdown, and delegation"
+argument-hint: "[action] [target] [--strategy systematic|agile|enterprise] [--parallel] [--delegate] [--breakdown]"
 ---
 
 ## MANDATORY FIRST ACTIONS (DO NOT SKIP)
@@ -55,13 +56,13 @@ Use `/cdf:task` when:
 - Need intelligent MCP routing and persona activation
 - Executing pre-planned work items
 
-**Don't use this command for**: Breaking down complex tasks (use `/cdf:spawn`), exploring unclear ideas (use `/cdf:brainstorm`), creating workflows from specs (use `/cdf:workflow`).
+**Don't use this command for**: Exploring unclear ideas (use `/cdf:brainstorm`), creating workflows from specs (use `/cdf:workflow`).
 
 | Scenario | Command |
 |----------|---------|
 | Have an idea, need requirements | `/cdf:brainstorm` |
 | Have a PRD/spec, need workflow | `/cdf:workflow` |
-| Have complex task, need breakdown | `/cdf:spawn` |
+| Have complex task, need breakdown | `/cdf:task --breakdown` |
 | Have defined task, ready to execute | `/cdf:task` |
 
 ## Triggers
@@ -72,7 +73,25 @@ Use `/cdf:task` when:
 
 ## Usage
 ```
-/cdf:task [action] [target] [--strategy systematic|agile|enterprise] [--parallel] [--delegate]
+/cdf:task [action] [target] [--strategy systematic|agile|enterprise] [--parallel] [--delegate] [--breakdown]
+```
+
+### Breakdown Mode (`--breakdown`)
+
+When `--breakdown` is specified, the command operates in task decomposition mode (formerly `/cdf:spawn`):
+
+1. **Analyze**: Parse complex operation requirements and assess scope across domains
+2. **Decompose**: Break down into coordinated subtask hierarchies (Epic -> Story -> Task -> Subtask)
+3. **Orchestrate**: Execute tasks using optimal coordination strategy (parallel/sequential/adaptive)
+4. **Monitor**: Track progress across task hierarchies with dependency management
+5. **Integrate**: Aggregate results and provide comprehensive orchestration summary
+
+```bash
+# Break down a complex feature
+/cdf:task --breakdown "implement user authentication system"
+
+# Deep decomposition with adaptive strategy
+/cdf:task --breakdown "migrate monolith to microservices" --strategy enterprise --parallel
 ```
 
 ## Behavioral Flow
@@ -84,7 +103,7 @@ Use `/cdf:task` when:
 
 Key behaviors:
 - Multi-persona coordination across architect, frontend, backend, security, devops domains
-- Intelligent MCP server routing (Sequential, Context7, Magic, Playwright, Morphllm, Serena)
+- Intelligent MCP server routing (Sequential, Context7, Magic, Playwright)
 - Systematic execution with progressive task enhancement and cross-session persistence
 - Advanced task delegation with hierarchical breakdown and dependency management
 
@@ -93,8 +112,6 @@ Key behaviors:
 - **Context7 MCP**: Framework-specific patterns and implementation best practices
 - **Magic MCP**: UI/UX task coordination and design system integration
 - **Playwright MCP**: Testing workflow integration and validation automation
-- **Morphllm MCP**: Large-scale task transformation and pattern-based optimization
-- **Serena MCP**: Cross-session task persistence and project memory management
 
 ## Tool Coordination
 - **TodoWrite**: Hierarchical task breakdown and progress tracking across Epic → Story → Task levels

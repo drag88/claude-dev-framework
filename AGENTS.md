@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-CDF (Claude Dev Framework) is a Claude Code plugin providing 29 commands, 22 agent personas, 20 skills, and 13 lifecycle hooks for structured, consistent AI-assisted development. It turns Claude into an opinionated development assistant with codebase memory, specialized expertise on demand, and reproducible workflows.
+CDF (Claude Dev Framework) is a Claude Code plugin providing 19 commands, 22 agent personas, 20 skills, and 11 lifecycle hooks for structured, consistent AI-assisted development. It turns Claude into an opinionated development assistant with codebase memory, specialized expertise on demand, and reproducible workflows.
 
 ## Development Setup
 
@@ -11,7 +11,7 @@ CDF (Claude Dev Framework) is a Claude Code plugin providing 29 commands, 22 age
 claude --plugin-dir .
 
 # Verify plugin loaded
-/cdf:help
+/cdf:rules generate
 
 # Generate/refresh project rules
 /cdf:rules generate
@@ -24,7 +24,7 @@ No build step required — the plugin loads markdown/JSON files directly.
 Key modules and their roles:
 
 - `commands/` — 29 slash command definitions (markdown + YAML frontmatter). Each file is a complete behavioral spec for one command.
-- `agents/` — 22 agent personas (markdown + YAML). Activated by `/cdf:spawn` or automatically via task context.
+- `agents/` — 22 agent personas (markdown + YAML). Activated by `/cdf:task` or automatically via task context.
 - `skills/` — 20 auto-invoked skill directories (`skills/*/SKILL.md`). Trigger-based activation without explicit invocation.
 - `hooks/hooks.json` — Lifecycle hook configuration. SessionStart, PreToolUse, PostToolUse, Stop hooks.
 - `scripts/` — Hook implementation in Python. `analyze-codebase.py` (SessionStart), `keyword-amplifier.py` (PreToolUse), `hooks/memory-logger.py` (PostToolUse: Edit/Write/Bash/WebSearch/WebFetch/Read), `hooks/memory-init.py` (SessionStart), `hooks/memory-summarize.py` (Stop: daily log summary + native auto-memory recap).

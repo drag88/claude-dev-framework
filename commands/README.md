@@ -4,17 +4,15 @@ Quick reference for all available `/cdf` commands, organized by purpose.
 
 ---
 
-## Core Development (7)
+## Core Development (5)
 
 | Command | Description | Complexity |
 |---------|-------------|------------|
 | [/cdf:implement](implement.md) | Feature and code implementation with persona activation and MCP integration | standard |
-| [/cdf:build](build.md) | Build, compile, and package projects with intelligent error handling | enhanced |
 | [/cdf:test](test.md) | Execute tests with coverage analysis and automated quality reporting | enhanced |
 | [/cdf:tdd](tdd.md) | Test-Driven Development with RED-GREEN-REFACTOR workflow | advanced |
 | [/cdf:git](git.md) | Git operations with intelligent commit messages and workflow optimization | basic |
-| [/cdf:cleanup](cleanup.md) | Systematically clean up code, remove dead code, optimize structure | standard |
-| [/cdf:improve](improve.md) | Apply systematic improvements to code quality and performance | standard |
+| [/cdf:improve](improve.md) | Apply systematic improvements to code quality, performance, and cleanup | standard |
 
 ---
 
@@ -41,30 +39,22 @@ Quick reference for all available `/cdf` commands, organized by purpose.
 
 ---
 
-## Orchestration (6)
+## Orchestration (2)
 
 | Command | Description | Complexity |
 |---------|-------------|------------|
-| [/cdf:flow](flow.md) | Unified workflow: brainstorm -> docs -> implement -> verify -> compound | advanced |
-| [/cdf:task](task.md) | Execute complex tasks with intelligent workflow management and delegation | advanced |
-| [/cdf:spawn](spawn.md) | Meta-system task orchestration with intelligent breakdown and delegation | high |
-| [/cdf:panel](panel.md) | Multi-expert panel discussions for complex decisions | advanced |
-| [/cdf:compound](compound.md) | Capture institutional knowledge from solved problems | standard |
-| [/cdf:deepen](deepen.md) | Parallel agent saturation for comprehensive analysis | advanced |
+| [/cdf:flow](flow.md) | Unified workflow: brainstorm -> docs -> implement -> verify | advanced |
+| [/cdf:task](task.md) | Execute complex tasks with breakdown, delegation, and workflow management | advanced |
 
 ---
 
-## Utilities (7)
+## Utilities (3)
 
 | Command | Description | Complexity |
 |---------|-------------|------------|
-| [/cdf:help](help.md) | List all available CDF commands and their functionality | low |
 | [/cdf:docs](docs.md) | Documentation management and generation | standard |
 | [/cdf:rules](rules.md) | Generate and manage project-specific rules | standard |
-| [/cdf:session](session.md) | Session management and context handling | standard |
-| [/cdf:select-tool](select-tool.md) | Intelligent MCP tool selection based on complexity scoring | high |
 | [/cdf:verify](verify.md) | Pre-PR quality verification (build, types, lint, tests, security) | enhanced |
-| [/cdf:learn](learn.md) | Continuous learning and mid-session pattern extraction | standard |
 
 ---
 
@@ -73,12 +63,10 @@ Quick reference for all available `/cdf` commands, organized by purpose.
 | If you want to... | Use this command |
 |-------------------|------------------|
 | Write new code | `/cdf:implement` |
-| Build a project | `/cdf:build` |
 | Run tests | `/cdf:test` |
 | Test-first development | `/cdf:tdd` |
 | Commit changes | `/cdf:git` |
-| Clean up code | `/cdf:cleanup` |
-| Refactor code | `/cdf:improve` |
+| Refactor or clean up code | `/cdf:improve` |
 | Understand code quality | `/cdf:analyze` |
 | Learn how something works | `/cdf:explain` |
 | Research a topic | `/cdf:research` |
@@ -89,18 +77,10 @@ Quick reference for all available `/cdf` commands, organized by purpose.
 | Estimate effort | `/cdf:estimate` |
 | Plan implementation | `/cdf:workflow` |
 | Run full development workflow | `/cdf:flow` |
-| Execute a complex task | `/cdf:task` |
-| Break down a big task | `/cdf:spawn` |
-| Get multiple perspectives | `/cdf:panel` |
-| Capture knowledge from solved problems | `/cdf:compound` |
-| Deep analysis with all agents | `/cdf:deepen` |
-| See available commands | `/cdf:help` |
+| Execute or break down a complex task | `/cdf:task` |
 | Manage documentation | `/cdf:docs` |
 | Generate rules | `/cdf:rules` |
-| Save/load context | `/cdf:session` |
-| Pick the right MCP tool | `/cdf:select-tool` |
 | Pre-PR quality check | `/cdf:verify` |
-| Extract patterns learned | `/cdf:learn` |
 
 ---
 
@@ -112,4 +92,3 @@ Quick reference for all available `/cdf` commands, organized by purpose.
 | **standard** | Normal complexity, single-domain |
 | **enhanced** | Additional features, may use MCP servers |
 | **advanced** | Multi-step, may activate personas |
-| **high** | Complex orchestration, multi-agent coordination |
