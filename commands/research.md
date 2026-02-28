@@ -78,7 +78,6 @@ description: "Deep web research with adaptive planning and intelligent search"
 - **Tavily**: Primary search and extraction engine
 - **Sequential**: Complex reasoning and synthesis
 - **Playwright**: JavaScript-heavy content extraction
-- **Serena**: Research session persistence
 
 ## Output Standards
 - Save reports to `claudedocs/research_[topic]_[timestamp].md`
@@ -96,3 +95,15 @@ description: "Deep web research with adaptive planning and intelligent search"
 ## Boundaries
 **Will**: Current information, intelligent search, evidence-based analysis
 **Won't**: Make claims without sources, skip validation, access restricted content
+
+## Agent Routing
+
+| Research Context | Primary Agent | When to Use |
+|-----------------|---------------|-------------|
+| Technical topics | deep-research-agent | Architecture patterns, algorithms, best practices |
+| Market/business | business-research-strategist | Market sizing, competitive analysis, business models |
+| Library selection | library-researcher | Package comparison, maintenance health, migration risk |
+
+## Next Commands
+- `/cdf:design` — Design systems based on research findings
+- `/cdf:brainstorm` — Explore requirements informed by research

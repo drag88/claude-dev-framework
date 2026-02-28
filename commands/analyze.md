@@ -30,7 +30,7 @@ Use `/cdf:analyze` when:
 - Identifying performance bottlenecks in slow areas
 - Reviewing architecture and technical debt
 
-**Don't use this command for**: Making code changes (use `/cdf:improve` or `/cdf:cleanup`), troubleshooting specific bugs (use `/cdf:troubleshoot`).
+**Don't use this command for**: Making code changes (use `/cdf:improve`), troubleshooting specific bugs (use `/cdf:troubleshoot`).
 
 ## Triggers
 - Code quality assessment requests for projects or specific components
@@ -110,3 +110,17 @@ Key behaviors:
 - Execute dynamic analysis requiring code compilation or runtime
 - Modify source code or apply fixes without explicit user consent
 - Analyze external dependencies beyond import and usage patterns
+
+## Agent Routing
+
+| Focus Area | Primary Agent | When to Use |
+|-----------|---------------|-------------|
+| Code quality | quality-engineer | Code smells, complexity, test coverage gaps |
+| Security | security-engineer | Auth flows, injection risks, data exposure |
+| Performance | performance-engineer | Bottlenecks, memory leaks, slow queries |
+| Architecture | system-architect | Dependency analysis, coupling, component boundaries |
+
+## Next Commands
+- `/cdf:improve` — Apply fixes for issues found during analysis
+- `/cdf:troubleshoot` — Deep-dive into specific problems identified
+- `/cdf:test` — Verify fixes after improvements

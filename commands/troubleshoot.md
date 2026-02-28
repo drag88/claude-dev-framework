@@ -109,3 +109,16 @@ Key behaviors:
 - Apply risky fixes without proper analysis and user confirmation
 - Modify production systems without explicit permission and safety validation
 - Make architectural changes without understanding full system impact
+
+## Agent Routing
+
+| Issue Type | Primary Agent | When to Use |
+|-----------|---------------|-------------|
+| Bug investigation | root-cause-analyst | Multi-component failures, intermittent bugs |
+| Performance issues | performance-engineer | Slow responses, memory leaks, high CPU |
+| Infrastructure | devops-architect | CI/CD failures, deployment issues, env problems |
+| Security incidents | security-engineer | Vulnerability reports, suspicious behavior |
+
+## Next Commands
+- `/cdf:improve` — Apply fixes for identified root causes
+- `/cdf:test` — Add regression tests for resolved issues

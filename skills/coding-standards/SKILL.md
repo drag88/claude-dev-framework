@@ -1,3 +1,7 @@
+---
+description: "Activate during code implementation and review for naming conventions, DRY/KISS/YAGNI, and code quality standards"
+---
+
 # Coding Standards Skill
 
 Enforce consistent code quality principles and patterns across all implementation work.
@@ -377,3 +381,15 @@ const ONE_DAY_MS = 24 * 60 * 60 * 1000;
 if (password.length < MIN_PASSWORD_LENGTH) {}
 setTimeout(callback, ONE_DAY_MS);
 ```
+
+## Related Agents
+- **quality-engineer** — Uses standards for code review and quality gates
+- **refactoring-expert** — Applies standards during code improvement
+- **tdd-guide** — Enforces standards in test-driven code
+- **python-expert** — Applies Python-specific coding standards
+- **technical-writer** — Uses standards for documentation quality
+
+## Suggested Commands
+- `/cdf:implement` — Write code following standards
+- `/cdf:improve` — Improve code to meet standards
+- `/cdf:analyze --focus quality` — Audit code against standards

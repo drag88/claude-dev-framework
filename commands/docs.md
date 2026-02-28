@@ -379,4 +379,15 @@ Update development documentation before context compaction or session end.
 
 - `/cdf:rules generate` - Generate project rules in `.claude/rules/`
 - `/cdf:rules claudemd` - Generate CLAUDE.md from rules
-- `/cdf:session save` - Save session context (different from docs update)
+
+## Agent Routing
+
+| Documentation Mode | Primary Agent | When to Use |
+|-------------------|---------------|-------------|
+| API documentation | technical-writer | Endpoint docs, SDK guides, integration specs |
+| Architecture docs | system-architect | ADRs, system diagrams, design rationale |
+| Quality reports | quality-engineer | Coverage reports, test documentation |
+
+## Next Commands
+- `/cdf:implement` — Implement features described in documentation
+- `/cdf:flow` — Start a full development workflow

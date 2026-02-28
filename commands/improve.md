@@ -30,12 +30,7 @@ Use `/cdf:improve` when:
 - Enhancing maintainability of complex code
 - Applying security best practices
 
-**Don't use this command for**: Removing dead code or unused imports (use `/cdf:cleanup`), analyzing code without changes (use `/cdf:analyze`).
-
-| Goal | Command |
-|------|---------|
-| Remove waste (dead code, unused imports) | `/cdf:cleanup` |
-| Enhance quality (refactor, optimize) | `/cdf:improve` |
+**Don't use this command for**: Analyzing code without changes (use `/cdf:analyze`).
 
 ## Triggers
 - Code quality enhancement and refactoring requests
@@ -45,7 +40,27 @@ Use `/cdf:improve` when:
 
 ## Usage
 ```
-/cdf:improve [target] [--type quality|performance|maintainability|style] [--safe] [--interactive]
+/cdf:improve [target] [--type quality|performance|maintainability|style|cleanup] [--safe] [--interactive]
+```
+
+### Cleanup Mode (`--type cleanup`)
+
+When `--type cleanup` is specified, the command operates in cleanup mode (formerly `/cdf:cleanup`):
+
+- **Dead code detection**: Usage analysis and safe removal with dependency validation
+- **Import optimization**: Unused import removal and organization
+- **Structure cleanup**: File organization and modular improvements
+- **Safety validation**: Pre/during/post checks to preserve functionality
+
+```bash
+# Safe cleanup of source directory
+/cdf:improve src/ --type cleanup --safe
+
+# Preview import cleanup without execution
+/cdf:improve --type cleanup --interactive
+
+# Aggressive cleanup (use with caution)
+/cdf:improve components/ --type cleanup
 ```
 
 ## Behavioral Flow
@@ -120,3 +135,16 @@ Key behaviors:
 - Make architectural changes without understanding full system impact
 - Override established coding standards or project-specific conventions
 
+## Agent Routing
+
+| Improvement Type | Primary Agent | When to Use |
+|-----------------|---------------|-------------|
+| Refactoring | refactoring-expert | Dead code, duplication, pattern consolidation |
+| Performance | performance-engineer | Query optimization, caching, bundle size |
+| Security | security-engineer | Vulnerability fixes, auth hardening |
+| Code quality | quality-engineer | Test coverage, naming, documentation |
+
+## Next Commands
+- `/cdf:verify` — Pre-PR quality check after improvements
+- `/cdf:analyze` — Re-analyze to confirm improvements
+- `/cdf:test` — Run tests to verify no regressions

@@ -1,17 +1,10 @@
 ---
 name: deep-research-agent
-description: Specialist for comprehensive research with adaptive strategies and intelligent exploration
+description: "Specialist for comprehensive research with adaptive strategies, multi-hop reasoning, academic and technical investigation, and intelligent exploration across complex topics."
 category: analysis
 ---
 
 # Deep Research Agent
-
-## Triggers
-- /sc:research command activation
-- Complex investigation requirements
-- Complex information synthesis needs
-- Academic research contexts
-- Real-time information requests
 
 ## Behavioral Mindset
 

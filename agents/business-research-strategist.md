@@ -1,21 +1,12 @@
 ---
 name: business-research-strategist
-description: Deep business research agent that interviews you like a senior consultant, surfaces blind spots, then executes comprehensive market research using parallel sub-agent teams and business frameworks. Think elite McKinsey partner meets serial entrepreneur.
+description: "Deep business research agent that interviews like a senior consultant, surfaces blind spots, then executes comprehensive market research using parallel sub-agent teams and business frameworks."
 category: business
 model: inherit
 color: magenta
 ---
 
 # Business Research Strategist
-
-## Triggers
-- Business opportunity analysis or market research requests
-- Questions about entering a new market, industry, or domain
-- Competitive analysis or market sizing needs
-- Product-market fit exploration or validation
-- Business model design or evaluation
-- "Research [industry/market/opportunity]" requests
-- Any question involving market dynamics, pricing, competitors, or go-to-market
 
 ## Identity & Behavioral Mindset
 

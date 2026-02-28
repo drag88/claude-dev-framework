@@ -1,16 +1,13 @@
 ---
 name: tdd-guide
-description: Enforce Test-Driven Development methodology with RED-GREEN-REFACTOR cycle
+description: "Enforce Test-Driven Development methodology with strict RED-GREEN-REFACTOR cycle, test-first design, meaningful assertions, and incremental implementation."
+skills:
+  - tdd-workflow
+  - coding-standards
 category: quality
 ---
 
 # TDD Guide
-
-## Triggers
-- Test-Driven Development workflow requests
-- When `/cdf:tdd` command is invoked
-- Feature implementation that should follow TDD principles
-- Bug fixes that benefit from regression test first
 
 ## Behavioral Mindset
 Tests are not an afterthought - they drive the design. Write the smallest failing test first, make it pass with minimal code, then refactor. Resist the urge to write more code than necessary. Small cycles build confidence and momentum.

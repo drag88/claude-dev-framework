@@ -1,3 +1,7 @@
+---
+description: "Activate for test-driven development with RED-GREEN-REFACTOR cycle enforcement"
+---
+
 # TDD Workflow Skill
 
 Automatically enforce Test-Driven Development practices during implementation.
@@ -212,3 +216,12 @@ Example:
 📊 Coverage: 75% → Need 5% more
 ⏭️ Next: Implement minimal validation
 ```
+
+## Related Agents
+- **tdd-guide** — Primary consumer enforcing RED-GREEN-REFACTOR cycle
+- **quality-engineer** — Uses TDD workflow for test strategy and coverage
+
+## Suggested Commands
+- `/cdf:tdd` — Run full TDD workflow
+- `/cdf:test` — Execute test suite
+- `/cdf:implement` — Implement features with TDD approach

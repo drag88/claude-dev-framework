@@ -1,3 +1,7 @@
+---
+description: "Activate for Playwright E2E test patterns, Page Object Model, locator strategies, and test reliability"
+---
+
 # E2E Patterns Skill
 
 Provide best practices and patterns for end-to-end testing with Playwright.
@@ -297,3 +301,11 @@ When a test fails:
 4. [ ] Check for race conditions - add explicit waits
 5. [ ] Verify locators in Playwright Inspector
 6. [ ] Check for flakiness: `npx playwright test --repeat-each=5`
+
+## Related Agents
+- **e2e-specialist** — Primary consumer for Playwright test patterns and reliability
+
+## Suggested Commands
+- `/cdf:e2e` — Run E2E test workflows with pattern enforcement
+- `/cdf:test` — Execute tests including E2E suite
+- `/cdf:troubleshoot` — Debug flaky or failing E2E tests

@@ -109,3 +109,15 @@ Key behaviors:
 - Generate actual implementation code (use /cdf:implement for implementation)
 - Modify existing system architecture without explicit design approval
 - Create designs that violate established architectural constraints
+
+## Agent Routing
+
+| Design Scope | Primary Agent | When to Use |
+|-------------|---------------|-------------|
+| System architecture | system-architect | Component boundaries, data flow, scaling strategy |
+| Backend services | backend-architect | API contracts, database schema, service layers |
+| Frontend UI | frontend-architect | Component hierarchy, state management, UX patterns |
+
+## Next Commands
+- `/cdf:implement` — Build the designed system
+- `/cdf:workflow` — Generate implementation workflow from design

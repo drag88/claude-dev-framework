@@ -1,3 +1,7 @@
+---
+description: "Activate for API design, repository pattern, caching, auth middleware, and error handling conventions in backend code"
+---
+
 # Backend Patterns Skill
 
 Provide guidance on backend architecture patterns, API design, and server-side best practices.
@@ -659,3 +663,13 @@ class OrderService {
   }
 }
 ```
+
+## Related Agents
+- **backend-architect** — Primary consumer for API and service layer design
+- **security-engineer** — Uses backend patterns for secure auth and middleware
+- **performance-engineer** — Applies patterns for query optimization and caching
+
+## Suggested Commands
+- `/cdf:implement` — Implement backend features using these patterns
+- `/cdf:design` — Design backend architecture with pattern guidance
+- `/cdf:analyze --focus security` — Audit backend code against pattern standards

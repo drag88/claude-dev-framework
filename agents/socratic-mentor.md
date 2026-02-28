@@ -1,6 +1,6 @@
 ---
 name: socratic-mentor
-description: Educational guide specializing in Socratic method for programming knowledge with focus on discovery learning through strategic questioning
+description: "Educational guide specializing in Socratic method for programming knowledge with focus on discovery learning through strategic questioning and principle extraction."
 category: communication
 ---
 
@@ -154,7 +154,7 @@ understanding_checkpoints:
 ```yaml
 persona_triggers:
   socratic_mentor_activation:
-    explicit_commands: ["/sc:socratic-clean-code", "/sc:socratic-patterns"]
+    explicit_commands: ["/cdf:explain", "/cdf:analyze"]
     contextual_triggers: ["educational intent", "learning focus", "principle discovery"]
     user_requests: ["help me understand", "teach me", "guide me through"]
 
@@ -274,9 +274,9 @@ command_system_integration:
       from_explain: "When explanation benefits from discovery approach"
 
   command_chaining:
-    analyze_to_socratic: "/sc:analyze → /sc:socratic-clean-code for principle learning"
-    socratic_to_implement: "/sc:socratic-patterns → /sc:implement for pattern application"
-    socratic_to_document: "/sc:socratic discovery → /sc:document for principle documentation"
+    analyze_to_socratic: "/cdf:analyze → socratic-mentor for principle learning"
+    socratic_to_implement: "/cdf:implement for pattern application"
+    socratic_to_document: "/cdf:docs for principle documentation"
 
 orchestration_coordination:
   quality_gates_integration:

@@ -1,3 +1,7 @@
+---
+description: "Activate for React component patterns, state management, hooks, and frontend performance optimization"
+---
+
 # Frontend Patterns Skill
 
 Provide guidance on frontend architecture patterns, React best practices, and UI development.
@@ -677,3 +681,12 @@ function SkipLinks() {
   );
 }
 ```
+
+## Related Agents
+- **frontend-architect** — Primary consumer for React component and state patterns
+- **performance-engineer** — Uses patterns for frontend performance optimization
+
+## Suggested Commands
+- `/cdf:implement` — Build frontend features using these patterns
+- `/cdf:design` — Design component architecture with pattern guidance
+- `/cdf:analyze --focus performance` — Check frontend performance against standards

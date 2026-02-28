@@ -1,6 +1,6 @@
 ---
 name: frontend-design
-description: Create distinctive, production-grade frontend interfaces with high design quality. This skill should be used when the user asks to build web components, pages, or applications. Generates creative, polished code that avoids generic AI aesthetics.
+description: "Activate when building web interfaces, design systems, or styling components with high visual quality"
 license: Complete terms in LICENSE.txt
 ---
 
@@ -330,3 +330,10 @@ Design all states, not just default:
 **Claude is capable of extraordinary creative work.** The default patterns exist because they're statistically common—not because they're good. Reject the median. Make bold choices. Execute with precision.
 
 Every design decision is an opportunity to create something memorable instead of forgettable.
+
+## Related Agents
+- **frontend-architect** — Primary consumer for visual design and styling decisions
+
+## Suggested Commands
+- `/cdf:implement` — Build interfaces with design skill guidance
+- `/cdf:design` — Design UI components and pages
