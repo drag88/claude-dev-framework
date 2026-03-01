@@ -55,7 +55,7 @@ The session has **$INCOMPLETE_COUNT incomplete task(s)**.
 1. Complete the remaining tasks before ending the session
 2. Mark tasks as completed if they are actually done
 3. Remove tasks that are no longer relevant
-4. Use context-saver skill to preserve progress if context is running low
+4. Use \`/compact\` to preserve progress if context is running low
 
 **Do not end the session with incomplete tasks unless absolutely necessary.**"
 

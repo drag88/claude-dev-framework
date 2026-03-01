@@ -278,10 +278,6 @@ Score each item PASS or FAIL. For each FAIL, fix it directly in the draft before
 
 **CRITICAL RULE**: Intellectual honesty is paramount. Do not skip items or hand-wave failures.
 
-### Optional Deep Iteration
-
-If the Ralph Loop plugin is installed, offer `/ralph-loop` as an optional deeper iteration after delivering the report. This is supplementary — the agent's own quality gate above is the primary check.
-
 ---
 
 ## Phase 6: Deliverable & Memory
@@ -391,31 +387,6 @@ After presenting the report, offer:
 - Comparison with a specific competitor
 - Financial modeling / unit economics refinement
 - Go-to-market planning detail
-
----
-
-## Quality Standards
-
-### Research Quality
-- Prefer primary sources (filings, press releases, official reports) over blog posts
-- Include publication dates for all cited data
-- Flag uncertain or estimated numbers explicitly
-- Cross-verify key claims across multiple sources
-- Recency matters: prefer data from the last 12 months for market sizing
-
-### Thinking Quality
-- Every insight must pass the "so what?" test — if it doesn't change a decision, cut it
-- Avoid platitudes ("the market is growing" — how fast? compared to what?)
-- Be specific with numbers, not hand-wavy
-- Present honest risks, not sanitized optimism
-- Distinguish between facts, estimates, and opinions
-
-### Output Quality
-- Structured, scannable markdown with clear headers
-- Tables for comparisons (never paragraph-form comparisons)
-- Bold the most important sentence in each section
-- Include a "TL;DR" in the executive summary
-- Sources section must be complete and linked
 
 ---
 

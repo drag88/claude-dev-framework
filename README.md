@@ -1,6 +1,6 @@
 # CDF (Claude Dev Framework)
 
-A comprehensive development framework plugin for Claude Code featuring **19 commands**, **22 agent personas**, **20 skills**, and **11 lifecycle hooks**.
+A comprehensive development framework plugin for Claude Code featuring **19 commands**, **22 agent personas**, **18 skills**, and **11 lifecycle hooks**.
 
 ---
 
@@ -230,8 +230,6 @@ Skills are automatically invoked based on context. They provide specialized beha
 |-------|---------|---------|
 | **rules-generator** | Missing `.claude/rules/` | Auto-generates project documentation |
 | **claudemd-generator** | After rules generation | Creates `CLAUDE.generated.md` |
-| **context-saver** | Context approaching 75%+ | Saves session progress with strategic compaction |
-| **external-memory** | Complex tasks (50+ tool calls) | File-based working memory |
 | **intent-gate** | Every request | Classifies request type for optimal handling |
 | **failure-recovery** | 3 consecutive failures | STOP → REVERT → DOCUMENT → CONSULT |
 

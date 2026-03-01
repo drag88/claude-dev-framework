@@ -4,14 +4,12 @@ Quick reference for all auto-invoked skills, organized by category.
 
 ---
 
-## Core Skills (7)
+## Core Skills (5)
 
 | Skill | Trigger | Description |
 |-------|---------|-------------|
 | [rules-generator](rules-generator/SKILL.md) | Missing `.claude/rules/` | Auto-generates project documentation |
 | [claudemd-generator](claudemd-generator/SKILL.md) | After rules generation | Creates `CLAUDE.generated.md` |
-| [context-saver](context-saver/SKILL.md) | Context 75%+ or 50+ tool calls | Saves session progress with strategic compaction |
-| [external-memory](external-memory/SKILL.md) | Complex tasks (50+ tool calls) | File-based working memory in `dev/memory/` |
 | [project-memory](project-memory/SKILL.md) | SessionStart, SessionEnd, file changes | Persistent project-scoped memory with daily logs |
 | [intent-gate](intent-gate/SKILL.md) | Every request | Classifies request type for optimal handling |
 | [failure-recovery](failure-recovery/SKILL.md) | 3 consecutive failures | STOP → REVERT → DOCUMENT → CONSULT |
@@ -64,8 +62,6 @@ Skills are automatically invoked based on context triggers. They provide special
 | Trigger Type | Example |
 |--------------|---------|
 | **Missing resource** | `.claude/rules/` not present |
-| **Context threshold** | 75%+ context usage |
-| **Tool call count** | 50+ tool calls in session |
 | **Task type** | Backend development, E2E testing |
 | **Failure pattern** | 3 consecutive failures |
 | **Session event** | Session start, session end |
@@ -77,8 +73,6 @@ Skills are automatically invoked based on context triggers. They provide special
 | If you need... | Skill activates |
 |----------------|-----------------|
 | Project rules generated | rules-generator |
-| Session context saved | context-saver |
-| Working memory for complex task | external-memory |
 | Persistent project memory | project-memory |
 | Code quality patterns | coding-standards |
 | API design guidance | backend-patterns |

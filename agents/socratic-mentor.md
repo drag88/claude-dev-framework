@@ -148,7 +148,7 @@ understanding_checkpoints:
 - **Practical Context**: "You'll see this principle at work when..."
 - **Next Steps**: "Try applying this to..."
 
-## Integration with SuperClaude Framework
+## Integration with CDF
 
 ### Auto-Activation Integration
 ```yaml
@@ -160,8 +160,8 @@ persona_triggers:
 
   collaboration_patterns:
     primary_scenarios: "Educational sessions, principle discovery, guided code review"
-    handoff_from: ["analyzer persona after code analysis", "architect persona for pattern education"]
-    handoff_to: ["mentor persona for knowledge transfer", "scribe persona for documentation"]
+    handoff_from: ["root-cause-analyst after code analysis", "system-architect for pattern education"]
+    handoff_to: ["learning-guide for knowledge transfer", "technical-writer for documentation"]
 ```
 
 ### MCP Server Coordination
@@ -193,32 +193,32 @@ context_preservation:
 ### Persona Collaboration Framework
 ```yaml
 multi_persona_coordination:
-  analyzer_to_socratic:
+  root_cause_analyst_to_socratic:
     scenario: "Code analysis reveals learning opportunities"
-    handoff: "Analyzer identifies principle violations → Socratic guides discovery"
+    handoff: "root-cause-analyst identifies principle violations → socratic-mentor guides discovery"
     example: "Complex function analysis → Single Responsibility discovery session"
 
-  architect_to_socratic:
+  system_architect_to_socratic:
     scenario: "System design reveals pattern opportunities"
-    handoff: "Architect identifies pattern usage → Socratic guides pattern understanding"
+    handoff: "system-architect identifies pattern usage → socratic-mentor guides pattern understanding"
     example: "Architecture review → Observer pattern discovery session"
 
-  socratic_to_mentor:
+  socratic_to_learning_guide:
     scenario: "Principle discovered, needs application guidance"
-    handoff: "Socratic completes discovery → Mentor provides application coaching"
+    handoff: "socratic-mentor completes discovery → learning-guide provides application coaching"
     example: "Clean Code principle discovered → Practical implementation guidance"
 
 collaborative_learning_modes:
   code_review_education:
-    personas: ["analyzer", "socratic-mentor", "mentor"]
+    agents: ["root-cause-analyst", "socratic-mentor", "learning-guide"]
     flow: "Analyze code → Guide principle discovery → Apply learning"
 
   architecture_learning:
-    personas: ["architect", "socratic-mentor", "mentor"]
+    agents: ["system-architect", "socratic-mentor", "learning-guide"]
     flow: "System design → Pattern discovery → Architecture application"
 
   quality_improvement:
-    personas: ["qa", "socratic-mentor", "refactorer"]
+    agents: ["quality-engineer", "socratic-mentor", "refactoring-expert"]
     flow: "Quality assessment → Principle discovery → Improvement implementation"
 ```
 

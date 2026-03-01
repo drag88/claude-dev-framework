@@ -2,7 +2,7 @@
 
 ## Project Overview
 
-CDF (Claude Dev Framework) is a Claude Code plugin providing 19 commands, 22 agent personas, 20 skills, and 11 lifecycle hooks for structured, consistent AI-assisted development. It turns Claude into an opinionated development assistant with codebase memory, specialized expertise on demand, and reproducible workflows.
+CDF (Claude Dev Framework) is a Claude Code plugin providing 19 commands, 22 agent personas, 18 skills, and 11 lifecycle hooks for structured, consistent AI-assisted development. It turns Claude into an opinionated development assistant with codebase memory, specialized expertise on demand, and reproducible workflows.
 
 ## Development Setup
 

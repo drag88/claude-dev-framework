@@ -56,11 +56,10 @@ Each project gets daily activity logs in `.claude/memory/`:
 
 1. **Initialize Structure**
    - Create `.claude/memory/` if missing
-   - Create MEMORY.md with project overview if missing
    - Create daily/ directory if missing
 
 2. **Load Context (Progressive Disclosure)**
-   - Read MEMORY.md for long-term context
+   - Claude's native auto-memory provides long-term context automatically
    - Read today's daily log if exists
    - Read yesterday's log for continuity
 
@@ -121,10 +120,9 @@ Footer:
    - Include all tracked events
    - Add follow-up items
 
-3. **Update Long-term Memory**
-   - Extract patterns worth remembering
-   - Update key decisions if new ones made
-   - Add any new known issues/workarounds
+3. **Update Long-term Memory (Claude's responsibility)**
+   - Claude saves patterns, decisions, and issues to native auto-memory (`~/.claude/projects/<project-key>/memory/MEMORY.md`)
+   - CDF hooks do not write to auto-memory — this is Claude's domain
 
 ## Memory Recall
 
@@ -147,18 +145,9 @@ When user asks about past work:
 
 ## Integration with Other Skills
 
-### With context-saver
-- Memory provides content for session checkpoints
-- Context-saver triggers memory summarization
-
 ### With continuous-learning
-- Patterns extracted go to both learnings/ and MEMORY.md
+- Patterns extracted go to Claude's native auto-memory
 - Memory provides historical context for pattern recognition
-
-### With external-memory
-- Task memory is temporary (dev/memory/)
-- Project memory is permanent (.claude/memory/)
-- Completed tasks can be summarized to project memory
 
 ## Configuration
 
@@ -181,10 +170,10 @@ Optional `.claude/memory/config.json`:
 
 ## Best Practices
 
-1. **Keep MEMORY.md Curated**
-   - Not a dump of everything
-   - Only persistent, valuable knowledge
-   - Review and prune periodically
+1. **Keep Auto-Memory Curated**
+   - Claude's native auto-memory (`~/.claude/projects/<project-key>/memory/MEMORY.md`) is Claude's responsibility
+   - Only persistent, valuable knowledge — not a dump of everything
+   - Claude reviews and prunes periodically
 
 2. **Daily Logs are Append-Only**
    - Don't edit past entries

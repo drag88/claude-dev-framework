@@ -169,10 +169,6 @@ Domain-specific information about the project.
 
 ## Integration with Other Skills
 
-### With context-saver
-- Save learnings before context compaction
-- Include learning summary in session handoff
-
 ### With rules-generator
 - Extracted rules inform project rule generation
 - Patterns become rule suggestions

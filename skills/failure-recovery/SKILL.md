@@ -165,5 +165,4 @@ Which would you like me to try, or do you have other suggestions?
 
 ## Related Skills
 
-- `external-memory` - Document failures in notes.md
-- `context-saver` - Save progress before risky operations
+- `project-memory` - Document failures in daily logs
