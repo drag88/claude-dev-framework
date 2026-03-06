@@ -22,6 +22,10 @@ Determine complexity from the task description:
 
 ### Step 2: Create Flow State Directory
 
+<!-- TODO: Migrate flow state from dev/active/ to .claude/flow/ for consistency
+     with other dot-directory conventions. Requires updating task.md, tdd.md,
+     docs.md, intent-gate, and soul.md references. -->
+
 ```bash
 mkdir -p dev/active/[task-slug]
 ```

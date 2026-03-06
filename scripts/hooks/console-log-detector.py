@@ -2,6 +2,10 @@
 """
 PostToolUse hook: Detect console.log statements in edited TypeScript/JavaScript files.
 Warns when debugging statements are left in code.
+
+Scope: TypeScript/JavaScript only (.ts, .tsx, .js, .jsx) — by design.
+Other languages have different logging conventions (e.g., print in Python,
+fmt.Println in Go) and should use separate, language-specific detectors.
 """
 
 import json
@@ -82,4 +86,11 @@ def main():
 
 
 if __name__ == '__main__':
-    main()
+    try:
+        main()
+    except Exception as e:
+        from datetime import datetime
+        log_dir = Path.home() / '.cdf-logs'
+        log_dir.mkdir(exist_ok=True)
+        with open(log_dir / 'hook-errors.log', 'a') as f:
+            f.write(f"{datetime.now().isoformat()} [console-log-detector.py] {e}\n")

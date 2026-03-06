@@ -483,8 +483,4 @@ Required dependencies (should already be installed):
 
 ## Cross-Reference
 
-- For **StarHub executive presentations**, use the `starhub-presentation` skill which provides:
-  - Official StarHub templates and layouts
-  - Content writing guidelines and narrative templates
-  - StarHub-specific terminology and formatting standards
-  - Integration workflows using this skill's scripts
+- For company-specific presentation templates, create a custom skill that extends this one.

@@ -3,7 +3,7 @@
 Comment Checker Hook for Claude Code
 
 PostToolUse hook that checks comment-to-code ratio in edited files.
-Triggers a warning if comments exceed 25% of the file content.
+Triggers a warning if comments exceed 35% of the content being written.
 
 This encourages writing self-documenting code with minimal but meaningful comments.
 """
@@ -15,8 +15,10 @@ import re
 from pathlib import Path
 from typing import Optional, Tuple, Dict
 
-# Comment threshold (25%)
-COMMENT_THRESHOLD = 0.25
+# Comment threshold (35%) — raised from 25% because the hook checks partial
+# content (new_string/content), which has naturally higher comment ratios
+# than full files.
+COMMENT_THRESHOLD = 0.35
 
 # Language-specific comment patterns
 COMMENT_PATTERNS = {
@@ -256,4 +258,12 @@ Only add comments when they provide value the code cannot express itself."""
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        from pathlib import Path
+        from datetime import datetime
+        log_dir = Path.home() / '.cdf-logs'
+        log_dir.mkdir(exist_ok=True)
+        with open(log_dir / 'hook-errors.log', 'a') as f:
+            f.write(f"{datetime.now().isoformat()} [comment-checker.py] {e}\n")

@@ -4,16 +4,16 @@
   "description": "CDF - Complete Development Framework for Claude Code",
   "owner": {
     "name": "Aswin Sreenivas",
-    "email": "awinsreenivas@gmail.com"
+    "url": "https://github.com/drag88/claude-dev-framework"
   },
   "plugins": [
     {
       "name": "cdf",
-      "description": "Complete development framework with 29 commands, 22 agent personas, 20 skills, and 11 lifecycle hooks",
-      "version": "1.10.0",
+      "description": "Complete development framework with 19 commands, 22 agent personas, 15 skills, and 9 lifecycle hooks",
+      "version": "1.11.0",
       "author": {
         "name": "Aswin Sreenivas",
-        "email": "awinsreenivas@gmail.com"
+        "url": "https://github.com/drag88/claude-dev-framework"
       },
       "source": "./",
       "category": "development",

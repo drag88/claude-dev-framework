@@ -10,7 +10,7 @@ CDF (Claude Dev Framework) is a comprehensive plugin for Claude Code that provid
 |-----------|---------|
 | `commands/` | 19 slash command definitions (markdown with YAML frontmatter) |
 | `agents/` | 22 agent persona definitions for specialized expertise |
-| `skills/` | 20 auto-invoked skills with trigger-based activation |
+| `skills/` | 15 auto-invoked skills with trigger-based activation |
 | `contexts/` | Behavioral context modes (dev/review/research) |
 | `hooks/` | Lifecycle hook configuration (JSON) |
 | `scripts/` | Hook implementation scripts (Python/Bash) |
@@ -28,9 +28,7 @@ CDF (Claude Dev Framework) is a comprehensive plugin for Claude Code that provid
 | `scripts/analyze-codebase.py` | SessionStart hook - codebase analysis |
 | `scripts/keyword-amplifier.py` | PreToolUse hook - context injection |
 | `scripts/lib/utils.py` | Shared utility functions |
-| `scripts/hooks/memory-init.py` | SessionStart hook - memory initialization and context injection |
 | `scripts/hooks/memory-logger.py` | PostToolUse hook - logs file changes to daily memory |
-| `scripts/hooks/memory-summarize.py` | Stop hook - session summarization and learnings propagation |
 
 ## Component Relationships
 

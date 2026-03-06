@@ -165,4 +165,4 @@ Which would you like me to try, or do you have other suggestions?
 
 ## Related Skills
 
-- `project-memory` - Document failures in daily logs
+- `memory-logger` hook - Document failures in daily logs

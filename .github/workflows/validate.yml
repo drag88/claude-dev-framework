@@ -1,0 +1,26 @@
+name: Validate CDF
+on: [push, pull_request]
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+      - name: Validate hooks.json
+        run: python3 -m json.tool hooks/hooks.json > /dev/null
+      - name: Validate plugin.json
+        run: python3 -m json.tool .claude-plugin/plugin.json > /dev/null
+      - name: Check referenced scripts exist
+        run: |
+          grep -oP 'scripts/[^"\\]+\.(py|sh)' hooks/hooks.json | sort -u | while read f; do
+            test -f "$f" || { echo "MISSING: $f"; exit 1; }
+          done
+      - name: Check SKILL.md frontmatter
+        run: |
+          for f in skills/*/SKILL.md; do
+            head -1 "$f" | grep -q "^---" || { echo "BAD FRONTMATTER: $f"; exit 1; }
+          done
+      - name: Run health check
+        run: python3 scripts/health-check.py

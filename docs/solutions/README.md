@@ -4,17 +4,18 @@ Institutional knowledge captured from solved problems.
 
 ## Directory Structure
 
-```
-docs/solutions/
-├── build-errors/       # Compilation, bundler, dependency issues
-├── test-failures/      # Flaky tests, assertion failures, test env
-├── runtime-errors/     # Exceptions, crashes, unexpected behavior
-├── performance-issues/ # Slow queries, memory leaks, bottlenecks
-├── database-issues/    # Migrations, deadlocks, data integrity
-├── security-issues/    # Vulnerabilities, auth problems
-├── ui-bugs/           # Layout, interaction, accessibility
-└── integration-issues/ # API failures, external dependencies
-```
+Subdirectories are created as solutions are added. Standard categories:
+
+| Directory | Purpose |
+|-----------|---------|
+| `build-errors/` | Compilation, bundler, dependency issues |
+| `test-failures/` | Flaky tests, assertion failures, test env |
+| `runtime-errors/` | Exceptions, crashes, unexpected behavior |
+| `performance-issues/` | Slow queries, memory leaks, bottlenecks |
+| `database-issues/` | Migrations, deadlocks, data integrity |
+| `security-issues/` | Vulnerabilities, auth problems |
+| `ui-bugs/` | Layout, interaction, accessibility |
+| `integration-issues/` | API failures, external dependencies |
 
 ## Document Format
 
@@ -53,7 +54,7 @@ grep -l "severity: high" docs/solutions/**/*.md
 
 Solutions are created by:
 1. `/cdf:flow` - Knowledge capture during workflow
-2. Auto-memory hooks (`memory-summarize.py`) - Session-end pattern extraction
+2. Auto-memory hooks (`memory-logger.py`) - Activity logging during sessions
 3. Manual creation following the template
 
 ## Template

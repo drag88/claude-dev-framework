@@ -456,4 +456,12 @@ def main() -> None:
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        from pathlib import Path
+        from datetime import datetime
+        log_dir = Path.home() / '.cdf-logs'
+        log_dir.mkdir(exist_ok=True)
+        with open(log_dir / 'hook-errors.log', 'a') as f:
+            f.write(f"{datetime.now().isoformat()} [analyze-codebase.py] {e}\n")

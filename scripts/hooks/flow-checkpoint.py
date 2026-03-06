@@ -163,5 +163,8 @@ if __name__ == "__main__":
     try:
         main()
     except Exception as e:
-        # Silent failure - don't interrupt tool execution
-        pass
+        from datetime import datetime
+        log_dir = Path.home() / '.cdf-logs'
+        log_dir.mkdir(exist_ok=True)
+        with open(log_dir / 'hook-errors.log', 'a') as f:
+            f.write(f"{datetime.now().isoformat()} [flow-checkpoint.py] {e}\n")

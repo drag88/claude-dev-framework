@@ -1,551 +1,134 @@
 # CDF (Claude Dev Framework)
 
-A comprehensive development framework plugin for Claude Code featuring **19 commands**, **22 agent personas**, **18 skills**, and **11 lifecycle hooks**.
-
----
-
-## Table of Contents
-
-- [Installation](#installation)
-- [Quick Start](#quick-start)
-- [Commands](#commands)
-- [Agents](#agents)
-- [Skills](#skills)
-- [Hooks](#hooks)
-- [Context Modes](#context-modes)
-- [Rules Templates](#rules-templates)
-- [MCP Configurations](#mcp-configurations)
-- [How It Works](#how-it-works)
-- [Plugin Structure](#plugin-structure)
-- [Configuration](#configuration)
-- [Troubleshooting](#troubleshooting)
+A development framework plugin for Claude Code that provides commands, agent personas, auto-invoked skills, and lifecycle hooks -- turning Claude into a structured, opinionated development assistant.
 
 ---
 
 ## Installation
 
-### From Marketplace (Recommended)
+### From Source (Recommended for Development)
 
-**Step 1: Add the marketplace**
+```bash
+git clone https://github.com/drag88/claude-dev-framework.git
+claude --plugin-dir ./claude-dev-framework
+```
+
+### From Marketplace
+
 ```bash
 # Via CLI (outside Claude Code)
 claude plugin marketplace add drag88/claude-dev-framework
-```
 
-**Step 2: Install the plugin**
-```bash
 # Inside Claude Code
 /plugin install cdf@claude-dev-framework
-```
-
-Or browse in `/plugin > Discover` and select CDF.
-
-### Local Development
-
-```bash
-# Clone the repository
-git clone https://github.com/drag88/claude-dev-framework.git
-
-# Run Claude with the plugin
-claude --plugin-dir ./claude-dev-framework
 ```
 
 ### Verify Installation
 
 ```bash
-# Inside Claude Code
 /cdf:rules generate
 ```
 
-### Agents (Automatic Setup)
-
-Agents are automatically configured on first session start. The plugin creates symlinks from its agents to `~/.claude/agents/`, making them accessible globally via `@agent-name` syntax.
+Agents are automatically symlinked to `~/.claude/agents/` on first session, making them accessible globally via `@agent-name`.
 
 ---
 
 ## Quick Start
 
-### 1. Automatic Project Analysis
+### Automatic Project Analysis
 
-When you start a Claude session in any project, CDF automatically:
-- Analyzes your codebase structure
-- Generates `.claude/rules/` documentation
-- Loads project context for intelligent assistance
+When you start a session, CDF analyzes your codebase and generates `.claude/rules/` documentation automatically.
 
-### 2. Use Commands
+### Example Workflows
 
 ```bash
-# Analyze code quality
-/cdf:analyze src/
-
-# Get implementation help
+# Implement a feature
 /cdf:implement "add user authentication"
 
 # Research a topic
 /cdf:research "best practices for React state management"
 
+# Debug an issue
+/cdf:troubleshoot "API returning 500 errors"
+
 # Run tests with analysis
 /cdf:test
 ```
 
-### 3. Leverage Agents
+### Task Orchestration
 
 ```bash
-# Get architecture guidance
+# Break down and delegate complex tasks
 /cdf:task --breakdown "design microservices architecture"
 
-# Debug complex issues
-/cdf:troubleshoot "API returning 500 errors"
+# Full workflow: brainstorm -> docs -> implement -> verify
+/cdf:flow "add payment processing"
 ```
 
 ---
 
-## Commands
+## Architecture
 
-All commands are prefixed with `/cdf:`. See [commands/INDEX.md](commands/INDEX.md) for the complete reference.
+### Commands
 
-### Core Development
+Slash commands prefixed with `/cdf:` covering development, analysis, planning, and orchestration. Core commands include `implement`, `test`, `tdd`, `git`, `analyze`, `research`, `troubleshoot`, `design`, `task`, and `flow`.
 
-| Command | Description |
-|---------|-------------|
-| `/cdf:implement` | Feature implementation with persona activation and MCP integration |
-| `/cdf:test` | Execute tests with coverage analysis and quality reporting |
-| `/cdf:tdd` | Test-Driven Development with RED-GREEN-REFACTOR workflow |
-| `/cdf:git` | Git operations with intelligent commit messages |
-| `/cdf:improve` | Apply systematic improvements to code quality, performance, and cleanup |
+See [commands/README.md](commands/README.md) for the complete reference.
 
-### Analysis & Understanding
+### Agents
 
-| Command | Description |
-|---------|-------------|
-| `/cdf:analyze` | Comprehensive code analysis (quality, security, performance) |
-| `/cdf:explain` | Clear explanations of code and concepts |
-| `/cdf:research` | Deep web research with adaptive planning |
-| `/cdf:troubleshoot` | Diagnose and resolve issues |
-| `/cdf:e2e` | End-to-end testing with Playwright patterns |
+Specialized personas that activate automatically based on task context. Covers architecture, research, quality, testing, and communication domains.
 
-### Planning & Design
+See [agents/README.md](agents/README.md) for the complete reference.
 
-| Command | Description |
-|---------|-------------|
-| `/cdf:brainstorm` | Interactive requirements discovery |
-| `/cdf:design` | Design system architecture and APIs |
-| `/cdf:estimate` | Development effort estimation |
-| `/cdf:workflow` | Generate implementation workflows from PRDs |
+### Skills
 
-### Orchestration
+Context-triggered behaviors that activate automatically -- rules generation, intent classification, coding standards enforcement, failure recovery, TDD workflow, visual explanations, and more.
 
-| Command | Description |
-|---------|-------------|
-| `/cdf:task` | Execute complex tasks with breakdown, delegation, and workflow management |
-| `/cdf:flow` | Unified workflow: brainstorm → docs → implement → verify |
+See [skills/](skills/) for details.
 
-### Utilities
+### Hooks
 
-| Command | Description |
-|---------|-------------|
-| `/cdf:docs` | Documentation management |
-| `/cdf:rules` | Generate and manage project rules |
-| `/cdf:verify` | Pre-PR quality verification (build, types, lint, tests) |
+Lifecycle hooks that run at session start, before/after tool use, and on stop. They handle codebase analysis, context injection, code quality checks, and session memory.
+
+Configuration: `hooks/hooks.json`
+
+### Rules Templates
+
+Pre-built rule templates for common project types (ML, frontend, backend, data-eng, mobile, CLI, monorepo, infra) and best practices (security, testing, git workflow, performance, coding style).
+
+Located in `rules-templates/`. Auto-applied via `/cdf:rules generate`.
 
 ---
 
-## Agents
-
-CDF includes 22 specialized agent personas. See [agents/INDEX.md](agents/INDEX.md) for the complete reference.
-
-### Architecture & Design
-
-| Agent | Use Case |
-|-------|----------|
-| `system-architect` | High-level system design and architecture |
-| `backend-architect` | APIs, databases, server-side systems |
-| `frontend-architect` | UI/UX, components, accessibility |
-| `devops-architect` | CI/CD, infrastructure, deployment |
-
-### Analysis & Research
-
-| Agent | Use Case |
-|-------|----------|
-| `deep-research-agent` | Comprehensive multi-source research |
-| `codebase-navigator` | Find code and trace dependencies |
-| `library-researcher` | Evaluate open-source libraries |
-| `root-cause-analyst` | Debug complex issues |
-| `media-interpreter` | Interpret PDFs, images, diagrams |
-| `business-research-strategist` | Business research, market & competitive analysis |
-
-### Quality & Performance
-
-| Agent | Use Case |
-|-------|----------|
-| `quality-engineer` | Testing strategies and QA |
-| `security-engineer` | Security audits and best practices |
-| `performance-engineer` | Optimization and profiling |
-| `refactoring-expert` | Code improvement and cleanup |
-
-### Communication & Education
-
-| Agent | Use Case |
-|-------|----------|
-| `technical-writer` | Documentation and guides |
-| `learning-guide` | Teaching through examples |
-| `socratic-mentor` | Learning through questions |
-
-### Testing Specialists
-
-| Agent | Use Case |
-|-------|----------|
-| `tdd-guide` | Test-Driven Development enforcement |
-| `e2e-specialist` | End-to-end testing with Playwright |
-
-### Specialized
-
-| Agent | Use Case |
-|-------|----------|
-| `python-expert` | Python-specific guidance |
-| `requirements-analyst` | Requirements gathering |
-| `business-panel-experts` | Business strategy analysis |
-
-### Using Agents
-
-Agents are automatically activated based on task context, or you can reference them in commands:
-
-```bash
-# Task activates relevant agents automatically
-/cdf:task execute "design authentication system"
-
-# Task with breakdown delegates to appropriate agents
-/cdf:task --breakdown "security audit" --delegate
-```
-
----
-
-## Skills
-
-Skills are automatically invoked based on context. They provide specialized behaviors without explicit commands.
-
-### Core Skills
-
-| Skill | Trigger | Purpose |
-|-------|---------|---------|
-| **rules-generator** | Missing `.claude/rules/` | Auto-generates project documentation |
-| **claudemd-generator** | After rules generation | Creates `CLAUDE.generated.md` |
-| **intent-gate** | Every request | Classifies request type for optimal handling |
-| **failure-recovery** | 3 consecutive failures | STOP → REVERT → DOCUMENT → CONSULT |
-
-### Development Pattern Skills
-
-| Skill | Trigger | Purpose |
-|-------|---------|---------|
-| **coding-standards** | Code implementation | Enforces code quality, naming, immutability patterns |
-| **backend-patterns** | Backend development | API design, database, authentication patterns |
-| **frontend-patterns** | Frontend development | React patterns, hooks, state management |
-| **tdd-workflow** | TDD mode | RED-GREEN-REFACTOR cycle enforcement |
-| **e2e-patterns** | E2E testing | Playwright patterns, Page Object Model |
-| **continuous-learning** | Session end | Pattern extraction and persistence |
-
-### Specialized Skills
-
-| Skill | Trigger | Purpose |
-|-------|---------|---------|
-| **visual-explainer** | Diagrams, tables, architecture reviews, diffs | Self-contained HTML visualizations — replaces ASCII art and plain-text tables |
-| **frontend-slides** | HTML presentation tasks | Zero-dependency HTML presentations with style presets and PPT conversion |
-| **pptx** | Presentation tasks | PowerPoint creation and editing |
-| **skill-creator** | Creating skills | Guide for building new skills |
-| **social-writing** | LinkedIn/Twitter posts | Authentic social media content |
-| **starhub-presentation** | StarHub decks | Executive presentations with templates |
-| **frontend-design** | UI/UX design tasks | Design system guidance and component patterns |
-| **project-memory** | Session persistence | Cross-session project memory and context |
-
-### External Memory Pattern
-
-For complex tasks, CDF uses file-based memory in `dev/memory/`:
-
-```
-dev/memory/
-├── task_plan.md      # Goal, phases, progress tracking
-├── notes.md          # Research findings, decisions
-└── deliverable.md    # Final output draft
-```
-
-### Intent Classification
-
-Every request is classified before action:
-- **Trivial** → Direct execution
-- **Explicit** → Specific command execution
-- **Exploratory** → Research first, then act
-- **GitHub Work** → Full workflow with validation
-- **Ambiguous** → Ask for clarification
-
----
-
-## Hooks
-
-CDF uses 11 lifecycle hooks for automation:
-
-| Event | Script | Purpose |
-|-------|--------|---------|
-| **SessionStart** | `analyze-codebase.py` | Analyze project, generate rules |
-| **SessionStart** | `memory-init.py` | Initialize session memory context |
-| **PreToolUse** | `keyword-amplifier.py` | Inject mode-specific context based on keywords |
-| **PreToolUse** | `git-push-review.py` | Remind to review before `git push` |
-| **PostToolUse** | `console-log-detector.py` | Warn on debugging statements in .ts/.tsx |
-| **PostToolUse** | `comment-checker.py` | Warn if comment ratio > 25% |
-| **PostToolUse** | `memory-logger.py` | Log file changes to session memory |
-| **PostToolUse** | `flow-checkpoint.py` | Auto-checkpoint every 20 tool calls during flow |
-| **Stop** | `memory-summarize.py` | Summarize session memory and persist state on exit |
-| **Stop** | `flow-session-save.py` | Save flow state with resume instructions |
-| **Stop** | `task-completeness-check.sh` | Verify all tasks completed before stop |
-
----
-
-## Context Modes
-
-CDF supports behavioral modes that adjust Claude's focus and approach.
-
-| Mode | Behavior | Use Case |
-|------|----------|----------|
-| **dev** | Implementation-focused, code-first | Building features |
-| **review** | Quality assessment, thorough checks | Code reviews, audits |
-| **research** | Exploration, broad investigation | Learning, research |
-
-Context files located in `contexts/` directory. Modes are activated by loading the relevant context file.
-
----
-
-## Rules Templates
-
-Pre-built rule templates for common project standards. Copy to `.claude/rules/` and customize.
-
-| Template | Purpose |
-|----------|---------|
-### Best Practice Templates
-
-| Template | Purpose |
-|----------|---------|
-| `security.md` | OWASP guidelines, secrets handling, input validation |
-| `testing.md` | 80% coverage requirement, TDD enforcement |
-| `git-workflow.md` | Conventional commits, PR workflow |
-| `performance.md` | Model selection, context management |
-| `coding-style.md` | Immutability patterns, file size limits |
-
-### Project-Type Templates
-
-| Template | Purpose |
-|----------|---------|
-| `ml-rules.md` | ML/Data Science conventions (experiments, data contracts) |
-| `frontend-rules.md` | Frontend conventions (components, accessibility) |
-| `backend-rules.md` | Backend API conventions (endpoints, database) |
-| `data-eng-rules.md` | Data engineering (pipelines, data quality) |
-| `mobile-rules.md` | Mobile development (platform rules, navigation) |
-| `cli-rules.md` | CLI/Library conventions (public API, versioning) |
-| `monorepo-rules.md` | Monorepo management (workspaces, change impact) |
-| `infra-rules.md` | Infrastructure as code (IaC, security baseline) |
-| `soul-template.md` | Project soul/personality template |
-| `agents-template.md` | Cross-tool AGENTS.md template |
-| `workflow-template.md` | Workflow orchestration rules (subagents, plan mode, verification) |
-
-Generate with:
-```bash
-/cdf:rules generate  # Auto-detects project type and applies relevant templates
-```
-
-Templates located in `rules-templates/` directory.
-
----
-
-## MCP Configurations
-
-Pre-configured MCP server templates for common integrations.
-
-| Server | Purpose |
-|--------|---------|
-| GitHub | Repository management |
-| Supabase | Database and auth |
-| Vercel | Deployment |
-| Cloudflare | Workers, KV, R2 |
-| PostgreSQL | Database access |
-| Redis | Cache and data store |
-| Context7 | Library documentation |
-| Memory | Persistent memory |
-
-Copy `mcp-configs/mcp-servers.template.json` to `.mcp/settings.json` and configure your credentials.
-
----
-
-## How It Works
-
-### Session Lifecycle
-
-```
-1. SESSION START
-   └── Hook: analyze-codebase.py
-       ├── Detect project type
-       ├── Analyze structure
-       └── Generate/update .claude/rules/
-
-2. TOOL USE
-   ├── PreToolUse Hook: keyword-amplifier.py
-   │   └── Inject mode-specific context
-   │
-   ├── [Tool Execution]
-   │
-   └── PostToolUse Hook: comment-checker.py
-       └── Validate code quality
-```
-
-### Command Enforcement Pattern
-
-Workflow commands (flow, tdd, task) use a **MANDATORY FIRST ACTIONS** pattern to ensure Claude doesn't skip critical steps:
-
-```markdown
-## MANDATORY FIRST ACTIONS (DO NOT SKIP)
-
-**BEFORE doing ANYTHING else**, you MUST:
-
-### Step 1: Create State File
-mkdir -p dev/active/[task-slug]
-Write state file with YAML frontmatter...
-
-### Step 2: [Required Action]
-...
-
-CRITICAL ANTI-PATTERNS - DO NOT:
-- Skip state file creation
-- Use alternative paths (.claude/plans/ instead of dev/active/)
-- Proceed without completing mandatory steps
-```
-
-This pattern prevents Claude from taking shortcuts or using built-in behaviors that bypass the workflow.
-
-### Auto-Generated Rules
-
-On session start, CDF analyzes your codebase and generates:
-
-```
-.claude/rules/
-├── architecture.md   # Directory structure, components, data flow
-├── tech-stack.md     # Languages, frameworks, libraries
-├── patterns.md       # Code conventions, patterns
-├── commands.md       # Setup, build, test, run commands
-└── soul.md           # Project personality, values, boundaries
-
-AGENTS.md             # Cross-tool AI agent compatibility (root)
-```
-
-Project type is auto-detected (ML, frontend, backend, data-eng, mobile, CLI, monorepo, infra) and type-specific rule files are generated alongside the standard ones. A root `AGENTS.md` is also generated for cross-tool compatibility with Cursor, Windsurf, etc.
-
-These rules are automatically loaded as context for Claude.
-
----
-
-## Plugin Structure
-
-```
-claude-dev-framework/
-├── .claude-plugin/
-│   └── plugin.json           # Plugin metadata (name: "cdf", version: "1.10.0")
-│
-├── commands/                 # 19 slash commands
-│   ├── README.md             # Categorized command reference
-│   ├── implement.md, test.md, tdd.md, ...
-│   └── verify.md, e2e.md
-│
-├── agents/                   # 22 agent personas
-│   ├── README.md             # Categorized agent reference
-│   ├── system-architect.md, backend-architect.md, ...
-│   └── tdd-guide.md, e2e-specialist.md (new)
-│
-├── skills/                   # 20 auto-invoked skills
-│   ├── rules-generator/, claudemd-generator/, ...
-│   ├── coding-standards/, backend-patterns/, frontend-patterns/
-│   ├── tdd-workflow/, e2e-patterns/, continuous-learning/
-│   ├── visual-explainer/ (HTML diagrams, architecture overviews, diff reviews)
-│   ├── frontend-slides/ (HTML presentations with style presets)
-│   └── pptx/, skill-creator/, social-writing/, starhub-presentation/
-│
-├── contexts/                 # Behavioral modes (new)
-│   ├── dev.md                # Implementation focus
-│   ├── review.md             # Quality assessment focus
-│   └── research.md           # Exploration focus
-│
-├── rules-templates/          # 16 rule templates (5 best-practice + 11 project-type/generation)
-│   ├── security.md, testing.md, git-workflow.md, performance.md, coding-style.md
-│   ├── ml-rules.md, frontend-rules.md, backend-rules.md, data-eng-rules.md
-│   ├── mobile-rules.md, cli-rules.md, monorepo-rules.md, infra-rules.md
-│   └── soul-template.md, agents-template.md, workflow-template.md
-│
-├── mcp-configs/              # MCP server templates (new)
-│   └── mcp-servers.template.json
-│
-├── docs/
-│   └── solutions/            # Institutional knowledge from solved problems
-│       ├── build-errors/
-│       ├── runtime-errors/
-│       └── ...
-│
-├── hooks/
-│   └── hooks.json            # 11 lifecycle hooks
-│
-├── scripts/
-│   ├── analyze-codebase.py   # SessionStart hook
-│   ├── hooks/                # Additional hook scripts (new)
-│   │   ├── git-push-review.py
-│   │   └── console-log-detector.py
-│   └── lib/                  # Shared utilities (new)
-│       └── utils.py
-│
-└── README.md                 # This file
-```
+## Reference
+
+| Resource | Description |
+|----------|-------------|
+| [commands/README.md](commands/README.md) | Complete command reference |
+| [agents/README.md](agents/README.md) | Agent personas and activation |
+| [skills/](skills/) | Skill definitions and triggers |
+| [rules-templates/](rules-templates/) | Rule templates by project type |
+| [mcp-configs/](mcp-configs/) | MCP server configuration templates |
+| [docs/solutions/](docs/solutions/) | Institutional knowledge from solved problems |
 
 ---
 
 ## Configuration
 
-### Plugin Settings
+### Hooks
 
-The plugin includes default permissions in `.claude/settings.local.json`:
+Edit `hooks/hooks.json` to modify lifecycle hook behavior. Hooks use `$CLAUDE_PLUGIN_ROOT` for plugin-relative paths.
 
-```json
-{
-  "permissions": {
-    "allow": [
-      "WebFetch(domain:raw.githubusercontent.com)",
-      "WebFetch(domain:api.github.com)"
-    ]
-  }
-}
-```
+### MCP Servers
 
-### Customizing Hooks
+Copy `mcp-configs/mcp-servers.template.json` to `.mcp/settings.json` and configure credentials. Pre-configured templates available for GitHub, Supabase, Vercel, Cloudflare, PostgreSQL, Redis, and Context7.
 
-Edit `hooks/hooks.json` to modify hook behavior:
+### Environment
 
-```json
-{
-  "hooks": {
-    "SessionStart": [...],
-    "PreToolUse": [...],
-    "PostToolUse": [
-      {
-        "matcher": "Edit|Write|MultiEdit",  // Only run on these tools
-        "hooks": [...]
-      }
-    ],
-    "Stop": [...]
-  }
-}
-```
-
-### Environment Variables
-
-Hooks use `$CLAUDE_PLUGIN_ROOT` to reference plugin-relative paths:
-
-```json
-{
-  "command": "python3 \"$CLAUDE_PLUGIN_ROOT/scripts/analyze-codebase.py\""
-}
-```
+| Variable | Purpose |
+|----------|---------|
+| `$CLAUDE_PLUGIN_ROOT` | Plugin root directory (used by hooks) |
 
 ---
 
@@ -554,74 +137,39 @@ Hooks use `$CLAUDE_PLUGIN_ROOT` to reference plugin-relative paths:
 ### Plugin Not Loading
 
 ```bash
-# Verify installation
-claude plugin marketplace list
-
-# Check if plugin is recognized
-/plugin list
-
-# Reinstall if needed
-claude plugin marketplace remove claude-dev-framework
-claude plugin marketplace add drag88/claude-dev-framework
-/plugin install cdf@claude-dev-framework
-```
-
-### Commands Not Found
-
-```bash
-# Check command namespace
-/plugin list  # Should show "cdf" namespace
+claude plugin marketplace list    # Verify installation
+/plugin list                      # Check if recognized
 ```
 
 ### Hooks Not Running
 
 ```bash
-# Check hooks.json syntax
-cat hooks/hooks.json | python3 -m json.tool
-
-# Verify script permissions
-chmod +x scripts/*.sh
+python3 -m json.tool hooks/hooks.json   # Validate syntax
+chmod +x scripts/*.sh                    # Fix permissions
 ```
 
 ### Rules Not Generating
 
 ```bash
-# Manually trigger analysis
-/cdf:rules generate
-
-# Check Python availability
-python3 --version
+/cdf:rules generate    # Manually trigger
+python3 --version      # Verify Python 3 available
 ```
 
 ---
 
 ## Requirements
 
-- **Claude Code CLI** - Latest version recommended
+- **Claude Code CLI** - Latest version
 - **Python 3.x** - For hook scripts
 - **Bash** - For shell scripts (macOS/Linux)
-
----
 
 ## Contributing
 
 1. Fork the repository
 2. Create a feature branch
-3. Make your changes
-4. Test with `claude --plugin-dir ./claude-dev-framework`
-5. Submit a pull request
-
----
+3. Test with `claude --plugin-dir ./claude-dev-framework`
+4. Submit a pull request
 
 ## License
 
 MIT
-
----
-
-## Resources
-
-- [Claude Code Documentation](https://code.claude.com/docs)
-- [Plugin Development Guide](https://code.claude.com/docs/en/plugins)
-- [agents/INDEX.md](agents/INDEX.md) - Full agent reference
-- [commands/INDEX.md](commands/INDEX.md) - Full command reference

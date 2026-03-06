@@ -4,13 +4,12 @@ Quick reference for all auto-invoked skills, organized by category.
 
 ---
 
-## Core Skills (5)
+## Core Skills (4)
 
 | Skill | Trigger | Description |
 |-------|---------|-------------|
 | [rules-generator](rules-generator/SKILL.md) | Missing `.claude/rules/` | Auto-generates project documentation |
 | [claudemd-generator](claudemd-generator/SKILL.md) | After rules generation | Creates `CLAUDE.generated.md` |
-| [project-memory](project-memory/SKILL.md) | SessionStart, SessionEnd, file changes | Persistent project-scoped memory with daily logs |
 | [intent-gate](intent-gate/SKILL.md) | Every request | Classifies request type for optimal handling |
 | [failure-recovery](failure-recovery/SKILL.md) | 3 consecutive failures | STOP → REVERT → DOCUMENT → CONSULT |
 
@@ -29,7 +28,7 @@ Quick reference for all auto-invoked skills, organized by category.
 
 ---
 
-## Specialized Skills (7)
+## Specialized Skills (5)
 
 | Skill | Trigger | Description |
 |-------|---------|-------------|
@@ -37,8 +36,6 @@ Quick reference for all auto-invoked skills, organized by category.
 | [frontend-slides](frontend-slides/SKILL.md) | HTML presentation tasks | Zero-dependency HTML presentations with style presets and PPT conversion |
 | [pptx](pptx/SKILL.md) | Presentation tasks | PowerPoint creation, editing, and analysis |
 | [skill-creator](skill-creator/SKILL.md) | Creating new skills | Guide for building effective skills |
-| [social-writing](social-writing/SKILL.md) | LinkedIn/Twitter posts | Authentic, human-centered social content |
-| [starhub-presentation](starhub-presentation/SKILL.md) | StarHub decks | Executive presentations with official templates |
 | [frontend-design](frontend-design/SKILL.md) | UI/UX design tasks | Design system guidance and component patterns |
 
 ---
@@ -73,7 +70,6 @@ Skills are automatically invoked based on context triggers. They provide special
 | If you need... | Skill activates |
 |----------------|-----------------|
 | Project rules generated | rules-generator |
-| Persistent project memory | project-memory |
 | Code quality patterns | coding-standards |
 | API design guidance | backend-patterns |
 | React component patterns | frontend-patterns |

@@ -7,15 +7,12 @@ contextual instructions to amplify Claude's behavior for specific tasks.
 
 Keywords:
 - "ultrawork" / "deep work" → Maximum focus mode with comprehensive analysis
-- "search" / "find" → Thorough search with multiple strategies
-- "analyze" / "analyse" → Structured analytical framework
 - "think deeply" / "think hard" → Extended reasoning with multiple perspectives
-- "investigate" → Root cause analysis mode
-- "quick" / "fast" → Efficient execution with minimal overhead
+- "investigate" → Root cause analysis mode (standalone at start of message)
+- "normal" / "reset" → Deactivate any injected mode
 """
 
 import json
-import os
 import sys
 import re
 from typing import Optional
@@ -46,30 +43,6 @@ Enter a state of focused concentration:
 4. **Careful Execution**: Measure twice, cut once
 5. **Complete Deliverables**: Finish what you start""",
 
-    "search": """
-## ENHANCED SEARCH MODE
-
-Apply multi-strategy search approach:
-
-1. **Multiple Patterns**: Try variations (camelCase, snake_case, kebab-case)
-2. **Semantic Search**: Look for synonyms and related concepts
-3. **Structural Search**: Check likely locations based on project structure
-4. **Cross-Reference**: Verify findings in multiple files
-5. **Report All**: Include partial matches and near-misses""",
-
-    "analyze": """
-## STRUCTURED ANALYSIS MODE
-
-Apply systematic analysis framework:
-
-1. **Decomposition**: Break down into components
-2. **Pattern Recognition**: Identify recurring patterns
-3. **Dependency Mapping**: Trace relationships and dependencies
-4. **Risk Assessment**: Identify potential issues
-5. **Recommendation Synthesis**: Provide actionable insights
-
-Present findings in structured format with evidence.""",
-
     "think_deeply": """
 ## EXTENDED REASONING MODE
 
@@ -96,34 +69,23 @@ Apply root cause analysis protocol:
 
 Document the investigation trail for future reference.""",
 
-    "quick": """
-## EFFICIENT EXECUTION MODE
-
-Apply rapid execution principles:
-
-1. **Direct Path**: Take the most straightforward approach
-2. **Minimal Changes**: Only modify what's necessary
-3. **Skip Elaboration**: Keep explanations concise
-4. **Defer Optimization**: Good enough now, perfect later
-5. **Fast Feedback**: Execute and iterate quickly"""
+    "normal": ""
 }
 
 # Keyword patterns mapped to modes (compiled once at import time)
+# "normal"/"reset" checked first to allow deactivation
 KEYWORD_PATTERNS = [
+    (re.compile(r'\b(normal\s+mode|reset\s+mode)\b'), 'normal'),
     (re.compile(r'\bultrawork\b'), 'ultrawork'),
     (re.compile(r'\bdeep\s*work\b'), 'deep_work'),
     (re.compile(r'\bthink\s*(deeply|hard|harder|carefully)\b'), 'think_deeply'),
-    (re.compile(r'\b(search|find)\s*(for|through|across|in|the)?\b'), 'search'),
-    (re.compile(r'\banalyze|analyse|analysis\b'), 'analyze'),
-    (re.compile(r'\binvestigate\b'), 'investigate'),
-    (re.compile(r'\b(quick|quickly|fast|rapid)\b'), 'quick'),
+    (re.compile(r'^\s*investigate\b'), 'investigate'),
 ]
 
 # Fast pre-filter: if none of these substrings appear, skip regex entirely
 _FAST_KEYWORDS = frozenset([
-    'ultrawork', 'deep', 'work', 'think', 'search', 'find',
-    'analyze', 'analyse', 'analysis', 'investigate',
-    'quick', 'quickly', 'fast', 'rapid',
+    'ultrawork', 'deep', 'work', 'think', 'investigate',
+    'normal', 'reset',
 ])
 
 
@@ -202,8 +164,19 @@ def main() -> None:
                 break
 
     if detected_mode and detected_mode in AMPLIFICATION_MODES:
-        print(json.dumps({"additionalContext": AMPLIFICATION_MODES[detected_mode]}))
+        context = AMPLIFICATION_MODES[detected_mode]
+        if context:
+            print(json.dumps({"additionalContext": context}))
+        # "normal" mode: empty string means no context injected (deactivation)
 
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    except Exception as e:
+        from pathlib import Path
+        from datetime import datetime
+        log_dir = Path.home() / '.cdf-logs'
+        log_dir.mkdir(exist_ok=True)
+        with open(log_dir / 'hook-errors.log', 'a') as f:
+            f.write(f"{datetime.now().isoformat()} [keyword-amplifier.py] {e}\n")
