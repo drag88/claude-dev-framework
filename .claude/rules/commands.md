@@ -29,17 +29,47 @@ claude --plugin-dir ./claude-dev-framework
 /cdf:brainstorm "requirements"
 /cdf:design "system"
 /cdf:estimate "task"
+/cdf:workflow "PRD or requirements"
 
 # Orchestration
+/cdf:flow "brainstorm → docs → implement → verify"
 /cdf:task execute "complex task"
 /cdf:task --breakdown "multi-step task"
 
-# Utilities
-/cdf:rules generate
-/cdf:rules soul-interview
-/cdf:docs plan
+# Quality
 /cdf:verify --mode pre-pr
+/cdf:e2e
+/cdf:improve src/
+
+# Documentation
+/cdf:docs plan
+/cdf:rules generate
+/cdf:rules status
 ```
+
+## All 19 Commands
+
+| Command | Purpose |
+|---------|---------|
+| `/cdf:analyze` | Code analysis (quality, security, performance, architecture) |
+| `/cdf:brainstorm` | Interactive requirements discovery |
+| `/cdf:design` | System architecture and API design |
+| `/cdf:docs` | Planning and documentation generation |
+| `/cdf:e2e` | E2E testing with Playwright |
+| `/cdf:estimate` | Development estimates |
+| `/cdf:explain` | Code and concept explanations |
+| `/cdf:flow` | Unified workflow: brainstorm → docs → implement → verify |
+| `/cdf:git` | Git operations with smart commit messages |
+| `/cdf:implement` | Feature implementation with agent activation |
+| `/cdf:improve` | Code quality improvements |
+| `/cdf:research` | Deep web research |
+| `/cdf:rules` | Project rules management |
+| `/cdf:task` | Complex task execution with delegation |
+| `/cdf:tdd` | Test-Driven Development workflow |
+| `/cdf:test` | Test execution with coverage analysis |
+| `/cdf:troubleshoot` | Issue diagnosis and resolution |
+| `/cdf:verify` | Pre-PR quality checks |
+| `/cdf:workflow` | Generate workflows from PRDs |
 
 ## Hook Scripts
 
@@ -47,18 +77,11 @@ claude --plugin-dir ./claude-dev-framework
 # Run codebase analysis manually
 python3 scripts/analyze-codebase.py
 
-# Test utility functions
-python3 -c "from scripts.lib.utils import get_project_root; print(get_project_root())"
-```
-
-## Validation
-
-```bash
 # Validate hooks.json syntax
 python3 -m json.tool hooks/hooks.json
 
-# Check script permissions
-chmod +x scripts/*.sh scripts/**/*.py
+# Health check
+python3 scripts/health-check.py
 ```
 
 ## Git Workflow
@@ -70,11 +93,4 @@ git commit -m "fix: resolve hook timeout"
 git commit -m "docs: update README"
 
 # No Claude attribution in commits (handled by /cdf:git)
-```
-
-## Testing
-
-```bash
-# Test plugin loading
-claude --plugin-dir . -c "/cdf:rules generate"
 ```

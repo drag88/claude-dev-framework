@@ -73,18 +73,27 @@ import sys
 import json
 
 def main():
-    # Read context from environment or stdin
+    # Read context from stdin (JSON with tool_name, tool_input, etc.)
+    input_data = json.loads(sys.stdin.read())
     # Process and return result
-    result = {"status": "success", "message": "..."}
+    result = {"additionalContext": "Injected context for Claude"}
+    # Or block: {"decision": "block", "reason": "..."}
     print(json.dumps(result))
 
 if __name__ == "__main__":
     main()
 ```
 
+## Hook I/O Contract
+
+- **Input**: JSON on stdin with tool context (tool_name, tool_input, etc.)
+- **Output**: JSON on stdout — either `{"additionalContext": "..."}` for injection or `{"decision": "block", "reason": "..."}` to block
+- **Timeouts**: 3-60s depending on hook complexity
+- **No external dependencies**: stdlib only
+
 ## Error Handling
 
-- Hooks have configurable timeouts (default 5-10s)
+- Hooks have configurable timeouts (3s for loggers, 60s for analysis)
 - Failure recovery skill activates after 3 consecutive failures
 - Pattern: STOP → REVERT → DOCUMENT → CONSULT
 
@@ -109,3 +118,20 @@ Every request classified before action:
 - **Exploratory** → Research first
 - **GitHub Work** → Full workflow
 - **Ambiguous** → Clarification needed
+
+## Context Modes
+
+Quality thresholds vary by mode:
+- **dev**: Ship first, iterate. Tests 70%, lint warnings OK
+- **review**: Trust but verify. Tests 80%, no lint/security issues
+- **research**: Understand before acting. Informational thresholds only
+
+## Naming Conventions
+
+- **Python variables/functions**: `snake_case`
+- **Python classes**: `PascalCase`
+- **Markdown files**: `kebab-case` (e.g., `memory-logger.py`, `rules-templates/`)
+- **Command names**: `cdf:verb` or `cdf:verb-noun` (e.g., `cdf:rules`, `cdf:tdd`)
+- **Hook scripts**: Descriptive verb-noun (`memory-logger.py`, `keyword-amplifier.py`)
+- **Agent names**: Domain-specific nouns (`backend-architect`, `root-cause-analyst`)
+- **Skill names**: Action-oriented (`intent-gate`, `failure-recovery`)

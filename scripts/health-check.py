@@ -6,7 +6,7 @@ Validates plugin integrity:
 1. hooks.json is valid JSON
 2. All scripts referenced in hooks.json exist
 3. All skills/*/SKILL.md have valid YAML frontmatter
-4. Component counts are consistent across CLAUDE.md, AGENTS.md, README.md, plugin.json, marketplace.json
+4. Component counts are consistent across CLAUDE.md, README.md, plugin.json, marketplace.json
 """
 
 import json
@@ -100,11 +100,6 @@ def check_count_consistency(project_root: Path) -> list:
         "plugin.json": project_root / ".claude-plugin" / "plugin.json",
         "marketplace.json": project_root / ".claude-plugin" / "marketplace.json",
     }
-
-    # Also check AGENTS.md if it exists
-    agents_md = project_root / "AGENTS.md"
-    if agents_md.exists():
-        files_to_check["AGENTS.md"] = agents_md
 
     for name, path in files_to_check.items():
         if not path.exists():

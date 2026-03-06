@@ -1,5 +1,5 @@
 ---
-description: "Project rules management: generate .claude/rules/, SOUL.md, AGENTS.md, and CLAUDE.md documentation"
+description: "Project rules management: generate .claude/rules/ and CLAUDE.md documentation"
 ---
 
 # /cdf:rules - Project Rules Management
@@ -11,9 +11,6 @@ description: "Project rules management: generate .claude/rules/, SOUL.md, AGENTS
 ```bash
 # Generate full rules from codebase analysis (now project-type aware)
 /cdf:rules generate
-
-# Interactive soul interview to refine project personality
-/cdf:rules soul-interview
 
 # Generate CLAUDE.md from existing rules
 /cdf:rules claudemd
@@ -186,52 +183,8 @@ The goal is to produce rules that capture the project's true architecture, patte
 | Monorepo | `workspace-map.md`, `change-impact.md` | Package Dependency Graph |
 | Infrastructure | `iac-conventions.md`, `security-baseline.md` | Infra Topology, Module Tree |
 
-#### `soul.md` - Project Soul (REQUIRED)
-MUST generate at `.claude/rules/soul.md`. Captures project personality:
-```markdown
-# Project Soul
-
-## Identity
-- What this project IS and who it serves
-
-## Values
-- Speed vs correctness bias (detected from code patterns)
-- Simplicity vs features
-- Convention vs configuration
-
-## Naming Conventions
-- Variables: camelCase/snake_case (detected)
-- Files: kebab-case/PascalCase (detected)
-
-## Boundaries
-- Sacred files: [migrations, lock files, generated code]
-- Never commit: [.env, secrets, artifacts]
-```
-
 #### `.claude/rules/workflow.md` (REQUIRED)
 MUST generate at `.claude/rules/workflow.md`. Use `rules-templates/workflow-template.md` as the source template. Customize only the "Project-Specific Spawn Patterns" section based on the detected project type — replace the placeholder block with 2-3 concrete subagent patterns relevant to this project's domain and tech stack. If project type is undetected, use the generic patterns. Keep all other sections verbatim from the template.
-
-#### Root `AGENTS.md` (REQUIRED)
-MUST generate at project root (not in `.claude/`) for cross-tool AI agent compatibility (Cursor, Windsurf, etc.):
-```markdown
-# AGENTS.md
-
-## Project Overview
-[1-2 sentence elevator pitch]
-
-## Development Setup
-[Key commands to get started]
-
-## Architecture
-[Condensed codemap from architecture.md]
-
-## Coding Standards
-[Key patterns from patterns.md]
-
-## Agent Guidelines
-- Never modify: [sacred files]
-- Always run after changes: [test/lint commands]
-```
 
 **Path-Specific Rules** (Optional):
 ```markdown
@@ -249,9 +202,7 @@ paths: src/api/**/*.py
    - `.claude/rules/tech-stack.md`
    - `.claude/rules/patterns.md`
    - `.claude/rules/commands.md`
-   - `.claude/rules/soul.md`
    - `.claude/rules/workflow.md`
-   - `AGENTS.md` (project root)
    - Any project-type-specific files
 
 **Auto-Chain**: After generating rules, automatically runs `/cdf:rules claudemd`.
@@ -277,7 +228,6 @@ Generate a concise `CLAUDE.generated.md` file from existing `.claude/rules/`.
 - From `tech-stack.md`: Language, framework, key libraries
 - From `commands.md`: Setup, test, lint, run commands
 - From `patterns.md`: Critical coding patterns/rules
-- From `soul.md`: Project identity, values, boundaries
 - From `workflow.md`: Subagent routing table + pointer to full rules
 
 **Output Template:**
@@ -402,26 +352,6 @@ After generating `CLAUDE.generated.md`, inform the user:
 - File created at `CLAUDE.generated.md`
 - Review the content and rename to `CLAUDE.md` if satisfied
 - Or merge changes into existing `CLAUDE.md`
-
-### soul-interview - Refine Project Soul Interactively
-
-Interactively refine `.claude/rules/soul.md` through focused questions.
-
-```bash
-/cdf:rules soul-interview
-```
-
-**Prerequisites**: Run `/cdf:rules generate` first to create initial soul.md.
-
-**Behavioral Flow:**
-1. **Read** existing `soul.md` if present
-2. **Ask** 4 focused questions via AskUserQuestion:
-   - What's the project's core mission? (1 sentence)
-   - What does this project value most? (speed/correctness/simplicity/flexibility)
-   - What tone should code reviews and docs use? (formal/casual/direct)
-   - Any hard boundaries? (things AI should never do in this project)
-3. **Merge** answers with auto-detected values
-4. **Write** updated `soul.md`
 
 ### status - Check Rules Status
 
@@ -557,8 +487,6 @@ Run `/cdf:rules generate` to refresh after major changes.
 **Will:**
 - Analyze codebase to generate accurate rules
 - Detect project type and generate type-specific rules
-- Generate SOUL.md capturing project personality
-- Generate root AGENTS.md for cross-tool compatibility
 - Create comprehensive `.claude/rules/` documentation
 - Generate concise `CLAUDE.generated.md` from rules
 - Auto-chain from generate to claudemd

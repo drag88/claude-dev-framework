@@ -17,15 +17,17 @@
 
 | Library | Purpose |
 |---------|---------|
-| `json` | Configuration parsing |
+| `json` | Configuration parsing, hook I/O |
 | `os` | File system operations |
 | `subprocess` | Command execution in hooks |
 | `pathlib` | Cross-platform path handling |
+| `sys` | stdin/stdout for hook communication |
 
 ## Development Tools
 
 - **No build tools required** - Plugin is loaded directly by Claude Code
 - **Git** - Version control
+- **GitHub Actions** - CI validation (`.github/workflows/validate.yml`)
 
 ## MCP Server Integrations (Optional)
 
@@ -38,6 +40,7 @@
 | Vercel | Deployment |
 | PostgreSQL | Database access |
 | Redis | Cache and data store |
+| Cloudflare | Infrastructure |
 
 ## File Types
 

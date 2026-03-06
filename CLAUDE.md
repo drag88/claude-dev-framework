@@ -22,9 +22,6 @@ claude --plugin-dir .         # Run with plugin (local dev)
 
 CDF hooks never write to native auto-memory. Claude owns semantic memory.
 
-## Project Soul
-Values, boundaries, sacred files, and naming conventions: `.claude/rules/soul.md`
-
 ## Commit Messages
 Conventional format (`feat:`, `fix:`, `docs:`), no Claude attribution. See `/cdf:git`.
 
