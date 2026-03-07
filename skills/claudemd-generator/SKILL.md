@@ -1,3 +1,7 @@
+---
+description: "Auto-generate CLAUDE.generated.md from project rules when rules change or are missing"
+---
+
 # CLAUDE.md Generator Skill
 
 Auto-generate `CLAUDE.generated.md` from project rules.

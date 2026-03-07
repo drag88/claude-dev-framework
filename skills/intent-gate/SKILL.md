@@ -1,3 +1,7 @@
+---
+description: "Classify user requests before taking action to ensure appropriate response strategy"
+---
+
 # Intent Gate Skill
 
 Classify user requests before taking action to ensure appropriate response strategy.

@@ -1,3 +1,7 @@
+---
+description: "Auto-generate .claude/rules/ documentation for any codebase"
+---
+
 # Rules Generator Skill
 
 Auto-generate `.claude/rules/` documentation for any codebase.

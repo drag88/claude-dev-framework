@@ -1,3 +1,7 @@
+---
+description: "Extract and persist valuable patterns discovered during development sessions"
+---
+
 # Continuous Learning Skill
 
 Automatically extract and persist valuable patterns discovered during development sessions.

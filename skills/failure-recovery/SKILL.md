@@ -1,3 +1,7 @@
+---
+description: "Protocol for handling consecutive failures to prevent thrashing and wasted effort"
+---
+
 # Failure Recovery Skill
 
 Protocol for handling consecutive failures to prevent thrashing and wasted effort.
