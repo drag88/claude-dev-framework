@@ -80,9 +80,15 @@ def extract_counts(text: str) -> dict:
     """Extract component counts from text using common patterns."""
     counts = {}
 
-    # Match patterns like "29 commands", "22 agent personas", "20 skills", "11 lifecycle hooks"
-    for component in ["command", "agent", "skill", "hook"]:
-        pattern = rf'(\d+)\s+(?:lifecycle\s+)?{component}s?(?:\s+\w+)?'
+    # Specific patterns to avoid matching prose like "spawn 3-5 agents"
+    patterns = {
+        "command": r'(\d+)\s+(?:slash\s+)?commands?\b',
+        "agent": r'(\d+)\s+agent\s+personas?\b',
+        "skill": r'(\d+)\s+(?:auto-invoked\s+)?skills?\b',
+        "hook": r'(\d+)\s+(?:lifecycle\s+)?hooks?\b',
+    }
+
+    for component, pattern in patterns.items():
         match = re.search(pattern, text, re.IGNORECASE)
         if match:
             counts[component] = int(match.group(1))
