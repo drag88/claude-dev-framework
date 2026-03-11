@@ -169,4 +169,4 @@ Which would you like me to try, or do you have other suggestions?
 
 ## Related Skills
 
-- `memory-logger` hook - Document failures in daily logs
+- Check `git log` for failure context and recent changes

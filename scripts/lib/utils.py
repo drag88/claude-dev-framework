@@ -88,17 +88,6 @@ def is_test_file(path: str) -> bool:
     ])
 
 
-def get_memory_dir() -> Path:
-    """Get the .claude/memory directory path."""
-    return get_project_root() / '.claude' / 'memory'
-
-
-def get_daily_log_path() -> Path:
-    """Get today's daily log path."""
-    from datetime import datetime
-    today = datetime.now().strftime('%Y-%m-%d')
-    return get_memory_dir() / 'daily' / f'{today}.md'
-
 
 def get_native_auto_memory_path() -> Path:
     """Resolve the native auto-memory MEMORY.md path.

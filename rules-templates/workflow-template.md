@@ -101,9 +101,7 @@ When corrected — on approach, on a fact, on a code pattern — save it to your
 
 **Where to save**: Your auto-memory (`~/.claude/projects/<project>/memory/MEMORY.md` and topic files). Use the Write or Edit tool to update these files.
 
-**Daily activity logs** at `.claude/memory/daily/` are auto-maintained by hooks — don't manually edit them for activity tracking.
-
-**Read learnings at session start** — check `.claude/rules/memory-context.md` (auto-loaded) for recent decisions and known issues.
+**Session continuity** — at session start, CDF injects recent git history and your auto-memory as context. No manual file management needed.
 
 ---
 

@@ -286,7 +286,7 @@ Requirements:
 ## Memory
 - Check your auto-memory for prior context at session start
 - Save key decisions, debugging insights, and project patterns to auto-memory during work
-- Daily activity logs at `.claude/memory/daily/` are auto-maintained by hooks
+- Session context is auto-injected at session start from git history and auto-memory
 - Before ending a session, reflect: what's worth remembering for next time?
 
 ## Commit Messages
@@ -461,7 +461,7 @@ Requirements:
 ## Memory
 - Check your auto-memory for prior context at session start
 - Save key decisions, debugging insights, and project patterns to auto-memory during work
-- Daily activity logs at `.claude/memory/daily/` are auto-maintained by hooks
+- Session context is auto-injected at session start from git history and auto-memory
 - Before ending a session, reflect: what's worth remembering for next time?
 
 ## Commit Messages

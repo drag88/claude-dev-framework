@@ -7,6 +7,11 @@
             "type": "command",
             "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/analyze-codebase.py\" && python3 \"$CLAUDE_PLUGIN_ROOT/scripts/analyze-codebase.py\" || true",
             "timeout": 60
+          },
+          {
+            "type": "command",
+            "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/session-context.py\" && python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/session-context.py\" || true",
+            "timeout": 60
           }
         ]
       }
@@ -50,30 +55,11 @@
             "type": "command",
             "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/comment-checker.py\" && python3 \"$CLAUDE_PLUGIN_ROOT/scripts/comment-checker.py\" || true",
             "timeout": 5
-          },
-          {
-            "type": "command",
-            "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/memory-logger.py\" && python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/memory-logger.py\" || true",
-            "timeout": 3
-          },
-          {
-            "type": "command",
-            "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/flow-checkpoint.py\" && python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/flow-checkpoint.py\" || true",
-            "timeout": 3
           }
         ]
       }
     ],
     "Stop": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/flow-session-save.py\" && python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/flow-session-save.py\" || true",
-            "timeout": 10
-          }
-        ]
-      },
       {
         "hooks": [
           {

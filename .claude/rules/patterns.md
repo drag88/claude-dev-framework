@@ -93,7 +93,7 @@ if __name__ == "__main__":
 
 ## Error Handling
 
-- Hooks have configurable timeouts (3s for loggers, 60s for analysis)
+- Hooks have configurable timeouts (5s for validators, 60s for analysis)
 - Failure recovery skill activates after 3 consecutive failures
 - Pattern: STOP → REVERT → DOCUMENT → CONSULT
 
@@ -130,8 +130,8 @@ Quality thresholds vary by mode:
 
 - **Python variables/functions**: `snake_case`
 - **Python classes**: `PascalCase`
-- **Markdown files**: `kebab-case` (e.g., `memory-logger.py`, `rules-templates/`)
+- **Markdown files**: `kebab-case` (e.g., `rules-templates/`)
 - **Command names**: `cdf:verb` or `cdf:verb-noun` (e.g., `cdf:rules`, `cdf:tdd`)
-- **Hook scripts**: Descriptive verb-noun (`memory-logger.py`, `keyword-amplifier.py`)
+- **Hook scripts**: Descriptive verb-noun (`session-context.py`, `keyword-amplifier.py`)
 - **Agent names**: Domain-specific nouns (`backend-architect`, `root-cause-analyst`)
 - **Skill names**: Action-oriented (`intent-gate`, `failure-recovery`)

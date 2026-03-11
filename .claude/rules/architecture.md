@@ -13,10 +13,10 @@ CDF (Claude Dev Framework) is a Claude Code plugin that transforms Claude into a
 | `skills/` | 15 auto-invoked skill directories (`skills/*/SKILL.md`). Trigger-based, no explicit invocation. |
 | `contexts/` | 3 behavioral context modes (dev/review/research) with quality thresholds. |
 | `hooks/` | Lifecycle hook configuration (`hooks.json`). |
-| `scripts/` | Hook implementation scripts (7 Python + 1 Bash + 1 shared library). |
-| `rules-templates/` | 16 rule templates: 5 best-practice + 8 project-type + 3 meta (agents, soul, workflow). |
+| `scripts/` | Hook implementation scripts (5 Python + 1 Bash + 1 shared library). |
+| `rules-templates/` | 14 rule templates: 5 best-practice + 8 project-type + 1 meta (workflow). |
 | `mcp-configs/` | MCP server configuration templates (7 pre-configured servers). |
-| `.claude-plugin/` | Plugin metadata (`plugin.json` v1.11.0). |
+| `.claude-plugin/` | Plugin metadata (`plugin.json` v1.12.0). |
 | `.claude/` | Plugin settings, permissions, rules, and runtime memory. |
 | `docs/` | Institutional knowledge and solved problem references. |
 
@@ -24,12 +24,12 @@ CDF (Claude Dev Framework) is a Claude Code plugin that transforms Claude into a
 
 | File | Role |
 |------|------|
-| `.claude-plugin/plugin.json` | Plugin metadata, version (1.11.0), component counts |
-| `hooks/hooks.json` | Lifecycle hook definitions — 9 hooks across 4 event types |
+| `.claude-plugin/plugin.json` | Plugin metadata, version (1.12.0), component counts |
+| `hooks/hooks.json` | Lifecycle hook definitions — 7 hooks across 4 event types |
 | `scripts/analyze-codebase.py` | SessionStart hook — project analysis and rule generation |
+| `scripts/hooks/session-context.py` | SessionStart hook — injects git history + auto-memory context |
 | `scripts/keyword-amplifier.py` | PreToolUse hook — mode detection and context injection |
 | `scripts/lib/utils.py` | Shared utility functions used by all hook scripts |
-| `scripts/hooks/memory-logger.py` | PostToolUse hook — logs file mutations to daily memory |
 
 ## Component Relationships
 
@@ -51,15 +51,15 @@ MCP Integration → External tool coordination
 
 ## Data Flow
 
-1. **SessionStart**: `analyze-codebase.py` analyzes project, generates rules if missing (60s timeout)
+1. **SessionStart**: `analyze-codebase.py` analyzes project and generates rules; `session-context.py` injects git history + auto-memory context (60s timeout each)
 2. **Request Processing**: Intent classified, command loaded, agents/skills activated
 3. **PreToolUse**: `keyword-amplifier.py` injects mode context; `git-push-review.py` guards pushes
-4. **PostToolUse**: `console-log-detector.py`, `comment-checker.py`, `memory-logger.py`, `flow-checkpoint.py` validate and log
-5. **Stop**: `flow-session-save.py` persists state; `task-completeness-check.sh` verifies completion
+4. **PostToolUse**: `console-log-detector.py`, `comment-checker.py` validate code quality
+5. **Stop**: `task-completeness-check.sh` verifies completion
 
 ## Cross-Cutting Concerns
 
-- **Memory**: `.claude/memory/daily/` tracks file mutations (hook-maintained, append-only). Claude's native auto-memory stores semantic context.
+- **Session Context**: `session-context.py` injects recent git history and auto-memory at session start. No CDF-owned storage.
 - **Mode Amplification**: `keyword-amplifier.py` detects keywords (ultrawork, deep work, investigate) and injects behavioral context into all tool calls.
 - **Quality Gates**: `comment-checker.py` (35% threshold), `console-log-detector.py` (debug statements), context modes set quality thresholds.
 - **Error Recovery**: `failure-recovery` skill activates after 3 consecutive failures (STOP → REVERT → DOCUMENT → CONSULT).
@@ -69,7 +69,6 @@ MCP Integration → External tool coordination
 - Hook scripts use only Python stdlib — no external dependencies
 - Commands, agents, and skills are pure markdown — no executable code
 - `hooks/hooks.json` is the single source of truth for lifecycle configuration
-- `.claude/memory/` is runtime state — never committed to git
 - All hook scripts return JSON to stdout for Claude injection
 
 ## Architectural Patterns
@@ -83,9 +82,8 @@ MCP Integration → External tool coordination
 ## Boundaries
 
 - **Sacred files** (never modify without testing): `hooks/hooks.json`, `scripts/lib/utils.py`, `.claude-plugin/plugin.json`
-- **Never commit**: `.env`, `dev/active/` flow state, `.claude/memory/daily/` logs, `*.local.json`
+- **Never commit**: `.env`, `dev/active/` flow state, `*.local.json`
 - **Review-required**: Command/agent/skill definition changes, public hook interface changes
-- **Runtime state**: `.claude/memory/` is never committed or manually edited
 
 ## Extension Points
 

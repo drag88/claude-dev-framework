@@ -1,13 +1,15 @@
 # CDF (Claude Dev Framework)
 
 ## Overview
-Comprehensive Claude Code plugin providing commands, agents, skills, and lifecycle hooks for intelligent development assistance. Transforms Claude into an opinionated development assistant with codebase memory, specialized expertise on demand, and reproducible workflows.
+Claude Code plugin providing commands, agents, skills, and lifecycle hooks that transform Claude into an opinionated development assistant with codebase memory, specialized expertise, and reproducible workflows.
 
 ## Quick Start
 ```bash
-claude --plugin-dir .         # Run with plugin (local dev)
+claude --plugin-dir .         # Run with plugin
 /cdf:rules generate           # Generate project rules
 /cdf:implement "feature"      # Implement a feature
+/cdf:test                     # Run tests
+/cdf:verify --mode pre-pr     # Pre-PR quality check
 ```
 
 ## Critical Rules
@@ -16,30 +18,77 @@ claude --plugin-dir .         # Run with plugin (local dev)
 3. **No backwards compat** - delete deprecated code immediately
 4. **Tests required** - no feature complete without tests
 
-## Memory
-- **Semantic memory** (decisions, patterns, preferences): Claude's native auto-memory
-- **Daily file change log**: `.claude/memory/daily/` (CDF hook, append-only)
+## Subagent Strategy
 
-CDF hooks never write to native auto-memory. Claude owns semantic memory.
+**Default to subagents for exploration. Main context is for implementation.**
+
+| Task | Use Subagent? | Why |
+|------|:---:|-----|
+| Exploring unfamiliar code | Yes | Returns summary, not raw files |
+| Researching library/API | Yes | Returns verdict + key facts |
+| Parallel analysis (multiple dirs) | Yes | Multiple agents, simultaneous |
+| Tracing bugs across files | Yes | Reads 10+ files without polluting context |
+| Single targeted grep/read | No | Faster inline |
+| Writing/editing files | No | Must stay in main context |
+
+**Rules:**
+- One atomic goal per subagent. Return summaries, not raw dumps.
+- For complex problems, spawn 3-5 agents in parallel covering different angles.
+- Full workflow details: `.claude/rules/workflow.md`
+
+<plans_instruction>
+## Plans Format
+
+At end of plans, provide concise unresolved questions:
+```
+Unresolved Questions:
+- [Question]?
+```
+
+Requirements:
+- Make questions EXTREMELY concise
+- Sacrifice grammar for concision
+</plans_instruction>
+
+## Memory
+- **Semantic memory**: Claude's native auto-memory (decisions, patterns, preferences)
+- **Session context**: Auto-injected at session start from git history + auto-memory
+- CDF reads auto-memory at session start but never writes to it
 
 ## Commit Messages
 Conventional format (`feat:`, `fix:`, `docs:`), no Claude attribution. See `/cdf:git`.
 
-## Plans Format
+## CDF Agents
 
-Unresolved questions at end of plans -- keep them extremely concise, sacrifice grammar for concision.
+| Task Type | Agent | Command |
+|-----------|-------|---------|
+| System design | system-architect | `/cdf:task` |
+| API/backend work | backend-architect | `/cdf:task` |
+| UI development | frontend-architect | `/cdf:task` |
+| CI/CD setup | devops-architect | `/cdf:task` |
+| Research topics | deep-research-agent | `/cdf:research` |
+| Find code/patterns | codebase-navigator | `/cdf:task` |
+| Evaluate libraries | library-researcher | `/cdf:task` |
+| Debug issues | root-cause-analyst | `/cdf:troubleshoot` |
+| Write tests | quality-engineer | `/cdf:test` |
+| Security audit | security-engineer | `/cdf:analyze` |
+| Performance | performance-engineer | `/cdf:analyze` |
+| Refactor code | refactoring-expert | `/cdf:improve` |
+| Documentation | technical-writer | `/cdf:docs` |
+| TDD workflow | tdd-guide | `/cdf:tdd` |
+| E2E testing | e2e-specialist | `/cdf:e2e` |
+
+**Auto-activation**: Agents activate automatically via `/cdf:task` based on task context.
 
 ## Project Rules
-Auto-generated rules in `.claude/rules/` -- Claude loads automatically.
+Auto-generated rules in `.claude/rules/` - Claude loads automatically.
 Run `/cdf:rules generate` to refresh after major changes.
 
-## Business Strategy Agent
-For business model analysis, competitive positioning, or market strategy, activate **business-panel-experts** — synthesizes Christensen, Porter, Drucker, Godin, Kim & Mauborgne, Collins, Taleb, Meadows, and Doumont in sequential, debate, or Socratic modes. Details: `agents/business-panel-experts.md`
-
 ## Key Directories
-- `commands/` - Slash command definitions
-- `agents/` - Agent persona definitions
-- `skills/` - Auto-invoked skill directories
-- `scripts/` - Hook implementation scripts
-- `hooks/` - Lifecycle hook configuration
-- `rules-templates/` - Rule generation templates
+- `commands/` - 19 slash command definitions (markdown + YAML frontmatter)
+- `agents/` - 22 agent persona definitions
+- `skills/` - 15 auto-invoked skill directories (`SKILL.md`)
+- `scripts/` - Hook implementation scripts (Python + Bash)
+- `hooks/` - Lifecycle hook configuration (`hooks.json`)
+- `rules-templates/` - 14 rule generation templates
+- `contexts/` - 3 behavioral context modes (dev/review/research)

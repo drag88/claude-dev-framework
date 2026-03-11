@@ -54,8 +54,7 @@ grep -l "severity: high" docs/solutions/**/*.md
 
 Solutions are created by:
 1. `/cdf:flow` - Knowledge capture during workflow
-2. Auto-memory hooks (`memory-logger.py`) - Activity logging during sessions
-3. Manual creation following the template
+2. Manual creation following the template
 
 ## Template
 
