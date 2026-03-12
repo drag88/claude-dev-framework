@@ -87,7 +87,7 @@ Run `/cdf:rules generate` to refresh after major changes.
 ## Key Directories
 - `commands/` - 19 slash command definitions (markdown + YAML frontmatter)
 - `agents/` - 22 agent persona definitions
-- `skills/` - 15 auto-invoked skill directories (`SKILL.md`)
+- `skills/` - 22 auto-invoked skill directories (`SKILL.md`)
 - `scripts/` - Hook implementation scripts (Python + Bash)
 - `hooks/` - Lifecycle hook configuration (`hooks.json`)
 - `rules-templates/` - 14 rule generation templates
