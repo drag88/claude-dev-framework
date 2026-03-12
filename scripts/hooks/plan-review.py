@@ -15,13 +15,16 @@ PLAN_MARKER = "<!-- PLAN_REVIEW -->"
 
 APPROVAL_CONTEXT = """## Plan Approval Required
 
-You just presented an implementation plan. Before proceeding:
+You just presented an implementation plan. You MUST now:
 
-1. **Ask the user**: "Do you approve this plan?"
-2. **If approved**: Invoke `/cdf:docs plan` to generate persistent documentation, then assess complexity and recommend execution strategy (direct, subagents, or agent teams) per the plan-review skill.
-3. **If rejected or changes requested**: Revise the plan and present it again with the `<!-- PLAN_REVIEW -->` marker.
+1. Ask the user: "Do you approve this plan? (yes / no / changes needed)"
+2. STOP. Say nothing else. Wait for the user's reply.
 
-Do NOT proceed with implementation until explicit approval is received."""
+After the user responds:
+- **Approved**: Invoke `/cdf:docs plan` to generate persistent documentation, then assess complexity and recommend execution strategy (direct, subagents, or agent teams) per the plan-review skill.
+- **Rejected or changes requested**: Revise the plan and present it again with the `<!-- PLAN_REVIEW -->` marker.
+
+Do NOT proceed with implementation, documentation, or any other action until the user replies."""
 
 
 def main():
