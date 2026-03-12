@@ -30,6 +30,7 @@ claude --plugin-dir ./claude-dev-framework
 /cdf:design "system"
 /cdf:estimate "task"
 /cdf:workflow "PRD or requirements"
+/cdf:approve                          # After plan mode: persist + execute
 
 # Orchestration
 /cdf:flow "brainstorm → docs → implement → verify"
@@ -47,11 +48,12 @@ claude --plugin-dir ./claude-dev-framework
 /cdf:rules status
 ```
 
-## All 19 Commands
+## All 20 Commands
 
 | Command | Purpose |
 |---------|---------|
 | `/cdf:analyze` | Code analysis (quality, security, performance, architecture) |
+| `/cdf:approve` | Approve plan from plan mode, generate docs, recommend execution strategy |
 | `/cdf:brainstorm` | Interactive requirements discovery |
 | `/cdf:design` | System architecture and API design |
 | `/cdf:docs` | Planning and documentation generation |

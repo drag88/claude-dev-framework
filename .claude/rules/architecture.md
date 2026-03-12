@@ -8,12 +8,12 @@ CDF (Claude Dev Framework) is a Claude Code plugin that transforms Claude into a
 
 | Directory | Purpose |
 |-----------|---------|
-| `commands/` | 19 slash command definitions (markdown + YAML frontmatter). Each file is a complete behavioral spec. |
+| `commands/` | 20 slash command definitions (markdown + YAML frontmatter). Each file is a complete behavioral spec. |
 | `agents/` | 22 agent persona definitions. Activated by `/cdf:task` or automatically via task context. |
-| `skills/` | 23 auto-invoked skill directories (`skills/*/SKILL.md`). Trigger-based, no explicit invocation. |
+| `skills/` | 24 auto-invoked skill directories (`skills/*/SKILL.md`). Trigger-based, no explicit invocation. |
 | `contexts/` | 3 behavioral context modes (dev/review/research) with quality thresholds. |
 | `hooks/` | Lifecycle hook configuration (`hooks.json`). |
-| `scripts/` | Hook implementation scripts (6 Python + 1 Bash + 1 shared library). |
+| `scripts/` | Hook implementation scripts (5 Python + 1 Bash + 1 shared library). |
 | `rules-templates/` | 14 rule templates: 5 best-practice + 8 project-type + 1 meta (workflow). |
 | `mcp-configs/` | MCP server configuration templates (7 pre-configured servers). |
 | `.claude-plugin/` | Plugin metadata (`plugin.json` v1.12.0). |
@@ -25,7 +25,7 @@ CDF (Claude Dev Framework) is a Claude Code plugin that transforms Claude into a
 | File | Role |
 |------|------|
 | `.claude-plugin/plugin.json` | Plugin metadata, version (1.12.0), component counts |
-| `hooks/hooks.json` | Lifecycle hook definitions — 8 hooks across 4 event types |
+| `hooks/hooks.json` | Lifecycle hook definitions — 7 hooks across 4 event types |
 | `scripts/analyze-codebase.py` | SessionStart hook — project analysis and rule generation |
 | `scripts/hooks/session-context.py` | SessionStart hook — injects git history + auto-memory context |
 | `scripts/keyword-amplifier.py` | PreToolUse hook — mode detection and context injection |
