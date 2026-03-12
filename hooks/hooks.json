@@ -64,6 +64,11 @@
         "hooks": [
           {
             "type": "command",
+            "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/plan-review.py\" && python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/plan-review.py\" || true",
+            "timeout": 5
+          },
+          {
+            "type": "command",
             "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/task-completeness-check.sh\" && bash \"$CLAUDE_PLUGIN_ROOT/scripts/task-completeness-check.sh\" || true",
             "timeout": 10
           }
