@@ -8,9 +8,9 @@ CDF (Claude Dev Framework) is a Claude Code plugin that transforms Claude into a
 
 | Directory | Purpose |
 |-----------|---------|
-| `commands/` | 20 slash command definitions (markdown + YAML frontmatter). Each file is a complete behavioral spec. |
+| `commands/` | 21 slash command definitions (markdown + YAML frontmatter). Each file is a complete behavioral spec. |
 | `agents/` | 22 agent persona definitions. Activated by `/cdf:task` or automatically via task context. |
-| `skills/` | 24 auto-invoked skill directories (`skills/*/SKILL.md`). Trigger-based, no explicit invocation. |
+| `skills/` | 26 auto-invoked skill directories (`skills/*/SKILL.md`). Trigger-based, no explicit invocation. |
 | `contexts/` | 3 behavioral context modes (dev/review/research) with quality thresholds. |
 | `hooks/` | Lifecycle hook configuration (`hooks.json`). |
 | `scripts/` | Hook implementation scripts (5 Python + 1 Bash + 1 shared library). |

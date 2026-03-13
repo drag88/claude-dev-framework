@@ -48,7 +48,7 @@ claude --plugin-dir ./claude-dev-framework
 /cdf:rules status
 ```
 
-## All 20 Commands
+## All 21 Commands
 
 | Command | Purpose |
 |---------|---------|
@@ -66,6 +66,7 @@ claude --plugin-dir ./claude-dev-framework
 | `/cdf:improve` | Code quality improvements |
 | `/cdf:research` | Deep web research |
 | `/cdf:rules` | Project rules management |
+| `/cdf:ship` | Automated release pipeline: merge, test, review, push, PR |
 | `/cdf:task` | Complex task execution with delegation |
 | `/cdf:tdd` | Test-Driven Development workflow |
 | `/cdf:test` | Test execution with coverage analysis |
