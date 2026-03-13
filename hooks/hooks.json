@@ -33,6 +33,11 @@
             "type": "command",
             "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/git-push-review.py\" && python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/git-push-review.py\" || true",
             "timeout": 5
+          },
+          {
+            "type": "command",
+            "command": "test -f \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/pre-push-checks.py\" && python3 \"$CLAUDE_PLUGIN_ROOT/scripts/hooks/pre-push-checks.py\" || true",
+            "timeout": 10
           }
         ]
       }
