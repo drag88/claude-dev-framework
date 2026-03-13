@@ -282,6 +282,208 @@ logger.info("Login attempt:", sanitizeForLogging({ email, password }));
 
 ---
 
+## Pre-Landing Review Patterns
+
+Specific, actionable patterns for pre-landing code review. Each pattern includes what to grep for, why it matters, and the fix.
+
+### CRITICAL Patterns
+
+#### TOCTOU Races (Time-of-Check to Time-of-Use)
+
+**What to look for**: Check-then-set patterns that are not atomic. `find_or_create_by` on columns without a unique DB index. Status transitions that read current status, then update separately.
+
+**Why it matters**: Concurrent requests slip through the gap between check and set, creating duplicates or invalid state transitions.
+
+**INCORRECT:**
+```ruby
+# Two concurrent calls both find nil, both create — duplicate record
+user = User.find_by(email: params[:email])
+user ||= User.create!(email: params[:email])
+
+# Non-atomic status transition — two workers can both "claim" the job
+job = Job.find(id)
+if job.status == "pending"
+  job.update!(status: "processing")
+end
+```
+
+**CORRECT:**
+```ruby
+# Atomic upsert backed by a UNIQUE index on email
+user = User.find_or_create_by!(email: params[:email])
+# AND: add_index :users, :email, unique: true in migration
+
+# Atomic WHERE-old-status UPDATE-new-status
+updated = Job.where(id: id, status: "pending")
+              .update_all(status: "processing")
+raise StaleJobError if updated.zero?
+```
+
+#### LLM Output Trust Boundary
+
+**What to look for**: LLM-generated values (emails, URLs, names) written to DB without format validation. Structured tool output (arrays, hashes) accepted without type or shape checks.
+
+**Why it matters**: LLMs hallucinate syntactically invalid data. Persisting it corrupts downstream systems.
+
+**INCORRECT:**
+```ruby
+# LLM returns {"email": "not-a-real-email", "url": "javascript:alert(1)"}
+user.update!(email: llm_result["email"])
+redirect_to llm_result["url"]
+```
+
+**CORRECT:**
+```ruby
+email = llm_result["email"].to_s.strip
+raise InvalidLLMOutput unless email.match?(URI::MailTo::EMAIL_REGEXP)
+
+url = URI.parse(llm_result["url"].to_s.strip)
+raise InvalidLLMOutput unless url.is_a?(URI::HTTPS)
+
+user.update!(email: email)
+redirect_to url.to_s
+```
+
+#### html_safe on User Data
+
+**What to look for**: Any `.html_safe`, `raw()`, or string interpolation into an `html_safe` output where the interpolated value is user-controlled.
+
+**Why it matters**: Bypasses Rails auto-escaping, opening a direct XSS vector.
+
+**INCORRECT:**
+```erb
+<%= "Welcome, #{user.name}".html_safe %>
+<%= raw(comment.body) %>
+```
+
+**CORRECT:**
+```erb
+<%= "Welcome, #{ERB::Util.html_escape(user.name)}".html_safe %>
+<%= sanitize(comment.body) %>
+```
+
+### INFORMATIONAL Patterns
+
+#### Conditional Side Effects
+
+**What to look for**: Code paths branching on a condition where one branch performs a side effect (write, enqueue, notify) and the other silently skips it.
+
+**Why it matters**: The "happy path" works, but the alternative path has a missing side effect that surfaces as a subtle bug in production.
+
+**INCORRECT:**
+```ruby
+if item.featured?
+  item.update!(promoted: true)
+  item.attach_promo_url(generate_url(item))  # only attached when featured
+end
+# Non-featured items promoted elsewhere never get a promo URL
+```
+
+**CORRECT:**
+```ruby
+item.update!(promoted: true)
+item.attach_promo_url(generate_url(item))  # always attach when promoting
+# OR: explicitly document why the side effect is conditional
+```
+
+#### LLM Prompt Issues
+
+**What to look for**: 0-indexed lists in prompts (LLMs return 1-indexed). Prompt text listing tools/options that do not match what is actually wired up. Word or token limits stated in multiple places that could drift out of sync.
+
+**Why it matters**: Off-by-one tool selection causes wrong actions. Stale prompt text silently degrades LLM accuracy.
+
+**INCORRECT:**
+```python
+prompt = """Pick a tool (0=search, 1=calculate, 2=summarize)"""
+# LLM returns "1" meaning "search" in its 1-indexed world
+
+MAX_TOKENS = 500   # in prompts/system.txt
+MAX_TOKENS = 1000  # in config/llm.yaml — which one wins?
+```
+
+**CORRECT:**
+```python
+prompt = """Pick a tool (1=search, 2=calculate, 3=summarize)"""
+# Use 1-indexed lists in all LLM-facing text
+
+# Single source of truth for limits
+MAX_TOKENS = settings.LLM_MAX_TOKENS  # defined once in config
+```
+
+#### Crypto & Entropy
+
+**What to look for**: Truncating tokens/hashes instead of hashing (reduces entropy). `rand()` or `Random.rand` for security-sensitive values. Non-constant-time comparisons on secrets.
+
+**Why it matters**: Weak entropy makes tokens guessable. Timing side-channels leak secret values byte by byte.
+
+**INCORRECT:**
+```ruby
+token = SecureRandom.hex(32)[0..7]        # 8 hex chars = 32 bits — brute-forceable
+reset_code = rand(999999).to_s.rjust(6, '0')  # predictable PRNG
+Rack::Utils.secure_compare(token, params[:token])  # correct, but...
+params[:token] == stored_token                      # timing attack
+```
+
+**CORRECT:**
+```ruby
+token = SecureRandom.hex(32)                          # full 256-bit entropy
+reset_code = SecureRandom.random_number(10**6).to_s.rjust(6, '0')
+ActiveSupport::SecurityUtils.secure_compare(token, stored_token)
+```
+
+#### Time Window Safety
+
+**What to look for**: Date-key lookups assuming "today" covers a full 24-hour window. Mismatched time windows between related features (e.g., rate limit resets at midnight but quota checks use rolling 24h).
+
+**Why it matters**: Edge-of-day requests fall through cracks. Mismatched windows cause silent over- or under-counting.
+
+**INCORRECT:**
+```ruby
+# "today" in server timezone — user in UTC+12 sees tomorrow's data
+key = "usage:#{Date.today}"
+cache.increment(key)
+
+# Rate limit resets at midnight, but quota is "last 24 hours"
+limit_key = "limit:#{Date.today}:#{user.id}"  # resets at midnight
+quota_used = Usage.where("created_at > ?", 24.hours.ago).count  # rolling
+```
+
+**CORRECT:**
+```ruby
+# Use UTC consistently and include the full time boundary
+key = "usage:#{Time.now.utc.strftime('%Y-%m-%d')}"
+cache.increment(key)
+
+# Align both to the same window type
+window_start = Time.now.utc.beginning_of_day
+quota_used = Usage.where("created_at >= ?", window_start).count
+```
+
+#### Type Coercion at Boundaries
+
+**What to look for**: Values crossing language boundaries (Ruby to JSON to JS, Python to SQL) where type could change silently. Hash or digest inputs not calling `.to_s` before serialization.
+
+**Why it matters**: `nil` becomes `"null"`, integers become strings, and your digest of `123` differs from your digest of `"123"`.
+
+**INCORRECT:**
+```ruby
+# amount is BigDecimal in Ruby, becomes float in JSON — precision loss
+render json: { amount: order.amount }
+
+# Digest input might be nil, Integer, or String
+digest = Digest::SHA256.hexdigest(record.external_id)  # TypeError if nil
+```
+
+**CORRECT:**
+```ruby
+render json: { amount: order.amount.to_s }  # preserve precision as string
+
+# Always coerce to string before hashing
+digest = Digest::SHA256.hexdigest(record.external_id.to_s)
+```
+
+---
+
 ## Security Testing Commands
 
 ### Dependency Scanning
@@ -380,4 +582,25 @@ sqlmap -u "http://localhost:3000/api/user?id=1" --batch
 - [ ] All CRITICAL findings addressed
 - [ ] All HIGH findings addressed or accepted with risk documentation
 - [ ] Security team approval obtained
+```
+
+---
+
+## Gate Classification
+
+Which pre-landing review patterns block deployment vs. serve as advisory warnings.
+
+```
+CRITICAL (blocks deployment):
+├─ SQL & Data Safety (A03 Injection, parameterized queries)
+├─ TOCTOU Races & Concurrency (atomic check-and-set, unique indexes)
+├─ LLM Output Trust Boundary (validate before persisting)
+└─ html_safe on User Data (XSS via escaped output bypass)
+
+INFORMATIONAL (advisory):
+├─ Conditional Side Effects (missing side effect on alternate branch)
+├─ LLM Prompt Issues (index mismatch, stale tool lists, drifting limits)
+├─ Crypto & Entropy (truncation, weak PRNG, timing attacks)
+├─ Time Window Safety (timezone assumptions, mismatched windows)
+└─ Type Coercion at Boundaries (cross-language type drift, nil digests)
 ```
