@@ -89,7 +89,24 @@ Domain-specific information about the project.
 3. **Persist**: Save to appropriate scope
 4. **Index**: Update learning index for quick retrieval
 
-## Storage Locations
+## Storage Backends
+
+### Cognee Knowledge Graph (Preferred)
+
+When cognee MCP tools are available (`mcp__cognee__*`), use the knowledge graph as the primary storage backend. The `cognee-memory` skill handles the integration:
+
+- **Corrections**: `save_interaction` with `[CORRECTION]` prefix
+- **Patterns**: `save_interaction` with `[PATTERN]` prefix
+- **Rules**: `cognee_add_developer_rules` for project rules
+- **Batch processing**: `cognify` to build/update the graph after accumulating interactions
+
+Cognee provides structured retrieval via `GRAPH_COMPLETION` and `CODING_RULES` search types, returning synthesized knowledge rather than raw text files.
+
+See `skills/cognee-memory/SKILL.md` for full integration details.
+
+### Markdown Fallback
+
+When cognee is **not** available, fall back to markdown file storage:
 
 ### Session Scope
 - Memory only, not persisted
