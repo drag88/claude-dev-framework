@@ -18,23 +18,34 @@ claude --plugin-dir .         # Run with plugin
 3. **No backwards compat** - delete deprecated code immediately
 4. **Tests required** - no feature complete without tests
 
-## Subagent Strategy
+## Workflow
 
-**Default to subagents for exploration. Main context is for implementation.**
+### Explore → Plan → Code → Verify
+- Use plan mode for non-trivial tasks (3+ steps or multi-file changes)
+- For small fixes (typo, rename, single-file change), skip planning and execute directly
+- If something goes sideways, STOP and re-plan — do not push through a broken approach
 
-| Task | Use Subagent? | Why |
-|------|:---:|-----|
-| Exploring unfamiliar code | Yes | Returns summary, not raw files |
-| Researching library/API | Yes | Returns verdict + key facts |
-| Parallel analysis (multiple dirs) | Yes | Multiple agents, simultaneous |
-| Tracing bugs across files | Yes | Reads 10+ files without polluting context |
-| Single targeted grep/read | No | Faster inline |
-| Writing/editing files | No | Must stay in main context |
+### Subagent Strategy
+- Use subagents for exploration and research to keep main context clean
+- One atomic goal per subagent — return summaries, not raw file dumps
+- For complex problems, spawn parallel subagents covering different angles
+- Main context is for implementation only
 
-**Rules:**
-- One atomic goal per subagent. Return summaries, not raw dumps.
-- For complex problems, spawn 3-5 agents in parallel covering different angles.
-- Full workflow details: `.claude/rules/workflow.md`
+### Verification Before Done
+- Never mark a task complete without proving it works
+- Run tests, check logs, demonstrate correctness
+- Diff behavior between main and your changes when relevant
+- Ask yourself: "Would a staff engineer approve this?"
+
+### Autonomous Bug Fixing
+- Given a bug report: identify root cause, fix it, add regression test, verify
+- Point at logs, errors, failing tests — then resolve them
+- Zero context switching required from the user
+
+### Context Management
+- Run /clear between unrelated tasks
+- Use /compact when context grows large
+- After 2 failed corrections on the same issue, clear context and restart with a better prompt
 
 <plans_instruction>
 ## Plans Format
