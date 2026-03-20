@@ -1,5 +1,6 @@
 ---
-description: "Auto-generate CLAUDE.generated.md from project rules when rules change or are missing"
+name: generating-project-docs
+description: "Auto-generates CLAUDE.generated.md from project rules when rules change or are missing"
 ---
 
 # CLAUDE.md Generator Skill

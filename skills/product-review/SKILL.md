@@ -1,4 +1,5 @@
 ---
+name: reviewing-products
 description: "Founder-mode product review that challenges premises, maps dream states, and stress-tests plans across 10 dimensions before implementation begins"
 ---
 

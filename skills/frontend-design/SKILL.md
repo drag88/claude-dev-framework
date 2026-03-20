@@ -1,6 +1,6 @@
 ---
 name: frontend-design
-description: "Activate when building web interfaces, design systems, or styling components with high visual quality"
+description: "Activates when building web interfaces, design systems, or styling components with high visual quality"
 license: Complete terms in LICENSE.txt
 ---
 
@@ -77,7 +77,7 @@ LLMs generate UI by sampling from training data patterns. Without explicit guida
 | Category | Generic Pattern | Why It's Slop |
 |----------|-----------------|---------------|
 | **Typography** | Inter, Roboto, Arial, Open Sans, Lato | Every tutorial default |
-| **Colors** | Purple/indigo gradients on white | SaaS template cliché |
+| **Colors** | Purple/indigo gradients on white | SaaS template cliche |
 | **Layout** | 3-column grid with icon boxes | Tailwind tutorial median |
 | **Hero** | Centered text + gradient blob + "Get Started" CTA | Every landing page ever |
 | **Corners** | `rounded-xl` on everything | "Safe" modern look |
@@ -136,6 +136,10 @@ Choose a direction and commit fully—these are starting points, not limits:
 
 **Choose a clear conceptual direction and execute it with precision.** Bold maximalism and refined minimalism both work—the key is intentionality, not intensity.
 
+> See `references/typography.md` for font selection tables by aesthetic, contrast rules, and banned fonts.
+
+> See `references/visual-system.md` for color/theme palettes, spatial composition, motion/animation, and backgrounds.
+
 ---
 
 ## Implementation Requirements
@@ -148,136 +152,6 @@ Implement working code (HTML/CSS/JS, React, Vue, etc.) that is:
 - **Responsive** across viewport sizes
 - **Accessible** with proper contrast and focus states
 - **Meticulously refined** in every detail
-
----
-
-## Typography
-
-### Font Selection by Aesthetic
-
-| Aesthetic | Display Font | Body Font |
-|-----------|--------------|-----------|
-| **Minimalist (Default)** | Helvetica Neue Light/Bold | Helvetica Neue Regular |
-| Editorial/Magazine | Playfair Display, Fraunces, Libre Baskerville | Crimson Pro, Newsreader, Source Serif |
-| Startup/Tech | Clash Display, Cabinet Grotesk, Manrope | Satoshi, General Sans, Plus Jakarta Sans |
-| Code/Developer | JetBrains Mono, Fira Code, Berkeley Mono | IBM Plex Sans, IBM Plex Mono |
-| Luxury/Refined | Cormorant Garamond, Didot, Italiana | EB Garamond, Lora |
-| Playful/Creative | Obviously, Bricolage Grotesque, Shrikhand | DM Sans, Nunito |
-| Brutalist/Raw | Archivo Black, Bebas Neue, Oswald | Space Mono, Courier Prime |
-| Retro/Vintage | Abril Fatface, Rozha One, Ultra | Old Standard TT, Spectral |
-
-### Typography Contrast Rules
-
-**Weight contrast**: Jump from 200 → 800, not 400 → 600
-**Size contrast**: 3x+ jumps (16px → 48px), not incremental 1.5x
-**Always pair**: Display font for headlines + body font for text
-
-### NEVER Use
-
-Inter, Roboto, Arial, Open Sans, Lato, Montserrat, Poppins, Nunito Sans, system-ui
-
-**Exception**: Helvetica/Helvetica Neue is acceptable — it's a design classic with genuine character, unlike the generic alternatives above.
-
----
-
-## Color & Theme
-
-### Escape the Purple Trap
-
-**INSTEAD of** purple/indigo gradients, draw from:
-
-| Source | Example Palettes |
-|--------|------------------|
-| **IDE Themes** | Dracula (purple+pink+cyan), Nord (arctic blues), Solarized (warm yellows), Monokai (vibrant accents), One Dark (muted jewel tones) |
-| **Cultural** | Japanese (indigo, vermillion, gold), Scandinavian (muted naturals, warm whites), Mediterranean (terracotta, olive, azure) |
-| **Eras** | Art Deco (black, gold, cream), 70s (burnt orange, avocado, mustard), 80s (neon pink, cyan, black), 90s (teal, purple, silver) |
-| **Nature** | Forest (deep greens, bark brown), Desert (sand, terracotta, sage), Ocean (navy, foam white, coral) |
-
-### Color Strategy
-
-- **Dominant + sharp accent** beats evenly-distributed palettes
-- Use CSS custom properties for semantic naming (`--accent`, `--surface`, `--text-primary`)
-- Commit to light OR dark as primary, design the other as intentional variant
-- High contrast for hierarchy, not decoration
-
-### Dark Mode
-
-Design dark mode as a first-class theme, not an afterthought:
-- Invert thoughtfully—don't just swap black/white
-- Reduce contrast slightly for comfort (not pure #000/#FFF)
-- Accent colors may need adjustment for dark backgrounds
-
----
-
-## Spatial Composition
-
-### Layout Principles
-
-- **Asymmetry** over centered symmetry
-- **Z-depth effects** with layering and shadows
-- **Full-bleed sections** breaking container constraints
-- **Dramatic scale jumps** between elements
-- **Overlap and layering** for depth
-- **Grid-breaking elements** that escape rigid structure
-- **Generous negative space** OR controlled density (commit to one)
-
-### Layout Anti-Patterns (NEVER Use)
-
-- Three-column symmetric grids with icons
-- Everything centered on every section
-- Uniform card grids without hierarchy
-- Safe Tailwind defaults without customization
-- Equal spacing everywhere (vary rhythm)
-
----
-
-## Motion & Animation
-
-### High-Impact Moments
-
-Focus animation budget on:
-- **Page load**: Staggered reveals with `animation-delay`
-- **Scroll triggers**: Elements animating into view
-- **Hover states**: Personality in interactions
-- **State transitions**: Smooth feedback on actions
-
-### Implementation
-
-- CSS-only for HTML (keyframes, transitions)
-- Framer Motion for React
-- One orchestrated sequence > scattered micro-interactions
-
-### Motion Anti-Patterns
-
-- Generic fade-in on everything
-- No motion at all
-- Bounce/elastic on every element
-- Motion that delays interaction
-
----
-
-## Backgrounds & Visual Details
-
-### Create Atmosphere
-
-| Technique | Effect | When to Use |
-|-----------|--------|-------------|
-| **Glassmorphism (Preferred)** | Frosted depth, modern elegance | Cards, modals, overlays, navigation |
-| Gradient meshes | Depth, dimension | Hero sections, feature backgrounds |
-| Noise/grain textures | Tactile, organic | Retro, editorial, artisanal |
-| Geometric patterns | Structure, rhythm | Tech, brutalist, art deco |
-| Layered transparencies | Depth, complexity | Modern, minimalist |
-| Subtle shadows | Soft hierarchy | Cards, buttons (keep it light) |
-| Halftone/duotone | Print-inspired, bold | Editorial, retro |
-| Parallax layers | Immersion, depth | Landing pages, storytelling |
-| Knockout typography | Bold, graphic | Headers, hero text |
-
-### Background Anti-Patterns
-
-- Solid white backgrounds everywhere
-- Generic gradient blobs
-- Stock pattern overlays
-- Decorative SVGs with no purpose
 
 ---
 
@@ -337,3 +211,10 @@ Every design decision is an opportunity to create something memorable instead of
 ## Suggested Commands
 - `/cdf:implement` — Build interfaces with design skill guidance
 - `/cdf:design` — Design UI components and pages
+
+## Reference Files
+
+| File | Contents |
+|------|----------|
+| `references/typography.md` | Font selection by aesthetic, contrast rules, banned fonts |
+| `references/visual-system.md` | Color/theme, spatial composition, motion/animation, backgrounds |

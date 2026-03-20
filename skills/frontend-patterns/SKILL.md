@@ -1,5 +1,6 @@
 ---
-description: "Activate for React component patterns, state management, hooks, and frontend performance optimization"
+name: applying-frontend-patterns
+description: "Activates for React component patterns, state management, hooks, and frontend performance optimization"
 ---
 
 # Frontend Patterns Skill

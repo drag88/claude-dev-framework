@@ -1,6 +1,6 @@
 ---
 name: social-writing
-description: Craft authentic, human-centered LinkedIn and Twitter posts that connect emotionally while delivering substance. This skill should be used when Aswin requests LinkedIn posts, Twitter/X posts, social media content, thought leadership pieces, or any public writing for professional platforms. The skill emphasizes genuine human voice over robotic AI-generated patterns.
+description: Crafts authentic, human-centered LinkedIn and Twitter posts that connect emotionally while delivering substance. Activates when Aswin requests LinkedIn posts, Twitter/X posts, social media content, thought leadership pieces, or any public writing for professional platforms. Emphasizes genuine human voice over robotic AI-generated patterns.
 ---
 
 # Social Writing Skill

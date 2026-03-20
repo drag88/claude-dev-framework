@@ -1,5 +1,6 @@
 ---
-description: "Activate for API design, repository pattern, caching, auth middleware, and error handling conventions in backend code"
+name: applying-backend-patterns
+description: "Activates for API design, repository pattern, caching, auth middleware, and error handling conventions in backend code"
 ---
 
 # Backend Patterns Skill

@@ -1,5 +1,6 @@
 ---
-description: "Classify user requests before taking action to ensure appropriate response strategy"
+name: classifying-intent
+description: "Classifies user requests before taking action to ensure appropriate response strategy"
 ---
 
 # Intent Gate Skill
@@ -13,25 +14,6 @@ Classify user requests before taking action to ensure appropriate response strat
 - Before executing potentially large changes
 - When multiple valid interpretations exist
 - When `/cdf:flow` needs complexity classification
-
-## Flow State Detection
-
-**Before classifying any intent, check if a flow is active:**
-
-1. Look for `dev/active/*/flow-state.md`
-2. If found, read the current phase from YAML frontmatter
-3. Inject phase context into response strategy
-
-**Active Flow Behavior:**
-- If `current_phase: docs` → Planning mode, use `/cdf:docs plan`
-- If `current_phase: implement` → Implementation mode, follow task checkboxes
-- If `current_phase: verify` → Verification mode, run checks
-- If `current_phase: compound` → Knowledge capture mode
-
-**CRITICAL**: When flow is active, do NOT:
-- Use EnterPlanMode or `.claude/plans/`
-- Skip to implementation without completing docs phase
-- Ignore the flow-state.md tracking
 
 ## Task Complexity Classification
 

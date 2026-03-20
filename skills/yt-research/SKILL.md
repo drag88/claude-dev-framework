@@ -1,6 +1,6 @@
 ---
 name: yt-research
-description: YouTube research pipeline — search YouTube videos on a topic, feed them into NotebookLM as sources, get an analysis, then generate an infographic with Nano Banana Pro. Use when asked to "research X on YouTube", "find YouTube videos about X and create an infographic", or "YouTube research pipeline".
+description: YouTube research pipeline — searches YouTube videos on a topic, feeds them into NotebookLM as sources, generates an analysis, then creates an infographic with Nano Banana Pro. Activates when asked to "research X on YouTube", "find YouTube videos about X and create an infographic", or "YouTube research pipeline".
 ---
 
 # YouTube Research Pipeline
@@ -9,7 +9,7 @@ Chains three tools: YouTube search → NotebookLM analysis → Nano Banana Pro i
 
 **Note on transcripts:** NotebookLM natively processes full YouTube transcripts via Google's caption system — no manual transcript download needed. The analysis quality reflects the complete spoken content of every video.
 
-**Output location:** `/Users/aswinsreenivas/Documents/Aswin's Vault/Content/{topic-slug}/`
+**Output location:** `./output/{topic-slug}/` (configurable — set a custom output directory if needed)
 
 ---
 
@@ -126,7 +126,7 @@ Capture the full text output for Step 5.
 
 **Build the output path:**
 - Topic slug: lowercase, spaces → hyphens (e.g. "AI Agents 2026" → `ai-agents-2026`)
-- Create directory: `/Users/aswinsreenivas/Documents/Aswin's Vault/Content/{topic-slug}/`
+- Create directory: `./output/{topic-slug}/`
 - Filename: `{yyyy-mm-dd-hh-mm-ss}-{style}-infographic.png`
 
 **Build the image prompt** by combining:
@@ -140,7 +140,7 @@ Capture the full text output for Step 5.
 ```bash
 uv run ~/.claude/skills/nano-banana-pro/scripts/generate_image.py \
   --prompt "{assembled_prompt}" \
-  --filename "/Users/aswinsreenivas/Documents/Aswin's Vault/Content/{topic-slug}/{timestamp}-{style}-infographic.png" \
+  --filename "./output/{topic-slug}/{timestamp}-{style}-infographic.png" \
   --resolution {resolution}
 ```
 

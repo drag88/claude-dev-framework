@@ -1,5 +1,6 @@
 ---
-description: "Activate for test-driven development with RED-GREEN-REFACTOR cycle enforcement"
+name: enforcing-tdd-workflow
+description: "Activates for test-driven development with RED-GREEN-REFACTOR cycle enforcement"
 ---
 
 # TDD Workflow Skill

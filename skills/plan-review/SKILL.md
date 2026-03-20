@@ -1,5 +1,6 @@
 ---
-description: "Remind users to run /cdf:approve after exiting plan mode to persist plans and get execution strategy"
+name: reviewing-plans
+description: "Reminds users to run /cdf:approve after exiting plan mode to persist plans and get execution strategy"
 ---
 
 # Plan Review Awareness
@@ -33,3 +34,5 @@ A "plan" is any structured implementation proposal that includes:
 - Do NOT block implementation if the user wants to skip approval
 - Do NOT remind more than once per plan — if the user declines, drop it
 - Do NOT activate for trivial changes that don't warrant documentation
+
+> This skill is intentionally minimal — it serves as a lightweight nudge, not a full workflow.

@@ -1,6 +1,9 @@
 ---
-description: "Extract and persist valuable patterns discovered during development sessions"
+name: learning-continuously
+description: "Extracts and persists valuable patterns discovered during development sessions"
 ---
+
+> **DEPRECATED**: This skill's functionality is now handled by Claude's native auto-memory system. Kept for reference only.
 
 # Continuous Learning Skill
 
@@ -113,29 +116,10 @@ When cognee is **not** available, fall back to markdown file storage:
 - Used for temporary working knowledge
 
 ### Project Scope
-```
-.claude/
-├── learnings/
-│   ├── patterns/
-│   │   ├── error-handling.md
-│   │   └── state-management.md
-│   ├── rules/
-│   │   ├── naming-conventions.md
-│   │   └── file-structure.md
-│   └── skills/
-│       └── deployment/
-│           └── SKILL.md
-└── learning-index.md
-```
+Learnings are stored via Claude's native auto-memory system (`~/.claude/projects/<project>/memory/`).
 
 ### Global Scope
-```
-~/.claude/
-├── learnings/
-│   ├── patterns/
-│   └── skills/
-└── learning-index.md
-```
+Global learnings use Claude's global auto-memory (`~/.claude/memory/`).
 
 ## Pattern Detection Heuristics
 

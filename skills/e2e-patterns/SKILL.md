@@ -1,5 +1,6 @@
 ---
-description: "Activate for Playwright E2E test patterns, Page Object Model, locator strategies, and test reliability"
+name: testing-e2e-patterns
+description: "Activates for Playwright E2E test patterns, Page Object Model, locator strategies, and test reliability"
 ---
 
 # E2E Patterns Skill
@@ -14,66 +15,22 @@ Provide best practices and patterns for end-to-end testing with Playwright.
 - When setting up browser automation
 - When user mentions "playwright", "e2e", "browser test"
 
-## Core Patterns
+---
 
-### Page Object Model Template
+## Pattern Index
 
-```typescript
-// pages/[PageName]Page.ts
-import { Page, Locator, expect } from '@playwright/test';
+| Pattern | When to Use |
+|---------|-------------|
+| Page Object Model | Encapsulating page interactions for reuse |
+| Test file structure | Organizing test suites with beforeEach setup |
+| Auth state sharing | Avoiding repeated login across tests |
+| Visual regression | Screenshot comparison testing |
 
-export class [PageName]Page {
-  readonly page: Page;
+> See `references/templates.md` for POM template, test file template, authentication patterns, and visual testing.
 
-  // Locators - defined once, reused everywhere
-  readonly [elementName]: Locator;
+> See `references/ci-config.md` for GitHub Actions E2E workflow configuration.
 
-  constructor(page: Page) {
-    this.page = page;
-    // Initialize locators using reliable selectors
-    this.[elementName] = page.getByRole('...', { name: '...' });
-  }
-
-  // Navigation
-  async goto() {
-    await this.page.goto('/[path]');
-    await this.page.waitForLoadState('networkidle');
-  }
-
-  // Actions
-  async [actionName]() {
-    // Perform action
-  }
-
-  // Assertions
-  async expect[StateName]() {
-    await expect(this.[elementName]).toBeVisible();
-  }
-}
-```
-
-### Test File Template
-
-```typescript
-// tests/[feature].spec.ts
-import { test, expect } from '@playwright/test';
-import { [PageName]Page } from '../pages/[PageName]Page';
-
-test.describe('[Feature Name]', () => {
-  let [pageName]: [PageName]Page;
-
-  test.beforeEach(async ({ page }) => {
-    [pageName] = new [PageName]Page(page);
-    await [pageName].goto();
-  });
-
-  test('should [expected behavior]', async () => {
-    // Arrange
-    // Act
-    // Assert
-  });
-});
-```
+---
 
 ## Locator Selection Guide
 
@@ -118,6 +75,8 @@ page.getByRole('dialog').getByRole('button', { name: 'Confirm' })
 page.getByRole('listitem').filter({ hasText: 'Product A' }).getByRole('button')
 ```
 
+---
+
 ## Wait Strategies
 
 ### Auto-waiting (Default)
@@ -157,6 +116,8 @@ await expect(async () => {
   expect(count).toBeGreaterThanOrEqual(10);
 }).toPass({ timeout: 5000 });
 ```
+
+---
 
 ## Flaky Test Prevention
 
@@ -199,98 +160,7 @@ await expect(async () => {
 }).toPass();
 ```
 
-## Authentication Patterns
-
-### Shared Auth State
-```typescript
-// global-setup.ts
-import { chromium, FullConfig } from '@playwright/test';
-
-async function globalSetup(config: FullConfig) {
-  const browser = await chromium.launch();
-  const page = await browser.newPage();
-
-  await page.goto('/login');
-  await page.fill('#email', process.env.TEST_USER_EMAIL!);
-  await page.fill('#password', process.env.TEST_USER_PASSWORD!);
-  await page.click('button[type="submit"]');
-  await page.waitForURL('/dashboard');
-
-  await page.context().storageState({ path: 'playwright/.auth/user.json' });
-  await browser.close();
-}
-
-export default globalSetup;
-```
-
-### Using Auth State
-```typescript
-// playwright.config.ts
-export default defineConfig({
-  projects: [
-    { name: 'setup', testMatch: /.*\.setup\.ts/ },
-    {
-      name: 'chromium',
-      use: {
-        storageState: 'playwright/.auth/user.json',
-      },
-      dependencies: ['setup'],
-    },
-  ],
-});
-```
-
-## Visual Testing Pattern
-
-```typescript
-test('visual regression', async ({ page }) => {
-  await page.goto('/dashboard');
-  await page.waitForLoadState('networkidle');
-
-  // Full page screenshot
-  await expect(page).toHaveScreenshot('dashboard-full.png', {
-    fullPage: true,
-    maxDiffPixelRatio: 0.01
-  });
-
-  // Component screenshot
-  await expect(page.getByTestId('chart')).toHaveScreenshot('chart.png');
-});
-```
-
-## CI Configuration
-
-```yaml
-# .github/workflows/e2e.yml
-name: E2E Tests
-
-on: [push, pull_request]
-
-jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 20
-
-      - name: Install dependencies
-        run: npm ci
-
-      - name: Install Playwright Browsers
-        run: npx playwright install --with-deps
-
-      - name: Run E2E tests
-        run: npx playwright test
-
-      - uses: actions/upload-artifact@v4
-        if: failure()
-        with:
-          name: playwright-report
-          path: playwright-report/
-          retention-days: 30
-```
+---
 
 ## Debug Checklist
 
@@ -302,6 +172,8 @@ When a test fails:
 5. [ ] Verify locators in Playwright Inspector
 6. [ ] Check for flakiness: `npx playwright test --repeat-each=5`
 
+---
+
 ## Related Agents
 - **e2e-specialist** — Primary consumer for Playwright test patterns and reliability
 
@@ -309,3 +181,10 @@ When a test fails:
 - `/cdf:e2e` — Run E2E test workflows with pattern enforcement
 - `/cdf:test` — Execute tests including E2E suite
 - `/cdf:troubleshoot` — Debug flaky or failing E2E tests
+
+## Reference Files
+
+| File | Contents |
+|------|----------|
+| `references/templates.md` | POM template, test file template, auth patterns, visual testing |
+| `references/ci-config.md` | GitHub Actions E2E workflow configuration |

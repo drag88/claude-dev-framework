@@ -1,6 +1,6 @@
 ---
 name: brand-dna
-description: Extract the complete design DNA and ideology of any brand from its website. Produces a structured Design DNA Document that a coding agent can use as source of truth to build or replicate the brand's design system. Triggers on "/brand-dna <url>" or requests like "extract the design DNA of...", "analyze the brand identity of...", "I want to build something that looks like...".
+description: Extracts the complete design DNA and ideology of any brand from its website. Produces a structured Design DNA Document that a coding agent can use as source of truth to build or replicate the brand's design system. Triggers on "/brand-dna <url>" or requests like "extract the design DNA of...", "analyze the brand identity of...", "I want to build something that looks like...".
 allowed-tools: mcp__claude-in-chrome__navigate, mcp__claude-in-chrome__javascript_tool, mcp__claude-in-chrome__computer, mcp__claude-in-chrome__get_page_text, mcp__claude-in-chrome__read_network_requests, mcp__claude-in-chrome__tabs_create_mcp, mcp__claude-in-chrome__tabs_context_mcp, mcp__claude-in-chrome__find, mcp__claude-in-chrome__read_page, WebSearch, Write, Read, Agent
 ---
 
