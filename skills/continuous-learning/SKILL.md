@@ -178,10 +178,6 @@ Global learnings use Claude's global auto-memory (`~/.claude/memory/`).
 - Extracted rules inform project rule generation
 - Patterns become rule suggestions
 
-### With skill-creator
-- Workflow skills can be promoted to formal skills
-- Patterns become skill building blocks
-
 ## Example Extraction
 
 ### Session Context
