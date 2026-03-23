@@ -34,8 +34,21 @@ claude --plugin-dir .         # Run with plugin
 ### Verification Before Done
 - Never mark a task complete without proving it works
 - Run tests, check logs, demonstrate correctness
+- For visual/UI changes: verify in the browser before confirming to the user
 - Diff behavior between main and your changes when relevant
 - Ask yourself: "Would a staff engineer approve this?"
+
+### Self-Improvement Loop
+- After ANY correction from the user: capture the pattern in `.claude/rules/`
+- Write rules for yourself that prevent the same mistake
+- Ruthlessly iterate on these rules until mistake rate drops
+- Review rules at session start for relevant project
+
+### Demand Elegance (Balanced)
+- For non-trivial changes: pause and ask "is there a more elegant way?"
+- If a fix feels hacky: "Knowing everything I know now, implement the elegant solution"
+- Skip this for simple, obvious fixes — don't over-engineer
+- Challenge your own work before presenting it
 
 ### Autonomous Bug Fixing
 - Given a bug report: identify root cause, fix it, add regression test, verify
@@ -46,6 +59,11 @@ claude --plugin-dir .         # Run with plugin
 - Run /clear between unrelated tasks
 - Use /compact when context grows large
 - After 2 failed corrections on the same issue, clear context and restart with a better prompt
+
+### Core Principles
+- **Simplicity First**: Make every change as simple as possible. Impact minimal code.
+- **No Laziness**: Find root causes. No temporary fixes. Senior developer standards.
+- **Minimal Impact**: Only touch what's necessary. No side effects with new bugs.
 
 <plans_instruction>
 ## Plans Format
@@ -62,9 +80,8 @@ Requirements:
 </plans_instruction>
 
 ## Memory
-- **Semantic memory**: Claude's native auto-memory (decisions, patterns, preferences)
-- **Session context**: Auto-injected at session start from git history + auto-memory
-- CDF reads auto-memory at session start but never writes to it
+- Check auto-memory for prior context at session start
+- Save key decisions, debugging insights, and project patterns to auto-memory during work
 
 ## Commit Messages
 Conventional format (`feat:`, `fix:`, `docs:`), no Claude attribution. See `/cdf:git`.

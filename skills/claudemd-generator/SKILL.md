@@ -70,8 +70,21 @@ Include these workflow instructions in every generated CLAUDE.md. These align wi
 ### Verification Before Done
 - Never mark a task complete without proving it works
 - Run tests, check logs, demonstrate correctness
+- For visual/UI changes: verify in the browser before confirming to the user
 - Diff behavior between main and your changes when relevant
 - Ask yourself: "Would a staff engineer approve this?"
+
+### Self-Improvement Loop
+- After ANY correction from the user: capture the pattern in `.claude/rules/`
+- Write rules for yourself that prevent the same mistake
+- Ruthlessly iterate on these rules until mistake rate drops
+- Review rules at session start for relevant project
+
+### Demand Elegance (Balanced)
+- For non-trivial changes: pause and ask "is there a more elegant way?"
+- If a fix feels hacky: "Knowing everything I know now, implement the elegant solution"
+- Skip this for simple, obvious fixes — don't over-engineer
+- Challenge your own work before presenting it
 
 ### Autonomous Bug Fixing
 - Given a bug report: identify root cause, fix it, add regression test, verify
@@ -82,13 +95,12 @@ Include these workflow instructions in every generated CLAUDE.md. These align wi
 - Run /clear between unrelated tasks
 - Use /compact when context grows large
 - After 2 failed corrections on the same issue, clear context and restart with a better prompt
-```
 
-**What NOT to include in the Workflow section:**
-- File-based task tracking (tasks/todo.md) — Claude has built-in task tools
-- File-based lessons (tasks/lessons.md) — Claude has auto-memory at `~/.claude/projects/*/memory/`
-- "Demand Elegance" or subjective quality guidance — self-evident, not actionable
-- Anything Claude can infer from reading the codebase
+### Core Principles
+- **Simplicity First**: Make every change as simple as possible. Impact minimal code.
+- **No Laziness**: Find root causes. No temporary fixes. Senior developer standards.
+- **Minimal Impact**: Only touch what's necessary. No side effects with new bugs.
+```
 
 ## Related Commands
 

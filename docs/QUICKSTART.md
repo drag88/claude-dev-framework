@@ -91,7 +91,7 @@ Lifecycle scripts that fire on session start, before/after tool use, and on stop
 |---------|-------------|
 | `/cdf:rules generate` | Generate project rules from codebase |
 | `/cdf:rules status` | Check what rules exist |
-| `/retro` | Engineering metrics from git history |
+| `/cdf:retro` | Engineering metrics from git history |
 
 ---
 
@@ -116,7 +116,7 @@ Lifecycle scripts that fire on session start, before/after tool use, and on stop
 
 Enter plan mode, discuss the approach, then:
 ```
-/product-review                    # Founder-mode: is this the right thing?
+/cdf:product-review                    # Founder-mode: is this the right thing?
 /cdf:approve                       # Lock in the plan
 /cdf:implement                     # Build it
 ```
@@ -130,9 +130,9 @@ Enter plan mode, discuss the approach, then:
 ### "I want to see how I'm doing"
 
 ```
-/retro                             # Last 7 days
-/retro 30d                         # Last 30 days
-/retro compare                     # This week vs last week
+/cdf:retro                             # Last 7 days
+/cdf:retro 30d                         # Last 30 days
+/cdf:retro compare                     # This week vs last week
 ```
 
 ### "New project, first session"
@@ -155,7 +155,7 @@ You don't need to configure these. They run on their own.
 | Session context | Session start | Injects recent git history + memory |
 | Intent classification | Every request | Routes to right command/agent |
 | Code quality checks | After edits | Flags debug statements, low comment ratio |
-| Push safety | Before git push | Reviews what you're about to push |
+| Push safety | Before git push | Validates component counts, docs, changelog |
 | Failure recovery | After 3 failures | STOP → REVERT → DOCUMENT → CONSULT |
 
 ---
@@ -168,6 +168,6 @@ You don't need to configure these. They run on their own.
 
 **Use `/cdf:flow` for big features.** It chains brainstorm → docs → implement → verify so nothing gets skipped.
 
-**Run `/retro` weekly.** Takes 30 seconds, surfaces patterns you'd never notice.
+**Run `/cdf:retro` weekly.** Takes 30 seconds, surfaces patterns you'd never notice.
 
 **Trust the hooks.** If a hook blocks something, it's usually right. Read the message before dismissing.

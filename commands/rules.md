@@ -267,8 +267,21 @@ Generate a concise `CLAUDE.generated.md` file from existing `.claude/rules/`.
 ### Verification Before Done
 - Never mark a task complete without proving it works
 - Run tests, check logs, demonstrate correctness
+- For visual/UI changes: verify in the browser before confirming to the user
 - Diff behavior between main and your changes when relevant
 - Ask yourself: "Would a staff engineer approve this?"
+
+### Self-Improvement Loop
+- After ANY correction from the user: capture the pattern in `.claude/rules/`
+- Write rules for yourself that prevent the same mistake
+- Ruthlessly iterate on these rules until mistake rate drops
+- Review rules at session start for relevant project
+
+### Demand Elegance (Balanced)
+- For non-trivial changes: pause and ask "is there a more elegant way?"
+- If a fix feels hacky: "Knowing everything I know now, implement the elegant solution"
+- Skip this for simple, obvious fixes — don't over-engineer
+- Challenge your own work before presenting it
 
 ### Autonomous Bug Fixing
 - Given a bug report: identify root cause, fix it, add regression test, verify
@@ -279,6 +292,11 @@ Generate a concise `CLAUDE.generated.md` file from existing `.claude/rules/`.
 - Run /clear between unrelated tasks
 - Use /compact when context grows large
 - After 2 failed corrections on the same issue, clear context and restart with a better prompt
+
+### Core Principles
+- **Simplicity First**: Make every change as simple as possible. Impact minimal code.
+- **No Laziness**: Find root causes. No temporary fixes. Senior developer standards.
+- **Minimal Impact**: Only touch what's necessary. No side effects with new bugs.
 
 <plans_instruction>
 ## Plans Format
@@ -295,10 +313,8 @@ Requirements:
 </plans_instruction>
 
 ## Memory
-- Check your auto-memory for prior context at session start
+- Check auto-memory for prior context at session start
 - Save key decisions, debugging insights, and project patterns to auto-memory during work
-- Session context is auto-injected at session start from git history and auto-memory
-- Before ending a session, reflect: what's worth remembering for next time?
 
 ## Commit Messages
 See `/cdf:git` for commit message rules (conventional format, no Claude attribution).
@@ -340,9 +356,9 @@ Run `/cdf:rules generate` to refresh after major changes.
 1. **Overview** - 1-2 sentence description
 2. **Quick Start** - 4-5 bash commands (setup, test, lint, run)
 3. **Critical Rules** - 4 standard rules (read before edit, DRY, no backwards compat, tests required)
-4. **Workflow** - Explore→Plan→Code→Verify, subagent strategy, verification, bug fixing, context management
+4. **Workflow** - Explore→Plan→Code→Verify, subagent strategy, self-improvement loop, verification, demand elegance, bug fixing, context management, core principles
 5. **Plans Format** - Plans instruction block for unresolved questions
-6. **Memory** - Auto-memory usage guidance for cross-session context
+6. **Memory** - Auto-memory usage guidance
 7. **Commit Messages** - Pointer to `/cdf:git` command
 8. **CDF Agents** - Agent selection guide for specialized tasks
 9. **Project Rules** - Pointer to `.claude/rules/`
@@ -453,8 +469,21 @@ uv run uvicorn app.main:app --reload  # Start dev server
 ### Verification Before Done
 - Never mark a task complete without proving it works
 - Run tests, check logs, demonstrate correctness
+- For visual/UI changes: verify in the browser before confirming to the user
 - Diff behavior between main and your changes when relevant
 - Ask yourself: "Would a staff engineer approve this?"
+
+### Self-Improvement Loop
+- After ANY correction from the user: capture the pattern in `.claude/rules/`
+- Write rules for yourself that prevent the same mistake
+- Ruthlessly iterate on these rules until mistake rate drops
+- Review rules at session start for relevant project
+
+### Demand Elegance (Balanced)
+- For non-trivial changes: pause and ask "is there a more elegant way?"
+- If a fix feels hacky: "Knowing everything I know now, implement the elegant solution"
+- Skip this for simple, obvious fixes — don't over-engineer
+- Challenge your own work before presenting it
 
 ### Autonomous Bug Fixing
 - Given a bug report: identify root cause, fix it, add regression test, verify
@@ -465,6 +494,11 @@ uv run uvicorn app.main:app --reload  # Start dev server
 - Run /clear between unrelated tasks
 - Use /compact when context grows large
 - After 2 failed corrections on the same issue, clear context and restart with a better prompt
+
+### Core Principles
+- **Simplicity First**: Make every change as simple as possible. Impact minimal code.
+- **No Laziness**: Find root causes. No temporary fixes. Senior developer standards.
+- **Minimal Impact**: Only touch what's necessary. No side effects with new bugs.
 
 <plans_instruction>
 ## Plans Format
@@ -481,10 +515,8 @@ Requirements:
 </plans_instruction>
 
 ## Memory
-- Check your auto-memory for prior context at session start
+- Check auto-memory for prior context at session start
 - Save key decisions, debugging insights, and project patterns to auto-memory during work
-- Session context is auto-injected at session start from git history and auto-memory
-- Before ending a session, reflect: what's worth remembering for next time?
 
 ## Commit Messages
 See `/cdf:git` for commit message rules (conventional format, no Claude attribution).

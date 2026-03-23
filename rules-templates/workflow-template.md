@@ -112,6 +112,7 @@ Never mark a task complete without running a verification step.
 Verification means:
 - Run the relevant test(s) if tests exist
 - If no tests: run the code and observe output
+- For visual/UI changes: verify in the browser before confirming to the user
 - If untestable: explicitly state what was checked and how
 - Diff behavior between main and your changes when relevant
 
