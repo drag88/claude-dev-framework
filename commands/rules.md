@@ -217,26 +217,43 @@ Generate a concise `CLAUDE.generated.md` file from existing `.claude/rules/`.
 
 **Prerequisites**: `.claude/rules/` must exist. If not, run `/cdf:rules generate` first.
 
+**Core Principle** (from code.claude.com/docs/en/best-practices): For every line in the generated file, ask: *"Would removing this cause Claude to make mistakes?"* If not, cut it. Target < 200 lines — first 200 lines are prioritized. Content that already lives in `.claude/rules/` loads automatically and MUST NOT be duplicated in CLAUDE.md.
+
 **Behavioral Flow:**
 1. **Verify**: Check for `.claude/rules/` with at least one `.md` file
-2. **Read**: Extract key information from rule files
-3. **Synthesize**: Generate concise `CLAUDE.generated.md`
-4. **Output**: Write to project root
+2. **Read rule files** and extract:
+   - From `architecture.md`: Project name, description, key directories
+   - From `tech-stack.md`: Language, framework, key libraries
+   - From `commands.md`: Setup, test, lint, run commands
+   - From `patterns.md`: Critical coding patterns/rules
+   - From project-type-specific rules (if they exist): 2-3 non-obvious gotchas
+3. **Check what `.claude/rules/` already covers** — do NOT repeat it
+4. **Synthesize**: Generate concise `CLAUDE.generated.md` using the Output Template
+5. **Output**: Write to project root as `CLAUDE.generated.md`
 
-**What Gets Extracted:**
-- From `architecture.md`: Project name, description, key directories
-- From `tech-stack.md`: Language, framework, key libraries
-- From `commands.md`: Setup, test, lint, run commands
-- From `patterns.md`: Critical coding patterns/rules
+**What Goes Where:**
 
-**CRITICAL — Workflow and Memory sections**: Do NOT extract these from rule files. Copy the Workflow and Memory sections EXACTLY as they appear in the Output Template below. These are standardized sections that must be identical across all generated files. Do not paraphrase, reorganize, or omit any subsections.
+| Content | In CLAUDE.md? | Why |
+|---------|--------------|-----|
+| Overview, Quick Start | YES | Essential orientation for every interaction |
+| Critical Rules (4 standard) | YES | High-signal, prevents common mistakes |
+| Workflow summary (3 lines) | YES | Quick orientation — details in `.claude/rules/workflow.md` |
+| Plans Format (`<plans_instruction>`) | YES | XML processing tag — safest in guaranteed-load file |
+| Commit message convention | YES | 1-line pointer, high-frequency need |
+| Key directories | YES | Orientation for every task |
+| Project-specific gotchas | YES | Non-obvious things Claude would get wrong |
+| Full workflow (8 subsections) | NO | Already in `.claude/rules/workflow.md`, auto-loads |
+| CDF Agents table | NO | Already in `.claude/rules/workflow.md`, auto-loads |
+| Memory guidance | NO | Already in `.claude/rules/workflow.md`, auto-loads |
+| Architecture details | NO | Already in `.claude/rules/architecture.md`, auto-loads |
+| Code patterns | NO | Already in `.claude/rules/patterns.md`, auto-loads |
 
 **Output Template:**
 ```markdown
 # [Project Name]
 
 ## Overview
-[1-2 sentence description]
+[1-2 sentence description derived from architecture.md]
 
 ## Quick Start
 ```bash
@@ -253,51 +270,9 @@ Generate a concise `CLAUDE.generated.md` file from existing `.claude/rules/`.
 4. **Tests required** - no feature complete without tests
 
 ## Workflow
-
-### Explore → Plan → Code → Verify
-- Use plan mode for non-trivial tasks (3+ steps or multi-file changes)
-- For small fixes (typo, rename, single-file change), skip planning and execute directly
-- If something goes sideways, STOP and re-plan — do not push through a broken approach
-
-### Subagent Strategy
-- Use subagents for exploration and research to keep main context clean
-- One atomic goal per subagent — return summaries, not raw file dumps
-- For complex problems, spawn parallel subagents covering different angles
-- Main context is for implementation only
-
-### Verification Before Done
-- Never mark a task complete without proving it works
-- Run tests, check logs, demonstrate correctness
-- For visual/UI changes: verify in the browser before confirming to the user
-- Diff behavior between main and your changes when relevant
-- Ask yourself: "Would a staff engineer approve this?"
-
-### Self-Improvement Loop
-- After ANY correction from the user: capture the pattern in `.claude/rules/`
-- Write rules for yourself that prevent the same mistake
-- Ruthlessly iterate on these rules until mistake rate drops
-- Review rules at session start for relevant project
-
-### Demand Elegance (Balanced)
-- For non-trivial changes: pause and ask "is there a more elegant way?"
-- If a fix feels hacky: "Knowing everything I know now, implement the elegant solution"
-- Skip this for simple, obvious fixes — don't over-engineer
-- Challenge your own work before presenting it
-
-### Autonomous Bug Fixing
-- Given a bug report: identify root cause, fix it, add regression test, verify
-- Point at logs, errors, failing tests — then resolve them
-- Zero context switching required from the user
-
-### Context Management
-- Run /clear between unrelated tasks
-- Use /compact when context grows large
-- After 2 failed corrections on the same issue, clear context and restart with a better prompt
-
-### Core Principles
-- **Simplicity First**: Make every change as simple as possible. Impact minimal code.
-- **No Laziness**: Find root causes. No temporary fixes. Senior developer standards.
-- **Minimal Impact**: Only touch what's necessary. No side effects with new bugs.
+Explore → Plan → Code → Verify. Always explore full scope before piecemeal edits.
+Plan mode for 3+ step tasks. Subagents for exploration; agent teams for parallel implementation.
+Full workflow, agent routing table, and delegation patterns in `.claude/rules/workflow.md`.
 
 <plans_instruction>
 ## Plans Format
@@ -313,73 +288,50 @@ Requirements:
 - Sacrifice grammar for concision
 </plans_instruction>
 
-## Memory
-- Check auto-memory for prior context at session start
-- Save key decisions, debugging insights, and project patterns to auto-memory during work
-
 ## Commit Messages
-See `/cdf:git` for commit message rules (conventional format, no Claude attribution).
+Conventional format (`feat:`, `fix:`, `docs:`), no Claude attribution.
 
-## CDF Agents
-
-When working in this project, use the appropriate CDF agent for specialized tasks:
-
-| Task Type | Agent | Command |
-|-----------|-------|---------|
-| System design | system-architect | `/cdf:task` |
-| API/backend work | backend-architect | `/cdf:task` |
-| UI development | frontend-architect | `/cdf:task` |
-| CI/CD setup | devops-architect | `/cdf:task` |
-| Research topics | deep-research-agent | `/cdf:research` |
-| Find code/patterns | codebase-navigator | `/cdf:task` |
-| Evaluate libraries | library-researcher | `/cdf:task` |
-| Debug issues | root-cause-analyst | `/cdf:troubleshoot` |
-| Write tests | quality-engineer | `/cdf:test` |
-| Security audit | security-engineer | `/cdf:analyze` |
-| Performance | performance-engineer | `/cdf:analyze` |
-| Refactor code | refactoring-expert | `/cdf:improve` |
-| Documentation | technical-writer | `/cdf:docs` |
-| TDD workflow | tdd-guide | `/cdf:tdd` |
-| E2E testing | e2e-specialist | `/cdf:e2e` |
-
-**Auto-activation**: Agents activate automatically via `/cdf:task` based on task context.
-
-## Project Rules
-Auto-generated rules in `.claude/rules/` - Claude loads automatically.
-Run `/cdf:rules generate` to refresh after major changes.
+## Project-Specific Notes
+[2-3 non-obvious gotchas derived from project-type-specific rule files.
+Only include if project-type rules exist. Examples:]
+- [e.g., "All API handlers must use the `@validate_input` decorator"]
+- [e.g., "Database migrations require running `make migrate-check` before commit"]
+- [e.g., "Component tests use `renderWithProviders()` not bare `render()`"]
+[If no project-type rules exist, omit this section entirely.]
 
 ## Key Directories
 - `[dir1]/` - [brief purpose]
 - `[dir2]/` - [brief purpose]
+[Max 5-7 directories from architecture.md codemap]
 ```
 
-**Required Template Sections:**
+**Required Template Sections (7):**
 1. **Overview** - 1-2 sentence description
 2. **Quick Start** - 4-5 bash commands (setup, test, lint, run)
-3. **Critical Rules** - 4 standard rules (read before edit, DRY, no backwards compat, tests required)
-4. **Workflow** - Explore→Plan→Code→Verify, subagent strategy, self-improvement loop, verification, demand elegance, bug fixing, context management, core principles
-5. **Plans Format** - Plans instruction block for unresolved questions
-6. **Memory** - Auto-memory usage guidance
-7. **Commit Messages** - Pointer to `/cdf:git` command
-8. **CDF Agents** - Agent selection guide for specialized tasks
-9. **Project Rules** - Pointer to `.claude/rules/`
-10. **Key Directories** - Max 5-7 most important directories
+3. **Critical Rules** - 4 standard rules
+4. **Workflow** - 3-line summary pointing to `.claude/rules/workflow.md`
+5. **Plans Format** - `<plans_instruction>` XML block
+6. **Commit Messages** - 1-line convention
+7. **Key Directories** - Max 5-7 most important directories
+
+**Optional Section:**
+- **Project-Specific Notes** - Only if project-type rules exist. Include 2-3 concrete, verifiable gotchas.
 
 **Guidelines:**
-- Keep < 100 lines, never exceed 150
-- WHY/WHAT/HOW: Purpose → Stack/Structure → Commands
-- Progressive disclosure: Point to `.claude/rules/` for details
-- Quick Start first: Most used commands at top
-- **No code style**: Let linters handle formatting rules - don't include style guides
-- **Key dirs only**: Don't list every subdirectory - max 5-7 most important
+- Target 50-70 lines. Never exceed 80 (excluding `<plans_instruction>` block)
+- Every line must pass: "Would removing this cause Claude to make mistakes?"
+- Progressive disclosure: point to `.claude/rules/` for details
+- **No code style** — let linters handle formatting
+- **No content from `.claude/rules/`** — it loads automatically
+- Make instructions **concrete and verifiable**: "Run `npm test`" not "test your changes"
 
 **Output Location**: Always writes to `CLAUDE.generated.md` (not `CLAUDE.md`) to preserve manual edits.
 
 **Inform User After Generation:**
 After generating `CLAUDE.generated.md`, inform the user:
 - File created at `CLAUDE.generated.md`
-- Review the content and rename to `CLAUDE.md` if satisfied
-- Or merge changes into existing `CLAUDE.md`
+- Review and rename to `CLAUDE.md` if satisfied, or merge into existing `CLAUDE.md`
+- Note: full workflow, agents, and memory details live in `.claude/rules/workflow.md`
 
 ### status - Check Rules Status
 

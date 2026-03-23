@@ -1,41 +1,93 @@
 # Workflow Orchestration
 
-## Subagent Strategy (Primary)
+## Explore Before Edit
 
-**Default to subagents. Main context is precious.**
+**Never make piecemeal changes without understanding the full picture first.**
 
-The main conversation thread is your working memory. Every file read, every exploratory grep, every tangential research question consumes it permanently. Subagents work in isolated contexts and return only the result you need.
+LLM performance degrades as context fills. When you jump straight to coding without exploring, you solve the wrong problem or miss existing patterns. Separate exploration from execution.
 
-### When to Spawn a Subagent
+### The 4-Phase Pattern
 
-| Task Type | Spawn? | Reason |
-|-----------|--------|--------|
-| Exploring an unfamiliar module | Yes | Returns a summary, not raw file contents |
-| Researching a library/API | Yes | Returns verdict + key facts, not entire docs |
-| Parallel analysis (multiple files/dirs) | Yes | Multiple agents, simultaneous |
-| Tracing a bug across files | Yes | Agent can read 10+ files without polluting main context |
-| Confirming a fact you already know | No | Just do it |
-| A single targeted grep | No | Faster inline |
-| Writing/editing a file | No | Must stay in main context |
-| Simple single-file read | No | Faster inline |
+1. **Explore** — Read files, trace dependencies, understand what exists. Use Plan Mode or subagents so exploration doesn't pollute implementation context.
+2. **Plan** — Write the approach before writing code. Identify failure points.
+3. **Implement** — Code against the plan in clean context.
+4. **Verify** — Prove it works before marking done.
 
-### How to Spawn Well
+### For Piecemeal/Incremental Changes
 
-One task per subagent. Not "analyze this module and also the one it depends on."
+When making changes that touch multiple files or modules incrementally:
+- Explore the full scope FIRST, even if you plan to change files one at a time
+- Map all the files that will need changes before editing any of them
+- Understand upstream and downstream dependencies of each change
+- Use subagents to fan out and read related modules in parallel — keeps main context clean for the actual edits
+- If the scope grows beyond what you mapped, STOP and re-explore before continuing
 
-Give each agent:
-1. A single, atomic goal
-2. The specific files or directories to focus on
-3. What to return (a summary, a verdict, a list — not raw file dumps)
+**Anti-pattern**: Editing file A, then discovering file B also needs changes, then finding file C — each discovery consuming main context. Instead: one exploration pass up front, then focused edits.
 
-For complex problems, throw more compute at it: spawn 3-5 agents in parallel, each covering a different angle.
+### Scoping Investigations
 
-### Project-Specific Spawn Patterns
+Avoid the "infinite exploration" trap — reading hundreds of files and filling context with raw content. Scope investigations narrowly or use subagents so exploration stays out of main context.
 
-**CDF plugin patterns**:
-- Spawn agent to read an unfamiliar `commands/*.md` or `agents/*.md` and return its trigger conditions, behavioral flow, and key constraints — not the raw file
-- Spawn parallel agents to audit `commands/` and `scripts/hooks/` simultaneously: one maps command intent, other maps hook implementation, then compare coverage
-- Spawn agent to trace a hook's full lifecycle: `hooks/hooks.json` entry → `scripts/` implementation → what `additionalContext` it injects → when it fires
+---
+
+## Subagents vs Agent Teams
+
+Two delegation mechanisms. Different tools for different problems.
+
+### Subagents (Agent tool)
+
+Single-session, isolated context. Best for focused, bounded tasks.
+
+- Run in isolated context windows — exploration doesn't consume main conversation
+- One atomic goal per subagent, return summaries not raw dumps
+- Cannot spawn other subagents (no nesting)
+- Can run foreground (blocking) or background (concurrent)
+
+**Use subagents when:**
+- Investigating a module, tracing a bug, researching a library
+- Fan-out exploration: 3-5 agents reading different areas in parallel
+- High-volume output handling (test results, large file analysis)
+- The task is self-contained and returns a clear result
+
+### Agent Teams (TeamCreate)
+
+Multi-session coordination. Each worker gets its own independent, sustained context.
+
+- Workers run in separate sessions with full context windows
+- Support messaging and coordination between workers
+- Each worker can use all tools independently
+- Workers persist — you can send follow-up messages
+
+**Use agent teams when:**
+- Multiple workers need sustained context (not just a quick lookup)
+- Tasks are too large for one context window
+- Workers need to coordinate or share state
+- Parallel implementation across independent files/modules
+- The work is implementation, not just research
+
+### Decision Table
+
+| Situation | Use | Why |
+|-----------|-----|-----|
+| "Read these 5 files and summarize" | Subagent | Quick, isolated, returns summary |
+| "Research how auth works" | Subagent | Bounded investigation |
+| "Implement feature X across 4 modules" | Agent Team | Sustained parallel implementation |
+| "Refactor module A while I work on module B" | Agent Team | Independent sustained work |
+| "Check if this pattern exists anywhere" | Subagent | Quick grep, bounded result |
+| "Build the API, frontend, and tests in parallel" | Agent Team | Three independent implementation streams |
+| "What does this function do?" | Neither | Just read the file inline |
+
+### Subagent Spawn Patterns
+
+**General patterns:**
+- Spawn agent to explore an unfamiliar directory — return purpose, key files, connections to rest of codebase
+- Spawn parallel agents across `src/` and `tests/` for a holistic view
+- Spawn agent to research a dependency's API before using it — return only relevant functions
+
+**CDF plugin patterns:**
+- Spawn agent to read `commands/*.md` or `agents/*.md` — return trigger conditions, behavioral flow, constraints
+- Spawn parallel agents to audit `commands/` and `scripts/hooks/` — one maps command intent, other maps hook implementation, then compare
+- Spawn agent to trace a hook's lifecycle: `hooks/hooks.json` → `scripts/` implementation → `additionalContext` injection → when it fires
 
 ---
 
@@ -132,3 +184,36 @@ Zero context switching required from the user. Go fix failing CI tests without b
 - **No Laziness**: Find root causes. No temporary fixes. Senior developer standards.
 - **Minimal Impact**: Changes should only touch what's necessary. Avoid introducing bugs.
 - **Prove It**: Every claim about behavior should be backed by a test or observable output.
+
+---
+
+## CDF Agents
+
+When working in this project, use the appropriate CDF agent for specialized tasks:
+
+| Task Type | Agent | Command |
+|-----------|-------|---------|
+| System design | system-architect | `/cdf:task` |
+| API/backend work | backend-architect | `/cdf:task` |
+| UI development | frontend-architect | `/cdf:task` |
+| CI/CD setup | devops-architect | `/cdf:task` |
+| Research topics | deep-research-agent | `/cdf:research` |
+| Find code/patterns | codebase-navigator | `/cdf:task` |
+| Evaluate libraries | library-researcher | `/cdf:task` |
+| Debug issues | root-cause-analyst | `/cdf:troubleshoot` |
+| Write tests | quality-engineer | `/cdf:test` |
+| Security audit | security-engineer | `/cdf:analyze` |
+| Performance | performance-engineer | `/cdf:analyze` |
+| Refactor code | refactoring-expert | `/cdf:improve` |
+| Documentation | technical-writer | `/cdf:docs` |
+| TDD workflow | tdd-guide | `/cdf:tdd` |
+| E2E testing | e2e-specialist | `/cdf:e2e` |
+
+**Auto-activation**: Agents activate automatically via `/cdf:task` based on task context.
+
+---
+
+## Memory
+
+- Check auto-memory for prior context at session start
+- Save key decisions, debugging insights, and project patterns to auto-memory during work
