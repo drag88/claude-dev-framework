@@ -43,15 +43,17 @@ Required sections in generated file:
 - Overview (1-2 sentences)
 - Quick Start (4-5 bash commands)
 - Critical Rules (4 standard rules)
-- Workflow (see Workflow Section below)
+- Workflow (COPY VERBATIM from Workflow Section below — all 8 subsections required)
 - Plans Format (plans_instruction block)
+- Memory (exactly 2 lines: check auto-memory + save key decisions. NO daily logs, NO session context injection)
 - Commit Messages (no attribution rule)
+- CDF Agents (use `/cdf:task` NOT `/cdf:spawn` in command column)
 - Project Rules (pointer to .claude/rules/)
 - Key Directories (max 5-7 dirs)
 
 ## Workflow Section
 
-Include these workflow instructions in every generated CLAUDE.md. These align with official Claude Code best practices from Anthropic.
+**CRITICAL**: Copy the Workflow section below VERBATIM into every generated CLAUDE.md. Do NOT paraphrase, reorganize, summarize, or omit any subsections. Do NOT replace this with a "Subagent Strategy" standalone section or a table. All 8 subsections below are required exactly as written.
 
 ```markdown
 ## Workflow
@@ -101,6 +103,20 @@ Include these workflow instructions in every generated CLAUDE.md. These align wi
 - **No Laziness**: Find root causes. No temporary fixes. Senior developer standards.
 - **Minimal Impact**: Only touch what's necessary. No side effects with new bugs.
 ```
+
+## Memory Section
+
+Copy this EXACTLY — no additions, no "daily activity logs", no "session context injection":
+
+```markdown
+## Memory
+- Check auto-memory for prior context at session start
+- Save key decisions, debugging insights, and project patterns to auto-memory during work
+```
+
+## CDF Agents Section
+
+Use `/cdf:task` (NOT `/cdf:spawn`) in the Command column for all agents except research, troubleshoot, test, analyze, improve, docs, tdd, e2e which use their specific commands.
 
 ## Related Commands
 

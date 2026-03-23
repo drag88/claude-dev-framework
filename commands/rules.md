@@ -228,7 +228,8 @@ Generate a concise `CLAUDE.generated.md` file from existing `.claude/rules/`.
 - From `tech-stack.md`: Language, framework, key libraries
 - From `commands.md`: Setup, test, lint, run commands
 - From `patterns.md`: Critical coding patterns/rules
-- From `workflow.md`: Subagent routing table + pointer to full rules
+
+**CRITICAL — Workflow and Memory sections**: Do NOT extract these from rule files. Copy the Workflow and Memory sections EXACTLY as they appear in the Output Template below. These are standardized sections that must be identical across all generated files. Do not paraphrase, reorganize, or omit any subsections.
 
 **Output Template:**
 ```markdown
