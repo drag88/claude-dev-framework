@@ -113,7 +113,7 @@ Auto-generated rules in `.claude/rules/` - Claude loads automatically.
 Run `/cdf:rules generate` to refresh after major changes.
 
 ## Key Directories
-- `commands/` - 21 slash command definitions (markdown + YAML frontmatter)
+- `commands/` - 22 slash command definitions (markdown + YAML frontmatter)
 - `agents/` - 22 agent persona definitions
 - `skills/` - 27 auto-invoked skill directories (`SKILL.md`)
 - `scripts/` - Hook implementation scripts (Python + Bash)

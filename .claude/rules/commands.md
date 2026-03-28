@@ -48,7 +48,7 @@ claude --plugin-dir ./claude-dev-framework
 /cdf:rules status
 ```
 
-## All 21 Commands
+## All 22 Commands
 
 | Command | Purpose |
 |---------|---------|
@@ -64,6 +64,7 @@ claude --plugin-dir ./claude-dev-framework
 | `/cdf:git` | Git operations with smart commit messages |
 | `/cdf:implement` | Feature implementation with agent activation |
 | `/cdf:improve` | Code quality improvements |
+| `/cdf:learn` | Universal skill learning: capture, view, remove, reset, consolidate preferences |
 | `/cdf:research` | Deep web research |
 | `/cdf:rules` | Project rules management |
 | `/cdf:ship` | Automated release pipeline: merge, test, review, push, PR |
