@@ -213,6 +213,21 @@ def main():
     if not is_cdf and not has_code_changes(files):
         return
 
+    # Run health check first — block on failure
+    health_check = project_root / 'scripts' / 'health-check.py'
+    if health_check.exists():
+        import subprocess
+        result = subprocess.run(
+            ['python3', str(health_check)],
+            capture_output=True, text=True, cwd=str(project_root)
+        )
+        if result.returncode != 0:
+            print(json.dumps({
+                "decision": "block",
+                "reason": f"Health check failed. Fix before pushing:\n{result.stdout.strip()}"
+            }))
+            return
+
     warnings = []
     for check in [check_changelog, check_version, check_docs, check_component_counts]:
         result = check(files, project_root)
@@ -222,6 +237,16 @@ def main():
     if not warnings:
         return
 
+    # Block on component count mismatches (these cause CI failure)
+    count_mismatches = [w for w in warnings if 'count mismatch' in w.lower()]
+    if count_mismatches:
+        print(json.dumps({
+            "decision": "block",
+            "reason": "Component count mismatches will fail CI:\n" + "\n".join(count_mismatches)
+        }))
+        return
+
+    # Warn on other issues (docs, changelog, version)
     context = "PRE-PUSH CHECK — the following items may need attention before pushing:\n"
     for i, w in enumerate(warnings, 1):
         context += f"  {i}. {w}\n"
