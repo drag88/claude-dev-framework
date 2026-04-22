@@ -16,6 +16,7 @@ __pycache__/
 
 # Auto-generated context files (runtime, not project data)
 .claude/rules/session-narrative.md
+.claude/rules/memory-context.md
 
 # Local settings (user-specific overrides)
 *.local.json

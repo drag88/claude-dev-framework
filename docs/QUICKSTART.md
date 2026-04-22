@@ -21,8 +21,8 @@ CDF has four layers. You only need the first one to start.
 **Layer 1 — Commands** (you type these)
 Slash commands that trigger specific workflows. The command handles tool selection, agent activation, and quality checks automatically.
 
-**Layer 2 — Agents** (activated for you)
-Specialized personas (security-engineer, backend-architect, etc.) that activate based on what the command needs. You never call agents directly.
+**Layer 2 — Agents** (real-expertise subagents you can invoke)
+Specialized agents like `codebase-navigator`, `library-researcher`, `quality-engineer`, `e2e-specialist`, `tdd-guide`, `requirements-analyst`, `socratic-mentor`, `media-interpreter`. Persona-stub agents (security-engineer, backend-architect, etc.) were removed in the leanness pass — Opus 4.7 plays those roles from the Role line in your CLAUDE.md plus `xhigh` effort.
 
 **Layer 3 — Skills** (trigger automatically)
 Background behaviors like coding standards enforcement, failure recovery, and intent classification. You don't interact with these — they just run.
@@ -57,7 +57,7 @@ Lifecycle scripts that fire on session start, before/after tool use, and on stop
 | `/cdf:design "system X"` | Technical architecture (how to build it) |
 | `/cdf:brainstorm "problem"` | Requirements discovery (what to build) |
 | `/cdf:estimate "task"` | Effort estimation |
-| `/cdf:workflow "PRD"` | Generate implementation steps from a spec |
+| Write a clear prompt + `xhigh` effort | Generate implementation steps from a spec (4.7 plans natively) |
 
 ### Fix
 
@@ -80,10 +80,10 @@ Lifecycle scripts that fire on session start, before/after tool use, and on stop
 
 | Command | When to use |
 |---------|-------------|
-| `/cdf:flow "feature"` | Full lifecycle: brainstorm → docs → implement → verify |
 | `/cdf:task "complex thing"` | Break down and delegate with agents |
 | `/cdf:task --breakdown "X"` | Just the breakdown, no execution |
 | `/cdf:approve` | Persist a plan from plan mode, get execution strategy |
+| Clear prompt + `xhigh` effort | Full lifecycle (brainstorm → docs → implement → verify) — 4.7 plans this natively, the `/cdf:flow` orchestrator was removed |
 
 ### Meta
 
@@ -109,7 +109,8 @@ Lifecycle scripts that fire on session start, before/after tool use, and on stop
 
 ```
 /cdf:brainstorm "requirements"     # Discover what to build
-/cdf:flow "the feature"            # Full lifecycle with quality gates
+# Then write a clear prompt and let 4.7 plan the full lifecycle with xhigh effort
+# (brainstorm → docs → implement → verify)
 ```
 
 ### "I need to challenge a plan"
@@ -151,11 +152,10 @@ You don't need to configure these. They run on their own.
 
 | What | When | Effect |
 |------|------|--------|
-| Codebase analysis | Session start | Generates `.claude/rules/` |
+| Codebase analysis | Session start | Generates `.claude/rules/` if missing; fast-confirms if present |
 | Session context | Session start | Injects recent git history + memory |
-| Intent classification | Every request | Routes to right command/agent |
-| Code quality checks | After edits | Flags debug statements, low comment ratio |
-| Push safety | Before git push | Validates component counts, docs, changelog |
+| Code quality checks | After edits | Flags debug statements, low comment ratio (skips files >500 lines) |
+| Push safety | Before git push | Warns on missing docs / changelog / version bumps (warn-only, never blocks) |
 | Failure recovery | After 3 failures | STOP → REVERT → DOCUMENT → CONSULT |
 
 ---
@@ -164,10 +164,10 @@ You don't need to configure these. They run on their own.
 
 **Start simple.** `/cdf:implement` and `/cdf:ship` cover 80% of daily work.
 
-**Let agents activate.** Don't try to pick agents manually — `/cdf:task` routes to the right one based on context.
+**Let agents activate.** Don't try to pick agents manually — `/cdf:task` routes to the right one based on context, and most "persona" work (backend, frontend, devops, etc.) is handled by 4.7 directly from the Role line in CLAUDE.md.
 
-**Use `/cdf:flow` for big features.** It chains brainstorm → docs → implement → verify so nothing gets skipped.
+**For big features, write a clear prompt and let 4.7 plan natively.** The `/cdf:flow` orchestrator was removed in the leanness pass — `xhigh` effort handles the brainstorm → docs → implement → verify chain when given a complete prompt.
 
 **Run `/cdf:retro` weekly.** Takes 30 seconds, surfaces patterns you'd never notice.
 
-**Trust the hooks.** If a hook blocks something, it's usually right. Read the message before dismissing.
+**Trust the hooks but they warn, they don't block.** If a hook surfaces a warning, read it before dismissing. Hooks were tightened in the leanness pass to never block on documentation or count mismatches — gating belongs in CI.

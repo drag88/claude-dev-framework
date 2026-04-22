@@ -2,39 +2,27 @@
 
 Quick reference for all available agent personas, organized by category.
 
----
-
-## Architecture & Design (4)
-
-| Agent | Description |
-|-------|-------------|
-| [system-architect](system-architect.md) | Design scalable system architecture with focus on maintainability and long-term technical decisions |
-| [backend-architect](backend-architect.md) | Design reliable backend systems with focus on data integrity, security, and fault tolerance |
-| [frontend-architect](frontend-architect.md) | Create accessible, performant user interfaces with focus on user experience and modern frameworks |
-| [devops-architect](devops-architect.md) | Automate infrastructure and deployment processes with focus on reliability and observability |
+For role-based work (backend / frontend / devops / system design / security / performance / docs / Python), invoke `/cdf:task` directly. The Role line in `CLAUDE.md` plus Opus 4.7's `xhigh` effort handles persona work without dedicated stub agents — these were removed in the 4.7 leanness pass.
 
 ---
 
-## Analysis & Research (6)
+## Analysis & Research (5)
 
 | Agent | Description |
 |-------|-------------|
 | [deep-research-agent](deep-research-agent.md) | Comprehensive research with adaptive strategies and intelligent exploration |
 | [codebase-navigator](codebase-navigator.md) | Find code, patterns, and dependencies across large codebases using parallel search strategies |
 | [library-researcher](library-researcher.md) | Research open-source libraries with evidence-backed analysis using GitHub permalinks |
-| [root-cause-analyst](root-cause-analyst.md) | Investigate complex problems to identify underlying causes through evidence-based analysis |
 | [media-interpreter](media-interpreter.md) | Interpret and extract information from PDFs, images, diagrams, and other media files |
 | [business-research-strategist](business-research-strategist.md) | Deep business research with Socratic interview, parallel sub-agent teams, and strategic frameworks |
 
 ---
 
-## Quality & Performance (4)
+## Quality & Refactoring (2)
 
 | Agent | Description |
 |-------|-------------|
 | [quality-engineer](quality-engineer.md) | Ensure software quality through comprehensive testing strategies and edge case detection |
-| [security-engineer](security-engineer.md) | Identify security vulnerabilities and ensure compliance with security standards |
-| [performance-engineer](performance-engineer.md) | Optimize system performance through measurement-driven analysis and bottleneck elimination |
 | [refactoring-expert](refactoring-expert.md) | Improve code quality and reduce technical debt through systematic refactoring |
 
 ---
@@ -48,49 +36,45 @@ Quick reference for all available agent personas, organized by category.
 
 ---
 
-## Communication & Education (3)
+## Discovery & Education (2)
 
 | Agent | Description |
 |-------|-------------|
-| [technical-writer](technical-writer.md) | Create clear, comprehensive technical documentation tailored to specific audiences |
-| [learning-guide](learning-guide.md) | Teach programming concepts through progressive learning and practical examples |
+| [requirements-analyst](requirements-analyst.md) | Transform ambiguous project ideas into concrete specifications through systematic discovery |
 | [socratic-mentor](socratic-mentor.md) | Educational guide using Socratic method for discovery learning through strategic questioning |
 
 ---
 
-## Specialized (3)
+## Business Strategy (1)
 
 | Agent | Description |
 |-------|-------------|
-| [python-expert](python-expert.md) | Production-ready, secure, high-performance Python code following SOLID principles |
-| [requirements-analyst](requirements-analyst.md) | Transform ambiguous project ideas into concrete specifications through systematic discovery |
 | [business-panel-experts](business-panel-experts.md) | Multi-expert business strategy panel (Christensen, Porter, Drucker, Godin, etc.) |
 
 ---
 
 ## Quick Selection Guide
 
-| If you need to... | Use this agent |
-|-------------------|----------------|
-| Design a new system | system-architect |
-| Build an API | backend-architect |
-| Create a UI | frontend-architect |
-| Set up CI/CD | devops-architect |
+| If you need to... | Use this agent (or fall back to `/cdf:task` with role) |
+|-------------------|------------------------------|
 | Research a topic | deep-research-agent |
 | Find code in a large codebase | codebase-navigator |
 | Evaluate a library | library-researcher |
-| Debug a complex issue | root-cause-analyst |
 | Understand an image/PDF | media-interpreter |
 | Write tests | quality-engineer |
-| Security audit | security-engineer |
-| Optimize performance | performance-engineer |
 | Clean up code | refactoring-expert |
-| Write documentation | technical-writer |
-| Learn a concept | learning-guide |
-| Guided learning | socratic-mentor |
-| Python-specific help | python-expert |
-| Gather requirements | requirements-analyst |
-| Business strategy | business-panel-experts |
-| Business research & market analysis | business-research-strategist |
 | Test-Driven Development | tdd-guide |
 | E2E testing with Playwright | e2e-specialist |
+| Gather requirements | requirements-analyst |
+| Guided learning (Socratic) | socratic-mentor |
+| Business strategy panel | business-panel-experts |
+| Business research & market analysis | business-research-strategist |
+| Backend / API / database design | `/cdf:task` (4.7 plays this role from CLAUDE.md) |
+| Frontend / UI work | `/cdf:task` |
+| DevOps / CI / CD | `/cdf:task` |
+| System design | `/cdf:task` |
+| Security audit | `/cdf:analyze` (security mode) |
+| Performance optimization | `/cdf:analyze` (perf mode) |
+| Documentation | `/cdf:docs` |
+| Debug a complex issue | `/cdf:troubleshoot` |
+| Python-specific help | `/cdf:task` |

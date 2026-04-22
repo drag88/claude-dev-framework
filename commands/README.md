@@ -28,23 +28,23 @@ Quick reference for all available `/cdf` commands, organized by purpose.
 
 ---
 
-## Planning & Design (4)
+## Planning & Design (3)
 
 | Command | Description | Complexity |
 |---------|-------------|------------|
 | [/cdf:brainstorm](brainstorm.md) | Interactive requirements discovery through Socratic dialogue | advanced |
 | [/cdf:design](design.md) | Design system architecture, APIs, and component interfaces | standard |
 | [/cdf:estimate](estimate.md) | Development estimates for tasks, features, or projects | standard |
-| [/cdf:workflow](workflow.md) | Generate structured implementation workflows from PRDs | advanced |
 
 ---
 
-## Orchestration (2)
+## Orchestration (1)
 
 | Command | Description | Complexity |
 |---------|-------------|------------|
-| [/cdf:flow](flow.md) | Unified workflow: brainstorm -> docs -> implement -> verify | advanced |
 | [/cdf:task](task.md) | Execute complex tasks with breakdown, delegation, and workflow management | advanced |
+
+`/cdf:flow` and `/cdf:workflow` were removed in the 4.7 leanness pass. Opus 4.7 plans multi-step workflows natively when given a clear prompt and `xhigh` effort — the orchestrator wrappers added scaffolding the model already does well.
 
 ---
 
@@ -75,8 +75,7 @@ Quick reference for all available `/cdf` commands, organized by purpose.
 | Explore an idea | `/cdf:brainstorm` |
 | Design a system | `/cdf:design` |
 | Estimate effort | `/cdf:estimate` |
-| Plan implementation | `/cdf:workflow` |
-| Run full development workflow | `/cdf:flow` |
+| Plan implementation or run full development workflow | `/cdf:task` (or write a clear prompt and let 4.7 plan) |
 | Execute or break down a complex task | `/cdf:task` |
 | Manage documentation | `/cdf:docs` |
 | Generate rules | `/cdf:rules` |

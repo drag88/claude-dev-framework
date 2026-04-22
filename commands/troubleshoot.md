@@ -110,14 +110,16 @@ Key behaviors:
 - Modify production systems without explicit permission and safety validation
 - Make architectural changes without understanding full system impact
 
-## Agent Routing
+## Approach
 
-| Issue Type | Primary Agent | When to Use |
-|-----------|---------------|-------------|
-| Bug investigation | root-cause-analyst | Multi-component failures, intermittent bugs |
-| Performance issues | performance-engineer | Slow responses, memory leaks, high CPU |
-| Infrastructure | devops-architect | CI/CD failures, deployment issues, env problems |
-| Security incidents | security-engineer | Vulnerability reports, suspicious behavior |
+| Issue Type | Approach | When to Use |
+|-----------|----------|-------------|
+| Bug investigation | `/cdf:task` with codebase-navigator subagent for multi-file tracing | Multi-component failures, intermittent bugs |
+| Performance issues | `/cdf:task` with performance-engineer framing in the prompt | Slow responses, memory leaks, high CPU |
+| Infrastructure | `/cdf:task` with devops-engineer framing | CI/CD failures, deployment issues, env problems |
+| Security incidents | `/cdf:task` with security-engineer framing | Vulnerability reports, suspicious behavior |
+
+The persona-stub agents (root-cause-analyst, performance-engineer, devops-architect, security-engineer) were removed in the leanness pass — Opus 4.7 plays these roles from the Role line in CLAUDE.md plus `xhigh` effort. For real fan-out work, use codebase-navigator (real agent, kept).
 
 ## Next Commands
 - `/cdf:improve` — Apply fixes for identified root causes

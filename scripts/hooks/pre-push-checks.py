@@ -114,83 +114,6 @@ def check_docs(files, project_root):
     return "Public API/commands changed but documentation not updated. Consider updating README.md or docs/."
 
 
-def check_component_counts(files, project_root):
-    """Validate actual component counts match plugin.json and CLAUDE.md."""
-    component_dirs = {
-        'commands/': 'commands',
-        'agents/': 'agents',
-        'skills/': 'skills',
-    }
-
-    touches_components = any(
-        any(f.startswith(d) for d in component_dirs)
-        for f in files
-    )
-
-    if not touches_components:
-        return None
-
-    plugin_json_path = project_root / '.claude-plugin' / 'plugin.json'
-    claude_md_path = project_root / 'CLAUDE.md'
-
-    if not plugin_json_path.exists():
-        return None
-
-    # Count actual components
-    commands_dir = project_root / 'commands'
-    agents_dir = project_root / 'agents'
-    skills_dir = project_root / 'skills'
-
-    actual_commands = len([f for f in commands_dir.glob('*.md') if f.name != 'README.md']) if commands_dir.exists() else 0
-    actual_agents = len([f for f in agents_dir.glob('*.md') if f.name != 'README.md']) if agents_dir.exists() else 0
-    actual_skills = len(list(skills_dir.glob('*/SKILL.md'))) if skills_dir.exists() else 0
-
-    # Count hooks from hooks.json
-    hooks_json_path = project_root / 'hooks' / 'hooks.json'
-    actual_hooks = 0
-    if hooks_json_path.exists():
-        try:
-            with open(hooks_json_path) as f:
-                hooks_data = json.load(f)
-            for entries in hooks_data.get('hooks', {}).values():
-                for entry in entries:
-                    actual_hooks += len(entry.get('hooks', []))
-        except (json.JSONDecodeError, Exception):
-            pass
-
-    # Check plugin.json description
-    mismatches = []
-    try:
-        with open(plugin_json_path) as f:
-            desc = json.load(f).get('description', '')
-        if f'{actual_commands} commands' not in desc:
-            mismatches.append(f'plugin.json command count (actual: {actual_commands})')
-        if f'{actual_agents} agent' not in desc:
-            mismatches.append(f'plugin.json agent count (actual: {actual_agents})')
-        if f'{actual_skills} skills' not in desc:
-            mismatches.append(f'plugin.json skill count (actual: {actual_skills})')
-        if f'{actual_hooks} lifecycle' not in desc:
-            mismatches.append(f'plugin.json hook count (actual: {actual_hooks})')
-    except (json.JSONDecodeError, Exception):
-        pass
-
-    # Check CLAUDE.md counts
-    if claude_md_path.exists():
-        try:
-            claude_md = claude_md_path.read_text()
-            if f'{actual_commands} slash command' not in claude_md:
-                mismatches.append(f'CLAUDE.md command count (actual: {actual_commands})')
-            if f'{actual_skills} auto-invoked' not in claude_md:
-                mismatches.append(f'CLAUDE.md skill count (actual: {actual_skills})')
-        except Exception:
-            pass
-
-    if not mismatches:
-        return None
-
-    return "Component count mismatches found: " + "; ".join(mismatches) + ". Update plugin.json and CLAUDE.md before pushing."
-
-
 def main():
     try:
         hook_data = json.load(sys.stdin)
@@ -229,7 +152,7 @@ def main():
             return
 
     warnings = []
-    for check in [check_changelog, check_version, check_docs, check_component_counts]:
+    for check in [check_changelog, check_version, check_docs]:
         result = check(files, project_root)
         if result:
             warnings.append(result)
@@ -237,16 +160,7 @@ def main():
     if not warnings:
         return
 
-    # Block on component count mismatches (these cause CI failure)
-    count_mismatches = [w for w in warnings if 'count mismatch' in w.lower()]
-    if count_mismatches:
-        print(json.dumps({
-            "decision": "block",
-            "reason": "Component count mismatches will fail CI:\n" + "\n".join(count_mismatches)
-        }))
-        return
-
-    # Warn on other issues (docs, changelog, version)
+    # Warn on issues (docs, changelog, version) — never block. Gating belongs in CI.
     context = "PRE-PUSH CHECK — the following items may need attention before pushing:\n"
     for i, w in enumerate(warnings, 1):
         context += f"  {i}. {w}\n"

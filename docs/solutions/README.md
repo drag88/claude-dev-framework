@@ -52,9 +52,7 @@ grep -l "severity: high" docs/solutions/**/*.md
 
 ## Creating Solutions
 
-Solutions are created by:
-1. `/cdf:flow` - Knowledge capture during workflow
-2. Manual creation following the template
+Solutions are created manually following the template below. Capture a solution when you spend more than 30 minutes on a non-obvious problem and the fix would be useful next time.
 
 ## Template
 

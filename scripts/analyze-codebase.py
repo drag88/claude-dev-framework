@@ -381,49 +381,42 @@ def detect_project_types(project_dir: Path) -> List[str]:
 
 
 def check_rules_exist(project_dir: Path) -> dict:
-    """Check project state and return appropriate guidance."""
+    """Check project state and return appropriate guidance.
+
+    Fast-path: when .claude/rules/ exists with .md files, skip the project-type
+    detection step entirely. Type detection walks the file tree and parses
+    pyproject.toml/package.json — wasted work when rules are already present
+    (the 99% case for any established project).
+    """
     rules_dir = project_dir / ".claude" / "rules"
 
-    # Check if any .md files exist in rules directory
-    has_rules = False
-    rule_files = []
+    # Fast-path: rules already exist. Skip type detection.
     if rules_dir.exists():
-        for f in rules_dir.rglob("*.md"):
-            has_rules = True
-            rule_files.append(f.relative_to(rules_dir))
+        rule_files = sorted(rules_dir.rglob("*.md"))
+        if rule_files:
+            files_list = "\n".join(f"- {f.relative_to(rules_dir)}" for f in rule_files[:10])
+            if len(rule_files) > 10:
+                files_list += f"\n- ... and {len(rule_files) - 10} more"
 
+            has_claude_md = (project_dir / "CLAUDE.md").exists()
+            has_claude_generated = (project_dir / "CLAUDE.generated.md").exists()
+            claude_md_note = ""
+            if not has_claude_md and not has_claude_generated:
+                claude_md_note = "\n\nNo CLAUDE.md found. Run /cdf:rules claudemd to create one from your rules."
+
+            return {
+                "additionalContext": (
+                    f"Project rules loaded from .claude/rules/:\n{files_list}\n"
+                    f"These rules are automatically applied. Run /cdf:rules generate to refresh after major changes.{claude_md_note}"
+                )
+            }
+
+    # Slow-path: no rules yet. Detect project type to drive generation.
     detected_types = detect_project_types(project_dir)
-    types_note = ""
-    if detected_types:
-        types_note = f"\nDetected project type(s): {', '.join(detected_types)}"
 
-    if has_rules:
-        # Rules exist - Claude loads them automatically
-        files_list = "\n".join(f"- {f}" for f in sorted(rule_files)[:10])
-        if len(rule_files) > 10:
-            files_list += f"\n- ... and {len(rule_files) - 10} more"
-
-        # Check if CLAUDE.md exists
-        has_claude_md = (project_dir / "CLAUDE.md").exists()
-        has_claude_generated = (project_dir / "CLAUDE.generated.md").exists()
-
-        claude_md_note = ""
-        if not has_claude_md and not has_claude_generated:
-            claude_md_note = "\n\nNo CLAUDE.md found. Run /cdf:rules claudemd to create one from your rules."
-
-        missing_note = ""
-
-        return {
-            "additionalContext": f"""Project rules loaded from .claude/rules/:
-{files_list}
-{types_note}
-These rules are automatically applied. Run /cdf:rules generate to refresh after major changes.{claude_md_note}{missing_note}"""
-        }
-    elif has_code(project_dir):
-        # Has code but no rules - trigger automatic generation
+    if has_code(project_dir):
         return {"additionalContext": _build_generation_instructions(detected_types)}
     else:
-        # Empty/new project - ask user questions
         return {"additionalContext": NEW_PROJECT_INSTRUCTIONS}
 
 

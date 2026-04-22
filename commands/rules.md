@@ -39,16 +39,14 @@ Analyze the codebase and generate comprehensive `.claude/rules/` documentation.
 /cdf:rules generate [--force]
 ```
 
-**CRITICAL: Deep Analysis with Sub-Agents**
+**Deep Analysis with Sub-Agents**
 
-This command requires **extremely thorough analysis**. Use sub-agents liberally to ensure comprehensive understanding:
+Quality rules require deep understanding of the entire codebase. Use sub-agents in parallel to cover ground efficiently:
 
-- **Spawn multiple Explore agents** in parallel to analyze different parts of the codebase
-- **Use codebase-navigator agent** to trace dependencies and understand component relationships
-- **Spawn system-architect agent** to identify architectural patterns and design decisions
-- **Don't rush** - quality rules require deep understanding of the entire codebase
-
-The goal is to produce rules that capture the project's true architecture, patterns, and conventions - not surface-level observations.
+- Spawn multiple Explore agents in parallel to analyze different parts of the codebase
+- Use the codebase-navigator agent to trace dependencies and understand component relationships
+- For architectural pattern identification, spawn an Explore agent with a focused brief (system design used to be a separate stub agent; the role is now handled by `/cdf:task` plus the Role line in CLAUDE.md)
+- Take the time to investigate properly. Surface-level observations produce surface-level rules.
 
 **Behavioral Flow:**
 1. **Explore** (use Explore sub-agents in parallel):
@@ -183,8 +181,8 @@ The goal is to produce rules that capture the project's true architecture, patte
 | Monorepo | `workspace-map.md`, `change-impact.md` | Package Dependency Graph |
 | Infrastructure | `iac-conventions.md`, `security-baseline.md` | Infra Topology, Module Tree |
 
-#### `.claude/rules/workflow.md` (REQUIRED)
-MUST generate at `.claude/rules/workflow.md`. Use `rules-templates/workflow-template.md` as the source template. Customize only the "Project-Specific Spawn Patterns" section based on the detected project type — replace the placeholder block with 2-3 concrete subagent patterns relevant to this project's domain and tech stack. If project type is undetected, use the generic patterns. Keep all other sections verbatim from the template.
+#### `.claude/rules/workflow.md` (required)
+Generate at `.claude/rules/workflow.md` using `rules-templates/workflow-template.md` as the source. Customize only the "Project-Specific Spawn Patterns" section based on the detected project type — replace the placeholder block with 2-3 concrete subagent patterns relevant to this project's domain and tech stack. If project type is undetected, use the generic patterns. Keep all other sections verbatim from the template.
 
 **Path-Specific Rules** (Optional):
 ```markdown
@@ -217,7 +215,7 @@ Generate a concise `CLAUDE.generated.md` file from existing `.claude/rules/`.
 
 **Prerequisites**: `.claude/rules/` must exist. If not, run `/cdf:rules generate` first.
 
-**Core Principle** (from code.claude.com/docs/en/best-practices): For every line in the generated file, ask: *"Would removing this cause Claude to make mistakes?"* If not, cut it. Target < 200 lines — first 200 lines are prioritized. Content that already lives in `.claude/rules/` loads automatically and MUST NOT be duplicated in CLAUDE.md.
+**Core Principle** (from code.claude.com/docs/en/best-practices): For every line in the generated file, ask: *"Would removing this cause Claude to make mistakes?"* If not, cut it. Target under 200 lines — the first 200 lines are prioritized. Content that lives in `.claude/rules/` (auto-loaded) does not get duplicated in CLAUDE.md — duplication causes 4.7 to pick one source arbitrarily when they conflict.
 
 **Behavioral Flow:**
 1. **Verify**: Check for `.claude/rules/` with at least one `.md` file
@@ -252,6 +250,10 @@ Generate a concise `CLAUDE.generated.md` file from existing `.claude/rules/`.
 ```markdown
 # [Project Name]
 
+## Role
+You are a [senior/staff] [language/discipline] engineer working on [project], a [one-clause description]. You ship to production and care about correctness, observability, and code quality.
+[One sentence. Anchors tone and scope. Derive from architecture.md and tech-stack.md.]
+
 ## Overview
 [1-2 sentence description derived from architecture.md]
 
@@ -270,9 +272,35 @@ Generate a concise `CLAUDE.generated.md` file from existing `.claude/rules/`.
 4. **Tests required** - no feature complete without tests
 
 ## Workflow
-Explore → Plan → Code → Verify. Always explore full scope before piecemeal edits.
-Plan mode for 3+ step tasks. Subagents for exploration; agent teams for parallel implementation.
-Full workflow, agent routing table, and delegation patterns in `.claude/rules/workflow.md`.
+See `@.claude/rules/workflow.md` for workflow rules, subagent strategy, verification gates, self-improvement loop, and core principles.
+
+## Tool and subagent policy
+
+Spawn multiple subagents in the same turn when fanning out across items, reading multiple files, or running independent investigations. Skip fan-out for single-file edits or trivial reads. For multi-agent debate or implementation work, use TeamCreate + named teammates rather than ad-hoc subagents.
+
+<use_parallel_tool_calls>
+For maximum efficiency, whenever you perform multiple independent operations,
+invoke all relevant tools simultaneously rather than sequentially.
+</use_parallel_tool_calls>
+
+## CDF tools available
+
+This project uses CDF (Claude Dev Framework). Reach for these instead of generic approaches:
+
+- **Debugging bugs**: `/cdf:troubleshoot` — root-cause methodology, adds regression test
+- **Pre-PR quality check**: `/cdf:verify --mode pre-pr` — types + lint + tests + security in one pass
+- **Tests**: `/cdf:test` (coverage-aware), `/cdf:tdd` for RED-GREEN-REFACTOR
+- **Multi-file investigation**: `/cdf:task` with codebase-navigator agent (returns summary, not raw dumps)
+- **Library research / evaluation**: `/cdf:task` with library-researcher agent (evidence-backed, GitHub permalinks)
+- **Refactoring**: `/cdf:improve` — systematic with safety checks
+- **Code / security / perf analysis**: `/cdf:analyze` — multi-domain audit
+- **Commit / ship**: `/cdf:git`, `/cdf:ship` — conventional commits, no AI attribution
+
+Real-expertise agents (invoke via the Task tool): codebase-navigator, library-researcher, deep-research-agent, quality-engineer, refactoring-expert, e2e-specialist, tdd-guide, requirements-analyst, socratic-mentor, business-research-strategist, business-panel-experts, media-interpreter.
+
+Skills auto-trigger from context (coding-standards, backend-patterns, frontend-patterns, tdd-workflow, e2e-patterns, frontend-design, failure-recovery, visual-explainer). Do not invoke manually.
+
+For role-based work (backend, frontend, devops, security, perf, system design, docs) where no specific CDF tool fits, invoke `/cdf:task` directly — Opus 4.7 plays the role from the `## Role` line above plus `xhigh` effort.
 
 <plans_instruction>
 ## Plans Format
@@ -294,10 +322,14 @@ Conventional format (`feat:`, `fix:`, `docs:`), no Claude attribution.
 ## Project-Specific Notes
 [2-3 non-obvious gotchas derived from project-type-specific rule files.
 Only include if project-type rules exist. Examples:]
-- [e.g., "All API handlers must use the `@validate_input` decorator"]
-- [e.g., "Database migrations require running `make migrate-check` before commit"]
-- [e.g., "Component tests use `renderWithProviders()` not bare `render()`"]
-[If no project-type rules exist, omit this section entirely.]
+- [e.g., "All API handlers use the `@validate_input` decorator. Reason: centralized request schema enforcement."]
+- [e.g., "Database migrations require running `make migrate-check` before commit. Reason: catches missing reverse migrations."]
+- [e.g., "Component tests use `renderWithProviders()` not bare `render()`. Reason: tests need theme + router context."]
+[If no project-type rules exist, omit this section entirely. Each gotcha includes the why so 4.7 generalizes correctly.]
+
+## Imports
+@README.md
+[Add other top-level docs the model should always have at hand. Skip if README is the only one.]
 
 ## Key Directories
 - `[dir1]/` - [brief purpose]
@@ -305,25 +337,39 @@ Only include if project-type rules exist. Examples:]
 [Max 5-7 directories from architecture.md codemap]
 ```
 
-**Required Template Sections (7):**
-1. **Overview** - 1-2 sentence description
-2. **Quick Start** - 4-5 bash commands (setup, test, lint, run)
-3. **Critical Rules** - 4 standard rules
-4. **Workflow** - 3-line summary pointing to `.claude/rules/workflow.md`
-5. **Plans Format** - `<plans_instruction>` XML block
-6. **Commit Messages** - 1-line convention
-7. **Key Directories** - Max 5-7 most important directories
+**Required Template Sections (10):**
+1. **Role** - One sentence anchoring tone and scope (4.7 responds well to a clear role)
+2. **Overview** - 1-2 sentence description
+3. **Quick Start** - 4-5 bash commands (setup, test, lint, run)
+4. **Critical Rules** - 4 standard rules
+5. **Workflow** - 1-line pointer to `.claude/rules/workflow.md` (workflow content lives there, not duplicated here)
+6. **Tool and subagent policy** - Authorize subagent fan-out + parallel calls explicitly (4.7 defaults are conservative)
+7. **CDF tools available** - Routing table telling Claude which `/cdf:*` commands and agents to prefer for which tasks. Without this section, Claude does not reliably reach for CDF tools and falls back to generic approaches. Ship the section verbatim from the template.
+8. **Plans Format** - `<plans_instruction>` XML block
+9. **Commit Messages** - 1-line convention
+10. **Key Directories** - Max 5-7 most important directories
 
-**Optional Section:**
-- **Project-Specific Notes** - Only if project-type rules exist. Include 2-3 concrete, verifiable gotchas.
+**Optional Sections:**
+- **Project-Specific Notes** - Only if project-type rules exist. Include 2-3 concrete, verifiable gotchas, each with the why.
+- **Imports** - `@README.md` and other always-relevant top-level docs.
 
-**Guidelines:**
-- Target 50-70 lines. Never exceed 80 (excluding `<plans_instruction>` block)
+**Guidelines (Opus 4.7-aligned):**
+- Target 80-120 lines. Never exceed 180 (excluding `<plans_instruction>` block).
 - Every line must pass: "Would removing this cause Claude to make mistakes?"
-- Progressive disclosure: point to `.claude/rules/` for details
-- **No code style** — let linters handle formatting
-- **No content from `.claude/rules/`** — it loads automatically
-- Make instructions **concrete and verifiable**: "Run `npm test`" not "test your changes"
+- Progressive disclosure: point to `.claude/rules/` for details. Workflow content lives in `workflow.md`, not duplicated in CLAUDE.md.
+- **No code style** — let linters handle formatting.
+- **No content duplicated from `.claude/rules/`** — those files load automatically (path-scoped ones load when matching files are touched).
+- Make instructions **concrete and verifiable**: "Run `npm test` and paste the output" beats "test your changes." 4.7 self-filters vague checks.
+- **Frame rules as positive imperatives**, not prohibitions. "Use X" beats "Never Y." 4.7 wastes tokens on "don't" rules and may pattern-match into them.
+- **State scope explicitly** on every rule. "Apply to every component, including third-party wrappers" beats "apply to components." 4.7 will not silently generalize.
+- **Tone down forceful language**. Avoid CAPS, MUST, CRITICAL, "ANY", "ALWAYS". Use neutral imperatives. Forceful negatives cause overcompliance and hostile reading on 4.7.
+- **Provide the why** behind non-obvious constraints. "Use Helvetica because react-pdf has no Unicode font" beats a bare "use Helvetica."
+
+**Pre-generation step (Step 0):**
+Read `rules-templates/claudemd-4-7-rulebook.md` (vendored into CDF). It is the authoritative rulebook for 4.7 CLAUDE.md generation. The Guidelines above become a fallback baseline only if the rulebook file is missing (which should never happen on a clean CDF install). The point is to generate a correct file by construction rather than auditing a possibly-wrong one after the fact. To update the rulebook, replace `rules-templates/claudemd-4-7-rulebook.md` with the latest version from your prompt47 skill (`~/.claude/skills/prompt47/references/claudemd-4-7.md`) and commit. The vendored copy makes the dependency travel with CDF rather than depending on a separately-installed user-global skill.
+
+**Final pass before writing:**
+Walk the audit checklist from the rulebook (17 questions if using prompt47 reference). Fix every "no" before writing the file. Report which rulebook was used in the completion message.
 
 **Output Location**: Always writes to `CLAUDE.generated.md` (not `CLAUDE.md`) to preserve manual edits.
 
@@ -389,15 +435,18 @@ Check if rules exist and whether they may need refresh.
 ```markdown
 # TaskFlow API
 
+## Role
+You are a senior Python engineer working on TaskFlow API, a FastAPI-based task management service with PostgreSQL and Redis. You ship to production and care about correctness, observability, and code quality.
+
 ## Overview
 FastAPI-based task management API with PostgreSQL storage and Redis caching.
 
 ## Quick Start
 ```bash
-uv sync                    # Install dependencies
-uv run pytest              # Run tests
-uv run ruff check .        # Lint
-uv run uvicorn app.main:app --reload  # Start dev server
+uv sync                                 # Install dependencies
+uv run pytest                           # Run tests
+uv run ruff check .                     # Lint
+uv run uvicorn app.main:app --reload    # Start dev server
 ```
 
 ## Critical Rules
@@ -407,51 +456,35 @@ uv run uvicorn app.main:app --reload  # Start dev server
 4. **Tests required** - no feature complete without tests
 
 ## Workflow
+See `@.claude/rules/workflow.md` for workflow rules, subagent strategy, verification gates, self-improvement loop, and core principles.
 
-### Explore → Plan → Code → Verify
-- Use plan mode for non-trivial tasks (3+ steps or multi-file changes)
-- For small fixes (typo, rename, single-file change), skip planning and execute directly
-- If something goes sideways, STOP and re-plan — do not push through a broken approach
+## Tool and subagent policy
 
-### Subagent Strategy
-- Use subagents for exploration and research to keep main context clean
-- One atomic goal per subagent — return summaries, not raw file dumps
-- For complex problems, spawn parallel subagents covering different angles
-- Main context is for implementation only
+Spawn multiple subagents in the same turn when fanning out across items, reading multiple files, or running independent investigations. Skip fan-out for single-file edits or trivial reads. For multi-agent debate or implementation work, use TeamCreate + named teammates rather than ad-hoc subagents.
 
-### Verification Before Done
-- Never mark a task complete without proving it works
-- Run tests, check logs, demonstrate correctness
-- For visual/UI changes: verify in the browser before confirming to the user
-- Diff behavior between main and your changes when relevant
-- Ask yourself: "Would a staff engineer approve this?"
+<use_parallel_tool_calls>
+For maximum efficiency, whenever you perform multiple independent operations,
+invoke all relevant tools simultaneously rather than sequentially.
+</use_parallel_tool_calls>
 
-### Self-Improvement Loop
-- After ANY correction from the user: capture the pattern in `.claude/rules/`
-- Write rules for yourself that prevent the same mistake
-- Ruthlessly iterate on these rules until mistake rate drops
-- Review rules at session start for relevant project
+## CDF tools available
 
-### Demand Elegance (Balanced)
-- For non-trivial changes: pause and ask "is there a more elegant way?"
-- If a fix feels hacky: "Knowing everything I know now, implement the elegant solution"
-- Skip this for simple, obvious fixes — don't over-engineer
-- Challenge your own work before presenting it
+This project uses CDF (Claude Dev Framework). Reach for these instead of generic approaches:
 
-### Autonomous Bug Fixing
-- Given a bug report: identify root cause, fix it, add regression test, verify
-- Point at logs, errors, failing tests — then resolve them
-- Zero context switching required from the user
+- **Debugging bugs**: `/cdf:troubleshoot` — root-cause methodology, adds regression test
+- **Pre-PR quality check**: `/cdf:verify --mode pre-pr` — types + lint + tests + security in one pass
+- **Tests**: `/cdf:test` (coverage-aware), `/cdf:tdd` for RED-GREEN-REFACTOR
+- **Multi-file investigation**: `/cdf:task` with codebase-navigator agent (returns summary, not raw dumps)
+- **Library research / evaluation**: `/cdf:task` with library-researcher agent (evidence-backed, GitHub permalinks)
+- **Refactoring**: `/cdf:improve` — systematic with safety checks
+- **Code / security / perf analysis**: `/cdf:analyze` — multi-domain audit
+- **Commit / ship**: `/cdf:git`, `/cdf:ship` — conventional commits, no AI attribution
 
-### Context Management
-- Run /clear between unrelated tasks
-- Use /compact when context grows large
-- After 2 failed corrections on the same issue, clear context and restart with a better prompt
+Real-expertise agents (invoke via the Task tool): codebase-navigator, library-researcher, deep-research-agent, quality-engineer, refactoring-expert, e2e-specialist, tdd-guide, requirements-analyst, socratic-mentor, business-research-strategist, business-panel-experts, media-interpreter.
 
-### Core Principles
-- **Simplicity First**: Make every change as simple as possible. Impact minimal code.
-- **No Laziness**: Find root causes. No temporary fixes. Senior developer standards.
-- **Minimal Impact**: Only touch what's necessary. No side effects with new bugs.
+Skills auto-trigger from context (coding-standards, backend-patterns, frontend-patterns, tdd-workflow, e2e-patterns, frontend-design, failure-recovery, visual-explainer). Do not invoke manually.
+
+For role-based work (backend, frontend, devops, security, perf, system design, docs) where no specific CDF tool fits, invoke `/cdf:task` directly — Opus 4.7 plays the role from the `## Role` line above plus `xhigh` effort.
 
 <plans_instruction>
 ## Plans Format
@@ -467,19 +500,15 @@ Requirements:
 - Sacrifice grammar for concision
 </plans_instruction>
 
-## Memory
-- Check auto-memory for prior context at session start
-- Save key decisions, debugging insights, and project patterns to auto-memory during work
-
 ## Commit Messages
-See `/cdf:git` for commit message rules (conventional format, no Claude attribution).
+Conventional format (`feat:`, `fix:`, `docs:`), no Claude attribution.
 
-## CDF Agents
-[Agent table - see template above]
+## Project-Specific Notes
+- All API handlers use the `@validate_input` decorator. Reason: centralized request schema enforcement.
+- Database migrations require running `make migrate-check` before commit. Reason: catches missing reverse migrations.
 
-## Project Rules
-Auto-generated rules in `.claude/rules/` - Claude loads automatically.
-Run `/cdf:rules generate` to refresh after major changes.
+## Imports
+@README.md
 
 ## Key Directories
 - `app/` - FastAPI application code

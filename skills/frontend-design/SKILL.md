@@ -205,12 +205,11 @@ Design all states, not just default:
 
 Every design decision is an opportunity to create something memorable instead of forgettable.
 
-## Related Agents
-- **frontend-architect** — Primary consumer for visual design and styling decisions
-
 ## Suggested Commands
 - `/cdf:implement` — Build interfaces with design skill guidance
 - `/cdf:design` — Design UI components and pages
+
+Opus 4.7 plays the frontend-engineer role from the Role line in CLAUDE.md when given visual design context — no dedicated frontend-architect agent needed.
 
 ## Reference Files
 

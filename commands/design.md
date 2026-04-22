@@ -112,12 +112,14 @@ Key behaviors:
 
 ## Agent Routing
 
-| Design Scope | Primary Agent | When to Use |
-|-------------|---------------|-------------|
-| System architecture | system-architect | Component boundaries, data flow, scaling strategy |
-| Backend services | backend-architect | API contracts, database schema, service layers |
-| Frontend UI | frontend-architect | Component hierarchy, state management, UX patterns |
+| Design Scope | Approach | When to Use |
+|-------------|----------|-------------|
+| System architecture | `/cdf:task` with system-architect framing in the prompt | Component boundaries, data flow, scaling strategy |
+| Backend services | `/cdf:task` with backend-engineer framing | API contracts, database schema, service layers |
+| Frontend UI | `/cdf:task` with frontend-engineer framing (frontend-patterns skill auto-invokes) | Component hierarchy, state management, UX patterns |
+
+The persona-stub agents (system-architect, backend-architect, frontend-architect) were removed in the leanness pass — Opus 4.7 plays these roles from the Role line in CLAUDE.md plus `xhigh` effort.
 
 ## Next Commands
 - `/cdf:implement` — Build the designed system
-- `/cdf:workflow` — Generate implementation workflow from design
+- `/cdf:task` — Execute the implementation with structured delegation

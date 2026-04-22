@@ -118,5 +118,6 @@ Wait for the user's response before implementing anything.
 
 - `/cdf:docs plan` — underlying documentation generator
 - `/cdf:task --breakdown` — alternative for breaking complex tasks into subtasks
-- `/cdf:flow` — full workflow orchestration (brainstorm → docs → implement → verify)
 - `/cdf:implement` — execute implementation after approval
+
+For full multi-step workflows (brainstorm → docs → implement → verify), write a clear prompt and let Opus 4.7 plan natively with `xhigh` effort. The `/cdf:flow` orchestrator was removed in the leanness pass.

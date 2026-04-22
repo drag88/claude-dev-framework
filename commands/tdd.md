@@ -2,16 +2,17 @@
 description: "Test-Driven Development workflow with RED-GREEN-REFACTOR cycle enforcement"
 ---
 
-## MANDATORY FIRST ACTIONS (DO NOT SKIP)
+# /cdf:tdd — Test-Driven Development
 
-**THE INVIOLABLE TDD RULE**: NEVER write implementation code before a failing test exists.
+## The TDD invariant
+Write the failing test before any implementation code. Verify the test fails for the expected reason. Then write the minimum code to pass it.
 
-### Step 1: Create TDD State File
-```bash
-mkdir -p dev/active/[feature-slug]
-```
+This invariant is enforced because TDD's value comes from the RED phase — if you skip it, you have tests-after-code, not TDD.
 
-Write `dev/active/[feature-slug]/tdd-state.md`:
+## First actions (per feature)
+
+1. **Create the TDD state file** at `dev/active/[feature-slug]/tdd-state.md`:
+
 ```yaml
 ---
 feature: "[feature description]"
@@ -33,22 +34,18 @@ coverage_target: 80
 - [ ] REFACTOR: Verify still green
 ```
 
-### Step 2: Write Test File FIRST
-Before ANY implementation code exists, create the test file with a failing test.
+2. **Write the test file first.** Create a failing test before any implementation exists.
 
-### Step 3: Verify RED State
-Run the test and CONFIRM it fails before proceeding to GREEN.
+3. **Verify RED.** Run the test and confirm it fails for the expected reason. Paste the failure output. Do not proceed to GREEN until the failure is documented.
 
-**CRITICAL ANTI-PATTERNS - DO NOT:**
-- Write ANY implementation before test exists
-- Write a test that passes immediately
-- Skip failure verification (must see RED output)
-- Proceed to GREEN without documented RED phase
-- Refactor without re-running ALL tests
+## Anti-patterns
+- Writing implementation before the test exists (no RED state to verify)
+- Writing a test that passes immediately (no failing baseline)
+- Skipping failure verification (the RED output is the contract)
+- Proceeding to GREEN without a documented RED phase
+- Refactoring without re-running the full test suite
 
 ---
-
-# /cdf:tdd - Test-Driven Development
 
 ## Triggers
 - TDD workflow requests for new features or bug fixes

@@ -2,31 +2,22 @@
 description: "Pre-PR comprehensive quality check coordinating build, types, lint, tests, and security"
 ---
 
-## CRITICAL: READ-ONLY BY DEFAULT
+# /cdf:verify — Comprehensive Quality Verification
 
-**This command does NOT modify files unless `--fix` flag is explicitly provided.**
+## Read-only by default
+This command does not modify files unless `--fix` is explicitly provided. Without `--fix`, report issues and suggest fixes. With `--fix`, apply automatic fixes where safe.
 
-- Without `--fix`: Report issues only, suggest fixes
-- With `--fix`: Apply automatic fixes where safe
+## Execution order
 
-DO NOT modify any files during verification unless user explicitly requests fixes.
+Run checks in this sequence:
 
-## MANDATORY EXECUTION ORDER
+1. **Types** — TypeScript / type checking first
+2. **Lint** — Code style and quality
+3. **Tests** — Unit and integration tests
+4. **Security** — Vulnerability scanning (for `--mode pre-pr`)
+5. **Build** — Final compilation check
 
-Run checks in this exact sequence - DO NOT skip or reorder:
-
-1. **Types** - TypeScript/type checking first
-2. **Lint** - Code style and quality
-3. **Tests** - Unit and integration tests
-4. **Security** - Vulnerability scanning (for --mode pre-pr)
-5. **Build** - Final compilation check
-
-Each step must complete before the next begins. If a step fails:
-- Report the failure with actionable fix suggestions
-- Ask user whether to continue or abort
-- DO NOT silently skip failed checks
-
-# /cdf:verify - Comprehensive Quality Verification
+Each step completes before the next begins. If a step fails, report the failure with actionable fix suggestions and ask the user whether to continue or abort. Skipped checks are reported, never silent.
 
 ## Triggers
 - Pre-PR quality validation needs

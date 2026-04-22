@@ -106,37 +106,32 @@ Create strategic plans with structured task breakdown for complex features.
 /cdf:docs plan [task-description] [--strategy systematic|agile] [--detail brief|full]
 ```
 
-### Plan Subcommand - MANDATORY STEPS
+### Plan Subcommand — first actions
 
-**BEFORE analyzing codebase or creating plan content**, you MUST:
+Before analyzing codebase or creating plan content:
 
-#### Step 1: Create Plan Directory
-```bash
-mkdir -p dev/active/[task-name]
-```
+1. **Create the plan directory**:
+   ```bash
+   mkdir -p dev/active/[task-name]
+   ```
 
-#### Step 2: Check Flow Context
-If called from `/cdf:flow`, read `dev/active/[task-slug]/flow-state.md` for context.
+2. **Use the checkbox format** so progress is trackable:
 
-#### Step 3: Use Checkbox Format
-ALL plans MUST use checkbox format for trackable tasks:
+   ```markdown
+   ## Phase 1: [Name] [0/N]
+   - [ ] Task 1
+   - [ ] Task 2
 
-```markdown
-## Phase 1: [Name] [0/N]
-- [ ] Task 1
-- [ ] Task 2
+   ## Phase 2: [Name] [0/N]
+   - [ ] Task 3
 
-## Phase 2: [Name] [0/N]
-- [ ] Task 3
+   **Progress**: 0/N tasks (0%)
+   ```
 
-**Progress**: 0/N tasks (0%)
-```
-
-CRITICAL ANTI-PATTERNS - DO NOT:
-- Create plans without checkbox format
-- Skip directory creation
-- Write to `.claude/plans/` when called from `/cdf:flow`
-- Create untrackable prose-only plans
+Anti-patterns:
+- Plans without checkbox format (untrackable progress)
+- Skipping the directory creation (orphan plans with no home)
+- Prose-only plans for multi-step work (no granular tracking)
 
 **Behavioral Flow:**
 1. **Analyze**: Understand request scope and examine relevant codebase
@@ -168,8 +163,8 @@ dev/active/[task-name]/
 - Specify dependencies between tasks
 - Estimate effort levels (S/M/L/XL)
 
-**Checkbox Format for /cdf:flow Integration:**
-When creating plans for `/cdf:flow`, use checkbox format for tracking:
+**Checkbox Format for trackable plans:**
+Use checkbox format so progress can be marked as work proceeds:
 
 ```markdown
 ## Phase 1: Setup [0/2]
@@ -193,7 +188,7 @@ When creating plans for `/cdf:flow`, use checkbox format for tracking:
 
 The checkbox format enables:
 - Visual progress tracking during implementation
-- Automatic updates by `/cdf:flow` ([ ] -> [x])
+- Manual or scripted updates as work progresses ([ ] -> [x])
 - Easy resume after interruption
 - Progress percentage calculation
 
@@ -382,12 +377,12 @@ Update development documentation before context compaction or session end.
 
 ## Agent Routing
 
-| Documentation Mode | Primary Agent | When to Use |
-|-------------------|---------------|-------------|
-| API documentation | technical-writer | Endpoint docs, SDK guides, integration specs |
-| Architecture docs | system-architect | ADRs, system diagrams, design rationale |
-| Quality reports | quality-engineer | Coverage reports, test documentation |
+| Documentation Mode | Approach | When to Use |
+|-------------------|----------|-------------|
+| API documentation | `/cdf:task` with the Role line in CLAUDE.md as a senior writer | Endpoint docs, SDK guides, integration specs |
+| Architecture docs | `/cdf:task` with system-architect framing in the prompt | ADRs, system diagrams, design rationale |
+| Quality reports | quality-engineer (real agent, kept) | Coverage reports, test documentation |
 
 ## Next Commands
 - `/cdf:implement` — Implement features described in documentation
-- `/cdf:flow` — Start a full development workflow
+- `/cdf:task` — Execute complex tasks with structured delegation

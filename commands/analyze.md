@@ -113,12 +113,12 @@ Key behaviors:
 
 ## Agent Routing
 
-| Focus Area | Primary Agent | When to Use |
-|-----------|---------------|-------------|
-| Code quality | quality-engineer | Code smells, complexity, test coverage gaps |
-| Security | security-engineer | Auth flows, injection risks, data exposure |
-| Performance | performance-engineer | Bottlenecks, memory leaks, slow queries |
-| Architecture | system-architect | Dependency analysis, coupling, component boundaries |
+| Focus Area | Approach | When to Use |
+|-----------|----------|-------------|
+| Code quality | quality-engineer (real agent, kept) | Code smells, complexity, test coverage gaps |
+| Security | `/cdf:task` with security-engineer framing in the prompt | Auth flows, injection risks, data exposure |
+| Performance | `/cdf:task` with performance-engineer framing | Bottlenecks, memory leaks, slow queries |
+| Architecture | `/cdf:task` with system-architect framing | Dependency analysis, coupling, component boundaries |
 
 ## Next Commands
 - `/cdf:improve` — Apply fixes for issues found during analysis

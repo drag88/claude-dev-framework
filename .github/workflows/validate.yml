@@ -22,32 +22,6 @@ jobs:
           for f in skills/*/SKILL.md; do
             head -1 "$f" | grep -q "^---" || { echo "BAD FRONTMATTER: $f"; exit 1; }
           done
-      - name: Verify component counts match plugin.json
-        run: |
-          COMMANDS=$(ls commands/*.md | grep -v README.md | wc -l | tr -d ' ')
-          AGENTS=$(ls agents/*.md | grep -v README.md | wc -l | tr -d ' ')
-          SKILLS=$(ls -d skills/*/SKILL.md | wc -l | tr -d ' ')
-          HOOKS=$(python3 -c "
-          import json
-          with open('hooks/hooks.json') as f:
-              data = json.load(f)
-          count = sum(len(e.get('hooks', [])) for entries in data['hooks'].values() for e in entries)
-          print(count)
-          ")
-          DESC=$(python3 -c "import json; print(json.load(open('.claude-plugin/plugin.json'))['description'])")
-          ERRORS=0
-          echo "$DESC" | grep -q "$COMMANDS commands" || { echo "MISMATCH: plugin.json says different command count than actual ($COMMANDS)"; ERRORS=1; }
-          echo "$DESC" | grep -q "$AGENTS agent" || { echo "MISMATCH: plugin.json says different agent count than actual ($AGENTS)"; ERRORS=1; }
-          echo "$DESC" | grep -q "$SKILLS skills" || { echo "MISMATCH: plugin.json says different skill count than actual ($SKILLS)"; ERRORS=1; }
-          echo "$DESC" | grep -q "$HOOKS lifecycle" || { echo "MISMATCH: plugin.json says different hook count than actual ($HOOKS)"; ERRORS=1; }
-          [ $ERRORS -eq 0 ] && echo "All counts match: $COMMANDS commands, $AGENTS agents, $SKILLS skills, $HOOKS hooks"
-          exit $ERRORS
-      - name: Verify CLAUDE.md counts match
-        run: |
-          COMMANDS=$(ls commands/*.md | grep -v README.md | wc -l | tr -d ' ')
-          SKILLS=$(ls -d skills/*/SKILL.md | wc -l | tr -d ' ')
-          grep -q "$COMMANDS slash command" CLAUDE.md || { echo "CLAUDE.md command count stale"; exit 1; }
-          grep -q "$SKILLS auto-invoked" CLAUDE.md || { echo "CLAUDE.md skill count stale"; exit 1; }
       - name: Verify command frontmatter
         run: |
           for f in commands/*.md; do

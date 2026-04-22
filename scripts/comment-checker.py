@@ -173,6 +173,9 @@ def count_comment_lines(content: str, patterns: Dict) -> Tuple[int, int]:
 def check_file(file_path: str) -> Optional[Dict]:
     """
     Check a file's comment ratio and return warning if too high.
+    Skips files larger than 500 lines — large files have legitimately wide
+    comment-density distributions (long docstrings on public APIs, generated
+    code with banner comments) and the regex-per-line pass burns hook latency.
     """
     path = Path(file_path)
 
@@ -186,6 +189,11 @@ def check_file(file_path: str) -> Optional[Dict]:
     try:
         content = path.read_text(encoding="utf-8")
     except (IOError, UnicodeDecodeError):
+        return None
+
+    # Fast-skip: large files. The hook fires on every Edit/Write/MultiEdit,
+    # so wasted work on big files compounds across a session.
+    if content.count("\n") > 500:
         return None
 
     patterns = COMMENT_PATTERNS[suffix]

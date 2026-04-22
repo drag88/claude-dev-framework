@@ -93,14 +93,12 @@ Provide guidance on frontend architecture patterns, React best practices, and UI
 - **Derived state** -- Compute from existing state rather than syncing with `useEffect`
 - **Progressive enhancement** -- Start with semantic HTML, layer interactivity
 
-## Related Agents
-- **frontend-architect** -- Primary consumer for React component and state patterns
-- **performance-engineer** -- Uses patterns for frontend performance optimization
-
 ## Suggested Commands
 - `/cdf:implement` -- Build frontend features using these patterns
 - `/cdf:design` -- Design component architecture with pattern guidance
 - `/cdf:analyze --focus performance` -- Check frontend performance against standards
+
+Opus 4.7 plays the frontend-engineer and performance-engineer roles from the Role line in CLAUDE.md when given pattern context — no dedicated stub agents needed.
 
 ## Reference Files
 

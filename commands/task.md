@@ -3,226 +3,125 @@ description: "Execute complex tasks with intelligent workflow management, breakd
 argument-hint: "[action] [target] [--strategy systematic|agile|enterprise] [--parallel] [--delegate] [--breakdown]"
 ---
 
-## MANDATORY FIRST ACTIONS (DO NOT SKIP)
+# /cdf:task — Task Execution
 
-**BEFORE executing any task with delegation**, you MUST:
-
-### Step 1: Create Task State (for --delegate or --parallel)
-```bash
-mkdir -p dev/active/[task-slug]
-```
-Write `dev/active/[task-slug]/task-state.md` with task definition.
-
-### Step 2: Use Complete Delegation Format
-When using Task tool, ALWAYS include:
-1. Context - What the agent needs to know
-2. Objective - Specific measurable goal
-3. Requirements - Constraints and acceptance criteria
-4. Approach - Suggested methodology
-5. Deliverables - What to produce
-6. Tools Allowed - Explicit whitelist
-7. Boundaries - What NOT to do
-
-CRITICAL ANTI-PATTERNS - DO NOT:
-- Execute without state tracking (for delegated tasks)
-- Use abbreviated Task tool calls
-- Delegate without tool whitelist
-- Skip the Boundaries section
-
----
-
-# /cdf:task - Enhanced Task Management
-
-> Execute defined tasks with intelligent coordination and multi-agent delegation.
+> Execute defined tasks with structured delegation when fan-out is warranted. For multi-step work, write a clear prompt and let Opus 4.7 plan — orchestration scaffolding has been removed in favor of native planning.
 
 ## Quick Start
 
 ```bash
-# Execute a complex feature task
-/cdf:task create "enterprise authentication system" --strategy systematic
-
-# Parallel execution with delegation
-/cdf:task execute "feature backlog" --strategy agile --delegate --parallel
-
-# Enterprise-scale task execution
-/cdf:task execute "microservices platform" --strategy enterprise
+/cdf:task create "enterprise authentication system"
+/cdf:task execute "feature backlog" --delegate --parallel
+/cdf:task --breakdown "implement user authentication system"
 ```
 
 ## When to Use
 
-Use `/cdf:task` when:
-- You have a clearly defined task ready for execution
-- Task requires multi-agent coordination
-- Need intelligent MCP routing and persona activation
-- Executing pre-planned work items
+- Task requires fan-out across multiple subagents working in parallel
+- You want a documented delegation contract (tools whitelist + scope boundaries) for each subagent
+- Long-running work where state persistence matters
 
-**Don't use this command for**: Exploring unclear ideas (use `/cdf:brainstorm`), creating workflows from specs (use `/cdf:workflow`).
+For single-subagent work or simple sequential steps, just write the prompt — `xhigh` effort plans well without this command.
 
-| Scenario | Command |
-|----------|---------|
-| Have an idea, need requirements | `/cdf:brainstorm` |
-| Have a PRD/spec, need workflow | `/cdf:workflow` |
-| Have complex task, need breakdown | `/cdf:task --breakdown` |
-| Have defined task, ready to execute | `/cdf:task` |
+## Delegation contract (when fanning out)
 
-## Triggers
-- Complex tasks requiring multi-agent coordination and delegation
-- Projects needing structured workflow management and cross-session persistence
-- Operations requiring intelligent MCP server routing and domain expertise
-- Tasks benefiting from systematic execution and progressive enhancement
-
-## Usage
-```
-/cdf:task [action] [target] [--strategy systematic|agile|enterprise] [--parallel] [--delegate] [--breakdown]
-```
-
-### Breakdown Mode (`--breakdown`)
-
-When `--breakdown` is specified, the command operates in task decomposition mode (formerly `/cdf:spawn`):
-
-1. **Analyze**: Parse complex operation requirements and assess scope across domains
-2. **Decompose**: Break down into coordinated subtask hierarchies (Epic -> Story -> Task -> Subtask)
-3. **Orchestrate**: Execute tasks using optimal coordination strategy (parallel/sequential/adaptive)
-4. **Monitor**: Track progress across task hierarchies with dependency management
-5. **Integrate**: Aggregate results and provide comprehensive orchestration summary
-
-```bash
-# Break down a complex feature
-/cdf:task --breakdown "implement user authentication system"
-
-# Deep decomposition with adaptive strategy
-/cdf:task --breakdown "migrate monolith to microservices" --strategy enterprise --parallel
-```
-
-## Behavioral Flow
-1. **Analyze**: Parse task requirements and determine optimal execution strategy
-2. **Delegate**: Route to appropriate MCP servers and activate relevant personas
-3. **Coordinate**: Execute tasks with intelligent workflow management and parallel processing
-4. **Validate**: Apply quality gates and comprehensive task completion verification
-5. **Optimize**: Analyze performance and provide enhancement recommendations
-
-Key behaviors:
-- Multi-persona coordination across architect, frontend, backend, security, devops domains
-- Intelligent MCP server routing (Sequential, Context7, Magic, Playwright)
-- Systematic execution with progressive task enhancement and cross-session persistence
-- Advanced task delegation with hierarchical breakdown and dependency management
-
-## MCP Integration
-- **Sequential MCP**: Complex multi-step task analysis and systematic execution planning
-- **Context7 MCP**: Framework-specific patterns and implementation best practices
-- **Magic MCP**: UI/UX task coordination and design system integration
-- **Playwright MCP**: Testing workflow integration and validation automation
-
-## Tool Coordination
-- **TodoWrite**: Hierarchical task breakdown and progress tracking across Epic → Story → Task levels
-- **Task**: Advanced delegation for complex multi-agent coordination and sub-task management
-- **Read/Write/Edit**: Task documentation and implementation coordination
-- **sequentialthinking**: Structured reasoning for complex task dependency analysis
-
-## Key Patterns
-- **Task Hierarchy**: Epic-level objectives → Story coordination → Task execution → Subtask granularity
-- **Strategy Selection**: Systematic (comprehensive) → Agile (iterative) → Enterprise (governance)
-- **Multi-Agent Coordination**: Persona activation → MCP routing → parallel execution → result integration
-- **Cross-Session Management**: Task persistence → context continuity → progressive enhancement
-
-## Examples
-
-### Complex Feature Development
-```
-/cdf:task create "enterprise authentication system" --strategy systematic --parallel
-# Comprehensive task breakdown with multi-domain coordination
-# Activates architect, security, backend, frontend personas
-```
-
-### Agile Sprint Coordination
-```
-/cdf:task execute "feature backlog" --strategy agile --delegate
-# Iterative task execution with intelligent delegation
-# Cross-session persistence for sprint continuity
-```
-
-### Multi-Domain Integration
-```
-/cdf:task execute "microservices platform" --strategy enterprise --parallel
-# Enterprise-scale coordination with compliance validation
-# Parallel execution across multiple technical domains
-```
-
-## Delegation Format
-
-When delegating to subagents via the Task tool, use this 7-section structure for clarity and completeness:
+When invoking the Task tool, include these seven sections so the subagent has everything it needs in one turn:
 
 ```markdown
-### 1. TASK
-[Atomic, specific goal - one action only]
+### 1. Task
+Atomic, specific goal — one action only.
 
-### 2. EXPECTED OUTCOME
-[Concrete deliverables with measurable success criteria]
+### 2. Expected outcome
+Concrete deliverables with measurable success criteria.
 
-### 3. REQUIRED SKILLS
-[Which CDF skill/agent to invoke, e.g., "codebase-navigator", "library-researcher"]
+### 3. Required skills
+Which CDF skill or agent to invoke (e.g. "codebase-navigator", "library-researcher").
 
-### 4. REQUIRED TOOLS
-[Explicit tool whitelist, e.g., "Read, Grep, Glob" - no tools outside this list]
+### 4. Required tools
+Explicit tool whitelist (e.g. "Read, Grep, Glob"). No tools outside this list.
 
-### 5. MUST DO
-- [Exhaustive list of requirements]
-- [Each requirement on its own line]
-- [Be specific and actionable]
+### 5. Required actions
+- Each requirement on its own line
+- Be specific and actionable
+- Reference real file paths and patterns
 
-### 6. MUST NOT DO
-- [Forbidden actions]
-- [Scope boundaries]
-- [Quality constraints]
+### 6. Out of scope
+- Forbidden actions
+- Scope boundaries
+- Quality constraints
 
-### 7. CONTEXT
-- File paths: [Relevant paths]
-- Patterns: [Naming conventions, code patterns]
-- Constraints: [Time, scope, dependencies]
+### 7. Context
+- File paths: relevant paths
+- Patterns: naming conventions, code patterns
+- Constraints: time, scope, dependencies
 ```
 
-### Example Delegation
+### Example
 
 ```markdown
-### 1. TASK
-Implement input validation for the user registration form
+### 1. Task
+Implement input validation for the user registration form.
 
-### 2. EXPECTED OUTCOME
+### 2. Expected outcome
 - Validation functions for email, password, username fields
 - Error messages displayed inline
 - Form prevents submission until valid
 
-### 3. REQUIRED SKILLS
-frontend-architect
+### 3. Required skills
+frontend-patterns (skill, auto-invoked on React work)
 
-### 4. REQUIRED TOOLS
+### 4. Required tools
 Read, Edit, Write, Grep
 
-### 5. MUST DO
-- Use existing validation utility in src/utils/validators.ts
-- Follow project's error message conventions
+### 5. Required actions
+- Use the existing validation utility in src/utils/validators.ts
+- Follow the project's error message conventions
 - Add unit tests for each validator
 - Ensure accessibility (aria-invalid, aria-describedby)
 
-### 6. MUST NOT DO
-- Change the form layout or styling
-- Add new dependencies
-- Modify backend validation logic
+### 6. Out of scope
+- Form layout or styling changes
+- New dependencies
+- Backend validation logic
 
-### 7. CONTEXT
+### 7. Context
 - File paths: src/components/RegisterForm.tsx, src/utils/validators.ts
-- Patterns: Project uses Zod for schema validation
-- Constraints: Must work with existing form state management
+- Patterns: project uses Zod for schema validation
+- Constraints: must work with existing form state management
 ```
+
+## Breakdown mode (`--breakdown`)
+
+Decomposes a complex operation into a coordinated subtask hierarchy (Epic → Story → Task → Subtask). Useful when scope spans multiple domains and dependencies need explicit tracking.
+
+```bash
+/cdf:task --breakdown "implement user authentication system"
+/cdf:task --breakdown "migrate monolith to microservices" --strategy enterprise --parallel
+```
+
+For most multi-step features, skip `--breakdown` and let 4.7 plan from the prompt — the breakdown is only needed when you explicitly want a documented hierarchy you can review before execution.
+
+## Behavioral flow
+
+1. **Analyze**: parse task requirements, determine whether delegation is warranted.
+2. **Delegate**: if fan-out is warranted, spawn subagents with the seven-section contract above. Otherwise execute inline.
+3. **Coordinate**: track progress across delegated subagents, surface blockers.
+4. **Validate**: apply quality gates from `/cdf:verify` if relevant. Paste output, do not paraphrase.
+
+## Tool coordination
+
+- **TodoWrite / TaskCreate**: hierarchical task breakdown when scope warrants it
+- **Task / Agent**: subagent delegation
+- **Read / Write / Edit**: implementation in main context
 
 ## Boundaries
 
 **Will:**
-- Execute complex tasks with multi-agent coordination and intelligent delegation
-- Provide hierarchical task breakdown with cross-session persistence
-- Coordinate multiple MCP servers and personas for optimal task outcomes
+- Execute complex tasks with multi-agent fan-out when delegation is warranted
+- Provide hierarchical breakdown with documented contracts
+- Coordinate multiple subagents and surface results
 
-**Will Not:**
-- Execute simple tasks that don't require advanced orchestration
-- Compromise quality standards for speed or convenience
-- Operate without proper validation and quality gates
+**Will not:**
+- Add orchestration scaffolding for tasks 4.7 plans natively
+- Compromise correctness for speed
+- Skip the seven-section delegation contract when fanning out (the structure is what makes delegation reliable)

@@ -27,12 +27,12 @@ Use `/cdf:brainstorm` when:
 - You need multi-persona analysis before implementation
 - Starting a new project without clear specifications
 
-**Don't use this command for**: Executing defined tasks (use `/cdf:task`), generating workflows from existing PRDs (use `/cdf:workflow`), breaking down known tasks (use `/cdf:task --breakdown`).
+**Don't use this command for**: Executing defined tasks (use `/cdf:task`), breaking down known tasks (use `/cdf:task --breakdown`).
 
 | Scenario | Command |
 |----------|---------|
 | Have an idea, need requirements | `/cdf:brainstorm` |
-| Have a PRD/spec, need workflow | `/cdf:workflow` |
+| Have a PRD/spec, need workflow | Write a clear prompt and let 4.7 plan with `xhigh` effort |
 | Have complex task, need breakdown | `/cdf:task --breakdown` |
 | Have defined task, ready to execute | `/cdf:task` |
 

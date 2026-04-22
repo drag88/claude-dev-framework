@@ -1,6 +1,21 @@
+---
+description: Workflow rules, subagent strategy, verification gates, self-improvement loop
+---
+
 # Workflow Orchestration Template
 
-> Template for generating `.claude/rules/workflow.md` — how Claude approaches task planning, execution, and self-improvement.
+> Template for generating `.claude/rules/workflow.md` — how Claude approaches task planning, execution, and self-improvement. Optimized for Opus 4.7 (literal interpretation, lower default tool/subagent use, deep per-turn reasoning, self-filtering tendency).
+
+---
+
+## Tool and parallel call policy
+
+Spawn multiple subagents in the same turn when fanning out across items, reading multiple files, or running independent investigations. Skip fan-out for single-file edits or trivial reads. For multi-agent debate or implementation work, use TeamCreate + named teammates rather than ad-hoc subagents.
+
+<use_parallel_tool_calls>
+For maximum efficiency, whenever you perform multiple independent operations,
+invoke all relevant tools simultaneously rather than sequentially.
+</use_parallel_tool_calls>
 
 ---
 
@@ -76,7 +91,7 @@ What "plan mode" means:
 
 Skip plan mode for: single-file fixes, typo corrections, running tests.
 
-If something goes sideways, STOP and re-plan immediately — don't keep pushing.
+If something goes sideways, stop and re-plan immediately rather than pushing through a broken approach.
 
 ---
 
@@ -95,11 +110,11 @@ For anything requiring more than ~5 steps:
 
 ## Self-Improvement Loop
 
-When corrected — on approach, on a fact, on a code pattern — save it to your auto-memory immediately.
+When the user corrects an approach, a fact, or a code pattern, save the lesson to auto-memory immediately. Reserve `.claude/rules/` for human-curated, durable standards. Do not write new rules files there autonomously, since they create rule sprawl and conflict with existing rules.
 
 **What to save**: Key decisions, corrections, debugging insights, project patterns, and architectural notes.
 
-**Where to save**: Your auto-memory (`~/.claude/projects/<project>/memory/MEMORY.md` and topic files). Use the Write or Edit tool to update these files.
+**Where to save**: Auto-memory (`~/.claude/projects/<project>/memory/MEMORY.md` and topic files like `feedback_*.md`). Use the Write or Edit tool to update these files.
 
 **Session continuity** — at session start, CDF injects recent git history and your auto-memory as context. No manual file management needed.
 
@@ -107,18 +122,16 @@ When corrected — on approach, on a fact, on a code pattern — save it to your
 
 ## Verification Before Done
 
-Never mark a task complete without running a verification step.
+Run a concrete verification step before marking a task complete. Paste the output of the verification command into the conversation. Self-filtering note: Opus 4.7 will quietly skip vague checks ("make sure tests pass") but will execute concrete commands ("run `pytest tests/test_auth.py` and paste the output").
 
 Verification means:
-- Run the relevant test(s) if tests exist
-- If no tests: run the code and observe output
-- For visual/UI changes: verify in the browser before confirming to the user
-- If untestable: explicitly state what was checked and how
-- Diff behavior between main and your changes when relevant
+- Run the relevant test(s) and paste the output. Example: "Ran `pytest tests/test_auth.py`, 12/12 passed."
+- If no tests exist, run the code and paste the observed output.
+- For visual/UI changes, screenshot at the target viewports (typically 1440px desktop and 390px mobile) and compare against the spec.
+- If genuinely untestable, state explicitly what was checked, how, and what the observed result was.
+- Diff behavior between main and your changes when relevant.
 
-"It should work" is not verification. "I ran `pytest tests/test_auth.py` and all 12 tests passed" is verification.
-
-Ask yourself: "Would a staff engineer approve this?"
+"It should work" is not verification. Pasted command output is.
 
 ---
 
@@ -158,3 +171,4 @@ Zero context switching required from the user. Go fix failing CI tests without b
 - **No Laziness**: Find root causes. No temporary fixes. Senior developer standards.
 - **Minimal Impact**: Changes should only touch what's necessary. Avoid introducing bugs.
 - **Prove It**: Every claim about behavior should be backed by a test or observable output.
+- **Report everything, filter later**: For review or coverage tasks, surface all findings (low-severity, uncertain, edge cases) with confidence and severity. Do not self-filter before reporting — Opus 4.7's literalism causes it to drop real issues when asked to "be conservative" or "only flag important issues."

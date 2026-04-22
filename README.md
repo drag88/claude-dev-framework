@@ -61,8 +61,59 @@ When you start a session, CDF analyzes your codebase and generates `.claude/rule
 # Break down and delegate complex tasks
 /cdf:task --breakdown "design microservices architecture"
 
-# Full workflow: brainstorm -> docs -> implement -> verify
-/cdf:flow "add payment processing"
+# Multi-step work: write a clear prompt and let 4.7 plan natively
+# (the /cdf:flow and /cdf:workflow orchestrators were removed in the leanness pass —
+#  Opus 4.7 with xhigh effort plans these workflows from a clear prompt)
+```
+
+---
+
+## Cross-Machine Setup
+
+CDF is designed to travel cleanly across machines. Three tiers of state:
+
+| Tier | Location | Travels via |
+|------|----------|-------------|
+| **Repo** | `.claude/memory/`, `.claude/rules/`, project `CLAUDE.md` | Git (committed with the project) |
+| **User** | `~/.claude/skills/`, `~/.claude/agents/`, `~/.claude/CLAUDE.md`, auto-memory | Sync the CDF repo + symlinks (see Bootstrap) |
+| **Machine-local** | `.env`, MCP server credentials, `~/.cdf-logs/` | Never travels — set up per machine |
+
+### Bootstrap on a new machine
+
+```bash
+# 1. Install Claude Code CLI (machine-specific)
+# Follow https://docs.claude.com/en/docs/claude-code/installation
+
+# 2. Clone CDF
+git clone https://github.com/drag88/claude-dev-framework.git ~/code/claude-dev-framework
+cd ~/code/claude-dev-framework
+
+# 3. Pull latest skills + adopt any global ones
+./scripts/adopt-skills.sh
+
+# 4. Activate CDF as a plugin
+claude --plugin-dir .
+
+# 5. Configure MCP servers (machine-local)
+cp mcp-configs/mcp-servers.template.json .mcp/settings.json
+# edit .mcp/settings.json with your credentials
+
+# 6. Verify
+/cdf:rules generate     # in any project to confirm CDF is loaded
+```
+
+### Versioning and rollback
+
+CDF version is in `.claude-plugin/plugin.json`. To pin a specific version on a machine:
+
+```bash
+git checkout v1.12.0    # or whatever version
+```
+
+Third-party skills are tracked in `skills-lock.json` with computed hashes. Update with:
+
+```bash
+npx skills update --frozen-lockfile
 ```
 
 ---
@@ -71,19 +122,19 @@ When you start a session, CDF analyzes your codebase and generates `.claude/rule
 
 ### Commands
 
-Slash commands prefixed with `/cdf:` covering development, analysis, planning, and orchestration. Core commands include `implement`, `test`, `tdd`, `git`, `analyze`, `research`, `troubleshoot`, `design`, `task`, and `flow`.
+Slash commands prefixed with `/cdf:` covering development, analysis, planning, and quality verification. Core commands include `implement`, `test`, `tdd`, `git`, `analyze`, `research`, `troubleshoot`, `design`, `task`, `verify`, and `ship`.
 
 See [commands/README.md](commands/README.md) for the complete reference.
 
 ### Agents
 
-Specialized personas that activate automatically based on task context. Covers architecture, research, quality, testing, and communication domains.
+Real-expertise agents that you invoke when fan-out or specialized investigation is warranted. Covers research, quality, testing, requirements, and business strategy. Persona stubs (backend, frontend, devops, etc.) were removed in the leanness pass — Opus 4.7 plays those roles from the Role line in `CLAUDE.md` plus `xhigh` effort.
 
 See [agents/README.md](agents/README.md) for the complete reference.
 
 ### Skills
 
-Context-triggered behaviors that activate automatically -- rules generation, intent classification, coding standards enforcement, failure recovery, TDD workflow, visual explanations, and more.
+Context-triggered behaviors that activate automatically — rules generation, coding standards enforcement, failure recovery, TDD workflow, visual explanations, pattern guidance for backend/frontend/E2E, and more.
 
 See [skills/](skills/) for details.
 
