@@ -1,7 +1,7 @@
 {
   "name": "cdf",
   "description": "Opinionated Claude Code development framework: slash commands, specialized agents, auto-invoked skills, and lifecycle hooks for reproducible engineering workflows.",
-  "version": "1.12.0",
+  "version": "1.13.0",
   "author": {
     "name": "Aswin Sreenivas"
   },
