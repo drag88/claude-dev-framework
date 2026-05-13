@@ -116,9 +116,9 @@ Key behaviors:
 | Focus Area | Approach | When to Use |
 |-----------|----------|-------------|
 | Code quality | quality-engineer (real agent, kept) | Code smells, complexity, test coverage gaps |
-| Security | `/cdf:task` with security-engineer framing in the prompt | Auth flows, injection risks, data exposure |
-| Performance | `/cdf:task` with performance-engineer framing | Bottlenecks, memory leaks, slow queries |
-| Architecture | `/cdf:task` with system-architect framing | Dependency analysis, coupling, component boundaries |
+| Security | `/cdf:task` with security-focused role framing | Auth flows, injection risks, data exposure |
+| Performance | `/cdf:task` with performance-focused role framing | Bottlenecks, memory leaks, slow queries |
+| Architecture | `/cdf:task` with system-design role framing | Dependency analysis, coupling, component boundaries |
 
 ## Next Commands
 - `/cdf:improve` — Apply fixes for issues found during analysis

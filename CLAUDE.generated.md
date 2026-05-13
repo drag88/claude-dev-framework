@@ -43,13 +43,12 @@ Conventional format (`feat:`, `fix:`, `docs:`), no Claude attribution.
 ## Project-Specific Notes
 - Hook scripts use only Python stdlib — no external dependencies allowed
 - Sacred files (never modify without testing): `hooks/hooks.json`, `scripts/lib/utils.py`, `.claude-plugin/plugin.json`
-- When adding commands/agents/skills, update counts in `plugin.json`, `CLAUDE.md`, and `README.md`
+- When adding commands/agents/skills, update count-bearing docs and run `python3 scripts/health-check.py`
 
 ## Key Directories
 - `commands/` - 21 slash command definitions (markdown + YAML frontmatter)
-- `agents/` - 22 agent persona definitions
-- `skills/` - 27 auto-invoked skill directories (`SKILL.md`)
+- `agents/` - 12 real-expertise agent definitions
+- `skills/` - 24 auto-invoked skill directories (`SKILL.md`)
 - `scripts/` - Hook implementation scripts (Python + Bash)
 - `hooks/` - Lifecycle hook configuration (`hooks.json`)
-- `rules-templates/` - 14 rule generation templates
-- `contexts/` - 3 behavioral context modes (dev/review/research)
+- `rules-templates/` - 15 rule generation templates

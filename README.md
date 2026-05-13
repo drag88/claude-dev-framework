@@ -1,10 +1,19 @@
 # CDF (Claude Dev Framework)
 
-A development framework plugin for Claude Code that provides commands, agent personas, auto-invoked skills, and lifecycle hooks -- turning Claude into a structured, opinionated development assistant.
+A Claude Code development framework with a host-adaptable core. CDF provides commands, agent personas, auto-invoked skills, rules, and lifecycle hooks -- turning AI coding agents into structured, opinionated development assistants. The packaged adapter targets Claude Code today; the core methodology is host-neutral so CDF can also drive Codex.
 
 ---
 
 ## Installation
+
+### Host Support
+
+| Host | Status | Entry Points |
+|------|--------|--------------|
+| Claude Code | Packaged adapter | `.claude-plugin/`, `/cdf:*` commands, `.claude/rules/`, `hooks/hooks.json`, `CLAUDE.md` |
+| Codex | Host-neutral guidance | `AGENTS.md`, Codex skills, natural-language `/cdf:*` command prompts, repo-local docs |
+
+See [docs/HOSTS.md](docs/HOSTS.md) for the adapter model and Codex rollout path.
 
 ### From Source (Recommended for Development)
 
@@ -120,9 +129,13 @@ npx skills update --frozen-lockfile
 
 ## Architecture
 
+### Host-Neutral Core
+
+CDF's durable core is the methodology in `commands/`, `agents/`, `skills/`, `rules-templates/`, and `docs/`. Host adapters load that core into a specific agent runtime. Claude Code gets slash commands and hooks; Codex gets `AGENTS.md` routing, skills, and explicit command prompts. Do not put host-specific assumptions in core command or skill behavior unless the file is clearly adapter-specific.
+
 ### Commands
 
-Slash commands prefixed with `/cdf:` covering development, analysis, planning, and quality verification. Core commands include `implement`, `test`, `tdd`, `git`, `analyze`, `research`, `troubleshoot`, `design`, `task`, `verify`, and `ship`.
+Slash commands prefixed with `/cdf:` covering development, analysis, planning, review, and quality verification. Core commands include `implement`, `test`, `tdd`, `git`, `analyze`, `research`, `troubleshoot`, `design`, `plan-review`, `task`, `verify`, and `ship`.
 
 See [commands/README.md](commands/README.md) for the complete reference.
 
@@ -160,6 +173,7 @@ Located in `rules-templates/`. Auto-applied via `/cdf:rules generate`.
 | [agents/README.md](agents/README.md) | Agent personas and activation |
 | [skills/](skills/) | Skill definitions and triggers |
 | [rules-templates/](rules-templates/) | Rule templates by project type |
+| [docs/HOSTS.md](docs/HOSTS.md) | Host adapter model for Claude Code, Codex, and future runtimes |
 | [mcp-configs/](mcp-configs/) | MCP server configuration templates |
 | [docs/solutions/](docs/solutions/) | Institutional knowledge from solved problems |
 

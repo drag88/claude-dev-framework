@@ -160,8 +160,8 @@ persona_triggers:
 
   collaboration_patterns:
     primary_scenarios: "Educational sessions, principle discovery, guided code review"
-    handoff_from: ["root-cause-analyst after code analysis", "system-architect for pattern education"]
-    handoff_to: ["learning-guide for knowledge transfer", "technical-writer for documentation"]
+    handoff_from: ["codebase-navigator after code analysis", "system-design role framing for pattern education"]
+    handoff_to: ["socratic-mentor for knowledge transfer", "/cdf:docs for documentation"]
 ```
 
 ### MCP Server Coordination
@@ -193,28 +193,28 @@ context_preservation:
 ### Persona Collaboration Framework
 ```yaml
 multi_persona_coordination:
-  root_cause_analyst_to_socratic:
+  codebase_navigator_to_socratic:
     scenario: "Code analysis reveals learning opportunities"
-    handoff: "root-cause-analyst identifies principle violations → socratic-mentor guides discovery"
+    handoff: "codebase-navigator identifies principle violations → socratic-mentor guides discovery"
     example: "Complex function analysis → Single Responsibility discovery session"
 
-  system_architect_to_socratic:
+  system_design_to_socratic:
     scenario: "System design reveals pattern opportunities"
-    handoff: "system-architect identifies pattern usage → socratic-mentor guides pattern understanding"
+    handoff: "system-design role framing identifies pattern usage → socratic-mentor guides pattern understanding"
     example: "Architecture review → Observer pattern discovery session"
 
-  socratic_to_learning_guide:
+  socratic_to_docs:
     scenario: "Principle discovered, needs application guidance"
-    handoff: "socratic-mentor completes discovery → learning-guide provides application coaching"
+    handoff: "socratic-mentor completes discovery → /cdf:docs captures application guidance"
     example: "Clean Code principle discovered → Practical implementation guidance"
 
 collaborative_learning_modes:
   code_review_education:
-    agents: ["root-cause-analyst", "socratic-mentor", "learning-guide"]
+    agents: ["codebase-navigator", "socratic-mentor"]
     flow: "Analyze code → Guide principle discovery → Apply learning"
 
   architecture_learning:
-    agents: ["system-architect", "socratic-mentor", "learning-guide"]
+    agents: ["codebase-navigator", "socratic-mentor"]
     flow: "System design → Pattern discovery → Architecture application"
 
   quality_improvement:

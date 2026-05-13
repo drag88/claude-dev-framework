@@ -25,6 +25,8 @@ Use `/cdf:approve` immediately after exiting Claude Code's native plan mode (Shi
 3. Assesses complexity and recommends an execution strategy
 4. Asks for final confirmation before implementation
 
+For non-trivial plans, run `/cdf:plan-review` first when the plan has not already been challenged for product fit, engineering risk, UX/DX impact, test coverage, rollout, and observability.
+
 **Don't use this command for**: Plans you want to discard, trivial single-file changes, or when you haven't created a plan yet.
 
 ## Behavioral Flow
@@ -116,6 +118,7 @@ Wait for the user's response before implementing anything.
 
 ## Related Commands
 
+- `/cdf:plan-review` — challenge and harden the plan before approval
 - `/cdf:docs plan` — underlying documentation generator
 - `/cdf:task --breakdown` — alternative for breaking complex tasks into subtasks
 - `/cdf:implement` — execute implementation after approval

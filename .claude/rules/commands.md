@@ -18,6 +18,7 @@ claude --plugin-dir ./claude-dev-framework
 /cdf:test
 /cdf:tdd
 /cdf:git commit
+/cdf:ship
 
 # Analysis
 /cdf:analyze src/
@@ -29,11 +30,10 @@ claude --plugin-dir ./claude-dev-framework
 /cdf:brainstorm "requirements"
 /cdf:design "system"
 /cdf:estimate "task"
-/cdf:workflow "PRD or requirements"
+/cdf:plan-review "plan or PRD"
 /cdf:approve                          # After plan mode: persist + execute
 
 # Orchestration
-/cdf:flow "brainstorm → docs → implement → verify"
 /cdf:task execute "complex task"
 /cdf:task --breakdown "multi-step task"
 
@@ -46,9 +46,12 @@ claude --plugin-dir ./claude-dev-framework
 /cdf:docs plan
 /cdf:rules generate
 /cdf:rules status
+
+# Memory and learning
+/cdf:learn status
 ```
 
-## All 22 Commands
+## All 21 Commands
 
 | Command | Purpose |
 |---------|---------|
@@ -60,11 +63,11 @@ claude --plugin-dir ./claude-dev-framework
 | `/cdf:e2e` | E2E testing with Playwright |
 | `/cdf:estimate` | Development estimates |
 | `/cdf:explain` | Code and concept explanations |
-| `/cdf:flow` | Unified workflow: brainstorm → docs → implement → verify |
 | `/cdf:git` | Git operations with smart commit messages |
 | `/cdf:implement` | Feature implementation with agent activation |
 | `/cdf:improve` | Code quality improvements |
 | `/cdf:learn` | Universal skill learning: capture, view, remove, reset, consolidate preferences |
+| `/cdf:plan-review` | Pre-implementation plan review gauntlet |
 | `/cdf:research` | Deep web research |
 | `/cdf:rules` | Project rules management |
 | `/cdf:ship` | Automated release pipeline: merge, test, review, push, PR |
@@ -73,7 +76,10 @@ claude --plugin-dir ./claude-dev-framework
 | `/cdf:test` | Test execution with coverage analysis |
 | `/cdf:troubleshoot` | Issue diagnosis and resolution |
 | `/cdf:verify` | Pre-PR quality checks |
-| `/cdf:workflow` | Generate workflows from PRDs |
+
+## Removed Orchestrators
+
+`/cdf:flow` and `/cdf:workflow` were removed in the 1.13.0 leanness pass. For full lifecycle work, write a clear prompt with the requirements and let Opus 4.7 plan natively at `xhigh` effort, or use `/cdf:task` when you need explicit task breakdown and agent fan-out.
 
 ## Hook Scripts
 

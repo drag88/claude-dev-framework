@@ -2,21 +2,20 @@
 
 ## Bird's Eye View
 
-CDF (Claude Dev Framework) is a Claude Code plugin that transforms Claude into a structured, opinionated development assistant. It provides modular components — commands, agents, skills, and hooks — that enforce workflows, inject specialized expertise, and maintain codebase memory across sessions.
+CDF (Claude Dev Framework) is a Claude Code plugin with a host-adaptable core. It provides modular commands, agents, skills, rules, and hooks that turn coding agents into structured, opinionated development assistants across Claude Code first and Codex through adapter guidance.
 
 ## Codemap
 
 | Directory | Purpose |
 |-----------|---------|
-| `commands/` | 22 slash command definitions (markdown + YAML frontmatter). Each file is a complete behavioral spec. |
-| `agents/` | 22 agent persona definitions. Activated by `/cdf:task` or automatically via task context. |
-| `skills/` | 27 auto-invoked skill directories (`skills/*/SKILL.md`). Trigger-based, no explicit invocation. |
-| `contexts/` | 3 behavioral context modes (dev/review/research) with quality thresholds. |
+| `commands/` | 21 slash command definitions (markdown + YAML frontmatter). Each file is a complete behavioral spec. |
+| `agents/` | 12 real-expertise agent definitions. Activated through `/cdf:task` or command-specific routing. |
+| `skills/` | 24 auto-invoked skill directories (`skills/*/SKILL.md`). Trigger-based, no explicit invocation. |
 | `hooks/` | Lifecycle hook configuration (`hooks.json`). |
-| `scripts/` | Hook implementation scripts (5 Python + 1 Bash + 1 shared library). |
-| `rules-templates/` | 14 rule templates: 5 best-practice + 8 project-type + 1 meta (workflow). |
+| `scripts/` | Hook implementation scripts and shared utilities. |
+| `rules-templates/` | 15 rule templates: best-practice, project-type, workflow, and 4.7 CLAUDE.md guidance. |
 | `mcp-configs/` | MCP server configuration templates (7 pre-configured servers). |
-| `.claude-plugin/` | Plugin metadata (`plugin.json` v1.12.0). |
+| `.claude-plugin/` | Plugin metadata (`plugin.json` v1.13.0). |
 | `.claude/` | Plugin settings, permissions, rules, and runtime memory. |
 | `docs/` | Institutional knowledge and solved problem references. |
 
@@ -24,11 +23,11 @@ CDF (Claude Dev Framework) is a Claude Code plugin that transforms Claude into a
 
 | File | Role |
 |------|------|
-| `.claude-plugin/plugin.json` | Plugin metadata, version (1.12.0), component counts |
+| `.claude-plugin/plugin.json` | Plugin metadata, version (1.13.0) |
+| `.claude-plugin/marketplace.json` | Marketplace metadata; version and count strings must match actual components |
 | `hooks/hooks.json` | Lifecycle hook definitions — 7 hooks across 4 event types |
 | `scripts/analyze-codebase.py` | SessionStart hook — project analysis and rule generation |
 | `scripts/hooks/session-context.py` | SessionStart hook — injects git history + auto-memory context |
-| `scripts/keyword-amplifier.py` | PreToolUse hook — mode detection and context injection |
 | `scripts/lib/utils.py` | Shared utility functions used by all hook scripts |
 
 ## Component Relationships
@@ -36,11 +35,9 @@ CDF (Claude Dev Framework) is a Claude Code plugin that transforms Claude into a
 ```
 User Request
     ↓
-Intent Gate (skill) → Classifies request type
-    ↓
 Command Router → Loads command definition
     ↓
-Agent Activation → Selects relevant personas
+Agent Routing → Uses real-expertise agents or role-framed `/cdf:task` prompts
     ↓
 Skill Activation → Triggers context-aware behaviors
     ↓
@@ -52,16 +49,16 @@ MCP Integration → External tool coordination
 ## Data Flow
 
 1. **SessionStart**: `analyze-codebase.py` analyzes project and generates rules; `session-context.py` injects git history + auto-memory context (60s timeout each)
-2. **Request Processing**: Intent classified, command loaded, agents/skills activated
-3. **PreToolUse**: `keyword-amplifier.py` injects mode context; `git-push-review.py` guards pushes
+2. **Request Processing**: command loaded, real agents or role-framed `/cdf:task` selected, skills activated
+3. **PreToolUse**: `git-push-review.py` and `pre-push-checks.py` warn on risky git operations
 4. **PostToolUse**: `console-log-detector.py`, `comment-checker.py` validate code quality
 5. **Stop**: `task-completeness-check.sh` verifies completion
 
 ## Cross-Cutting Concerns
 
 - **Session Context**: `session-context.py` injects recent git history and auto-memory at session start. No CDF-owned storage.
-- **Mode Amplification**: `keyword-amplifier.py` detects keywords (ultrawork, deep work, investigate) and injects behavioral context into all tool calls.
-- **Quality Gates**: `comment-checker.py` (35% threshold), `console-log-detector.py` (debug statements), context modes set quality thresholds.
+- **Routing Discipline**: Deleted orchestrator commands stay deleted. Complex lifecycle work goes through clear prompts with `xhigh` effort or `/cdf:task`.
+- **Quality Gates**: `comment-checker.py` (35% threshold), `console-log-detector.py` (debug statements), and `scripts/health-check.py` catch framework drift.
 - **Error Recovery**: `failure-recovery` skill activates after 3 consecutive failures (STOP → REVERT → DOCUMENT → CONSULT).
 
 ## Architectural Invariants
@@ -75,20 +72,19 @@ MCP Integration → External tool coordination
 
 - **Metadata-Driven**: YAML frontmatter declares command/agent behavior
 - **Trigger-Based Skills**: Skills activate on conditions (missing files, thresholds, failures)
-- **Composable Agents**: Multiple agents can collaborate on tasks via `/cdf:task`
+- **Real-Expertise Agents**: Agent files represent concrete capabilities; generic roles are expressed as prompt framing, not stub agents
 - **Hook Lifecycle**: Pre/Post hooks for validation, enhancement, and logging
 - **Convention over Configuration**: Sensible defaults require no setup
 
 ## Boundaries
 
 - **Sacred files** (never modify without testing): `hooks/hooks.json`, `scripts/lib/utils.py`, `.claude-plugin/plugin.json`
-- **Never commit**: `.env`, `dev/active/` flow state, `*.local.json`
+- **Never commit**: `.env`, transient task state, `*.local.json`
 - **Review-required**: Command/agent/skill definition changes, public hook interface changes
 
 ## Extension Points
 
-- Add commands: `commands/*.md` (update counts in plugin.json, CLAUDE.md, README.md)
-- Add agents: `agents/*.md` (update counts)
+- Add commands: `commands/*.md` (update count-bearing docs and run `scripts/health-check.py`)
+- Add agents: `agents/*.md` (only for real expertise, not generic role stubs)
 - Add skills: `skills/*/SKILL.md`
 - Add hooks: `hooks/hooks.json` → `scripts/` or `scripts/hooks/`
-- Add context modes: `contexts/*.md`

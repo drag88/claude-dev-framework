@@ -38,6 +38,21 @@ The main conversation thread is your working memory. Every file read, every expl
 | Writing/editing a file | No | Must stay in main context |
 | Simple single-file read | No | Faster inline |
 
+### Dispatch Tiers
+
+Before choosing a workflow, classify the task by shape. This gstack-inspired routing keeps CDF lean while still giving complex work enough structure.
+
+| Tier | Use | CDF route |
+|------|-----|-----------|
+| Simple | Single-file or obvious change | Direct edit or `/cdf:implement` |
+| Medium | Multi-file change with known approach | `/cdf:task` for scoped breakdown, then implement in main context |
+| Investigate | Bug, regression, unexplained failure | `/cdf:troubleshoot`, with codebase-navigator for multi-file tracing |
+| Review | Quality, security, performance, architecture risk | `/cdf:analyze`, or `/cdf:task` with role framing when no real agent exists |
+| Plan | User wants to shape a feature before building | `/cdf:brainstorm`, `/cdf:design`, `/cdf:plan-review`, then `/cdf:approve` |
+| Ship | User wants release execution | `/cdf:verify --mode pre-pr`, then `/cdf:ship` |
+
+Do not recreate `/cdf:flow` or `/cdf:workflow`; Opus 4.7 handles full lifecycle plans from a clear prompt with `xhigh` effort.
+
 ### How to Spawn Well
 
 One task per subagent. Not "analyze this module and also the one it depends on."

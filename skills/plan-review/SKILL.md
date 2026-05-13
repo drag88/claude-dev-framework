@@ -1,38 +1,152 @@
 ---
 name: reviewing-plans
-description: "Reminds users to run /cdf:approve after exiting plan mode to persist plans and get execution strategy"
+description: "Pre-implementation plan review gauntlet. Activates when a non-trivial plan needs product, engineering, UX/DX, risk, and execution review before approval."
 ---
 
-# Plan Review Awareness
+# Plan Review
+
+Review plans before implementation. This is the skill backing `/cdf:plan-review` and the automatic nudge before `/cdf:approve`.
 
 ## When to Activate
 
-- The user has just exited plan mode and is about to start implementation
-- The conversation contains a plan that was discussed in plan mode but hasn't been persisted via `/cdf:approve`
-- The user says something like "go ahead", "implement this", or "let's do it" after a planning discussion
+- User asks to review, challenge, harden, stress-test, or improve a plan
+- User says "think bigger", "is this the right plan", "what are we missing", "make this bulletproof"
+- A plan was discussed in plan mode and the user is moving toward implementation
+- The plan touches 3+ files, public behavior, data/storage, auth, payments, deployment, or cross-module contracts
 
-## Behavior
+Skip trivial single-file fixes and direct execution requests where the user clearly wants implementation now.
 
-When you detect that a plan was just discussed and the user is moving toward implementation WITHOUT having run `/cdf:approve`, gently remind them:
+## Review Modes
 
-> "You have a plan ready. Want to run `/cdf:approve` to persist it as documentation and get an execution strategy before we start?"
+| Mode | Use | Behavior |
+|------|-----|----------|
+| `expand` | Plan may be under-ambitious | Identify the 10x version and high-leverage adjacent improvements |
+| `hold` | User wants current scope protected | Keep scope fixed; harden failure modes, tests, observability, and rollout |
+| `reduce` | Scope is too large or risky | Cut to the smallest plan that preserves the outcome |
+| `auto` | No mode specified | Infer mode from user language and plan maturity |
 
-If the user declines or wants to skip, proceed normally — this is a nudge, not a gate.
+If mode is unclear, default to `hold`. Do not expand scope silently.
 
-## What Counts as a Plan
+## Core Passes
 
-A "plan" is any structured implementation proposal that includes:
-- Multiple sequential steps or phases
-- File changes across 2+ files
-- Architecture or design decisions
-- Task breakdowns with dependencies
+### 1. Plan Context
 
-**NOT a plan**: a single-file fix, a quick refactor explanation, a test run summary.
+Read before judging:
+- The current conversation plan or supplied plan file
+- Referenced docs, issues, or task files
+- Relevant `.claude/rules/` files
+- Existing code paths the plan touches
 
-## Anti-Patterns
+Use git context when useful:
+```bash
+git status --short
+git diff --stat
+git log --oneline -20 -- <affected-files>
+```
 
-- Do NOT block implementation if the user wants to skip approval
-- Do NOT remind more than once per plan — if the user declines, drop it
-- Do NOT activate for trivial changes that don't warrant documentation
+### 2. Premise And Scope
 
-> This skill is intentionally minimal — it serves as a lightweight nudge, not a full workflow.
+Answer concretely:
+- What outcome is this plan supposed to create?
+- Is the plan solving the real problem or a proxy?
+- What existing code already solves part of this?
+- Which mode applies: `expand`, `hold`, or `reduce`?
+- What should remain explicitly out of scope?
+
+### 3. Engineering Review
+
+Map the actual system shape:
+- Data flow and state transitions
+- Module boundaries and ownership
+- API/schema/migration impacts
+- Concurrency, idempotency, cache, and retry behavior
+- Observability, rollback, and operator paths
+
+Every non-trivial data flow gets shadow paths: nil input, empty input, upstream failure, permission failure, and partial completion.
+
+### 4. UX/DX Review
+
+For user-facing work, review:
+- Happy path, empty state, loading state, error state, retry, cancellation, back/refresh behavior
+- Accessibility and keyboard behavior
+- Copy clarity at failure points
+
+For developer-facing work, review:
+- Time to first success
+- Setup friction
+- API ergonomics
+- Examples and docs
+- Error message actionability
+
+Skip irrelevant review branches explicitly.
+
+### 5. Risk And Test Matrix
+
+Create a concise matrix:
+
+```markdown
+| Path | Risk | Required test/check |
+|------|------|---------------------|
+| Happy path | [risk] | [command or test] |
+| Empty/nil input | [risk] | [command or test] |
+| Upstream failure | [risk] | [command or test] |
+| Permission/auth failure | [risk] | [command or test] |
+| Slow/retry path | [risk] | [command or test] |
+| Rollback/deploy path | [risk] | [command or test] |
+```
+
+### 6. Execution Brief
+
+End with a plan the user can approve:
+- Required plan changes
+- Optional enhancements
+- Open decisions
+- Test and verification commands
+- Recommended next command
+
+## Verdicts
+
+- `APPROVE` - Plan is ready; only minor notes remain
+- `APPROVE_WITH_CHANGES` - Ready after listed changes are applied
+- `REVISE` - Important gaps remain; revise before implementation
+- `STOP` - Premise, scope, or risk is wrong enough that implementation should not start
+
+## Output Shape
+
+```markdown
+## Plan Review
+
+Verdict: APPROVE | APPROVE_WITH_CHANGES | REVISE | STOP
+Mode: expand | hold | reduce
+
+### Required Changes
+- [Concrete change and why]
+
+### Key Findings
+- [Severity] [Area] Finding with evidence and fix path
+
+### Test Matrix
+| Path | Risk | Required test/check |
+|------|------|---------------------|
+
+### Open Decisions
+- [Decision needed]
+
+### Next Command
+`/cdf:approve` or another specific command, with reason.
+```
+
+## Automatic Nudge
+
+When a plan exists and the user says "go ahead", "implement this", or similar without review or approval:
+
+> "This is non-trivial. Run `/cdf:plan-review` first to harden the plan, or skip and I will proceed."
+
+If the user declines, proceed. Ask once per plan.
+
+## Boundaries
+
+- Do not implement during plan review.
+- Do not turn review into a new workflow wrapper.
+- Do not expand scope unless the user requested `expand` mode or the review explicitly recommends it as optional.
+- Do not ask more than three questions; prefer concrete assumptions with an `Open Decisions` section.

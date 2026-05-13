@@ -110,21 +110,17 @@ if __name__ == "__main__":
 - Minimum 80% coverage threshold
 - AAA pattern: Arrange-Act-Assert
 
-## Intent Classification
+## Command Routing
 
-Every request classified before action:
-- **Trivial** → Direct execution
-- **Explicit** → Command execution
-- **Exploratory** → Research first
-- **GitHub Work** → Full workflow
-- **Ambiguous** → Clarification needed
+Use the narrowest CDF surface that matches the request:
+- **Simple implementation** -> `/cdf:implement`
+- **Bug report** -> `/cdf:troubleshoot`
+- **Quality or risk audit** -> `/cdf:analyze`
+- **Tests or TDD** -> `/cdf:test` or `/cdf:tdd`
+- **Complex multi-file work** -> `/cdf:task` with real-expertise agents
+- **Full lifecycle work** -> clear prompt with `xhigh` effort, or `/cdf:task` for explicit breakdown
 
-## Context Modes
-
-Quality thresholds vary by mode:
-- **dev**: Ship first, iterate. Tests 70%, lint warnings OK
-- **review**: Trust but verify. Tests 80%, no lint/security issues
-- **research**: Understand before acting. Informational thresholds only
+Deleted orchestrators stay deleted: do not reintroduce `/cdf:flow` or `/cdf:workflow`.
 
 ## Naming Conventions
 
@@ -132,6 +128,6 @@ Quality thresholds vary by mode:
 - **Python classes**: `PascalCase`
 - **Markdown files**: `kebab-case` (e.g., `rules-templates/`)
 - **Command names**: `cdf:verb` or `cdf:verb-noun` (e.g., `cdf:rules`, `cdf:tdd`)
-- **Hook scripts**: Descriptive verb-noun (`session-context.py`, `keyword-amplifier.py`)
-- **Agent names**: Domain-specific nouns (`backend-architect`, `root-cause-analyst`)
-- **Skill names**: Action-oriented (`intent-gate`, `failure-recovery`)
+- **Hook scripts**: Descriptive verb-noun (`session-context.py`, `pre-push-checks.py`)
+- **Agent names**: Real-expertise nouns (`codebase-navigator`, `quality-engineer`, `library-researcher`)
+- **Skill names**: Action-oriented (`failure-recovery`, `product-review`, `visual-explainer`)

@@ -56,6 +56,7 @@ Lifecycle scripts that fire on session start, before/after tool use, and on stop
 |---------|-------------|
 | `/cdf:design "system X"` | Technical architecture (how to build it) |
 | `/cdf:brainstorm "problem"` | Requirements discovery (what to build) |
+| `/cdf:plan-review` | Challenge and harden a plan before implementation |
 | `/cdf:estimate "task"` | Effort estimation |
 | Write a clear prompt + `xhigh` effort | Generate implementation steps from a spec (4.7 plans natively) |
 
@@ -91,7 +92,7 @@ Lifecycle scripts that fire on session start, before/after tool use, and on stop
 |---------|-------------|
 | `/cdf:rules generate` | Generate project rules from codebase |
 | `/cdf:rules status` | Check what rules exist |
-| `/cdf:retro` | Engineering metrics from git history |
+| `/retro` | Engineering metrics from git history (skill) |
 
 ---
 
@@ -109,6 +110,7 @@ Lifecycle scripts that fire on session start, before/after tool use, and on stop
 
 ```
 /cdf:brainstorm "requirements"     # Discover what to build
+/cdf:plan-review                   # Stress-test the plan
 # Then write a clear prompt and let 4.7 plan the full lifecycle with xhigh effort
 # (brainstorm → docs → implement → verify)
 ```
@@ -117,7 +119,8 @@ Lifecycle scripts that fire on session start, before/after tool use, and on stop
 
 Enter plan mode, discuss the approach, then:
 ```
-/cdf:product-review                    # Founder-mode: is this the right thing?
+product review                     # Founder-mode skill: is this the right thing?
+/cdf:plan-review                   # Product + engineering + UX/DX + risk gauntlet
 /cdf:approve                       # Lock in the plan
 /cdf:implement                     # Build it
 ```
@@ -131,9 +134,9 @@ Enter plan mode, discuss the approach, then:
 ### "I want to see how I'm doing"
 
 ```
-/cdf:retro                             # Last 7 days
-/cdf:retro 30d                         # Last 30 days
-/cdf:retro compare                     # This week vs last week
+/retro                              # Last 7 days
+/retro 30d                          # Last 30 days
+/retro compare                      # This week vs last week
 ```
 
 ### "New project, first session"
@@ -168,6 +171,6 @@ You don't need to configure these. They run on their own.
 
 **For big features, write a clear prompt and let 4.7 plan natively.** The `/cdf:flow` orchestrator was removed in the leanness pass — `xhigh` effort handles the brainstorm → docs → implement → verify chain when given a complete prompt.
 
-**Run `/cdf:retro` weekly.** Takes 30 seconds, surfaces patterns you'd never notice.
+**Run `/retro` weekly.** Takes 30 seconds, surfaces patterns you'd never notice.
 
 **Trust the hooks but they warn, they don't block.** If a hook surfaces a warning, read it before dismissing. Hooks were tightened in the leanness pass to never block on documentation or count mismatches — gating belongs in CI.

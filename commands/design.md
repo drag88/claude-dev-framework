@@ -114,7 +114,7 @@ Key behaviors:
 
 | Design Scope | Approach | When to Use |
 |-------------|----------|-------------|
-| System architecture | `/cdf:task` with system-architect framing in the prompt | Component boundaries, data flow, scaling strategy |
+| System architecture | `/cdf:task` with system-design role framing | Component boundaries, data flow, scaling strategy |
 | Backend services | `/cdf:task` with backend-engineer framing | API contracts, database schema, service layers |
 | Frontend UI | `/cdf:task` with frontend-engineer framing (frontend-patterns skill auto-invokes) | Component hierarchy, state management, UX patterns |
 

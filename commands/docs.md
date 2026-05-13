@@ -380,7 +380,7 @@ Update development documentation before context compaction or session end.
 | Documentation Mode | Approach | When to Use |
 |-------------------|----------|-------------|
 | API documentation | `/cdf:task` with the Role line in CLAUDE.md as a senior writer | Endpoint docs, SDK guides, integration specs |
-| Architecture docs | `/cdf:task` with system-architect framing in the prompt | ADRs, system diagrams, design rationale |
+| Architecture docs | `/cdf:task` with system-design role framing | ADRs, system diagrams, design rationale |
 | Quality reports | quality-engineer (real agent, kept) | Coverage reports, test documentation |
 
 ## Next Commands

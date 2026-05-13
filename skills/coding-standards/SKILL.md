@@ -209,8 +209,8 @@ type Status = typeof STATUSES[number]; // 'pending' | 'active' | 'complete'
 - **quality-engineer** — Uses standards for code review and quality gates
 - **refactoring-expert** — Applies standards during code improvement
 - **tdd-guide** — Enforces standards in test-driven code
-- **python-expert** — Applies Python-specific coding standards
-- **technical-writer** — Uses standards for documentation quality
+- **/cdf:task with language-specific role framing** — Applies language-specific coding standards
+- **/cdf:docs with senior-writer framing** — Uses standards for documentation quality
 
 ## Suggested Commands
 - `/cdf:implement` — Write code following standards

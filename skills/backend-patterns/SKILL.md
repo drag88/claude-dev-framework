@@ -86,10 +86,10 @@ Provide guidance on backend architecture patterns, API design, and server-side b
 - **Idempotency** -- PUT/DELETE operations should be safely repeatable
 - **Defense in depth** -- Auth middleware + authorization + input validation
 
-## Related Agents
-- **backend-architect** -- Primary consumer for API and service layer design
-- **security-engineer** -- Uses backend patterns for secure auth and middleware
-- **performance-engineer** -- Applies patterns for query optimization and caching
+## Related Routing
+- **/cdf:design with backend-engineer framing** -- API and service layer design
+- **/cdf:analyze with security-focused role framing** -- Secure auth and middleware audits
+- **/cdf:analyze with performance-focused role framing** -- Query optimization and caching reviews
 
 ## Suggested Commands
 - `/cdf:implement` -- Implement backend features using these patterns

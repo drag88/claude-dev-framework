@@ -77,6 +77,21 @@ Multi-session coordination. Each worker gets its own independent, sustained cont
 | "Build the API, frontend, and tests in parallel" | Agent Team | Three independent implementation streams |
 | "What does this function do?" | Neither | Just read the file inline |
 
+### Dispatch Tiers
+
+Use these tiers before reaching for generic tooling. This mirrors gstack's strongest pattern: route by task shape, not by the first command that comes to mind.
+
+| Tier | Use | CDF route |
+|------|-----|-----------|
+| Simple | Single-file or obvious change | Direct edit or `/cdf:implement` |
+| Medium | Multi-file change with known approach | `/cdf:task` for scoped breakdown, then implement in main context |
+| Investigate | Bug, regression, unexplained failure | `/cdf:troubleshoot`, with codebase-navigator for multi-file tracing |
+| Review | Quality, security, performance, architecture risk | `/cdf:analyze`, or `/cdf:task` with role framing when no real agent exists |
+| Plan | User wants to shape a feature before building | `/cdf:brainstorm`, `/cdf:design`, `/cdf:plan-review`, then `/cdf:approve` |
+| Ship | User wants release execution | `/cdf:verify --mode pre-pr`, then `/cdf:ship` |
+
+Do not recreate `/cdf:flow` or `/cdf:workflow`; Opus 4.7 handles full lifecycle plans from a clear prompt with `xhigh` effort.
+
 ### Subagent Spawn Patterns
 
 **General patterns:**
@@ -193,21 +208,19 @@ When working in this project, use the appropriate CDF agent for specialized task
 
 | Task Type | Agent | Command |
 |-----------|-------|---------|
-| System design | system-architect | `/cdf:task` |
-| API/backend work | backend-architect | `/cdf:task` |
-| UI development | frontend-architect | `/cdf:task` |
-| CI/CD setup | devops-architect | `/cdf:task` |
 | Research topics | deep-research-agent | `/cdf:research` |
 | Find code/patterns | codebase-navigator | `/cdf:task` |
 | Evaluate libraries | library-researcher | `/cdf:task` |
-| Debug issues | root-cause-analyst | `/cdf:troubleshoot` |
 | Write tests | quality-engineer | `/cdf:test` |
-| Security audit | security-engineer | `/cdf:analyze` |
-| Performance | performance-engineer | `/cdf:analyze` |
 | Refactor code | refactoring-expert | `/cdf:improve` |
-| Documentation | technical-writer | `/cdf:docs` |
 | TDD workflow | tdd-guide | `/cdf:tdd` |
 | E2E testing | e2e-specialist | `/cdf:e2e` |
+| Requirements discovery | requirements-analyst | `/cdf:brainstorm` |
+| Socratic explanation | socratic-mentor | `/cdf:explain` |
+| Business strategy | business-panel-experts, business-research-strategist | `/cdf:research` |
+| Image / PDF interpretation | media-interpreter | `/cdf:task` |
+
+For backend, frontend, devops, security, performance, system design, and docs work, use `/cdf:task` with explicit role framing. The old persona-stub agents were removed in 1.13.0.
 
 **Auto-activation**: Agents activate automatically via `/cdf:task` based on task context.
 

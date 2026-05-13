@@ -40,13 +40,14 @@ CDF is the project being developed here. When working on it, reach for these:
 - **Debugging bugs**: `/cdf:troubleshoot` — root-cause methodology, adds regression test
 - **Pre-PR quality check**: `/cdf:verify --mode pre-pr` — types + lint + tests + security
 - **Tests**: `/cdf:test` (coverage-aware), `/cdf:tdd` for RED-GREEN-REFACTOR
+- **Plan review**: `/cdf:plan-review` — product + engineering + UX/DX + risk gauntlet before approval
 - **Multi-file investigation**: `/cdf:task` with codebase-navigator agent (returns summary, not raw dumps)
 - **Library research / evaluation**: `/cdf:task` with library-researcher agent
 - **Refactoring**: `/cdf:improve` — systematic with safety checks
 - **Code / security / perf analysis**: `/cdf:analyze`
 - **Commit / ship**: `/cdf:git`, `/cdf:ship` — conventional commits, no AI attribution
 
-Real-expertise agents (Task tool): codebase-navigator, library-researcher, deep-research-agent, quality-engineer, refactoring-expert, e2e-specialist, tdd-guide, requirements-analyst, socratic-mentor, business-research-strategist, business-panel-experts, media-interpreter.
+Real-expertise agents (via `/cdf:task` or the relevant CDF command): codebase-navigator, library-researcher, deep-research-agent, quality-engineer, refactoring-expert, e2e-specialist, tdd-guide, requirements-analyst, socratic-mentor, business-research-strategist, business-panel-experts, media-interpreter.
 
 For role-based work (backend, frontend, devops, etc.) where no specific CDF tool fits, invoke `/cdf:task` directly — Opus 4.7 plays the role from the Role line above plus `xhigh` effort.
 

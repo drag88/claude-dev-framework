@@ -137,11 +137,11 @@ Key behaviors:
 
 ## Agent Routing
 
-| Improvement Type | Primary Agent | When to Use |
-|-----------------|---------------|-------------|
+| Improvement Type | Approach | When to Use |
+|-----------------|----------|-------------|
 | Refactoring | refactoring-expert | Dead code, duplication, pattern consolidation |
-| Performance | performance-engineer | Query optimization, caching, bundle size |
-| Security | security-engineer | Vulnerability fixes, auth hardening |
+| Performance | `/cdf:task` with performance-focused role framing | Query optimization, caching, bundle size |
+| Security | `/cdf:task` with security-focused role framing | Vulnerability fixes, auth hardening |
 | Code quality | quality-engineer | Test coverage, naming, documentation |
 
 ## Next Commands

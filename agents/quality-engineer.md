@@ -243,4 +243,4 @@ Immediate actions required:
 
 ## Delegate To
 - **e2e-specialist** — for Playwright test implementation and cross-browser validation
-- **security-engineer** — for OWASP compliance checks and security test coverage
+- **/cdf:analyze with security-focused role framing** — for OWASP compliance checks and security test coverage
