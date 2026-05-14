@@ -11,7 +11,7 @@ A Claude Code development framework with a host-adaptable core. CDF provides com
 | Host | Status | Entry Points |
 |------|--------|--------------|
 | Claude Code | Packaged adapter | `.claude-plugin/`, `/cdf:*` commands, `.claude/rules/`, `hooks/hooks.json`, `CLAUDE.md` |
-| Codex | Host-neutral guidance | `AGENTS.md`, Codex skills, natural-language `/cdf:*` command prompts, repo-local docs |
+| Codex | Packaged adapter | `.codex-plugin/`, `.agents/plugins/marketplace.json`, `AGENTS.md`, Codex skills, `/cdf:*` command prompts |
 
 See [docs/HOSTS.md](docs/HOSTS.md) for the adapter model and Codex rollout path.
 
@@ -31,6 +31,23 @@ claude plugin marketplace add drag88/claude-dev-framework
 # Inside Claude Code
 /plugin install cdf@claude-dev-framework
 ```
+
+### Codex
+
+CDF also ships Codex metadata. From this checkout:
+
+```bash
+codex plugin marketplace add /path/to/claude-dev-framework
+```
+
+Then enable the plugin in `~/.codex/config.toml`:
+
+```toml
+[plugins."cdf@claude-dev-framework"]
+enabled = true
+```
+
+Restart Codex after changing plugin configuration.
 
 ### Verify Installation
 
@@ -131,7 +148,7 @@ npx skills update --frozen-lockfile
 
 ### Host-Neutral Core
 
-CDF's durable core is the methodology in `commands/`, `agents/`, `skills/`, `rules-templates/`, and `docs/`. Host adapters load that core into a specific agent runtime. Claude Code gets slash commands and hooks; Codex gets `AGENTS.md` routing, skills, and explicit command prompts. Do not put host-specific assumptions in core command or skill behavior unless the file is clearly adapter-specific.
+CDF's durable core is the methodology in `commands/`, `agents/`, `skills/`, `rules-templates/`, and `docs/`. Host adapters load that core into a specific agent runtime. Claude Code gets slash commands and hooks; Codex gets `.codex-plugin/`, `AGENTS.md` routing, skills, agents, and explicit command prompts. Do not put host-specific assumptions in core command or skill behavior unless the file is clearly adapter-specific.
 
 ### Commands
 

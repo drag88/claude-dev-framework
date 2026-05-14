@@ -22,7 +22,9 @@ __pycache__/
 *.local.json
 
 # Skills CLI cache (npx skills add)
-.agents/
+.agents/*
+!.agents/plugins/
+!.agents/plugins/marketplace.json
 skills-lock.json
 
 # Flow state (never commit)

@@ -1,0 +1,20 @@
+{
+  "name": "claude-dev-framework",
+  "interface": {
+    "displayName": "CDF"
+  },
+  "plugins": [
+    {
+      "name": "cdf",
+      "source": {
+        "source": "local",
+        "path": "./"
+      },
+      "policy": {
+        "installation": "AVAILABLE",
+        "authentication": "ON_INSTALL"
+      },
+      "category": "Engineering"
+    }
+  ]
+}

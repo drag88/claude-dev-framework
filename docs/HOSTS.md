@@ -39,6 +39,8 @@ Claude-specific behavior belongs in these adapter files or in clearly marked sec
 ## Codex Adapter
 
 Codex support should use the same core methodology with Codex-native loading:
+- `.codex-plugin/plugin.json` for packaged plugin metadata
+- `.agents/plugins/marketplace.json` for local marketplace discovery
 - `AGENTS.md` for project role, rules, routing, and command selection
 - Codex skills installed under the Codex skill path, ideally prefixed as `cdf-*`
 - Natural-language command prompts that preserve `/cdf:*` names even if the host does not provide slash-command dispatch

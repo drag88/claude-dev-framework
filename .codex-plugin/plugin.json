@@ -1,0 +1,85 @@
+{
+  "name": "cdf",
+  "version": "1.13.0",
+  "description": "Opinionated development framework for AI coding agents: command prompts, specialized agents, skills, rules, and portable verification workflows for Claude Code, Codex, and other hosts.",
+  "author": {
+    "name": "Aswin Sreenivas",
+    "url": "https://github.com/drag88"
+  },
+  "homepage": "https://github.com/drag88/claude-dev-framework",
+  "repository": "https://github.com/drag88/claude-dev-framework",
+  "license": "MIT",
+  "keywords": [
+    "development",
+    "framework",
+    "agents",
+    "commands",
+    "skills",
+    "hooks",
+    "code-analysis",
+    "rules-generation",
+    "workflow",
+    "automation",
+    "knowledge-capture"
+  ],
+  "skills": "./skills/",
+  "commands": [
+    "./commands/estimate.md",
+    "./commands/implement.md",
+    "./commands/learn.md",
+    "./commands/troubleshoot.md",
+    "./commands/e2e.md",
+    "./commands/improve.md",
+    "./commands/explain.md",
+    "./commands/analyze.md",
+    "./commands/verify.md",
+    "./commands/ship.md",
+    "./commands/plan-review.md",
+    "./commands/tdd.md",
+    "./commands/research.md",
+    "./commands/git.md",
+    "./commands/approve.md",
+    "./commands/task.md",
+    "./commands/rules.md",
+    "./commands/design.md",
+    "./commands/docs.md",
+    "./commands/test.md",
+    "./commands/brainstorm.md"
+  ],
+  "agents": [
+    "./agents/business-panel-experts.md",
+    "./agents/business-research-strategist.md",
+    "./agents/codebase-navigator.md",
+    "./agents/deep-research-agent.md",
+    "./agents/e2e-specialist.md",
+    "./agents/library-researcher.md",
+    "./agents/media-interpreter.md",
+    "./agents/quality-engineer.md",
+    "./agents/refactoring-expert.md",
+    "./agents/requirements-analyst.md",
+    "./agents/socratic-mentor.md",
+    "./agents/tdd-guide.md"
+  ],
+  "interface": {
+    "displayName": "CDF",
+    "shortDescription": "Structured engineering workflows for AI agents",
+    "longDescription": "CDF brings reusable engineering workflows to Claude Code, Codex, and other coding-agent hosts: /cdf:* command prompts, specialized agents, auto-invoked skills, generated project rules, and portable validation scripts.",
+    "developerName": "Aswin Sreenivas",
+    "category": "Engineering",
+    "capabilities": [
+      "Interactive",
+      "Read",
+      "Write"
+    ],
+    "websiteURL": "https://github.com/drag88/claude-dev-framework",
+    "privacyPolicyURL": "https://github.com/drag88/claude-dev-framework",
+    "termsOfServiceURL": "https://github.com/drag88/claude-dev-framework/blob/main/LICENSE",
+    "defaultPrompt": [
+      "/cdf:implement add the missing feature",
+      "/cdf:troubleshoot diagnose this failure",
+      "/cdf:verify --mode pre-pr"
+    ],
+    "brandColor": "#0F766E",
+    "screenshots": []
+  }
+}
