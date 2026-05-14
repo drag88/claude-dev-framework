@@ -1,6 +1,6 @@
 {
   "name": "cdf",
-  "description": "Opinionated Claude Code development framework: slash commands, specialized agents, auto-invoked skills, and lifecycle hooks for reproducible engineering workflows.",
+  "description": "Claude Code adapter for CDF, a host-adaptable development framework: slash commands, specialized agents, auto-invoked skills, and lifecycle hooks for reproducible engineering workflows.",
   "version": "1.13.0",
   "author": {
     "name": "Aswin Sreenivas"

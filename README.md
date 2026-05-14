@@ -1,6 +1,6 @@
 # CDF (Claude Dev Framework)
 
-A Claude Code development framework with a host-adaptable core. CDF provides commands, agent personas, auto-invoked skills, rules, and lifecycle hooks -- turning AI coding agents into structured, opinionated development assistants. The packaged adapter targets Claude Code today; the core methodology is host-neutral so CDF can also drive Codex.
+A host-adaptable development framework for AI coding agents. CDF provides commands, agent personas, auto-invoked skills, rules, and lifecycle hooks -- turning Claude Code, Codex, and other coding agents into structured, opinionated development assistants.
 
 ---
 

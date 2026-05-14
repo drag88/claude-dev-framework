@@ -1,7 +1,7 @@
 {
   "$schema": "https://anthropic.com/claude-code/marketplace.schema.json",
   "name": "claude-dev-framework",
-  "description": "CDF - Complete Development Framework for Claude Code",
+  "description": "CDF - Host-adaptable development framework for AI coding agents",
   "owner": {
     "name": "Aswin Sreenivas",
     "url": "https://github.com/drag88/claude-dev-framework"
@@ -15,7 +15,7 @@
         "name": "Aswin Sreenivas",
         "url": "https://github.com/drag88/claude-dev-framework"
       },
-      "source": "./",
+      "source": ".",
       "category": "development",
       "strict": false
     }
