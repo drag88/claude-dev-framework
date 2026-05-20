@@ -57,6 +57,6 @@
 |-----------|-------|--------|
 | Commands | 21 | Markdown + YAML |
 | Agents | 12 | Markdown + YAML |
-| Skills | 24 | Markdown + directories |
+| Skills | 25 | Markdown + directories |
 | Hooks | 7 | JSON + Python/Bash |
-| Rule Templates | 15 | Markdown |
+| Rule Templates | 17 | Markdown |
