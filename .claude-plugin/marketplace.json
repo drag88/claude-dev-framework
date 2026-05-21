@@ -15,7 +15,7 @@
         "name": "Aswin Sreenivas",
         "url": "https://github.com/drag88/claude-dev-framework"
       },
-      "source": ".",
+      "source": "./",
       "category": "development",
       "strict": false
     }
