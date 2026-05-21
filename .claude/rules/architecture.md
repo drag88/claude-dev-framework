@@ -15,7 +15,7 @@ CDF (Claude Dev Framework) is a Claude Code plugin with a host-adaptable core. I
 | `scripts/` | Hook implementation scripts and shared utilities. |
 | `rules-templates/` | 17 rule templates: best-practice, project-type, workflow, the vendored 4.7 CLAUDE.md rulebook, the Codex AGENTS.md rulebook, and the opt-in extended-rules reference. |
 | `mcp-configs/` | MCP server configuration templates (7 pre-configured servers). |
-| `.claude-plugin/` | Plugin metadata (`plugin.json` v1.13.0). |
+| `.claude-plugin/` | Plugin metadata (`plugin.json` v1.14.0). |
 | `.claude/` | Plugin settings, permissions, rules, and runtime memory. |
 | `docs/` | Institutional knowledge and solved problem references. |
 
@@ -23,7 +23,7 @@ CDF (Claude Dev Framework) is a Claude Code plugin with a host-adaptable core. I
 
 | File | Role |
 |------|------|
-| `.claude-plugin/plugin.json` | Plugin metadata, version (1.13.0) |
+| `.claude-plugin/plugin.json` | Plugin metadata, version (1.14.0) |
 | `.claude-plugin/marketplace.json` | Marketplace metadata; version and count strings must match actual components |
 | `hooks/hooks.json` | Lifecycle hook definitions — 7 hooks across 4 event types |
 | `scripts/analyze-codebase.py` | SessionStart hook — project analysis and rule generation |
