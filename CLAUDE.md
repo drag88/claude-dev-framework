@@ -92,7 +92,7 @@ Conventional format (`feat:`, `fix:`, `docs:`, `refactor:`, `chore:`, `test:`), 
 ## Key Directories
 - `commands/` — 21 slash command definitions (markdown + YAML frontmatter)
 - `agents/` — 12 real-expertise agent personas
-- `skills/` — 25 auto-invoked skill directories (`SKILL.md`)
+- `skills/` — 26 auto-invoked skill directories (`SKILL.md`)
 - `scripts/` — Hook implementation scripts (Python + Bash) and shared utilities in `scripts/lib/`
 - `hooks/` — Lifecycle hook configuration (`hooks.json`)
 - `rules-templates/` — 15 rule templates including the vendored `claudemd-4-7-rulebook.md`

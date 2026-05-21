@@ -9,6 +9,9 @@ description: "Project rules management: generate .claude/rules/, CLAUDE.md, and 
 ## Quick Start
 
 ```bash
+# No subcommand — full chain: status → generate (if missing) → claudemd + agentsmd
+/cdf:rules
+
 # Generate full rules + both host instruction files from codebase analysis
 /cdf:rules generate
 
@@ -21,6 +24,18 @@ description: "Project rules management: generate .claude/rules/, CLAUDE.md, and 
 # Check if rules need refresh
 /cdf:rules status
 ```
+
+## Default Behavior (No Subcommand)
+
+When invoked as bare `/cdf:rules` with no argument, run the full chain in order:
+
+1. **Inspect state**: check whether `.claude/rules/` and at least one rule file exist.
+2. **Generate rules if missing**: if `.claude/rules/` is empty or absent, run the `generate` subcommand first.
+3. **Generate CLAUDE.md if missing**: if neither `CLAUDE.md` nor `CLAUDE.generated.md` exists in the project root, run the `claudemd` subcommand.
+4. **Generate AGENTS.md if missing**: if neither `AGENTS.md` nor `AGENTS.generated.md` exists in the project root, run the `agentsmd` subcommand.
+5. **Report**: tell the user exactly which files were created or skipped (and why each was skipped).
+
+This default is the safety net for the most common ask ("set up rules for this repo"). Never stop after CLAUDE.md without also writing AGENTS.md — both host files come from the same `.claude/rules/` source and must stay in sync.
 
 ## When to Use
 

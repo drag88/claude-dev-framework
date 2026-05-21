@@ -56,7 +56,7 @@ Conventional format (`feat:`, `fix:`, `docs:`, `refactor:`, `chore:`, `test:`), 
 ## Key Directories
 - `commands/` — 21 slash command prompts (Markdown + YAML frontmatter)
 - `agents/` — 12 real-expertise agent personas
-- `skills/` — 25 auto-invoked skill directories (`SKILL.md`)
+- `skills/` — 26 auto-invoked skill directories (`SKILL.md`)
 - `scripts/` — lifecycle and analysis scripts (Python + Bash), shared utilities in `scripts/lib/`
 - `hooks/` — Claude Code lifecycle hook configuration (`hooks.json`)
 - `rules-templates/` — 17 rule templates including the vendored `claudemd-4-7-rulebook.md` and `agentsmd-codex-rulebook.md`
