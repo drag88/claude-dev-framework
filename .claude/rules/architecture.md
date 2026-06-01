@@ -10,7 +10,7 @@ CDF (Claude Dev Framework) is a host-adaptable plugin that turns coding agents i
 |-----------|---------|
 | `commands/` | 21 slash command definitions (markdown + YAML frontmatter). Each file is a complete behavioral spec. Loaded by host adapters as `/cdf:*` commands. |
 | `agents/` | 12 real-expertise agent personas (codebase-navigator, library-researcher, deep-research-agent, quality-engineer, refactoring-expert, e2e-specialist, tdd-guide, requirements-analyst, socratic-mentor, business-research-strategist, business-panel-experts, media-interpreter). Symlinked into `~/.claude/agents/` on first session. |
-| `skills/` | 26 auto-invoked skill directories (`skills/*/SKILL.md`). Trigger-based, no explicit invocation. |
+| `skills/` | 27 auto-invoked skill directories (`skills/*/SKILL.md`). Trigger-based, no explicit invocation. |
 | `hooks/` | Lifecycle hook configuration (`hooks.json`) — 7 hook entries across 4 event types. |
 | `scripts/` | Hook implementation scripts (Python + Bash) and shared utilities in `scripts/lib/`. |
 | `rules-templates/` | 17 templates: project-type, best-practice, workflow, the vendored `claudemd-4-7-rulebook.md`, the `agentsmd-codex-rulebook.md`, and the opt-in `extended-rules.md`. |

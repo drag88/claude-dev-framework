@@ -65,7 +65,7 @@ Templates live in `mcp-configs/` and are copied per machine into `.mcp/settings.
 |-----------|-------|--------|
 | Commands | 21 | Markdown + YAML frontmatter |
 | Agents | 12 | Markdown + YAML frontmatter |
-| Skills | 26 | Directories with `SKILL.md` |
+| Skills | 27 | Directories with `SKILL.md` |
 | Hooks | 7 | `hooks.json` entries → Python or Bash scripts |
 | Rule Templates | 17 | Markdown |
 | Host Adapters | 2 | `.claude-plugin/`, `.codex-plugin/` |
