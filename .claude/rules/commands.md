@@ -3,11 +3,14 @@
 ## Local Development
 
 ```bash
-# Run Claude with plugin
-claude --plugin-dir ./claude-dev-framework
+# Run with the local plugin checkout
+claude --plugin-dir .
 
 # Verify installation
 /cdf:rules generate
+
+# Codex equivalent
+codex plugin marketplace add /path/to/claude-dev-framework
 ```
 
 ## Plugin Usage
@@ -45,6 +48,8 @@ claude --plugin-dir ./claude-dev-framework
 # Documentation
 /cdf:docs plan
 /cdf:rules generate
+/cdf:rules claudemd
+/cdf:rules agentsmd
 /cdf:rules status
 
 # Memory and learning
@@ -63,13 +68,13 @@ claude --plugin-dir ./claude-dev-framework
 | `/cdf:e2e` | E2E testing with Playwright |
 | `/cdf:estimate` | Development estimates |
 | `/cdf:explain` | Code and concept explanations |
-| `/cdf:git` | Git operations with smart commit messages |
+| `/cdf:git` | Git operations with conventional commit messages |
 | `/cdf:implement` | Feature implementation with agent activation |
 | `/cdf:improve` | Code quality improvements |
 | `/cdf:learn` | Universal skill learning: capture, view, remove, reset, consolidate preferences |
 | `/cdf:plan-review` | Pre-implementation plan review gauntlet |
 | `/cdf:research` | Deep web research |
-| `/cdf:rules` | Project rules management |
+| `/cdf:rules` | Project rules management: `.claude/rules/`, `CLAUDE.md`, `AGENTS.md` |
 | `/cdf:ship` | Automated release pipeline: merge, test, review, push, PR |
 | `/cdf:task` | Complex task execution with delegation |
 | `/cdf:tdd` | Test-Driven Development workflow |
@@ -79,7 +84,7 @@ claude --plugin-dir ./claude-dev-framework
 
 ## Removed Orchestrators
 
-`/cdf:flow` and `/cdf:workflow` were removed in the 1.13.0 leanness pass. For full lifecycle work, write a clear prompt with the requirements and let Opus 4.7 plan natively at `xhigh` effort, or use `/cdf:task` when you need explicit task breakdown and agent fan-out.
+`/cdf:flow` and `/cdf:workflow` were removed in the 1.13.0 leanness pass. Do not reintroduce them. For full lifecycle work, write a clear prompt at `xhigh` effort, or use `/cdf:task` for explicit breakdown and agent fan-out.
 
 ## Hook Scripts
 
@@ -90,9 +95,24 @@ python3 scripts/analyze-codebase.py
 # Validate hooks.json syntax
 python3 -m json.tool hooks/hooks.json
 
-# Health check
+# Detect framework drift (counts in docs vs reality)
 python3 scripts/health-check.py
+
+# Cross-machine setup
+./scripts/adopt-skills.sh
 ```
+
+## Hook Inventory
+
+| Event | Script | Timeout | Purpose |
+|-------|--------|---------|---------|
+| SessionStart | `scripts/analyze-codebase.py` | 60s | Project type detection, rule generation prompt |
+| SessionStart | `scripts/hooks/session-context.py` | 60s | Inject git history + auto-memory |
+| PreToolUse (Bash) | `scripts/hooks/git-push-review.py` | 5s | Warn before risky pushes |
+| PreToolUse (Bash) | `scripts/hooks/pre-push-checks.py` | 10s | Run pre-push validations |
+| PostToolUse (Edit/Write) | `scripts/hooks/console-log-detector.py` | 5s | Flag stray debug statements |
+| PostToolUse (Edit/Write/MultiEdit) | `scripts/comment-checker.py` | 5s | Comment-density check (35% threshold) |
+| Stop | `scripts/task-completeness-check.sh` | 10s | Verify the agent didn't silently skip steps |
 
 ## Git Workflow
 
@@ -102,5 +122,5 @@ git commit -m "feat: add new command"
 git commit -m "fix: resolve hook timeout"
 git commit -m "docs: update README"
 
-# No Claude attribution in commits (handled by /cdf:git)
+# No AI attribution in commits (handled by /cdf:git)
 ```
