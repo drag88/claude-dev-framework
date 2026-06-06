@@ -1,5 +1,4 @@
 ---
-name: plan
 description: Turn a raw idea, bug, or error into a grounded, structured, durable plan — the front door to implementation
 argument-hint: "[idea | bug URL | pasted error | task description] [--name task-name]"
 ---

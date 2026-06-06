@@ -1,5 +1,5 @@
 ---
-name: generating-project-docs
+name: claudemd-generator
 description: "Auto-generates CLAUDE.generated.md from project rules when rules change or are missing"
 ---
 

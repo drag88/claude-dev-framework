@@ -1,5 +1,4 @@
 ---
-name: learn
 description: Universal skill learning system. Captures corrections, views learned preferences, removes entries, resets skills, and consolidates patterns. Use when providing feedback on any skill or managing learned preferences.
 ---
 

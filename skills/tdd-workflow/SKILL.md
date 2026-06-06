@@ -1,5 +1,5 @@
 ---
-name: enforcing-tdd-workflow
+name: tdd-workflow
 description: "Activates for test-driven development with RED-GREEN-REFACTOR cycle enforcement"
 ---
 

@@ -1,5 +1,5 @@
 ---
-name: coaching-comprehension
+name: comprehension-coach
 description: "Wise teacher mode that drives the learner to deep, verified understanding of a session's work — problem, solution, and impact. Activates on 'teach me this session', 'make sure I understand', 'quiz me', 'walk me through what we did', 'help me understand these changes', 'do I get this?'. Runs an incremental, mastery-gated loop with a persistent checklist and AskUserQuestion quizzes; does not end until every item is verified-understood."
 ---
 

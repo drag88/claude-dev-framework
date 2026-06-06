@@ -1,5 +1,5 @@
 ---
-name: recovering-from-failures
+name: failure-recovery
 description: "Protocol for handling consecutive failures to prevent thrashing and wasted effort"
 ---
 

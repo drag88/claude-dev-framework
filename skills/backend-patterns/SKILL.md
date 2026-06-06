@@ -1,5 +1,5 @@
 ---
-name: applying-backend-patterns
+name: backend-patterns
 description: "Activates for API design, repository pattern, caching, auth middleware, and error handling conventions in backend code"
 ---
 

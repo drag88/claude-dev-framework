@@ -1,5 +1,5 @@
 ---
-name: reviewing-plans
+name: plan-review
 description: "Pre-implementation plan review gauntlet. Activates when a non-trivial plan needs product, engineering, UX/DX, risk, and execution review before approval."
 ---
 

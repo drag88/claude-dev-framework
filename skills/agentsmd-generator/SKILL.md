@@ -1,5 +1,5 @@
 ---
-name: generating-agents-doc
+name: agentsmd-generator
 description: "Auto-generates AGENTS.generated.md from project rules when rules change or are missing"
 ---
 
