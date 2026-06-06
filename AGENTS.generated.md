@@ -54,7 +54,7 @@ Conventional format (`feat:`, `fix:`, `docs:`, `refactor:`, `chore:`, `test:`), 
 ## Key Directories
 - `commands/` — 21 slash command definitions
 - `agents/` — 12 real-expertise agent personas
-- `skills/` — 27 auto-invoked skill directories
+- `skills/` — 22 auto-invoked skill directories
 - `scripts/` — Hook implementation scripts and shared utilities in `scripts/lib/`
 - `hooks/` — Lifecycle hook configuration (`hooks.json`)
 - `rules-templates/` — 17 rule templates
