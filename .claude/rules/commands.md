@@ -30,11 +30,11 @@ codex plugin marketplace add /path/to/claude-dev-framework
 /cdf:troubleshoot "issue"
 
 # Planning
+/cdf:plan "idea, bug, or error"       # Front door: ground, structure, persist, hand off
 /cdf:brainstorm "requirements"
 /cdf:design "system"
 /cdf:estimate "task"
-/cdf:plan-review "plan or PRD"
-/cdf:approve                          # After plan mode: persist + execute
+/cdf:plan-review "plan or PRD"         # Optional gauntlet for high-stakes plans
 
 # Orchestration
 /cdf:task execute "complex task"
@@ -61,7 +61,6 @@ codex plugin marketplace add /path/to/claude-dev-framework
 | Command | Purpose |
 |---------|---------|
 | `/cdf:analyze` | Code analysis (quality, security, performance, architecture) |
-| `/cdf:approve` | Approve plan from plan mode, generate docs, recommend execution strategy |
 | `/cdf:brainstorm` | Interactive requirements discovery |
 | `/cdf:design` | System architecture and API design |
 | `/cdf:docs` | Planning and documentation generation |
@@ -72,6 +71,7 @@ codex plugin marketplace add /path/to/claude-dev-framework
 | `/cdf:implement` | Feature implementation with agent activation |
 | `/cdf:improve` | Code quality improvements |
 | `/cdf:learn` | Universal skill learning: capture, view, remove, reset, consolidate preferences |
+| `/cdf:plan` | Front door: turn a raw idea, bug, or error into a grounded, structured, durable plan |
 | `/cdf:plan-review` | Pre-implementation plan review gauntlet |
 | `/cdf:research` | Deep web research |
 | `/cdf:rules` | Project rules management: `.claude/rules/`, `CLAUDE.md`, `AGENTS.md` |

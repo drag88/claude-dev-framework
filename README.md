@@ -152,7 +152,7 @@ CDF's durable core is the methodology in `commands/`, `agents/`, `skills/`, `rul
 
 ### Commands
 
-Slash commands prefixed with `/cdf:` covering development, analysis, planning, review, and quality verification. Core commands include `implement`, `test`, `tdd`, `git`, `analyze`, `research`, `troubleshoot`, `design`, `plan-review`, `task`, `verify`, and `ship`.
+Slash commands prefixed with `/cdf:` covering development, analysis, planning, review, and quality verification. Core commands include `plan`, `implement`, `test`, `tdd`, `git`, `analyze`, `research`, `troubleshoot`, `design`, `plan-review`, `task`, `verify`, and `ship`.
 
 See [commands/README.md](commands/README.md) for the complete reference.
 

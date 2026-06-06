@@ -58,7 +58,7 @@ def check_changelog(files, project_root):
     if existing in files:
         return None  # Already updated
 
-    return f"CHANGELOG ({existing}) not updated. Code changes should be documented."
+    return f"CHANGELOG ({existing}) not updated. Add an entry to {existing} describing these code changes."
 
 
 def check_version(files, project_root):
@@ -76,7 +76,7 @@ def check_version(files, project_root):
         if (project_root / vf).exists():
             if vf in files:
                 return None  # Updated
-            return f"VERSION file ({vf}) not bumped. Consider updating the version."
+            return f"VERSION file ({vf}) not bumped. Bump {vf} if this change warrants a release."
 
     # Check version in config files
     for cfg, _ in version_in_config:
@@ -111,7 +111,7 @@ def check_docs(files, project_root):
     if docs_updated:
         return None
 
-    return "Public API/commands changed but documentation not updated. Consider updating README.md or docs/."
+    return "Public API/commands changed but documentation not updated. Update README.md or docs/ to reflect the changed surface."
 
 
 def main():
@@ -147,7 +147,11 @@ def main():
         if result.returncode != 0:
             print(json.dumps({
                 "decision": "block",
-                "reason": f"Health check failed. Fix before pushing:\n{result.stdout.strip()}"
+                "reason": (
+                    "Health check failed — the drift below must be fixed before pushing. "
+                    "Resolve each item, then re-run `python3 scripts/health-check.py` to confirm "
+                    f"it passes:\n{result.stdout.strip()}"
+                )
             }))
             return
 

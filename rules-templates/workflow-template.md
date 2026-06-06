@@ -48,7 +48,7 @@ Before choosing a workflow, classify the task by shape. This gstack-inspired rou
 | Medium | Multi-file change with known approach | `/cdf:task` for scoped breakdown, then implement in main context |
 | Investigate | Bug, regression, unexplained failure | `/cdf:troubleshoot`, with codebase-navigator for multi-file tracing |
 | Review | Quality, security, performance, architecture risk | `/cdf:analyze`, or `/cdf:task` with role framing when no real agent exists |
-| Plan | User wants to shape a feature before building | `/cdf:brainstorm`, `/cdf:design`, `/cdf:plan-review`, then `/cdf:approve` |
+| Plan | User wants to shape a feature before building | `/cdf:plan` (front door), then optional `/cdf:plan-review` for high-stakes work |
 | Ship | User wants release execution | `/cdf:verify --mode pre-pr`, then `/cdf:ship` |
 
 Do not recreate `/cdf:flow` or `/cdf:workflow`; Opus 4.7 handles full lifecycle plans from a clear prompt with `xhigh` effort.

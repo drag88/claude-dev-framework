@@ -95,6 +95,7 @@ if __name__ == "__main__":
 
 - **Input**: JSON on `sys.stdin` with a `tool_input` key (not `sys.argv`, not `$TOOL_INPUT`).
 - **Output**: JSON on `sys.stdout` — either `{"additionalContext": "..."}` to inject context or `{"decision": "block", "reason": "..."}` to block the action.
+- **Self-correcting messages**: every `reason` or warning string names the concrete corrective action, not just the problem. State what to do and the command to re-confirm (e.g. "re-run `python3 scripts/health-check.py`"), so the agent can fix and verify without a human translating the complaint into a step. A block that says only "X failed" makes the agent guess.
 - **Timeouts**: 5s for validators, 10s for pre-push checks, 60s for analysis hooks.
 - **Dependencies**: Python stdlib only.
 - **Path conventions**: Use `$CLAUDE_PLUGIN_ROOT` for plugin-relative paths inside `hooks.json`.
@@ -129,7 +130,7 @@ Match the request to the narrowest CDF surface:
 - **Quality / security / perf audit** → `/cdf:analyze`
 - **Tests or TDD** → `/cdf:test` or `/cdf:tdd`
 - **Pre-PR check** → `/cdf:verify --mode pre-pr`
-- **Plan-first work** → `/cdf:brainstorm` → `/cdf:design` → `/cdf:plan-review` → `/cdf:approve`
+- **Plan-first work** → `/cdf:plan` (front door) → optional `/cdf:plan-review` (high-stakes) → `/cdf:task`
 - **Release** → `/cdf:ship`
 - **Full lifecycle** → clear prompt at `xhigh` effort (do not reintroduce `/cdf:flow` or `/cdf:workflow`).
 

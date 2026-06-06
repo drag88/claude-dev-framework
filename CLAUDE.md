@@ -58,6 +58,8 @@ For role-based work (backend, frontend, devops, security, perf, system design, d
 <plans_instruction>
 ## Plans Format
 
+Plans follow a section contract — a floor plus include-when-material. Five sections always appear: Summary (lead with the answer), Problem Frame, Requirements, Key Decisions (each as `decision: rationale`), and Implementation Units. Everything else (design, scope boundaries, risks, rollout) appears only when it carries real content — a padded section is worse than an omitted one.
+
 At end of plans, provide concise unresolved questions:
 ```
 Unresolved Questions:

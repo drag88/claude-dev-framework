@@ -147,14 +147,9 @@ dev/active/[task-name]/
 └── [task-name]-tasks.md     # Checklist format for tracking
 ```
 
-**Plan Contents:**
-- Executive Summary
-- Current State Analysis
-- Implementation Phases
-- Detailed Tasks with acceptance criteria
-- Risk Assessment and Mitigation
-- Success Metrics
-- Timeline Estimates
+**Plan Contents — section contract (floor + include-when-material):**
+
+Five sections are a hard floor and always appear: Summary (lead with the answer), Problem Frame, Requirements, Key Decisions (each as `decision: rationale`), and Implementation Units. Everything else (Current State, Risk Assessment, Success Metrics, Timeline) appears **only when it carries real content** — a padded section is worse than an omitted one. Do not fill a heading to look thorough.
 
 **Task Breakdown Structure:**
 - Each major section represents a phase or component
@@ -186,10 +181,19 @@ Use checkbox format so progress can be marked as work proceeds:
 **Last Updated**: YYYY-MM-DD HH:MM
 ```
 
+Give each phase or unit a `Verification:` line stating how to prove it done — the concrete command, not a vague "tests pass":
+
+```markdown
+## Phase 2: Implementation [0/4]
+- [ ] Implement core service class
+- [ ] Add API endpoints
+Verification: `pytest tests/test_service.py` passes; `curl localhost:8000/health` returns 200
+```
+
 The checkbox format enables:
 - Visual progress tracking during implementation
 - Manual or scripted updates as work progresses ([ ] -> [x])
-- Easy resume after interruption
+- Easy resume after interruption — and the `Verification:` line lets a resumed session confirm a unit really shipped before moving on
 - Progress percentage calculation
 
 **Quality Standards:**

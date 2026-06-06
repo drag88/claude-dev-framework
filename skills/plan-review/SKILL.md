@@ -5,7 +5,7 @@ description: "Pre-implementation plan review gauntlet. Activates when a non-triv
 
 # Plan Review
 
-Review plans before implementation. This is the skill backing `/cdf:plan-review` and the automatic nudge before `/cdf:approve`.
+Review plans before implementation. This is the skill backing `/cdf:plan-review`, the optional gauntlet `/cdf:plan` offers for high-stakes work.
 
 ## When to Activate
 
@@ -133,7 +133,7 @@ Mode: expand | hold | reduce
 - [Decision needed]
 
 ### Next Command
-`/cdf:approve` or another specific command, with reason.
+`/cdf:task` or another specific command, with reason.
 ```
 
 ## Automatic Nudge

@@ -44,7 +44,7 @@ Classify the task by shape before reaching for tooling. This keeps CDF lean whil
 | Medium | Multi-file change with known approach | `/cdf:task` for scoped breakdown, then implement in main context |
 | Investigate | Bug, regression, unexplained failure | `/cdf:troubleshoot`, with codebase-navigator for multi-file tracing |
 | Review | Quality, security, performance, architecture risk | `/cdf:analyze`, or `/cdf:task` with role framing when no real agent exists |
-| Plan | User wants to shape a feature before building | `/cdf:brainstorm`, `/cdf:design`, `/cdf:plan-review`, then `/cdf:approve` |
+| Plan | User wants to shape a feature before building | `/cdf:plan` (front door), then optional `/cdf:plan-review` for high-stakes work |
 | Ship | User wants release execution | `/cdf:verify --mode pre-pr`, then `/cdf:ship` |
 
 Do not recreate `/cdf:flow` or `/cdf:workflow`; Opus 4.7 handles full lifecycle plans from a clear prompt with `xhigh` effort.
@@ -58,7 +58,9 @@ Give each agent:
 2. The specific files or directories to focus on
 3. What to return (a summary, a verdict, a list — not raw file dumps)
 
-For complex problems, throw more compute at it: spawn 3-5 agents in parallel, each covering a different angle.
+For complex problems, throw more compute at it: spawn 3-5 agents in parallel, each covering a different angle. Cap a single fan-out at 8 concurrent subagents — beyond that you are burning context, not buying signal. If a task seems to need more, it is two tasks.
+
+**Fire the next action, do not just announce it.** When a command or step ends by recommending a follow-up you can perform now (run the verify, start the review, execute the plan), perform it — do not stop at telling the user what to type. Announcing-instead-of-doing is the most common silent stall.
 
 ### Project-Specific Spawn Patterns
 

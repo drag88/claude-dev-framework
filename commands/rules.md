@@ -324,7 +324,7 @@ Skills auto-trigger from context (coding-standards, backend-patterns, frontend-p
 
 For role-based work (backend, frontend, devops, security, perf, system design, docs) where no specific CDF tool fits, invoke `/cdf:task` directly — Opus 4.7 plays the role from the `## Role` line above plus `xhigh` effort.
 
-Dispatch by task shape: simple changes use direct edit or `/cdf:implement`; bugs use `/cdf:troubleshoot`; audits use `/cdf:analyze`; plan-first work uses `/cdf:brainstorm` or `/cdf:design`, then `/cdf:plan-review`, then `/cdf:approve`; full lifecycle work uses a clear prompt with `xhigh` effort rather than `/cdf:flow` or `/cdf:workflow`.
+Dispatch by task shape: simple changes use direct edit or `/cdf:implement`; bugs use `/cdf:troubleshoot`; audits use `/cdf:analyze`; plan-first work uses `/cdf:plan` as the front door, then optional `/cdf:plan-review` for high-stakes plans, then `/cdf:task`; full lifecycle work uses a clear prompt with `xhigh` effort rather than `/cdf:flow` or `/cdf:workflow`.
 
 <plans_instruction>
 ## Plans Format
@@ -633,7 +633,7 @@ Skills auto-trigger from context (coding-standards, backend-patterns, frontend-p
 
 For role-based work (backend, frontend, devops, security, perf, system design, docs) where no specific CDF tool fits, invoke `/cdf:task` directly — Opus 4.7 plays the role from the `## Role` line above plus `xhigh` effort.
 
-Dispatch by task shape: simple changes use direct edit or `/cdf:implement`; bugs use `/cdf:troubleshoot`; audits use `/cdf:analyze`; plan-first work uses `/cdf:brainstorm` or `/cdf:design`, then `/cdf:plan-review`, then `/cdf:approve`; full lifecycle work uses a clear prompt with `xhigh` effort rather than `/cdf:flow` or `/cdf:workflow`.
+Dispatch by task shape: simple changes use direct edit or `/cdf:implement`; bugs use `/cdf:troubleshoot`; audits use `/cdf:analyze`; plan-first work uses `/cdf:plan` as the front door, then optional `/cdf:plan-review` for high-stakes plans, then `/cdf:task`; full lifecycle work uses a clear prompt with `xhigh` effort rather than `/cdf:flow` or `/cdf:workflow`.
 
 <plans_instruction>
 ## Plans Format

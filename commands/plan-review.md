@@ -29,7 +29,7 @@ Use `/cdf:plan-review` when:
 - A plan touches multiple files, modules, teams, user journeys, or production behavior
 - You want strategic challenge before writing code
 - The plan needs UX, DX, security, observability, rollout, or test hardening
-- You are about to run `/cdf:approve` on non-trivial work
+- `/cdf:plan` flagged the work as high-stakes and you want the gauntlet before executing
 
 Do not use this command for single-file fixes, already-approved implementation tasks, or post-implementation code review. Use `/cdf:troubleshoot`, `/cdf:task`, or `/cdf:analyze` instead.
 
@@ -73,7 +73,7 @@ Do not use this command for single-file fixes, already-approved implementation t
 6. **Execution Brief**
    - Rewrite the plan only where needed.
    - List required changes, optional enhancements, open decisions, and out-of-scope items.
-   - Recommend next command: `/cdf:approve`, `/cdf:task --breakdown`, `/cdf:design`, `/cdf:troubleshoot`, or stop for user decision.
+   - Recommend next command: `/cdf:task`, `/cdf:task --breakdown`, `/cdf:design`, `/cdf:troubleshoot`, or stop for user decision.
 
 ## Output Format
 
@@ -103,7 +103,7 @@ Mode: expand | hold | reduce
 - [Decision needed before implementation]
 
 ### Next Command
-`/cdf:approve` or another specific command, with reason.
+`/cdf:task` or another specific command, with reason.
 ```
 
 ## Boundaries
@@ -121,7 +121,7 @@ Will not:
 
 ## Related Commands
 
+- `/cdf:plan` - Produce the plan this command reviews (the front door)
 - `/cdf:brainstorm` - Discover requirements before a plan exists
 - `/cdf:design` - Produce technical design before implementation
-- `/cdf:approve` - Persist the reviewed plan and choose execution strategy
-- `/cdf:task` - Execute or delegate the approved plan
+- `/cdf:task` - Execute or delegate the reviewed plan
