@@ -331,7 +331,8 @@ This project uses CDF (Claude Dev Framework). CDF wraps the compound-engineering
 CE-first routes (require the compound-engineering plugin):
 
 - **Requirements / brainstorm**: `/cdf:brainstorm` → `compound-engineering:ce-brainstorm` (writes `docs/brainstorms/`)
-- **Design / plan**: `/cdf:design`, `/cdf:docs plan` → `compound-engineering:ce-plan` (writes `docs/plans/`)
+- **Plan front door**: `/cdf:plan` (raw idea, bug, or error) → `compound-engineering:ce-plan` (writes `docs/plans/`)
+- **Design / plan**: `/cdf:design`, `/cdf:docs plan` → `compound-engineering:ce-plan`
 - **Plan review**: `/cdf:plan-review` → `compound-engineering:ce-doc-review` — review gate for high-stakes plans
 - **Implementation**: `/cdf:implement` → `compound-engineering:ce-work`
 - **Debugging**: `/cdf:troubleshoot` → `compound-engineering:ce-debug` — root cause + regression test
@@ -672,7 +673,8 @@ This project uses CDF (Claude Dev Framework). CDF wraps the compound-engineering
 CE-first routes (require the compound-engineering plugin):
 
 - **Requirements / brainstorm**: `/cdf:brainstorm` → `compound-engineering:ce-brainstorm` (writes `docs/brainstorms/`)
-- **Design / plan**: `/cdf:design`, `/cdf:docs plan` → `compound-engineering:ce-plan` (writes `docs/plans/`)
+- **Plan front door**: `/cdf:plan` (raw idea, bug, or error) → `compound-engineering:ce-plan` (writes `docs/plans/`)
+- **Design / plan**: `/cdf:design`, `/cdf:docs plan` → `compound-engineering:ce-plan`
 - **Plan review**: `/cdf:plan-review` → `compound-engineering:ce-doc-review` — review gate for high-stakes plans
 - **Implementation**: `/cdf:implement` → `compound-engineering:ce-work`
 - **Debugging**: `/cdf:troubleshoot` → `compound-engineering:ce-debug` — root cause + regression test
