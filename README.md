@@ -53,6 +53,7 @@ claude --plugin-dir ./claude-dev-framework
 claude plugin marketplace add drag88/claude-dev-framework
 
 # Inside Claude Code
+/plugin marketplace add drag88/claude-dev-framework
 /plugin install cdf@claude-dev-framework
 ```
 
