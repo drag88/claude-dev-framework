@@ -1,6 +1,6 @@
 # CDF (Claude Dev Framework)
 
-A host-adaptable development framework for AI coding agents. CDF provides commands, agent personas, auto-invoked skills, rules, and lifecycle hooks -- turning Claude Code, Codex, and other coding agents into structured, opinionated development assistants.
+A host-adaptable development framework for AI coding agents. CDF wraps the [compound-engineering](https://github.com/EveryInc/compound-engineering-plugin) plugin's engineering loop (brainstorm → plan → work → review → compound) behind stable `/cdf:*` commands, and complements it with rules generation, lifecycle hooks, host adapters, session memory, quality gates, and real-expertise agents -- turning Claude Code, Codex, and other coding agents into structured, opinionated development assistants.
 
 ---
 
@@ -15,14 +15,38 @@ A host-adaptable development framework for AI coding agents. CDF provides comman
 
 See [docs/HOSTS.md](docs/HOSTS.md) for the adapter model and Codex rollout path.
 
-### From Source (Recommended for Development)
+### Step 1: Install the compound-engineering plugin (required)
+
+CDF 2.0.0 delegates its engineering-loop commands to compound-engineering. Install it on your host first:
+
+```bash
+# Claude Code — inside a session
+/plugin marketplace add EveryInc/compound-engineering-plugin
+/plugin install compound-engineering@compound-engineering-plugin
+
+# Codex — CE ships a .codex-plugin too
+codex plugin marketplace add https://github.com/EveryInc/compound-engineering-plugin
+```
+
+For Codex, enable it in `~/.codex/config.toml`:
+
+```toml
+[plugins."compound-engineering@compound-engineering-plugin"]
+enabled = true
+```
+
+Without CE, the delegated commands (`/cdf:brainstorm`, `/cdf:design`, `/cdf:implement`, `/cdf:troubleshoot`, `/cdf:plan-review`, `/cdf:git commit`, `/cdf:ship`) stop and ask you to install it. Native-only commands (`/cdf:rules`, `/cdf:test`, `/cdf:task`, `/cdf:analyze`, `/cdf:verify` gates, etc.) work regardless.
+
+### Step 2: Install CDF
+
+**Claude Code — from source (recommended for development):**
 
 ```bash
 git clone https://github.com/drag88/claude-dev-framework.git
 claude --plugin-dir ./claude-dev-framework
 ```
 
-### From Marketplace
+**Claude Code — from marketplace:**
 
 ```bash
 # Via CLI (outside Claude Code)
@@ -32,9 +56,7 @@ claude plugin marketplace add drag88/claude-dev-framework
 /plugin install cdf@claude-dev-framework
 ```
 
-### Codex
-
-CDF also ships Codex metadata. From this checkout:
+**Codex:**
 
 ```bash
 codex plugin marketplace add /path/to/claude-dev-framework
@@ -52,7 +74,8 @@ Restart Codex after changing plugin configuration.
 ### Verify Installation
 
 ```bash
-/cdf:rules generate
+/cdf:rules generate          # CDF loaded and generating rules
+python3 scripts/health-check.py   # from the CDF checkout: versions, counts, CE skill refs
 ```
 
 Agents are automatically symlinked to `~/.claude/agents/` on first session, making them accessible globally via `@agent-name`.
@@ -133,7 +156,7 @@ cp mcp-configs/mcp-servers.template.json .mcp/settings.json
 CDF version is in `.claude-plugin/plugin.json`. To pin a specific version on a machine:
 
 ```bash
-git checkout v1.12.0    # or whatever version
+git checkout v2.0.0    # or whatever version
 ```
 
 Third-party skills are tracked in `skills-lock.json` with computed hashes. Update with:
