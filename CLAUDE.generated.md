@@ -36,9 +36,13 @@ invoke all relevant tools simultaneously rather than sequentially.
 </use_parallel_tool_calls>
 
 ## Model Routing
-- **Planning**: Fable if available, else Opus — plan mode, `/cdf:plan`, `/cdf:design`, `/cdf:plan-review`, architecture decisions.
-- **Execution**: Sonnet — implementation, edits, tests.
-- **Subagents**: Sonnet — all background agents and fan-out, unless a task genuinely needs a stronger model.
+
+Fable 5 (max reasoning) is the orchestrator: plan, decompose, synthesize. Keep its context lean — delegate the heavy lifting. If Fable is unavailable, Opus orchestrates.
+
+- **Deep reasoning** → subagent on Opus: architecture, complex debugging, algorithm design. Think thoroughly, return a concise conclusion the orchestrator can act on.
+- **Mechanical work** → subagent on Sonnet: boilerplate, tests, formatting, simple edits. Execute efficiently.
+- **Peer engineer** → Codex (`/codex:rescue --background`, when the codex plugin is installed): on par with the Opus reasoner but a different perspective. Treat as a peer, not a reviewer.
+- **High-stakes decisions** → task Opus and Codex on the same problem in parallel, without showing either the other's answer, then synthesize the best of both.
 
 ## Communication
 Communication style: follows the user-level CLAUDE.md (plain simple English, answer first).

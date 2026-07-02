@@ -114,6 +114,7 @@ if __name__ == "__main__":
 
 Use the narrowest CDF surface that matches the request:
 - **Simple implementation** -> `/cdf:implement` (delegates to `compound-engineering:ce-work`)
+- **Raw idea, bug, or error needing a plan** -> `/cdf:plan` (delegates to `compound-engineering:ce-plan`; the single planning entry point)
 - **Bug report** -> `/cdf:troubleshoot` (delegates to `compound-engineering:ce-debug`)
 - **Diff or PR review** -> `compound-engineering:ce-code-review`
 - **Ideation / grounded options** -> `compound-engineering:ce-ideate`

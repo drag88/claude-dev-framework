@@ -34,7 +34,7 @@ invoke all relevant tools simultaneously rather than sequentially.
 </use_parallel_tool_calls>
 
 ## Model Routing
-- **Planning**: Fable if available, else Opus. **Execution + subagents**: Sonnet.
+Strongest available model orchestrates; deep-reasoning subtasks on a strong reasoning tier; mechanical work on a fast tier. High-stakes decisions get two independent takes, synthesized.
 
 ## Communication
 Communication style: follows the user-level CLAUDE.md (plain simple English, answer first).
