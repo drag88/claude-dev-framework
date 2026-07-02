@@ -330,8 +330,8 @@ This project uses CDF (Claude Dev Framework). CDF wraps the compound-engineering
 
 CE-first routes (require the compound-engineering plugin):
 
-- **Requirements / brainstorm**: `/cdf:brainstorm` → `compound-engineering:ce-brainstorm` (writes `docs/brainstorms/`)
 - **Plan front door**: `/cdf:plan` (raw idea, bug, or error) → `compound-engineering:ce-plan` (writes `docs/plans/`)
+- **Requirements / brainstorm**: `/cdf:brainstorm` → `compound-engineering:ce-brainstorm` (writes `docs/brainstorms/`)
 - **Design / plan**: `/cdf:design`, `/cdf:docs plan` → `compound-engineering:ce-plan`
 - **Plan review**: `/cdf:plan-review` → `compound-engineering:ce-doc-review` — review gate for high-stakes plans
 - **Implementation**: `/cdf:implement` → `compound-engineering:ce-work`
@@ -351,7 +351,7 @@ CDF complement layer (native):
 
 Real-expertise agents (invoke via `/cdf:task` or the relevant CDF command): codebase-navigator, library-researcher, deep-research-agent, quality-engineer, refactoring-expert, e2e-specialist, tdd-guide, socratic-mentor, business-research-strategist, business-panel-experts, media-interpreter.
 
-Skills auto-trigger from context (coding-standards, backend-patterns, frontend-patterns, tdd-workflow, e2e-patterns, frontend-design, failure-recovery). Do not invoke manually.
+Skills auto-trigger from context (coding-standards, backend-patterns, frontend-patterns, frontend-design, tdd-workflow, e2e-patterns, failure-recovery, rules-generator, claudemd-generator, agentsmd-generator, comprehension-coach, retro, tuning-coding-agent-codebases). Do not invoke manually.
 
 For role-based work (backend, frontend, devops, security, perf, system design, docs) where no specific CDF tool fits, invoke `/cdf:task` directly — Opus 4.7 plays the role from the `## Role` line above plus `xhigh` effort.
 
@@ -672,8 +672,8 @@ This project uses CDF (Claude Dev Framework). CDF wraps the compound-engineering
 
 CE-first routes (require the compound-engineering plugin):
 
-- **Requirements / brainstorm**: `/cdf:brainstorm` → `compound-engineering:ce-brainstorm` (writes `docs/brainstorms/`)
 - **Plan front door**: `/cdf:plan` (raw idea, bug, or error) → `compound-engineering:ce-plan` (writes `docs/plans/`)
+- **Requirements / brainstorm**: `/cdf:brainstorm` → `compound-engineering:ce-brainstorm` (writes `docs/brainstorms/`)
 - **Design / plan**: `/cdf:design`, `/cdf:docs plan` → `compound-engineering:ce-plan`
 - **Plan review**: `/cdf:plan-review` → `compound-engineering:ce-doc-review` — review gate for high-stakes plans
 - **Implementation**: `/cdf:implement` → `compound-engineering:ce-work`
@@ -693,7 +693,7 @@ CDF complement layer (native):
 
 Real-expertise agents (invoke via `/cdf:task` or the relevant CDF command): codebase-navigator, library-researcher, deep-research-agent, quality-engineer, refactoring-expert, e2e-specialist, tdd-guide, socratic-mentor, business-research-strategist, business-panel-experts, media-interpreter.
 
-Skills auto-trigger from context (coding-standards, backend-patterns, frontend-patterns, tdd-workflow, e2e-patterns, frontend-design, failure-recovery). Do not invoke manually.
+Skills auto-trigger from context (coding-standards, backend-patterns, frontend-patterns, frontend-design, tdd-workflow, e2e-patterns, failure-recovery, rules-generator, claudemd-generator, agentsmd-generator, comprehension-coach, retro, tuning-coding-agent-codebases). Do not invoke manually.
 
 For role-based work (backend, frontend, devops, security, perf, system design, docs) where no specific CDF tool fits, invoke `/cdf:task` directly — Opus 4.7 plays the role from the `## Role` line above plus `xhigh` effort.
 

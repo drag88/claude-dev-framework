@@ -72,11 +72,13 @@ CDF complement layer (native):
 - **Refactoring**: `/cdf:improve` — systematic with safety checks
 - **Code / security / perf analysis**: `/cdf:analyze` — repo-wide multi-domain audit (diff review belongs to ce-code-review)
 
-Real-expertise agents (invoke via the Task tool): codebase-navigator, library-researcher, deep-research-agent, quality-engineer, refactoring-expert, e2e-specialist, tdd-guide, socratic-mentor, business-research-strategist, business-panel-experts, media-interpreter.
+Real-expertise agents (invoke via `/cdf:task` or the relevant CDF command): codebase-navigator, library-researcher, deep-research-agent, quality-engineer, refactoring-expert, e2e-specialist, tdd-guide, socratic-mentor, business-research-strategist, business-panel-experts, media-interpreter.
 
 Skills auto-trigger from context (coding-standards, backend-patterns, frontend-patterns, frontend-design, tdd-workflow, e2e-patterns, failure-recovery, rules-generator, claudemd-generator, agentsmd-generator, comprehension-coach, retro, tuning-coding-agent-codebases). Do not invoke manually.
 
 For role-based work (backend, frontend, devops, security, perf, system design, docs) where no specific CDF tool fits, invoke `/cdf:task` directly — Opus 4.7 plays the role from the `## Role` line above plus `xhigh` effort. The old persona-stub agents were removed in 1.13.0 — do not reintroduce them.
+
+Dispatch by task shape: simple changes use direct edit or `/cdf:implement`; bugs use `/cdf:troubleshoot`; audits use `/cdf:analyze`; plan-first work uses `/cdf:plan` as the front door (delegates to `compound-engineering:ce-plan`), then optional `/cdf:plan-review` (delegates to `compound-engineering:ce-doc-review`) for high-stakes plans; full lifecycle work uses a clear prompt with high effort rather than a monolithic orchestrator command.
 
 <plans_instruction>
 ## Plans Format
