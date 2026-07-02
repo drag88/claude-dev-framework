@@ -40,7 +40,7 @@ Before choosing a workflow, classify the task by shape. This gstack-inspired rou
 | Medium | Multi-file change with known approach | `/cdf:task` breakdown, then `/cdf:implement` (`compound-engineering:ce-work`) |
 | Investigate | Bug, regression, unexplained failure | `/cdf:troubleshoot` (`compound-engineering:ce-debug`) |
 | Review | Diff/PR review or repo-wide audit | `compound-engineering:ce-code-review` for diff/PR review; `/cdf:analyze` for repo-wide audits |
-| Plan | User wants to shape a feature before building | `/cdf:brainstorm` (`compound-engineering:ce-brainstorm`) → `/cdf:design` (`compound-engineering:ce-plan`) → `/cdf:plan-review` (`compound-engineering:ce-doc-review`) for high-stakes work |
+| Plan | User wants to shape a feature before building | `/cdf:plan` front door (`compound-engineering:ce-plan`); or `/cdf:brainstorm` (`compound-engineering:ce-brainstorm`) → `/cdf:design` (`compound-engineering:ce-plan`); then `/cdf:plan-review` (`compound-engineering:ce-doc-review`) for high-stakes work |
 | Ideate | User wants options, product angles, or grounded ideas | `compound-engineering:ce-ideate` |
 | Ship | User wants release execution | `/cdf:verify --mode pre-pr`, then `/cdf:ship` (`compound-engineering:ce-code-review` + `compound-engineering:ce-commit-push-pr`) |
 
