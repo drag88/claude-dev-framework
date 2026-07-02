@@ -35,23 +35,42 @@ For maximum efficiency, whenever you perform multiple independent operations,
 invoke all relevant tools simultaneously rather than sequentially.
 </use_parallel_tool_calls>
 
+## Model Routing
+- **Planning**: Fable if available, else Opus — plan mode, `/cdf:plan`, `/cdf:design`, `/cdf:plan-review`, architecture decisions.
+- **Execution**: Sonnet — implementation, edits, tests.
+- **Subagents**: Sonnet — all background agents and fan-out, unless a task genuinely needs a stronger model.
+
+## Communication
+Communication style: follows the user-level CLAUDE.md (plain simple English, answer first).
+
 ## CDF tools available
 
-CDF is the project being developed here. Reach for these instead of generic approaches:
+CDF is the project being developed here. It wraps the compound-engineering plugin's engineering loop behind stable `/cdf:*` commands — reach for these instead of generic approaches.
 
-- **Debugging bugs**: `/cdf:troubleshoot` — root-cause methodology, adds regression test
-- **Pre-PR quality check**: `/cdf:verify --mode pre-pr` — types + lint + tests + security in one pass
+CE-first routes (require the compound-engineering plugin):
+
+- **Plan front door**: `/cdf:plan` (raw idea, bug, or error) → `compound-engineering:ce-plan` (writes `docs/plans/`)
+- **Requirements / brainstorm**: `/cdf:brainstorm` → `compound-engineering:ce-brainstorm` (writes `docs/brainstorms/`)
+- **Design / plan**: `/cdf:design`, `/cdf:docs plan` → `compound-engineering:ce-plan`
+- **Plan review**: `/cdf:plan-review` → `compound-engineering:ce-doc-review` — review gate for high-stakes plans
+- **Implementation**: `/cdf:implement` → `compound-engineering:ce-work`
+- **Debugging**: `/cdf:troubleshoot` → `compound-engineering:ce-debug` — root cause + regression test
+- **Commit**: `/cdf:git commit` → `compound-engineering:ce-commit` — conventional commits, no AI attribution
+- **Ship**: `/cdf:ship` → `compound-engineering:ce-code-review` + `compound-engineering:ce-commit-push-pr`
+- **Knowledge capture**: after non-obvious fixes, `compound-engineering:ce-compound` → `docs/solutions/` + `CONCEPTS.md`
+
+CDF complement layer (native):
+
+- **Pre-PR quality check**: `/cdf:verify --mode pre-pr` — types + lint + tests + security; review stage → `compound-engineering:ce-code-review`
 - **Tests**: `/cdf:test` (coverage-aware), `/cdf:tdd` for RED-GREEN-REFACTOR
-- **Plan review**: `/cdf:plan-review` — product + engineering + UX/DX + risk gauntlet before approval
 - **Multi-file investigation**: `/cdf:task` with codebase-navigator agent (returns summary, not raw dumps)
 - **Library research / evaluation**: `/cdf:task` with library-researcher agent (evidence-backed, GitHub permalinks)
 - **Refactoring**: `/cdf:improve` — systematic with safety checks
-- **Code / security / perf analysis**: `/cdf:analyze` — multi-domain audit
-- **Commit / ship**: `/cdf:git`, `/cdf:ship` — conventional commits, no AI attribution
+- **Code / security / perf analysis**: `/cdf:analyze` — repo-wide multi-domain audit (diff review belongs to ce-code-review)
 
-Real-expertise agents (invoke via the Task tool): codebase-navigator, library-researcher, deep-research-agent, quality-engineer, refactoring-expert, e2e-specialist, tdd-guide, requirements-analyst, socratic-mentor, business-research-strategist, business-panel-experts, media-interpreter.
+Real-expertise agents (invoke via the Task tool): codebase-navigator, library-researcher, deep-research-agent, quality-engineer, refactoring-expert, e2e-specialist, tdd-guide, socratic-mentor, business-research-strategist, business-panel-experts, media-interpreter.
 
-Skills auto-trigger from context (coding-standards, backend-patterns, frontend-patterns, tdd-workflow, e2e-patterns, frontend-design, failure-recovery, visual-explainer). Do not invoke manually.
+Skills auto-trigger from context (coding-standards, backend-patterns, frontend-patterns, frontend-design, tdd-workflow, e2e-patterns, failure-recovery, rules-generator, claudemd-generator, agentsmd-generator, comprehension-coach, retro, tuning-coding-agent-codebases). Do not invoke manually.
 
 For role-based work (backend, frontend, devops, security, perf, system design, docs) where no specific CDF tool fits, invoke `/cdf:task` directly — Opus 4.7 plays the role from the `## Role` line above plus `xhigh` effort. The old persona-stub agents were removed in 1.13.0 — do not reintroduce them.
 
@@ -78,13 +97,15 @@ Conventional format (`feat:`, `fix:`, `docs:`, `refactor:`, `chore:`, `test:`), 
 - Hook output is JSON on `sys.stdout` — either `{"additionalContext": "..."}` to inject or `{"decision": "block", "reason": "..."}` to block.
 - `hooks/hooks.json` is the single source of truth for lifecycle hook configuration. Update it whenever you add a script under `scripts/` or `scripts/hooks/`.
 - Commands, agents, and skills are pure markdown with YAML frontmatter — no executable code. Logic belongs in `scripts/`.
-- The orchestrator commands `/cdf:flow` and `/cdf:workflow` were removed in the 1.13.0 leanness pass. For full lifecycle work, write a clear prompt at `xhigh` effort, or use `/cdf:task` for explicit breakdown.
+- The orchestrator commands `/cdf:flow` and `/cdf:workflow` were removed in the 1.13.0 leanness pass, and `/cdf:approve` was retired in favor of `/cdf:plan`. For full lifecycle work, write a clear prompt at `xhigh` effort, or use `/cdf:task` for explicit breakdown.
 - Update count-bearing docs (`README.md`, `.claude/rules/architecture.md`, `.claude/rules/tech-stack.md`, `.claude-plugin/marketplace.json`) when adding or removing commands, agents, or skills. Then run `python3 scripts/health-check.py` to catch drift.
-- `.claude-plugin/` and `.codex-plugin/` versions must stay in sync (currently 1.14.0).
+- `.claude-plugin/` and `.codex-plugin/` versions must stay in sync (currently 2.0.0).
 
 ## Memory
 - Check auto-memory for prior context at session start.
-- Save key decisions, debugging insights, and project patterns to auto-memory during work as `feedback_*.md` files.
+- `compound-engineering:ce-compound` writes durable repo knowledge to `docs/solutions/` and `CONCEPTS.md`; commit those artifacts.
+- `/cdf:learn` captures skill-preference corrections only.
+- Auto-memory captures session decisions only; promote them to `compound-engineering:ce-compound` when they harden.
 - Reserve `.claude/rules/` for human-curated, durable standards. CDF hooks never write there.
 
 ## Imports
