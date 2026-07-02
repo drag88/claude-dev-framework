@@ -35,7 +35,7 @@ Each step completes before the next begins. If a step fails, report the failure 
   - `quick`: Types and lint only
   - `pre-commit`: Types, lint, affected tests
   - `full`: All checks including e2e
-  - `pre-pr`: Full + security scan + coverage
+  - `pre-pr`: Full + security scan + coverage + review
 - `--fix`: Auto-fix fixable issues
 - `--skip`: Skip specific checks (comma-separated)
 
@@ -58,7 +58,7 @@ Build → Types → Lint → Unit Tests → Integration Tests → E2E Tests
 
 ### Pre-PR Mode
 ```
-Build → Types → Lint → Unit Tests → Integration Tests → E2E Tests → Security → Coverage
+Build → Types → Lint → Unit Tests → Integration Tests → E2E Tests → Security → Coverage → Review
 ```
 
 ## Behavioral Flow
@@ -122,6 +122,12 @@ npx trufflehog filesystem . --json 2>/dev/null | head -20
 # Functions: 80%
 # Lines: 80%
 ```
+
+### 9. Review Stage (`--mode pre-pr` only)
+
+**Requires**: the compound-engineering plugin. If it is not installed, report the mechanical gate results and note the review stage was skipped — do not improvise a replacement review.
+
+Delegate diff review to the `compound-engineering:ce-code-review` host skill with the literal token `mode:agent`. This stage is report-only: CDF applies findings after the skill returns and does not let the review skill mutate the working tree directly.
 
 ## Output Format
 

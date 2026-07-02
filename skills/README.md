@@ -30,10 +30,12 @@ Quick reference for all auto-invoked skills, organized by category.
 
 | Skill | Trigger | Description |
 |-------|---------|-------------|
-| [visual-explainer](visual-explainer/SKILL.md) | Diagrams, tables (4+ rows/3+ cols), architecture/diff/plan reviews | Self-contained HTML visualizations — replaces ASCII art and plain-text tables |
-| [plan-review](plan-review/SKILL.md) | Non-trivial plans before approval | Product, engineering, UX/DX, risk, and execution readiness gauntlet |
-| [frontend-slides](frontend-slides/SKILL.md) | HTML presentation tasks | Zero-dependency HTML presentations with style presets and PPT conversion |
+
 | [frontend-design](frontend-design/SKILL.md) | UI/UX design tasks | Design system guidance and component patterns |
+| [retro](retro/SKILL.md) | Retrospective requests | Git-history retrospective: velocity, quality signals, trends |
+| [agentsmd-generator](agentsmd-generator/SKILL.md) | After rules generation (Codex host) | Creates `AGENTS.generated.md` |
+| [comprehension-coach](comprehension-coach/SKILL.md) | Teaching/understanding requests | Guided comprehension of unfamiliar code |
+| [tuning-coding-agent-codebases](tuning-coding-agent-codebases/SKILL.md) | Agent-codebase audits | Practices for making codebases agent-friendly |
 
 ---
 
@@ -72,6 +74,4 @@ Skills are automatically invoked based on context triggers. They provide special
 | TDD enforcement | tdd-workflow |
 | Playwright E2E patterns | e2e-patterns |
 | Recovery from failures | failure-recovery |
-| Plan challenge before implementation | plan-review |
 | UI/UX design guidance | frontend-design |
-| Diagram, table, or visual output | visual-explainer |

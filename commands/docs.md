@@ -106,11 +106,13 @@ Create strategic plans with structured task breakdown for complex features.
 /cdf:docs plan [task-description] [--strategy systematic|agile] [--detail brief|full]
 ```
 
-### Plan Subcommand — first actions
+**Delegation**: The `plan` subcommand delegates to the `compound-engineering:ce-plan` host skill, which grounds the plan in the codebase and writes it to `docs/plans/` (committed — plans compound). The compound-engineering plugin is required; if it is not installed, stop and tell the user to install the compound-engineering plugin for their host (install commands are in the README) rather than creating a replacement planning flow. `/cdf:plan` is the richer front door for raw ideas/bugs; `/cdf:docs plan` remains a thin alias to the same skill. Documentation-generation scopes below stay native.
 
-Before analyzing codebase or creating plan content:
+### Plan Subcommand — session tracking (optional, machine-local)
 
-1. **Create the plan directory**:
+Checklist/context scratch for the session may additionally live in `dev/active/[task-name]/` (gitignored):
+
+1. **Create the scratch directory when needed**:
    ```bash
    mkdir -p dev/active/[task-name]
    ```
@@ -133,16 +135,10 @@ Anti-patterns:
 - Skipping the directory creation (orphan plans with no home)
 - Prose-only plans for multi-step work (no granular tracking)
 
-**Behavioral Flow:**
-1. **Analyze**: Understand request scope and examine relevant codebase
-2. **Plan**: Create structured plan with phases and tasks
-3. **Organize**: Generate task management structure in `dev/active/[task-name]/`
-4. **Document**: Create plan, context, and tasks files
-
 **Output Structure:**
 ```
-dev/active/[task-name]/
-├── [task-name]-plan.md      # Comprehensive strategic plan
+docs/plans/<plan>.md          # Durable plan written by ce-plan (committed)
+dev/active/[task-name]/       # Optional session scratch (gitignored)
 ├── [task-name]-context.md   # Key files, decisions, dependencies
 └── [task-name]-tasks.md     # Checklist format for tracking
 ```
@@ -237,7 +233,9 @@ Update development documentation before context compaction or session end.
 
 **What Gets Updated:**
 
-1. **Active Task Documentation** (`dev/active/[task-name]/`):
+1. **Plan Documents** (`docs/plans/`, written by `compound-engineering:ce-plan`): update the relevant plan's status notes rather than duplicating state elsewhere.
+
+2. **Session Scratch** (`dev/active/[task-name]/`, machine-local, gitignored):
    - `[task-name]-context.md`:
      - Current implementation state
      - Key decisions made this session

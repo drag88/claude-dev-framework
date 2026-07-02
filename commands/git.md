@@ -12,30 +12,43 @@ description: "Git operations with intelligent commit messages and workflow optim
 
 ## Usage
 ```
-/cdf:git [operation] [args] [--smart-commit] [--interactive]
+/cdf:git [operation] [args] [--interactive]
 ```
 
 ## Behavioral Flow
 1. **Analyze**: Check repository state and working directory changes
-2. **Validate**: Ensure operation is appropriate for current Git context
-3. **Execute**: Run Git command with intelligent automation
-4. **Optimize**: Apply smart commit messages and workflow patterns
+2. **Route**: Commit operations delegate to `compound-engineering:ce-commit`; status, branch, merge, and other non-commit operations stay native.
+3. **Validate**: Ensure operation is appropriate for current Git context
+4. **Execute**: Run the native Git operation or delegated commit flow
 5. **Report**: Provide status and next steps guidance
 
 Key behaviors:
-- Generate conventional commit messages based on change analysis
+- Commit operations require the compound-engineering plugin and the `compound-engineering:ce-commit` host skill
 - Apply consistent branch naming conventions
 - Handle merge conflicts with guided resolution
 - Provide clear status summaries and workflow recommendations
+
+## Delegation: compound-engineering
+
+Commit operations delegate to the `compound-engineering:ce-commit` host skill.
+
+**Requires**: the compound-engineering plugin. If it is not installed, stop and tell the user to install the compound-engineering plugin for their host (install commands are in the README) — do not improvise a replacement flow.
+
+**Flow**: Invoke the `compound-engineering:ce-commit` host skill, passing the user's arguments, selected files, and any flags as context.
+
+**CDF constraints (bind on top of the skill)**:
+- Use conventional commit format.
+- Do not include AI attribution of any kind.
+- Keep non-commit git operations native to this command.
 
 ## Tool Coordination
 - **Bash**: Git command execution and repository operations
 - **Read**: Repository state analysis and configuration review
 - **Grep**: Log parsing and status analysis
-- **Write**: Commit message generation and documentation
+- **Host skill**: Commit creation through `compound-engineering:ce-commit`
 
 ## Key Patterns
-- **Smart Commits**: Analyze changes → generate conventional commit message
+- **Commit Delegation**: Commit request → `compound-engineering:ce-commit`
 - **Status Analysis**: Repository state → actionable recommendations
 - **Branch Strategy**: Consistent naming and workflow enforcement
 - **Error Recovery**: Conflict resolution and state restoration guidance
@@ -73,13 +86,6 @@ Follow conventional commit format:
 # Provides next steps and workflow recommendations
 ```
 
-### Intelligent Commit
-```
-/cdf:git commit --smart-commit
-# Generates conventional commit message from change analysis
-# Applies best practices and consistent formatting
-```
-
 ### Interactive Operations
 ```
 /cdf:git merge feature-branch --interactive
@@ -90,7 +96,7 @@ Follow conventional commit format:
 
 **Will:**
 - Execute Git operations with intelligent automation
-- Generate conventional commit messages from change analysis
+- Delegate commit creation to `compound-engineering:ce-commit`
 - Provide workflow optimization and best practice guidance
 
 **Will Not:**

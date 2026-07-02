@@ -14,6 +14,12 @@ Keep a hard split between core methodology and host adapters.
 
 Core files should avoid host-only claims such as "Claude tool" or "Task tool" unless the behavior only exists in the Claude adapter. Prefer "subagent", "host skill", "command prompt", or "lifecycle hook".
 
+## Dependencies
+
+The compound-engineering plugin is the required engineering-loop provider for delegated commands on every supported host. CE ships a `.codex-plugin` too, so CDF delegation stays host-neutral across Claude Code, Codex, and future adapters.
+
+Core files reference CE by public skill name only, never copy CE behavior, and never rely on Claude-only mechanics for delegated command semantics.
+
 ## Adapter Contract
 
 Every supported host needs five capabilities:
@@ -52,14 +58,16 @@ Codex authoring rules live in `rules-templates/agentsmd-codex-rulebook.md`. Key 
 
 Initial Codex routing should map:
 
-| Intent | CDF route |
-|--------|-----------|
-| Implement a feature | `/cdf:implement` prompt |
-| Debug a failure | `/cdf:troubleshoot` prompt |
-| Challenge a plan | `/cdf:plan-review` prompt |
-| Run quality checks | `/cdf:verify --mode pre-pr` prompt |
-| Multi-file investigation | `/cdf:task` with codebase-navigator |
-| Commit or ship | `/cdf:git` or `/cdf:ship` prompt |
+| Intent | CDF route | Delegates to |
+|--------|-----------|--------------|
+| Implement a feature | `/cdf:implement` prompt | `compound-engineering:ce-work` |
+| Debug a failure | `/cdf:troubleshoot` prompt | `compound-engineering:ce-debug` |
+| Challenge a plan | `/cdf:plan-review` prompt | `compound-engineering:ce-doc-review` |
+| Run quality checks | `/cdf:verify --mode pre-pr` prompt | mechanical gates native; review stage -> `compound-engineering:ce-code-review` |
+| Multi-file investigation | `/cdf:task` with codebase-navigator | native (complement layer) |
+| Commit or ship | `/cdf:git` or `/cdf:ship` prompt | `compound-engineering:ce-commit` / `compound-engineering:ce-commit-push-pr` |
+
+The compound-engineering plugin also ships a `.codex-plugin`, so the delegated routes above resolve on Codex the same way they do on Claude Code.
 
 Do not claim Codex has Claude Code lifecycle hooks. If a Codex host lacks hooks, route users to the equivalent command:
 

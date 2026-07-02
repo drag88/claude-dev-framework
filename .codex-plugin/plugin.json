@@ -1,6 +1,6 @@
 {
   "name": "cdf",
-  "version": "1.14.0",
+  "version": "2.0.0",
   "description": "Opinionated development framework for AI coding agents: command prompts, specialized agents, skills, rules, and portable verification workflows for Claude Code, Codex, and other hosts.",
   "author": {
     "name": "Aswin Sreenivas",
@@ -56,7 +56,6 @@
     "./agents/media-interpreter.md",
     "./agents/quality-engineer.md",
     "./agents/refactoring-expert.md",
-    "./agents/requirements-analyst.md",
     "./agents/socratic-mentor.md",
     "./agents/tdd-guide.md"
   ],

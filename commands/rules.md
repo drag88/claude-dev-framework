@@ -304,27 +304,53 @@ For maximum efficiency, whenever you perform multiple independent operations,
 invoke all relevant tools simultaneously rather than sequentially.
 </use_parallel_tool_calls>
 
+## Model Routing
+- **Planning**: Fable if available, else Opus — plan mode, `/cdf:design`, `/cdf:plan-review`, architecture decisions.
+- **Execution**: Sonnet — implementation, edits, tests.
+- **Subagents**: Sonnet — all background agents and fan-out, unless a task genuinely needs a stronger model.
+
+## Communication
+- **Plain, simple English for EVERYTHING — explain like I'm five.** Answers, questions, status updates, summaries, options. Not just when asked.
+  - Short sentences. Everyday words. No jargon — if a technical term is unavoidable, explain it in one plain phrase right there.
+  - Lead with the answer in one line, then the why.
+  - Use a plain-language example or analogy when it makes a hard idea click.
+  - When asking the user to choose, make the choices simple and concrete — what happens, what it costs, which you'd pick.
+- Skip filler ("Great question!", "I'd be happy to help!"). Just help.
+- Have opinions. Disagree when you see a better approach. Say why — simply.
+- No corporate drone tone. No sycophancy. Be direct and genuine.
+[Sync rule: before emitting this section, check the user-level `~/.claude/CLAUDE.md`. If it already defines a Communication section, replace this whole section with one line — "Communication style: follows the user-level CLAUDE.md (plain simple English, answer first)." The user-level file is canonical; never duplicate it.]
+
 ## CDF tools available
 
-This project uses CDF (Claude Dev Framework). Reach for these instead of generic approaches:
+This project uses CDF (Claude Dev Framework). CDF wraps the compound-engineering plugin's engineering loop behind stable `/cdf:*` commands — reach for these instead of generic approaches.
 
-- **Debugging bugs**: `/cdf:troubleshoot` — root-cause methodology, adds regression test
-- **Pre-PR quality check**: `/cdf:verify --mode pre-pr` — types + lint + tests + security in one pass
+CE-first routes (require the compound-engineering plugin):
+
+- **Requirements / brainstorm**: `/cdf:brainstorm` → `compound-engineering:ce-brainstorm` (writes `docs/brainstorms/`)
+- **Design / plan**: `/cdf:design`, `/cdf:docs plan` → `compound-engineering:ce-plan` (writes `docs/plans/`)
+- **Plan review**: `/cdf:plan-review` → `compound-engineering:ce-doc-review` — review gate for high-stakes plans
+- **Implementation**: `/cdf:implement` → `compound-engineering:ce-work`
+- **Debugging**: `/cdf:troubleshoot` → `compound-engineering:ce-debug` — root cause + regression test
+- **Commit**: `/cdf:git commit` → `compound-engineering:ce-commit` — conventional commits, no AI attribution
+- **Ship**: `/cdf:ship` → `compound-engineering:ce-code-review` + `compound-engineering:ce-commit-push-pr`
+- **Knowledge capture**: after non-obvious fixes, `compound-engineering:ce-compound` → `docs/solutions/` + `CONCEPTS.md`
+
+CDF complement layer (native):
+
+- **Pre-PR quality check**: `/cdf:verify --mode pre-pr` — types + lint + tests + security; review stage → `compound-engineering:ce-code-review`
 - **Tests**: `/cdf:test` (coverage-aware), `/cdf:tdd` for RED-GREEN-REFACTOR
-- **Plan review**: `/cdf:plan-review` — product + engineering + UX/DX + risk gauntlet before approval
 - **Multi-file investigation**: `/cdf:task` with codebase-navigator agent (returns summary, not raw dumps)
 - **Library research / evaluation**: `/cdf:task` with library-researcher agent (evidence-backed, GitHub permalinks)
 - **Refactoring**: `/cdf:improve` — systematic with safety checks
-- **Code / security / perf analysis**: `/cdf:analyze` — multi-domain audit
-- **Commit / ship**: `/cdf:git`, `/cdf:ship` — conventional commits, no AI attribution
+- **Code / security / perf analysis**: `/cdf:analyze` — repo-wide multi-domain audit (diff review belongs to ce-code-review)
 
-Real-expertise agents (invoke via `/cdf:task` or the relevant CDF command): codebase-navigator, library-researcher, deep-research-agent, quality-engineer, refactoring-expert, e2e-specialist, tdd-guide, requirements-analyst, socratic-mentor, business-research-strategist, business-panel-experts, media-interpreter.
+Real-expertise agents (invoke via `/cdf:task` or the relevant CDF command): codebase-navigator, library-researcher, deep-research-agent, quality-engineer, refactoring-expert, e2e-specialist, tdd-guide, socratic-mentor, business-research-strategist, business-panel-experts, media-interpreter.
 
-Skills auto-trigger from context (coding-standards, backend-patterns, frontend-patterns, tdd-workflow, e2e-patterns, frontend-design, failure-recovery, visual-explainer). Do not invoke manually.
+Skills auto-trigger from context (coding-standards, backend-patterns, frontend-patterns, tdd-workflow, e2e-patterns, frontend-design, failure-recovery). Do not invoke manually.
 
 For role-based work (backend, frontend, devops, security, perf, system design, docs) where no specific CDF tool fits, invoke `/cdf:task` directly — Opus 4.7 plays the role from the `## Role` line above plus `xhigh` effort.
 
-Dispatch by task shape: simple changes use direct edit or `/cdf:implement`; bugs use `/cdf:troubleshoot`; audits use `/cdf:analyze`; plan-first work uses `/cdf:plan` as the front door, then optional `/cdf:plan-review` for high-stakes plans, then `/cdf:task`; full lifecycle work uses a clear prompt with `xhigh` effort rather than `/cdf:flow` or `/cdf:workflow`.
+Dispatch by task shape: simple changes use direct edit or `/cdf:implement`; bugs use `/cdf:troubleshoot`; audits use `/cdf:analyze`; plan-first work uses `/cdf:plan` as the front door (delegates to `compound-engineering:ce-plan`), then optional `/cdf:plan-review` (delegates to `compound-engineering:ce-doc-review`) for high-stakes plans; full lifecycle work uses a clear prompt with high effort rather than a monolithic orchestrator command.
 
 <plans_instruction>
 ## Plans Format
@@ -361,17 +387,19 @@ Only include if project-type rules exist. Examples:]
 [Max 5-7 directories from architecture.md codemap]
 ```
 
-**Required Template Sections (10):**
+**Required Template Sections (12):**
 1. **Role** - One sentence anchoring tone and scope (4.7 responds well to a clear role)
 2. **Overview** - 1-2 sentence description
 3. **Quick Start** - 4-5 bash commands (setup, test, lint, run)
 4. **Critical Rules** - 6 standard rules (curated from CDF defaults + audited additions; see `rules-templates/extended-rules.md` for the opt-in longer set with anti-pattern notes)
 5. **Workflow** - 1-line pointer to `.claude/rules/workflow.md` (workflow content lives there, not duplicated here)
 6. **Tool and subagent policy** - Authorize subagent fan-out + parallel calls explicitly (4.7 defaults are conservative)
-7. **CDF tools available** - Routing table telling Claude which `/cdf:*` commands and agents to prefer for which tasks. Without this section, Claude does not reliably reach for CDF tools and falls back to generic approaches. Ship the section verbatim from the template.
-8. **Plans Format** - `<plans_instruction>` XML block
-9. **Commit Messages** - 1-line convention
-10. **Key Directories** - Max 5-7 most important directories
+7. **Model Routing** - Planning on Fable (else Opus); execution and subagents on Sonnet. Ship verbatim.
+8. **Communication** - Plain-simple-English rules (explain like I'm five, answer first, no filler). Apply the sync rule: if the user-level `~/.claude/CLAUDE.md` already defines Communication, emit a one-line pointer instead of duplicating — user level is canonical.
+9. **CDF tools available** - Routing table telling Claude which `/cdf:*` commands and agents to prefer for which tasks. Without this section, Claude does not reliably reach for CDF tools and falls back to generic approaches. Ship the section verbatim from the template.
+10. **Plans Format** - `<plans_instruction>` XML block
+11. **Commit Messages** - 1-line convention
+12. **Key Directories** - Max 5-7 most important directories
 
 **Optional Sections:**
 - **Project-Specific Notes** - Only if project-type rules exist. Include 2-3 concrete, verifiable gotchas, each with the why.
@@ -613,27 +641,53 @@ For maximum efficiency, whenever you perform multiple independent operations,
 invoke all relevant tools simultaneously rather than sequentially.
 </use_parallel_tool_calls>
 
+## Model Routing
+- **Planning**: Fable if available, else Opus — plan mode, `/cdf:design`, `/cdf:plan-review`, architecture decisions.
+- **Execution**: Sonnet — implementation, edits, tests.
+- **Subagents**: Sonnet — all background agents and fan-out, unless a task genuinely needs a stronger model.
+
+## Communication
+- **Plain, simple English for EVERYTHING — explain like I'm five.** Answers, questions, status updates, summaries, options. Not just when asked.
+  - Short sentences. Everyday words. No jargon — if a technical term is unavoidable, explain it in one plain phrase right there.
+  - Lead with the answer in one line, then the why.
+  - Use a plain-language example or analogy when it makes a hard idea click.
+  - When asking the user to choose, make the choices simple and concrete — what happens, what it costs, which you'd pick.
+- Skip filler ("Great question!", "I'd be happy to help!"). Just help.
+- Have opinions. Disagree when you see a better approach. Say why — simply.
+- No corporate drone tone. No sycophancy. Be direct and genuine.
+[Sync rule: before emitting this section, check the user-level `~/.claude/CLAUDE.md`. If it already defines a Communication section, replace this whole section with one line — "Communication style: follows the user-level CLAUDE.md (plain simple English, answer first)." The user-level file is canonical; never duplicate it.]
+
 ## CDF tools available
 
-This project uses CDF (Claude Dev Framework). Reach for these instead of generic approaches:
+This project uses CDF (Claude Dev Framework). CDF wraps the compound-engineering plugin's engineering loop behind stable `/cdf:*` commands — reach for these instead of generic approaches.
 
-- **Debugging bugs**: `/cdf:troubleshoot` — root-cause methodology, adds regression test
-- **Pre-PR quality check**: `/cdf:verify --mode pre-pr` — types + lint + tests + security in one pass
+CE-first routes (require the compound-engineering plugin):
+
+- **Requirements / brainstorm**: `/cdf:brainstorm` → `compound-engineering:ce-brainstorm` (writes `docs/brainstorms/`)
+- **Design / plan**: `/cdf:design`, `/cdf:docs plan` → `compound-engineering:ce-plan` (writes `docs/plans/`)
+- **Plan review**: `/cdf:plan-review` → `compound-engineering:ce-doc-review` — review gate for high-stakes plans
+- **Implementation**: `/cdf:implement` → `compound-engineering:ce-work`
+- **Debugging**: `/cdf:troubleshoot` → `compound-engineering:ce-debug` — root cause + regression test
+- **Commit**: `/cdf:git commit` → `compound-engineering:ce-commit` — conventional commits, no AI attribution
+- **Ship**: `/cdf:ship` → `compound-engineering:ce-code-review` + `compound-engineering:ce-commit-push-pr`
+- **Knowledge capture**: after non-obvious fixes, `compound-engineering:ce-compound` → `docs/solutions/` + `CONCEPTS.md`
+
+CDF complement layer (native):
+
+- **Pre-PR quality check**: `/cdf:verify --mode pre-pr` — types + lint + tests + security; review stage → `compound-engineering:ce-code-review`
 - **Tests**: `/cdf:test` (coverage-aware), `/cdf:tdd` for RED-GREEN-REFACTOR
-- **Plan review**: `/cdf:plan-review` — product + engineering + UX/DX + risk gauntlet before approval
 - **Multi-file investigation**: `/cdf:task` with codebase-navigator agent (returns summary, not raw dumps)
 - **Library research / evaluation**: `/cdf:task` with library-researcher agent (evidence-backed, GitHub permalinks)
 - **Refactoring**: `/cdf:improve` — systematic with safety checks
-- **Code / security / perf analysis**: `/cdf:analyze` — multi-domain audit
-- **Commit / ship**: `/cdf:git`, `/cdf:ship` — conventional commits, no AI attribution
+- **Code / security / perf analysis**: `/cdf:analyze` — repo-wide multi-domain audit (diff review belongs to ce-code-review)
 
-Real-expertise agents (invoke via `/cdf:task` or the relevant CDF command): codebase-navigator, library-researcher, deep-research-agent, quality-engineer, refactoring-expert, e2e-specialist, tdd-guide, requirements-analyst, socratic-mentor, business-research-strategist, business-panel-experts, media-interpreter.
+Real-expertise agents (invoke via `/cdf:task` or the relevant CDF command): codebase-navigator, library-researcher, deep-research-agent, quality-engineer, refactoring-expert, e2e-specialist, tdd-guide, socratic-mentor, business-research-strategist, business-panel-experts, media-interpreter.
 
-Skills auto-trigger from context (coding-standards, backend-patterns, frontend-patterns, tdd-workflow, e2e-patterns, frontend-design, failure-recovery, visual-explainer). Do not invoke manually.
+Skills auto-trigger from context (coding-standards, backend-patterns, frontend-patterns, tdd-workflow, e2e-patterns, frontend-design, failure-recovery). Do not invoke manually.
 
 For role-based work (backend, frontend, devops, security, perf, system design, docs) where no specific CDF tool fits, invoke `/cdf:task` directly — Opus 4.7 plays the role from the `## Role` line above plus `xhigh` effort.
 
-Dispatch by task shape: simple changes use direct edit or `/cdf:implement`; bugs use `/cdf:troubleshoot`; audits use `/cdf:analyze`; plan-first work uses `/cdf:plan` as the front door, then optional `/cdf:plan-review` for high-stakes plans, then `/cdf:task`; full lifecycle work uses a clear prompt with `xhigh` effort rather than `/cdf:flow` or `/cdf:workflow`.
+Dispatch by task shape: simple changes use direct edit or `/cdf:implement`; bugs use `/cdf:troubleshoot`; audits use `/cdf:analyze`; plan-first work uses `/cdf:plan` as the front door (delegates to `compound-engineering:ce-plan`), then optional `/cdf:plan-review` (delegates to `compound-engineering:ce-doc-review`) for high-stakes plans; full lifecycle work uses a clear prompt with high effort rather than a monolithic orchestrator command.
 
 <plans_instruction>
 ## Plans Format

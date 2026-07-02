@@ -32,6 +32,8 @@ Use `/cdf:analyze` when:
 
 **Don't use this command for**: Making code changes (use `/cdf:improve`), troubleshooting specific bugs (use `/cdf:troubleshoot`).
 
+Diff and PR review belong to the `compound-engineering:ce-code-review` host skill; `/cdf:analyze` remains the whole-repo audit tool.
+
 ## Triggers
 - Code quality assessment requests for projects or specific components
 - Security vulnerability scanning and compliance validation needs

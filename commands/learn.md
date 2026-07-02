@@ -51,7 +51,7 @@ Scan `skills/*/learned.md` across all skill directories. Show:
 ```
 Learned preferences across skills:
 
-  writing-voice:     9 entries (last updated 2026-03-28)
+  frontend-design:   9 entries (last updated 2026-03-28)
   coding-standards:  2 entries (last updated 2026-03-25)
   frontend-patterns: (no learned.md)
 
@@ -65,7 +65,7 @@ Total: 11 entries across 2 skills
 Display all entries with numbered indices:
 
 ```
-# writing-voice: 9 learned preferences
+# frontend-design: 9 learned preferences
 
 ## Do
 1. Use parenthetical asides for context, not dashes (2026-03-28)
@@ -101,7 +101,7 @@ When `learned.md` grows large (20+ entries):
 3. Identify contradictions (flag for user decision)
 4. Propose consolidated version as a diff
 5. Apply only after user approval
-6. For skills with reference files (like writing-voice), propose promoting patterns into permanent reference files
+6. For skills with reference files, propose promoting patterns into permanent reference files
 
 ## learned.md Template
 
@@ -165,7 +165,7 @@ Capture happens via the Feedback Protocol or explicit `/cdf:learn`. Enforcement 
 
 ```
 /cdf:learn "never use hyphens or em dashes in output"
-→ Infers writing-voice → writes to ## Don't
+→ Infers frontend-design → writes to ## Don't
 
 /cdf:learn coding-standards "prefer guard clauses over nested if/else"
 → Explicit target → writes to ## Do
@@ -173,9 +173,9 @@ Capture happens via the Feedback Protocol or explicit `/cdf:learn`. Enforcement 
 /cdf:learn status
 → Shows all skills with learned.md counts
 
-/cdf:learn show writing-voice
+/cdf:learn show frontend-design
 → Shows numbered entries
 
-/cdf:learn remove writing-voice 3
+/cdf:learn remove frontend-design 3
 → Removes entry #3
 ```

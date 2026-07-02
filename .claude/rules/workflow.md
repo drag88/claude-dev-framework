@@ -1,74 +1,119 @@
----
-description: Workflow rules, subagent strategy, verification gates, self-improvement loop
----
-
 # Workflow Orchestration
 
-## Tool and parallel call policy
+## Explore Before Edit
 
-Spawn multiple subagents in the same turn when fanning out across items, reading multiple files, or running independent investigations. Skip fan-out for single-file edits or trivial reads. For multi-agent debate or implementation work, use TeamCreate + named teammates rather than ad-hoc subagents.
+**Never make piecemeal changes without understanding the full picture first.**
 
-<use_parallel_tool_calls>
-For maximum efficiency, whenever you perform multiple independent operations,
-invoke all relevant tools simultaneously rather than sequentially.
-</use_parallel_tool_calls>
+LLM performance degrades as context fills. When you jump straight to coding without exploring, you solve the wrong problem or miss existing patterns. Separate exploration from execution.
+
+### The 4-Phase Pattern
+
+1. **Explore** — Read files, trace dependencies, understand what exists. Use Plan Mode or subagents so exploration doesn't pollute implementation context.
+2. **Plan** — Write the approach before writing code. Identify failure points.
+3. **Implement** — Code against the plan in clean context.
+4. **Verify** — Prove it works before marking done.
+
+### For Piecemeal/Incremental Changes
+
+When making changes that touch multiple files or modules incrementally:
+- Explore the full scope FIRST, even if you plan to change files one at a time
+- Map all the files that will need changes before editing any of them
+- Understand upstream and downstream dependencies of each change
+- Use subagents to fan out and read related modules in parallel — keeps main context clean for the actual edits
+- If the scope grows beyond what you mapped, STOP and re-explore before continuing
+
+**Anti-pattern**: Editing file A, then discovering file B also needs changes, then finding file C — each discovery consuming main context. Instead: one exploration pass up front, then focused edits.
+
+### Scoping Investigations
+
+Avoid the "infinite exploration" trap — reading hundreds of files and filling context with raw content. Scope investigations narrowly or use subagents so exploration stays out of main context.
 
 ---
 
-## Subagent Strategy (Primary)
+## Subagents vs Agent Teams
 
-**Default to subagents. Main context is precious.**
+Two delegation mechanisms. Different tools for different problems.
 
-The main conversation thread is your working memory. Every file read, every exploratory grep, every tangential research question consumes it permanently. Subagents work in isolated contexts and return only the result you need.
+### Subagents (Agent tool)
 
-### When to Spawn a Subagent
+Single-session, isolated context. Best for focused, bounded tasks.
 
-| Task Type | Spawn? | Reason |
-|-----------|--------|--------|
-| Exploring an unfamiliar module | Yes | Returns a summary, not raw file contents |
-| Researching a library/API | Yes | Returns verdict + key facts, not entire docs |
-| Parallel analysis (multiple files/dirs) | Yes | Multiple agents, simultaneous |
-| Tracing a bug across files | Yes | Agent can read 10+ files without polluting main context |
-| Confirming a fact you already know | No | Just do it |
-| A single targeted grep | No | Faster inline |
-| Writing/editing a file | No | Must stay in main context |
-| Simple single-file read | No | Faster inline |
+- Run in isolated context windows — exploration doesn't consume main conversation
+- One atomic goal per subagent, return summaries not raw dumps
+- Cannot spawn other subagents (no nesting)
+- Can run foreground (blocking) or background (concurrent)
+
+**Use subagents when:**
+- Investigating a module, tracing a bug, researching a library
+- Fan-out exploration: 3-5 agents reading different areas in parallel
+- High-volume output handling (test results, large file analysis)
+- The task is self-contained and returns a clear result
+
+### Agent Teams (TeamCreate)
+
+Multi-session coordination. Each worker gets its own independent, sustained context.
+
+- Workers run in separate sessions with full context windows
+- Support messaging and coordination between workers
+- Each worker can use all tools independently
+- Workers persist — you can send follow-up messages
+
+**Use agent teams when:**
+- Multiple workers need sustained context (not just a quick lookup)
+- Tasks are too large for one context window
+- Workers need to coordinate or share state
+- Parallel implementation across independent files/modules
+- The work is implementation, not just research
+
+### Decision Table
+
+| Situation | Use | Why |
+|-----------|-----|-----|
+| "Read these 5 files and summarize" | Subagent | Quick, isolated, returns summary |
+| "Research how auth works" | Subagent | Bounded investigation |
+| "Implement feature X across 4 modules" | Agent Team | Sustained parallel implementation |
+| "Refactor module A while I work on module B" | Agent Team | Independent sustained work |
+| "Check if this pattern exists anywhere" | Subagent | Quick grep, bounded result |
+| "Build the API, frontend, and tests in parallel" | Agent Team | Three independent implementation streams |
+| "What does this function do?" | Neither | Just read the file inline |
 
 ### Dispatch Tiers
 
-Classify the task by shape before reaching for tooling. This keeps CDF lean while still giving complex work enough structure.
+Before choosing a workflow, classify the task by shape. This gstack-inspired routing keeps CDF lean while still giving complex work enough structure.
 
 | Tier | Use | CDF route |
 |------|-----|-----------|
-| Simple | Single-file or obvious change | Direct edit or `/cdf:implement` |
-| Medium | Multi-file change with known approach | `/cdf:task` for scoped breakdown, then implement in main context |
-| Investigate | Bug, regression, unexplained failure | `/cdf:troubleshoot`, with codebase-navigator for multi-file tracing |
-| Review | Quality, security, performance, architecture risk | `/cdf:analyze`, or `/cdf:task` with role framing when no real agent exists |
-| Plan | User wants to shape a feature before building | `/cdf:plan` (front door), then optional `/cdf:plan-review` for high-stakes work |
-| Ship | User wants release execution | `/cdf:verify --mode pre-pr`, then `/cdf:ship` |
+| Simple | Single-file or obvious change | Direct edit or `/cdf:implement` (`compound-engineering:ce-work`) |
+| Medium | Multi-file change with known approach | `/cdf:task` breakdown, then `/cdf:implement` (`compound-engineering:ce-work`) |
+| Investigate | Bug, regression, unexplained failure | `/cdf:troubleshoot` (`compound-engineering:ce-debug`) |
+| Review | Diff/PR review or repo-wide audit | `compound-engineering:ce-code-review` for diff/PR review; `/cdf:analyze` for repo-wide audits |
+| Plan | User wants to shape a feature before building | `/cdf:brainstorm` (`compound-engineering:ce-brainstorm`) → `/cdf:design` (`compound-engineering:ce-plan`) → `/cdf:plan-review` (`compound-engineering:ce-doc-review`) for high-stakes work |
+| Ideate | User wants options, product angles, or grounded ideas | `compound-engineering:ce-ideate` |
+| Ship | User wants release execution | `/cdf:verify --mode pre-pr`, then `/cdf:ship` (`compound-engineering:ce-code-review` + `compound-engineering:ce-commit-push-pr`) |
 
 Do not recreate `/cdf:flow` or `/cdf:workflow`; Opus 4.7 handles full lifecycle plans from a clear prompt with `xhigh` effort.
 
-### How to Spawn Well
+### Compound-Engineering Integration
 
-One task per subagent. Not "analyze this module and also the one it depends on."
+Compound-engineering is the required engineering-loop engine for delegated commands. CDF references it by public skill name only and never copies its behavior.
 
-Give each agent:
-1. A single, atomic goal
-2. The specific files or directories to focus on
-3. What to return (a summary, a verdict, a list — not raw file dumps)
+Knowledge split:
+- `compound-engineering:ce-compound` writes durable repo knowledge to `docs/solutions/` and `CONCEPTS.md`; commit these artifacts.
+- `/cdf:learn` captures skill-preference corrections only.
+- Auto-memory captures session decisions only; promote them to `compound-engineering:ce-compound` when they harden.
+- `CONCEPTS.md` is seeded by `compound-engineering:ce-compound` on first capture; do not create it manually.
 
-For complex problems, throw more compute at it: spawn 3-5 agents in parallel, each covering a different angle. Cap a single fan-out at 8 concurrent subagents — beyond that you are burning context, not buying signal. If a task seems to need more, it is two tasks.
+### Subagent Spawn Patterns
 
-**Fire the next action, do not just announce it.** When a command or step ends by recommending a follow-up you can perform now (run the verify, start the review, execute the plan), perform it — do not stop at telling the user what to type. Announcing-instead-of-doing is the most common silent stall.
+**General patterns:**
+- Spawn agent to explore an unfamiliar directory — return purpose, key files, connections to rest of codebase
+- Spawn parallel agents across `src/` and `tests/` for a holistic view
+- Spawn agent to research a dependency's API before using it — return only relevant functions
 
-### Project-Specific Spawn Patterns
-
-CDF is a plugin/framework codebase. The high-leverage subagent patterns are:
-
-- Spawn parallel agents across `commands/`, `agents/`, and `skills/` to map which surfaces handle a given task shape — return a routing table, not raw file dumps.
-- Spawn an agent to trace a single lifecycle hook end to end: `hooks/hooks.json` entry → `scripts/` or `scripts/hooks/` implementation → `additionalContext` injection → which event fires it.
-- Spawn an agent to audit count-bearing docs (`README.md`, `.claude/rules/architecture.md`, `.claude/rules/tech-stack.md`, `.claude-plugin/marketplace.json`) against the real directory counts. Return only the drift list.
+**CDF plugin patterns:**
+- Spawn agent to read `commands/*.md` or `agents/*.md` — return trigger conditions, behavioral flow, constraints
+- Spawn parallel agents to audit `commands/` and `scripts/hooks/` — one maps command intent, other maps hook implementation, then compare
+- Spawn agent to trace a hook's lifecycle: `hooks/hooks.json` → `scripts/` implementation → `additionalContext` injection → when it fires
 
 ---
 
@@ -83,7 +128,7 @@ What "plan mode" means:
 
 Skip plan mode for: single-file fixes, typo corrections, running tests.
 
-If something goes sideways, stop and re-plan immediately rather than pushing through a broken approach.
+If something goes sideways, STOP and re-plan immediately — don't keep pushing.
 
 ---
 
@@ -102,11 +147,11 @@ For anything requiring more than ~5 steps:
 
 ## Self-Improvement Loop
 
-When the user corrects an approach, a fact, or a code pattern, save the lesson to auto-memory immediately. Reserve `.claude/rules/` for human-curated, durable standards. Do not write new rule files there autonomously, since they create rule sprawl and conflict with existing rules.
+When corrected — on approach, on a fact, on a code pattern — save it to your auto-memory immediately.
 
 **What to save**: Key decisions, corrections, debugging insights, project patterns, and architectural notes.
 
-**Where to save**: Auto-memory (`~/.claude/projects/<project>/memory/MEMORY.md` and topic files like `feedback_*.md`). Use the Write or Edit tool to update these files.
+**Where to save**: Your native auto-memory (`~/.claude/projects/<project>/memory/MEMORY.md` and topic files). Use the Write or Edit tool to update these files. This is Claude's domain — CDF hooks never write here.
 
 **Session continuity** — at session start, CDF injects recent git history and your auto-memory as context. No manual file management needed.
 
@@ -114,16 +159,18 @@ When the user corrects an approach, a fact, or a code pattern, save the lesson t
 
 ## Verification Before Done
 
-Run a concrete verification step before marking a task complete. Paste the output of the verification command into the conversation. Opus 4.7 will quietly skip vague checks ("make sure tests pass") but will execute concrete commands ("run `pytest tests/test_auth.py` and paste the output").
+Never mark a task complete without running a verification step.
 
 Verification means:
-- Run the relevant test(s) and paste the output. Example: "Ran `pytest tests/test_auth.py`, 12/12 passed."
-- If no tests exist, run the code and paste the observed output.
-- For visual/UI changes, screenshot at the target viewports (typically 1440px desktop and 390px mobile) and compare against the spec.
-- For CDF changes that affect counts or structure, run `python3 scripts/health-check.py` and paste the output.
-- If genuinely untestable, state explicitly what was checked, how, and what the observed result was.
+- Run the relevant test(s) if tests exist
+- If no tests: run the code and observe output
+- For visual/UI changes: verify in the browser before confirming to the user
+- If untestable: explicitly state what was checked and how
+- Diff behavior between main and your changes when relevant
 
-"It should work" is not verification. Pasted command output is.
+"It should work" is not verification. "I ran `pytest tests/test_auth.py` and all 12 tests passed" is verification.
+
+Ask yourself: "Would a staff engineer approve this?"
 
 ---
 
@@ -163,11 +210,12 @@ Zero context switching required from the user. Go fix failing CI tests without b
 - **No Laziness**: Find root causes. No temporary fixes. Senior developer standards.
 - **Minimal Impact**: Changes should only touch what's necessary. Avoid introducing bugs.
 - **Prove It**: Every claim about behavior should be backed by a test or observable output.
-- **Report everything, filter later**: For review or coverage tasks, surface all findings (low-severity, uncertain, edge cases) with confidence and severity. Do not self-filter before reporting — Opus 4.7's literalism causes it to drop real issues when asked to "be conservative" or "only flag important issues."
 
 ---
 
 ## CDF Agents
+
+When working in this project, use the appropriate CDF agent for specialized tasks:
 
 | Task Type | Agent | Command |
 |-----------|-------|---------|
@@ -178,17 +226,17 @@ Zero context switching required from the user. Go fix failing CI tests without b
 | Refactor code | refactoring-expert | `/cdf:improve` |
 | TDD workflow | tdd-guide | `/cdf:tdd` |
 | E2E testing | e2e-specialist | `/cdf:e2e` |
-| Requirements discovery | requirements-analyst | `/cdf:brainstorm` |
 | Socratic explanation | socratic-mentor | `/cdf:explain` |
 | Business strategy | business-panel-experts, business-research-strategist | `/cdf:research` |
 | Image / PDF interpretation | media-interpreter | `/cdf:task` |
 
 For backend, frontend, devops, security, performance, system design, and docs work, use `/cdf:task` with explicit role framing. The old persona-stub agents were removed in 1.13.0.
 
+**Auto-activation**: Agents activate automatically via `/cdf:task` based on task context.
+
 ---
 
 ## Memory
 
-- Check auto-memory for prior context at session start.
-- Save key decisions, debugging insights, and project patterns to auto-memory during work.
-- CDF hooks never write to `.claude/rules/` or to Claude's auto-memory directory — those are Claude's and the user's domains.
+- Check auto-memory for prior context at session start
+- Save key decisions, debugging insights, and project patterns to auto-memory during work

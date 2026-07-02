@@ -29,3 +29,6 @@ skills-lock.json
 
 # Flow state (never commit)
 dev/
+
+# compound-engineering machine-local state (never ships)
+.compound-engineering/
