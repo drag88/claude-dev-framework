@@ -283,6 +283,22 @@ For maximum efficiency, whenever you perform multiple independent operations,
 invoke all relevant tools simultaneously rather than sequentially.
 </use_parallel_tool_calls>
 
+## Model Routing
+- **Planning**: Fable if available, else Opus — plan mode, `/cdf:design`, `/cdf:plan-review`, architecture decisions.
+- **Execution**: Sonnet — implementation, edits, tests.
+- **Subagents**: Sonnet — all background agents and fan-out, unless a task genuinely needs a stronger model.
+
+## Communication
+- **Plain, simple English for EVERYTHING — explain like I'm five.** Answers, questions, status updates, summaries, options. Not just when asked.
+  - Short sentences. Everyday words. No jargon — if a technical term is unavoidable, explain it in one plain phrase right there.
+  - Lead with the answer in one line, then the why.
+  - Use a plain-language example or analogy when it makes a hard idea click.
+  - When asking the user to choose, make the choices simple and concrete — what happens, what it costs, which you'd pick.
+- Skip filler ("Great question!", "I'd be happy to help!"). Just help.
+- Have opinions. Disagree when you see a better approach. Say why — simply.
+- No corporate drone tone. No sycophancy. Be direct and genuine.
+[Sync rule: before emitting this section, check the user-level `~/.claude/CLAUDE.md`. If it already defines a Communication section, replace this whole section with one line — "Communication style: follows the user-level CLAUDE.md (plain simple English, answer first)." The user-level file is canonical; never duplicate it.]
+
 ## CDF tools available
 
 This project uses CDF (Claude Dev Framework). CDF wraps the compound-engineering plugin's engineering loop behind stable `/cdf:*` commands — reach for these instead of generic approaches.
@@ -350,17 +366,19 @@ Only include if project-type rules exist. Examples:]
 [Max 5-7 directories from architecture.md codemap]
 ```
 
-**Required Template Sections (10):**
+**Required Template Sections (12):**
 1. **Role** - One sentence anchoring tone and scope (4.7 responds well to a clear role)
 2. **Overview** - 1-2 sentence description
 3. **Quick Start** - 4-5 bash commands (setup, test, lint, run)
 4. **Critical Rules** - 4 standard rules
 5. **Workflow** - 1-line pointer to `.claude/rules/workflow.md` (workflow content lives there, not duplicated here)
 6. **Tool and subagent policy** - Authorize subagent fan-out + parallel calls explicitly (4.7 defaults are conservative)
-7. **CDF tools available** - Routing table telling Claude which `/cdf:*` commands and agents to prefer for which tasks. Without this section, Claude does not reliably reach for CDF tools and falls back to generic approaches. Ship the section verbatim from the template.
-8. **Plans Format** - `<plans_instruction>` XML block
-9. **Commit Messages** - 1-line convention
-10. **Key Directories** - Max 5-7 most important directories
+7. **Model Routing** - Planning on Fable (else Opus); execution and subagents on Sonnet. Ship verbatim.
+8. **Communication** - Plain-simple-English rules (explain like I'm five, answer first, no filler). Apply the sync rule: if the user-level `~/.claude/CLAUDE.md` already defines Communication, emit a one-line pointer instead of duplicating — user level is canonical.
+9. **CDF tools available** - Routing table telling Claude which `/cdf:*` commands and agents to prefer for which tasks. Without this section, Claude does not reliably reach for CDF tools and falls back to generic approaches. Ship the section verbatim from the template.
+10. **Plans Format** - `<plans_instruction>` XML block
+11. **Commit Messages** - 1-line convention
+12. **Key Directories** - Max 5-7 most important directories
 
 **Optional Sections:**
 - **Project-Specific Notes** - Only if project-type rules exist. Include 2-3 concrete, verifiable gotchas, each with the why.
@@ -479,6 +497,22 @@ Spawn multiple subagents in the same turn when fanning out across items, reading
 For maximum efficiency, whenever you perform multiple independent operations,
 invoke all relevant tools simultaneously rather than sequentially.
 </use_parallel_tool_calls>
+
+## Model Routing
+- **Planning**: Fable if available, else Opus — plan mode, `/cdf:design`, `/cdf:plan-review`, architecture decisions.
+- **Execution**: Sonnet — implementation, edits, tests.
+- **Subagents**: Sonnet — all background agents and fan-out, unless a task genuinely needs a stronger model.
+
+## Communication
+- **Plain, simple English for EVERYTHING — explain like I'm five.** Answers, questions, status updates, summaries, options. Not just when asked.
+  - Short sentences. Everyday words. No jargon — if a technical term is unavoidable, explain it in one plain phrase right there.
+  - Lead with the answer in one line, then the why.
+  - Use a plain-language example or analogy when it makes a hard idea click.
+  - When asking the user to choose, make the choices simple and concrete — what happens, what it costs, which you'd pick.
+- Skip filler ("Great question!", "I'd be happy to help!"). Just help.
+- Have opinions. Disagree when you see a better approach. Say why — simply.
+- No corporate drone tone. No sycophancy. Be direct and genuine.
+[Sync rule: before emitting this section, check the user-level `~/.claude/CLAUDE.md`. If it already defines a Communication section, replace this whole section with one line — "Communication style: follows the user-level CLAUDE.md (plain simple English, answer first)." The user-level file is canonical; never duplicate it.]
 
 ## CDF tools available
 

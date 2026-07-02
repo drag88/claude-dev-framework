@@ -33,6 +33,12 @@ For maximum efficiency, whenever you perform multiple independent operations,
 invoke all relevant tools simultaneously rather than sequentially.
 </use_parallel_tool_calls>
 
+## Model Routing
+- **Planning**: Fable if available, else Opus. **Execution + subagents**: Sonnet.
+
+## Communication
+Communication style: follows the user-level CLAUDE.md (plain simple English, answer first).
+
 ## CDF tools available
 
 CDF is the project being developed here. When working on it, reach for these:

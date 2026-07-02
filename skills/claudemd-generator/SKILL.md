@@ -44,6 +44,8 @@ Executes the `/cdf:rules claudemd` behavioral flow. The command definition in `c
 | Role (one sentence) | `CLAUDE.md` | Anchors tone and scope cheaply |
 | Overview, Quick Start, Critical Rules | `CLAUDE.md` | Essential context for every interaction |
 | Tool and subagent policy + `<use_parallel_tool_calls>` | `CLAUDE.md` | Authorizes 4.7's conservative defaults |
+| Model Routing (Fable/Opus plan, Sonnet execute + subagents) | `CLAUDE.md` | Model choice is a per-task decision; needs guaranteed load |
+| Communication (plain-simple-English rules) | `CLAUDE.md` | One-line pointer when user-level CLAUDE.md already defines it — user level is canonical, never duplicate |
 | CDF tools available (routing table) | `CLAUDE.md` | Without explicit routing, 4.7 falls back to generic approaches instead of `/cdf:troubleshoot`, `/cdf:verify`, codebase-navigator, etc. — defeats the point of having CDF installed |
 | Plans Format block (`<plans_instruction>`) | `CLAUDE.md` | XML processing tag — safest in guaranteed-load file |
 | Commit message conventions | `CLAUDE.md` | 1-line pointer, high-frequency need |
