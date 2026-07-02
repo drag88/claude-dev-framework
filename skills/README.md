@@ -26,15 +26,12 @@ Quick reference for all auto-invoked skills, organized by category.
 
 ---
 
-## Specialized Skills (5)
+## Specialized Skills (2)
 
 | Skill | Trigger | Description |
 |-------|---------|-------------|
-| [visual-explainer](visual-explainer/SKILL.md) | Diagrams, tables (4+ rows/3+ cols), architecture/diff/plan reviews | Self-contained HTML visualizations — replaces ASCII art and plain-text tables |
-| [plan-review](plan-review/SKILL.md) | Non-trivial plans before approval | Product, engineering, UX/DX, risk, and execution readiness gauntlet |
-| [frontend-slides](frontend-slides/SKILL.md) | HTML presentation tasks | Zero-dependency HTML presentations with style presets and PPT conversion |
-| [pptx](pptx/SKILL.md) | Presentation tasks | PowerPoint creation, editing, and analysis |
 | [frontend-design](frontend-design/SKILL.md) | UI/UX design tasks | Design system guidance and component patterns |
+| [retro](retro/SKILL.md) | Retrospective requests | Git-history retrospective: velocity, quality signals, trends |
 
 ---
 
@@ -73,6 +70,4 @@ Skills are automatically invoked based on context triggers. They provide special
 | TDD enforcement | tdd-workflow |
 | Playwright E2E patterns | e2e-patterns |
 | Recovery from failures | failure-recovery |
-| Plan challenge before implementation | plan-review |
 | UI/UX design guidance | frontend-design |
-| Diagram, table, or visual output | visual-explainer |

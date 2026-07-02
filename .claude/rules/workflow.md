@@ -79,18 +79,29 @@ Multi-session coordination. Each worker gets its own independent, sustained cont
 
 ### Dispatch Tiers
 
-Use these tiers before reaching for generic tooling. This mirrors gstack's strongest pattern: route by task shape, not by the first command that comes to mind.
+Before choosing a workflow, classify the task by shape. This gstack-inspired routing keeps CDF lean while still giving complex work enough structure.
 
 | Tier | Use | CDF route |
 |------|-----|-----------|
-| Simple | Single-file or obvious change | Direct edit or `/cdf:implement` |
-| Medium | Multi-file change with known approach | `/cdf:task` for scoped breakdown, then implement in main context |
-| Investigate | Bug, regression, unexplained failure | `/cdf:troubleshoot`, with codebase-navigator for multi-file tracing |
-| Review | Quality, security, performance, architecture risk | `/cdf:analyze`, or `/cdf:task` with role framing when no real agent exists |
-| Plan | User wants to shape a feature before building | `/cdf:brainstorm`, `/cdf:design`, `/cdf:plan-review`, then `/cdf:approve` |
-| Ship | User wants release execution | `/cdf:verify --mode pre-pr`, then `/cdf:ship` |
+| Simple | Single-file or obvious change | Direct edit or `/cdf:implement` (`compound-engineering:ce-work`) |
+| Medium | Multi-file change with known approach | `/cdf:task` breakdown, then `/cdf:implement` (`compound-engineering:ce-work`) |
+| Investigate | Bug, regression, unexplained failure | `/cdf:troubleshoot` (`compound-engineering:ce-debug`) |
+| Review | Diff/PR review or repo-wide audit | `compound-engineering:ce-code-review` for diff/PR review; `/cdf:analyze` for repo-wide audits |
+| Plan | User wants to shape a feature before building | `/cdf:brainstorm` (`compound-engineering:ce-brainstorm`) → `/cdf:design` (`compound-engineering:ce-plan`) → `/cdf:plan-review` (`compound-engineering:ce-doc-review`) → `/cdf:approve` |
+| Ideate | User wants options, product angles, or grounded ideas | `compound-engineering:ce-ideate` |
+| Ship | User wants release execution | `/cdf:verify --mode pre-pr`, then `/cdf:ship` (`compound-engineering:ce-code-review` + `compound-engineering:ce-commit-push-pr`) |
 
 Do not recreate `/cdf:flow` or `/cdf:workflow`; Opus 4.7 handles full lifecycle plans from a clear prompt with `xhigh` effort.
+
+### Compound-Engineering Integration
+
+Compound-engineering is the required engineering-loop engine for delegated commands. CDF references it by public skill name only and never copies its behavior.
+
+Knowledge split:
+- `compound-engineering:ce-compound` writes durable repo knowledge to `docs/solutions/` and `CONCEPTS.md`; commit these artifacts.
+- `/cdf:learn` captures skill-preference corrections only.
+- Auto-memory captures session decisions only; promote them to `compound-engineering:ce-compound` when they harden.
+- `CONCEPTS.md` is seeded by `compound-engineering:ce-compound` on first capture; do not create it manually.
 
 ### Subagent Spawn Patterns
 
@@ -215,7 +226,6 @@ When working in this project, use the appropriate CDF agent for specialized task
 | Refactor code | refactoring-expert | `/cdf:improve` |
 | TDD workflow | tdd-guide | `/cdf:tdd` |
 | E2E testing | e2e-specialist | `/cdf:e2e` |
-| Requirements discovery | requirements-analyst | `/cdf:brainstorm` |
 | Socratic explanation | socratic-mentor | `/cdf:explain` |
 | Business strategy | business-panel-experts, business-research-strategist | `/cdf:research` |
 | Image / PDF interpretation | media-interpreter | `/cdf:task` |

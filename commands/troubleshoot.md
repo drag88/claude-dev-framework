@@ -4,123 +4,26 @@ description: "Diagnose and resolve issues in code, builds, deployments, and syst
 
 # /cdf:troubleshoot - Issue Diagnosis and Resolution
 
-> Systematic root cause analysis and resolution for bugs, builds, and deployments.
-
-## Quick Start
-
-```bash
-# Debug a specific error
-/cdf:troubleshoot "Null pointer exception in user service" --type bug
-
-# Analyze build failures
-/cdf:troubleshoot "TypeScript compilation errors" --type build --fix
-
-# Diagnose performance issues
-/cdf:troubleshoot "API response times degraded" --type performance
-
-# Debug deployment problems
-/cdf:troubleshoot "Service not starting" --type deployment --trace
-```
-
-## When to Use
-
-Use `/cdf:troubleshoot` when:
-- Investigating specific bugs or runtime errors
-- Diagnosing build or compilation failures
-- Finding root causes of performance degradation
-- Debugging deployment or environment issues
-
-**Don't use this command for**: General code analysis (use `/cdf:analyze`), improving working code (use `/cdf:improve`).
-
 ## Triggers
 - Code defects and runtime error investigation requests
 - Build failure analysis and resolution needs
 - Performance issue diagnosis and optimization requirements
 - Deployment problem analysis and system behavior debugging
 
-## Usage
+## Context Trigger Pattern
 ```
 /cdf:troubleshoot [issue] [--type bug|build|performance|deployment] [--trace] [--fix]
 ```
 
-## Behavioral Flow
-1. **Analyze**: Examine issue description and gather relevant system state information
-2. **Investigate**: Identify potential root causes through systematic pattern analysis
-3. **Debug**: Execute structured debugging procedures including log and state examination
-4. **Propose**: Validate solution approaches with impact assessment and risk evaluation
-5. **Resolve**: Apply appropriate fixes and verify resolution effectiveness
+## Delegation: compound-engineering
 
-Key behaviors:
-- Systematic root cause analysis with hypothesis testing and evidence collection
-- Multi-domain troubleshooting (code, build, performance, deployment)
-- Structured debugging methodologies with comprehensive problem analysis
-- Safe fix application with verification and documentation
+This command delegates to the `compound-engineering:ce-debug` host skill.
 
-## Tool Coordination
-- **Read**: Log analysis and system state examination
-- **Bash**: Diagnostic command execution and system investigation
-- **Grep**: Error pattern detection and log analysis
-- **Write**: Diagnostic reports and resolution documentation
+**Requires**: the compound-engineering plugin. If it is not installed, stop and tell the user to install the compound-engineering plugin for their host (install commands are in the README) — do not improvise a replacement flow.
 
-## Key Patterns
-- **Bug Investigation**: Error analysis → stack trace examination → code inspection → fix validation
-- **Build Troubleshooting**: Build log analysis → dependency checking → configuration validation
-- **Performance Diagnosis**: Metrics analysis → bottleneck identification → optimization recommendations
-- **Deployment Issues**: Environment analysis → configuration verification → service validation
+**Flow**: Invoke the `compound-engineering:ce-debug` host skill, passing the user's arguments and any flags as context.
 
-## Examples
-
-### Code Bug Investigation
-```
-/cdf:troubleshoot "Null pointer exception in user service" --type bug --trace
-# Systematic analysis of error context and stack traces
-# Identifies root cause and provides targeted fix recommendations
-```
-
-### Build Failure Analysis
-```
-/cdf:troubleshoot "TypeScript compilation errors" --type build --fix
-# Analyzes build logs and TypeScript configuration
-# Automatically applies safe fixes for common compilation issues
-```
-
-### Performance Issue Diagnosis
-```
-/cdf:troubleshoot "API response times degraded" --type performance
-# Performance metrics analysis and bottleneck identification
-# Provides optimization recommendations and monitoring guidance
-```
-
-### Deployment Problem Resolution
-```
-/cdf:troubleshoot "Service not starting in production" --type deployment --trace
-# Environment and configuration analysis
-# Systematic verification of deployment requirements and dependencies
-```
-
-## Boundaries
-
-**Will:**
-- Execute systematic issue diagnosis using structured debugging methodologies
-- Provide validated solution approaches with comprehensive problem analysis
-- Apply safe fixes with verification and detailed resolution documentation
-
-**Will Not:**
-- Apply risky fixes without proper analysis and user confirmation
-- Modify production systems without explicit permission and safety validation
-- Make architectural changes without understanding full system impact
-
-## Approach
-
-| Issue Type | Approach | When to Use |
-|-----------|----------|-------------|
-| Bug investigation | `/cdf:task` with codebase-navigator subagent for multi-file tracing | Multi-component failures, intermittent bugs |
-| Performance issues | `/cdf:task` with performance-focused role framing | Slow responses, memory leaks, high CPU |
-| Infrastructure | `/cdf:task` with devops-engineer framing | CI/CD failures, deployment issues, env problems |
-| Security incidents | `/cdf:task` with security-focused role framing | Vulnerability reports, suspicious behavior |
-
-The persona-stub agents (root-cause-analyst, performance-engineer, devops-architect, security-engineer) were removed in the leanness pass — Opus 4.7 plays these roles from the Role line in CLAUDE.md plus `xhigh` effort. For real fan-out work, use codebase-navigator (real agent, kept).
-
-## Next Commands
-- `/cdf:improve` — Apply fixes for identified root causes
-- `/cdf:test` — Add regression tests for resolved issues
+**CDF constraints (bind on top of the skill)**:
+- The fix must address root cause, not just symptoms.
+- A regression test is required for the resolved failure mode.
+- After a non-obvious fix, capture the learning with the `compound-engineering:ce-compound` host skill.

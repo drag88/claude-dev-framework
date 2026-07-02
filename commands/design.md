@@ -4,122 +4,25 @@ description: "Design system architecture, APIs, and component interfaces with co
 
 # /cdf:design - System and Component Design
 
-> Create comprehensive design specifications with framework-aware patterns and best practices.
-
-## Quick Start
-
-```bash
-# Architecture design with diagrams
-/cdf:design user-management-system --type architecture --format diagram
-
-# API specification
-/cdf:design payment-api --type api --format spec
-
-# Database schema design
-/cdf:design e-commerce-db --type database
-
-# Component interface design
-/cdf:design notification-service --type component --format code
-```
-
-## When to Use
-
-Use `/cdf:design` when:
-- Planning new system architecture before implementation
-- Designing APIs and component interfaces
-- Creating database schemas and data models
-- Documenting technical specifications for team review
-
-**Don't use this command for**: Implementing the design (use `/cdf:implement`), analyzing existing code (use `/cdf:analyze`).
-
 ## Triggers
 - Architecture planning and system design requests
 - API specification and interface design needs
 - Component design and technical specification requirements
 - Database schema and data model design requests
 
-## Usage
+## Context Trigger Pattern
 ```
 /cdf:design [target] [--type architecture|api|component|database] [--format diagram|spec|code]
 ```
 
-## Behavioral Flow
-1. **Analyze**: Examine target requirements and existing system context
-2. **Plan**: Define design approach and structure based on type and format
-3. **Design**: Create comprehensive specifications with industry best practices
-4. **Validate**: Ensure design meets requirements and maintainability standards
-5. **Document**: Generate clear design documentation with diagrams and specifications
+## Delegation: compound-engineering
 
-Key behaviors:
-- Requirements-driven design approach with scalability considerations
-- Industry best practices integration for maintainable solutions
-- Multi-format output (diagrams, specifications, code) based on needs
-- Validation against existing system architecture and constraints
+This command delegates to the `compound-engineering:ce-plan` host skill.
 
-## Tool Coordination
-- **Read**: Requirements analysis and existing system examination
-- **Grep/Glob**: Pattern analysis and system structure investigation
-- **Write**: Design documentation and specification generation
-- **Bash**: External design tool integration when needed
+**Requires**: the compound-engineering plugin. If it is not installed, stop and tell the user to install the compound-engineering plugin for their host (install commands are in the README) — do not improvise a replacement flow.
 
-## Key Patterns
-- **Architecture Design**: Requirements → system structure → scalability planning
-- **API Design**: Interface specification → RESTful/GraphQL patterns → documentation
-- **Component Design**: Functional requirements → interface design → implementation guidance
-- **Database Design**: Data requirements → schema design → relationship modeling
+**Flow**: Invoke the `compound-engineering:ce-plan` host skill, passing the user's arguments and any flags as context.
 
-## Examples
-
-### System Architecture Design
-```
-/cdf:design user-management-system --type architecture --format diagram
-# Creates comprehensive system architecture with component relationships
-# Includes scalability considerations and best practices
-```
-
-### API Specification Design
-```
-/cdf:design payment-api --type api --format spec
-# Generates detailed API specification with endpoints and data models
-# Follows RESTful design principles and industry standards
-```
-
-### Component Interface Design
-```
-/cdf:design notification-service --type component --format code
-# Designs component interfaces with clear contracts and dependencies
-# Provides implementation guidance and integration patterns
-```
-
-### Database Schema Design
-```
-/cdf:design e-commerce-db --type database --format diagram
-# Creates database schema with entity relationships and constraints
-# Includes normalization and performance considerations
-```
-
-## Boundaries
-
-**Will:**
-- Create comprehensive design specifications with industry best practices
-- Generate multiple format outputs (diagrams, specs, code) based on requirements
-- Validate designs against maintainability and scalability standards
-
-**Will Not:**
-- Generate actual implementation code (use /cdf:implement for implementation)
-- Modify existing system architecture without explicit design approval
-- Create designs that violate established architectural constraints
-
-## Agent Routing
-
-| Design Scope | Approach | When to Use |
-|-------------|----------|-------------|
-| System architecture | `/cdf:task` with system-design role framing | Component boundaries, data flow, scaling strategy |
-| Backend services | `/cdf:task` with backend-engineer framing | API contracts, database schema, service layers |
-| Frontend UI | `/cdf:task` with frontend-engineer framing (frontend-patterns skill auto-invokes) | Component hierarchy, state management, UX patterns |
-
-The persona-stub agents (system-architect, backend-architect, frontend-architect) were removed in the leanness pass — Opus 4.7 plays these roles from the Role line in CLAUDE.md plus `xhigh` effort.
-
-## Next Commands
-- `/cdf:implement` — Build the designed system
-- `/cdf:task` — Execute the implementation with structured delegation
+**CDF constraints (bind on top of the skill)**:
+- Plan documentation lands in `docs/plans/`.
+- When the request is a pure architecture or API specification, include that framing in the context passed to the skill.

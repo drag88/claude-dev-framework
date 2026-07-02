@@ -56,7 +56,7 @@
 | Component | Count | Format |
 |-----------|-------|--------|
 | Commands | 21 | Markdown + YAML |
-| Agents | 12 | Markdown + YAML |
-| Skills | 24 | Markdown + directories |
+| Agents | 11 | Markdown + YAML |
+| Skills | 10 | Markdown + directories |
 | Hooks | 7 | JSON + Python/Bash |
 | Rule Templates | 15 | Markdown |

@@ -36,11 +36,10 @@ For role-based work (backend / frontend / devops / system design / security / pe
 
 ---
 
-## Discovery & Education (2)
+## Discovery & Education (1)
 
 | Agent | Description |
 |-------|-------------|
-| [requirements-analyst](requirements-analyst.md) | Transform ambiguous project ideas into concrete specifications through systematic discovery |
 | [socratic-mentor](socratic-mentor.md) | Educational guide using Socratic method for discovery learning through strategic questioning |
 
 ---
@@ -65,7 +64,6 @@ For role-based work (backend / frontend / devops / system design / security / pe
 | Clean up code | refactoring-expert |
 | Test-Driven Development | tdd-guide |
 | E2E testing with Playwright | e2e-specialist |
-| Gather requirements | requirements-analyst |
 | Guided learning (Socratic) | socratic-mentor |
 | Business strategy panel | business-panel-experts |
 | Business research & market analysis | business-research-strategist |

@@ -113,12 +113,14 @@ if __name__ == "__main__":
 ## Command Routing
 
 Use the narrowest CDF surface that matches the request:
-- **Simple implementation** -> `/cdf:implement`
-- **Bug report** -> `/cdf:troubleshoot`
-- **Quality or risk audit** -> `/cdf:analyze`
+- **Simple implementation** -> `/cdf:implement` (delegates to `compound-engineering:ce-work`)
+- **Bug report** -> `/cdf:troubleshoot` (delegates to `compound-engineering:ce-debug`)
+- **Diff or PR review** -> `compound-engineering:ce-code-review`
+- **Ideation / grounded options** -> `compound-engineering:ce-ideate`
+- **Quality or risk audit** -> `/cdf:analyze` (repo-wide audits)
 - **Tests or TDD** -> `/cdf:test` or `/cdf:tdd`
 - **Complex multi-file work** -> `/cdf:task` with real-expertise agents
-- **Full lifecycle work** -> clear prompt with `xhigh` effort, or `/cdf:task` for explicit breakdown
+- **Full lifecycle work** -> `/cdf:brainstorm` (delegates to `compound-engineering:ce-brainstorm`) -> `/cdf:design` (delegates to `compound-engineering:ce-plan`) -> `/cdf:plan-review` (delegates to `compound-engineering:ce-doc-review`) -> `/cdf:approve`
 
 Deleted orchestrators stay deleted: do not reintroduce `/cdf:flow` or `/cdf:workflow`.
 
@@ -130,4 +132,4 @@ Deleted orchestrators stay deleted: do not reintroduce `/cdf:flow` or `/cdf:work
 - **Command names**: `cdf:verb` or `cdf:verb-noun` (e.g., `cdf:rules`, `cdf:tdd`)
 - **Hook scripts**: Descriptive verb-noun (`session-context.py`, `pre-push-checks.py`)
 - **Agent names**: Real-expertise nouns (`codebase-navigator`, `quality-engineer`, `library-researcher`)
-- **Skill names**: Action-oriented (`failure-recovery`, `product-review`, `visual-explainer`)
+- **Skill names**: Action-oriented (`failure-recovery`, `rules-generator`)

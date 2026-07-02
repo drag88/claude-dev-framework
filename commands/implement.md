@@ -4,8 +4,6 @@ description: "Feature and code implementation with intelligent persona activatio
 
 # /cdf:implement - Feature Implementation
 
-> **Context Framework Note**: This behavioral instruction activates when Claude Code users type `/cdf:implement` patterns. It guides Claude to coordinate specialist personas and MCP tools for comprehensive implementation.
-
 ## Triggers
 - Feature development requests for components, APIs, or complete functionality
 - Code implementation needs with framework-specific requirements
@@ -16,77 +14,18 @@ description: "Feature and code implementation with intelligent persona activatio
 ```
 /cdf:implement [feature-description] [--type component|api|service|feature] [--framework react|vue|express] [--safe] [--with-tests]
 ```
-**Usage**: Type this in Claude Code conversation to activate implementation behavioral mode with coordinated expertise and systematic development approach.
+**Usage**: Type this in the host conversation to activate implementation through the delegated host skill.
 
-## Behavioral Flow
-1. **Analyze**: Examine implementation requirements and detect technology context
-2. **Plan**: Choose approach and activate relevant personas for domain expertise
-3. **Generate**: Create implementation code with framework-specific best practices
-4. **Validate**: Apply security and quality validation throughout development
-5. **Integrate**: Update documentation and provide testing recommendations
+## Delegation: compound-engineering
 
-Key behaviors:
-- Context-based persona activation (architect, frontend, backend, security, qa)
-- Framework-specific implementation via Context7 and Magic MCP integration
-- Systematic multi-component coordination via Sequential MCP
-- Comprehensive testing integration with Playwright for validation
+This command delegates to the `compound-engineering:ce-work` host skill.
 
-## MCP Integration
-- **Context7 MCP**: Framework patterns and official documentation for React, Vue, Angular, Express
-- **Magic MCP**: Auto-activated for UI component generation and design system integration
-- **Sequential MCP**: Complex multi-step analysis and implementation planning
-- **Playwright MCP**: Testing validation and quality assurance integration
+**Requires**: the compound-engineering plugin. If it is not installed, stop and tell the user to install the compound-engineering plugin for their host (install commands are in the README) — do not improvise a replacement flow.
 
-## Tool Coordination
-- **Write/Edit/MultiEdit**: Code generation and modification for implementation
-- **Read/Grep/Glob**: Project analysis and pattern detection for consistency
-- **TodoWrite**: Progress tracking for complex multi-file implementations
-- **Task**: Delegation for large-scale feature development requiring systematic coordination
+**Flow**: Invoke the `compound-engineering:ce-work` host skill, passing the user's arguments and any flags as context.
 
-## Key Patterns
-- **Context Detection**: Framework/tech stack → appropriate persona and MCP activation
-- **Implementation Flow**: Requirements → code generation → validation → integration
-- **Multi-Persona Coordination**: Frontend + Backend + Security → comprehensive solutions
-- **Quality Integration**: Implementation → testing → documentation → validation
-
-## Examples
-
-### React Component Implementation
-```
-/cdf:implement user profile component --type component --framework react
-# Magic MCP generates UI component with design system integration
-# Frontend persona ensures best practices and accessibility
-```
-
-### API Service Implementation
-```
-/cdf:implement user authentication API --type api --safe --with-tests
-# Backend persona handles server-side logic and data processing
-# Security persona ensures authentication best practices
-```
-
-### Full-Stack Feature
-```
-/cdf:implement payment processing system --type feature --with-tests
-# Multi-persona coordination: architect, frontend, backend, security
-# Sequential MCP breaks down complex implementation steps
-```
-
-### Framework-Specific Implementation
-```
-/cdf:implement dashboard widget --framework vue
-# Context7 MCP provides Vue-specific patterns and documentation
-# Framework-appropriate implementation with official best practices
-```
-
-## Boundaries
-
-**Will:**
-- Implement features with intelligent persona activation and MCP coordination
-- Apply framework-specific best practices and security validation
-- Provide comprehensive implementation with testing and documentation integration
-
-**Will Not:**
-- Make architectural decisions without appropriate persona consultation
-- Implement features conflicting with security policies or architectural constraints
-- Override user-specified safety constraints or bypass quality gates
+**CDF constraints (bind on top of the skill)**:
+- Tests are required before a feature is complete.
+- Verification-before-done from `.claude/rules/workflow.md` still applies.
+- For large multi-module work, prefer `/cdf:task` first for subagent fan-out.
+- After a non-obvious implementation lands, capture the learning with the `compound-engineering:ce-compound` host skill.

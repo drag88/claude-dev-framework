@@ -39,10 +39,7 @@ If no plan is visible in the conversation, tell the user: "No plan found in this
 
 ### Step 2: Generate Documentation
 
-Invoke `/cdf:docs plan` with the task name (from args or inferred from the plan). This creates:
-- `dev/active/[task-name]/[task-name]-plan.md` — full strategic plan
-- `dev/active/[task-name]/[task-name]-context.md` — key files and decisions
-- `dev/active/[task-name]/[task-name]-tasks.md` — checklist for tracking
+Invoke `/cdf:docs plan` with the task name (from args or inferred from the plan). This delegates to `compound-engineering:ce-plan`, which writes the plan document to `docs/plans/` (committed — plans compound). Session-scratch context and task checklists may additionally live in `dev/active/[task-name]/` (machine-local, gitignored).
 
 ### Step 3: Assess Complexity & Recommend Execution Strategy
 
@@ -74,7 +71,7 @@ Present a summary:
 
 ```
 Plan: [task name]
-Docs: dev/active/[task-name]/
+Docs: docs/plans/ (plan) + dev/active/[task-name]/ (session scratch)
 Strategy: [direct | subagents | agent teams]
 [Brief strategy details]
 

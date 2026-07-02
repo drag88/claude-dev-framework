@@ -9,13 +9,13 @@ CDF (Claude Dev Framework) is a Claude Code plugin with a host-adaptable core. I
 | Directory | Purpose |
 |-----------|---------|
 | `commands/` | 21 slash command definitions (markdown + YAML frontmatter). Each file is a complete behavioral spec. |
-| `agents/` | 12 real-expertise agent definitions. Activated through `/cdf:task` or command-specific routing. |
-| `skills/` | 24 auto-invoked skill directories (`skills/*/SKILL.md`). Trigger-based, no explicit invocation. |
+| `agents/` | 11 real-expertise agent definitions. Activated through `/cdf:task` or command-specific routing. |
+| `skills/` | 10 auto-invoked skill directories (`skills/*/SKILL.md`). Trigger-based, no explicit invocation. |
 | `hooks/` | Lifecycle hook configuration (`hooks.json`). |
 | `scripts/` | Hook implementation scripts and shared utilities. |
 | `rules-templates/` | 15 rule templates: best-practice, project-type, workflow, and 4.7 CLAUDE.md guidance. |
 | `mcp-configs/` | MCP server configuration templates (7 pre-configured servers). |
-| `.claude-plugin/` | Plugin metadata (`plugin.json` v1.13.0). |
+| `.claude-plugin/` | Plugin metadata (`plugin.json` v2.0.0). |
 | `.claude/` | Plugin settings, permissions, rules, and runtime memory. |
 | `docs/` | Institutional knowledge and solved problem references. |
 
@@ -23,7 +23,7 @@ CDF (Claude Dev Framework) is a Claude Code plugin with a host-adaptable core. I
 
 | File | Role |
 |------|------|
-| `.claude-plugin/plugin.json` | Plugin metadata, version (1.13.0) |
+| `.claude-plugin/plugin.json` | Plugin metadata, version (2.0.0) |
 | `.claude-plugin/marketplace.json` | Marketplace metadata; version and count strings must match actual components |
 | `hooks/hooks.json` | Lifecycle hook definitions — 7 hooks across 4 event types |
 | `scripts/analyze-codebase.py` | SessionStart hook — project analysis and rule generation |

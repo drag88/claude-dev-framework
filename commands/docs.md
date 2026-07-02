@@ -9,7 +9,7 @@ argument-hint: "Describe what you need planned (e.g., 'refactor auth system', 'i
 
 ## Default Behavior
 
-**When invoked without a subcommand, `/cdf:docs` defaults to strategic planning mode.**
+**When invoked without a subcommand, `/cdf:docs` defaults to the `plan` subcommand.**
 
 ```bash
 # These are equivalent:
@@ -106,107 +106,9 @@ Create strategic plans with structured task breakdown for complex features.
 /cdf:docs plan [task-description] [--strategy systematic|agile] [--detail brief|full]
 ```
 
-### Plan Subcommand — first actions
+**Delegation**: The `plan` subcommand delegates to the `compound-engineering:ce-plan` host skill. The compound-engineering plugin is required; if it is not installed, stop and tell the user to install the compound-engineering plugin for their host (install commands are in the README) rather than creating a replacement planning flow.
 
-Before analyzing codebase or creating plan content:
-
-1. **Create the plan directory**:
-   ```bash
-   mkdir -p dev/active/[task-name]
-   ```
-
-2. **Use the checkbox format** so progress is trackable:
-
-   ```markdown
-   ## Phase 1: [Name] [0/N]
-   - [ ] Task 1
-   - [ ] Task 2
-
-   ## Phase 2: [Name] [0/N]
-   - [ ] Task 3
-
-   **Progress**: 0/N tasks (0%)
-   ```
-
-Anti-patterns:
-- Plans without checkbox format (untrackable progress)
-- Skipping the directory creation (orphan plans with no home)
-- Prose-only plans for multi-step work (no granular tracking)
-
-**Behavioral Flow:**
-1. **Analyze**: Understand request scope and examine relevant codebase
-2. **Plan**: Create structured plan with phases and tasks
-3. **Organize**: Generate task management structure in `dev/active/[task-name]/`
-4. **Document**: Create plan, context, and tasks files
-
-**Output Structure:**
-```
-dev/active/[task-name]/
-├── [task-name]-plan.md      # Comprehensive strategic plan
-├── [task-name]-context.md   # Key files, decisions, dependencies
-└── [task-name]-tasks.md     # Checklist format for tracking
-```
-
-**Plan Contents:**
-- Executive Summary
-- Current State Analysis
-- Implementation Phases
-- Detailed Tasks with acceptance criteria
-- Risk Assessment and Mitigation
-- Success Metrics
-- Timeline Estimates
-
-**Task Breakdown Structure:**
-- Each major section represents a phase or component
-- Number and prioritize tasks within sections
-- Include clear acceptance criteria for each task
-- Specify dependencies between tasks
-- Estimate effort levels (S/M/L/XL)
-
-**Checkbox Format for trackable plans:**
-Use checkbox format so progress can be marked as work proceeds:
-
-```markdown
-## Phase 1: Setup [0/2]
-- [ ] Create module directory structure
-- [ ] Add dependencies to package.json
-
-## Phase 2: Implementation [0/4]
-- [ ] Implement core service class
-- [ ] Add API endpoints
-- [ ] Create database migrations
-- [ ] Add validation logic
-
-## Phase 3: Testing [0/2]
-- [ ] Write unit tests
-- [ ] Add integration tests
-
----
-**Progress**: 0/8 tasks (0%)
-**Last Updated**: YYYY-MM-DD HH:MM
-```
-
-The checkbox format enables:
-- Visual progress tracking during implementation
-- Manual or scripted updates as work progresses ([ ] -> [x])
-- Easy resume after interruption
-- Progress percentage calculation
-
-**Quality Standards:**
-- Plans must be self-contained with all necessary context
-- Use clear, actionable language
-- Include specific technical details where relevant
-- Consider both technical and business perspectives
-- Account for potential risks and edge cases
-
-**Context References (check if exists):**
-- `PROJECT_KNOWLEDGE.md` - Architecture overview
-- `BEST_PRACTICES.md` - Coding standards
-- `TROUBLESHOOTING.md` - Common issues to avoid
-- `dev/README.md` - Task management guidelines
-- `CLAUDE.md` - Project-specific development standards
-
-**Note**: Ideal to use AFTER exiting plan mode when you have a clear vision. Creates persistent task structure that survives context resets.
+**CDF constraint**: Plan documentation lands in `docs/plans/`.
 
 **Examples:**
 ```bash
@@ -233,7 +135,10 @@ Update development documentation before context compaction or session end.
 
 **What Gets Updated:**
 
-1. **Active Task Documentation** (`dev/active/[task-name]/`):
+1. **Plan Documents** (`docs/plans/`, written by `compound-engineering:ce-plan`):
+   - Update the relevant plan's status notes rather than duplicating state elsewhere.
+
+2. **Session Context** (`dev/active/[task-name]/`, machine-local scratch, gitignored):
    - `[task-name]-context.md`:
      - Current implementation state
      - Key decisions made this session
@@ -247,7 +152,7 @@ Update development documentation before context compaction or session end.
      - Update in-progress tasks with current status
      - Reorder priorities if needed
 
-2. **Capture Session Context** (include relevant info about):
+3. **Capture Session Context** (include relevant info about):
    - Complex problems solved
    - Architectural decisions made
    - Tricky bugs found and fixed
@@ -360,7 +265,7 @@ Update development documentation before context compaction or session end.
 
 **Will:**
 - Generate documentation at any scope from inline to strategic
-- Create task management structure for complex planning
+- Delegate strategic planning to `compound-engineering:ce-plan`
 - Update documentation while preserving manual additions
 - Apply framework-specific patterns and standards
 

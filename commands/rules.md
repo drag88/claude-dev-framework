@@ -285,25 +285,35 @@ invoke all relevant tools simultaneously rather than sequentially.
 
 ## CDF tools available
 
-This project uses CDF (Claude Dev Framework). Reach for these instead of generic approaches:
+This project uses CDF (Claude Dev Framework). CDF wraps the compound-engineering plugin's engineering loop behind stable `/cdf:*` commands — reach for these instead of generic approaches.
 
-- **Debugging bugs**: `/cdf:troubleshoot` — root-cause methodology, adds regression test
-- **Pre-PR quality check**: `/cdf:verify --mode pre-pr` — types + lint + tests + security in one pass
+CE-first routes (require the compound-engineering plugin):
+
+- **Requirements / brainstorm**: `/cdf:brainstorm` → `compound-engineering:ce-brainstorm` (writes `docs/brainstorms/`)
+- **Design / plan**: `/cdf:design`, `/cdf:docs plan` → `compound-engineering:ce-plan` (writes `docs/plans/`)
+- **Plan review**: `/cdf:plan-review` → `compound-engineering:ce-doc-review` — mandatory gate before `/cdf:approve`
+- **Implementation**: `/cdf:implement` → `compound-engineering:ce-work`
+- **Debugging**: `/cdf:troubleshoot` → `compound-engineering:ce-debug` — root cause + regression test
+- **Commit**: `/cdf:git commit` → `compound-engineering:ce-commit` — conventional commits, no AI attribution
+- **Ship**: `/cdf:ship` → `compound-engineering:ce-code-review` + `compound-engineering:ce-commit-push-pr`
+- **Knowledge capture**: after non-obvious fixes, `compound-engineering:ce-compound` → `docs/solutions/` + `CONCEPTS.md`
+
+CDF complement layer (native):
+
+- **Pre-PR quality check**: `/cdf:verify --mode pre-pr` — types + lint + tests + security; review stage → `compound-engineering:ce-code-review`
 - **Tests**: `/cdf:test` (coverage-aware), `/cdf:tdd` for RED-GREEN-REFACTOR
-- **Plan review**: `/cdf:plan-review` — product + engineering + UX/DX + risk gauntlet before approval
 - **Multi-file investigation**: `/cdf:task` with codebase-navigator agent (returns summary, not raw dumps)
 - **Library research / evaluation**: `/cdf:task` with library-researcher agent (evidence-backed, GitHub permalinks)
 - **Refactoring**: `/cdf:improve` — systematic with safety checks
-- **Code / security / perf analysis**: `/cdf:analyze` — multi-domain audit
-- **Commit / ship**: `/cdf:git`, `/cdf:ship` — conventional commits, no AI attribution
+- **Code / security / perf analysis**: `/cdf:analyze` — repo-wide multi-domain audit (diff review belongs to ce-code-review)
 
-Real-expertise agents (invoke via `/cdf:task` or the relevant CDF command): codebase-navigator, library-researcher, deep-research-agent, quality-engineer, refactoring-expert, e2e-specialist, tdd-guide, requirements-analyst, socratic-mentor, business-research-strategist, business-panel-experts, media-interpreter.
+Real-expertise agents (invoke via `/cdf:task` or the relevant CDF command): codebase-navigator, library-researcher, deep-research-agent, quality-engineer, refactoring-expert, e2e-specialist, tdd-guide, socratic-mentor, business-research-strategist, business-panel-experts, media-interpreter.
 
-Skills auto-trigger from context (coding-standards, backend-patterns, frontend-patterns, tdd-workflow, e2e-patterns, frontend-design, failure-recovery, visual-explainer). Do not invoke manually.
+Skills auto-trigger from context (coding-standards, backend-patterns, frontend-patterns, tdd-workflow, e2e-patterns, frontend-design, failure-recovery). Do not invoke manually.
 
 For role-based work (backend, frontend, devops, security, perf, system design, docs) where no specific CDF tool fits, invoke `/cdf:task` directly — Opus 4.7 plays the role from the `## Role` line above plus `xhigh` effort.
 
-Dispatch by task shape: simple changes use direct edit or `/cdf:implement`; bugs use `/cdf:troubleshoot`; audits use `/cdf:analyze`; plan-first work uses `/cdf:brainstorm` or `/cdf:design`, then `/cdf:plan-review`, then `/cdf:approve`; full lifecycle work uses a clear prompt with `xhigh` effort rather than `/cdf:flow` or `/cdf:workflow`.
+Dispatch by task shape: simple changes use direct edit or `/cdf:implement`; bugs use `/cdf:troubleshoot`; audits use `/cdf:analyze`; plan-first work uses `/cdf:brainstorm` → `/cdf:design` → `/cdf:plan-review` → `/cdf:approve` (all CE-delegated); full lifecycle work uses a clear prompt with high effort rather than a monolithic orchestrator command.
 
 <plans_instruction>
 ## Plans Format
@@ -472,25 +482,35 @@ invoke all relevant tools simultaneously rather than sequentially.
 
 ## CDF tools available
 
-This project uses CDF (Claude Dev Framework). Reach for these instead of generic approaches:
+This project uses CDF (Claude Dev Framework). CDF wraps the compound-engineering plugin's engineering loop behind stable `/cdf:*` commands — reach for these instead of generic approaches.
 
-- **Debugging bugs**: `/cdf:troubleshoot` — root-cause methodology, adds regression test
-- **Pre-PR quality check**: `/cdf:verify --mode pre-pr` — types + lint + tests + security in one pass
+CE-first routes (require the compound-engineering plugin):
+
+- **Requirements / brainstorm**: `/cdf:brainstorm` → `compound-engineering:ce-brainstorm` (writes `docs/brainstorms/`)
+- **Design / plan**: `/cdf:design`, `/cdf:docs plan` → `compound-engineering:ce-plan` (writes `docs/plans/`)
+- **Plan review**: `/cdf:plan-review` → `compound-engineering:ce-doc-review` — mandatory gate before `/cdf:approve`
+- **Implementation**: `/cdf:implement` → `compound-engineering:ce-work`
+- **Debugging**: `/cdf:troubleshoot` → `compound-engineering:ce-debug` — root cause + regression test
+- **Commit**: `/cdf:git commit` → `compound-engineering:ce-commit` — conventional commits, no AI attribution
+- **Ship**: `/cdf:ship` → `compound-engineering:ce-code-review` + `compound-engineering:ce-commit-push-pr`
+- **Knowledge capture**: after non-obvious fixes, `compound-engineering:ce-compound` → `docs/solutions/` + `CONCEPTS.md`
+
+CDF complement layer (native):
+
+- **Pre-PR quality check**: `/cdf:verify --mode pre-pr` — types + lint + tests + security; review stage → `compound-engineering:ce-code-review`
 - **Tests**: `/cdf:test` (coverage-aware), `/cdf:tdd` for RED-GREEN-REFACTOR
-- **Plan review**: `/cdf:plan-review` — product + engineering + UX/DX + risk gauntlet before approval
 - **Multi-file investigation**: `/cdf:task` with codebase-navigator agent (returns summary, not raw dumps)
 - **Library research / evaluation**: `/cdf:task` with library-researcher agent (evidence-backed, GitHub permalinks)
 - **Refactoring**: `/cdf:improve` — systematic with safety checks
-- **Code / security / perf analysis**: `/cdf:analyze` — multi-domain audit
-- **Commit / ship**: `/cdf:git`, `/cdf:ship` — conventional commits, no AI attribution
+- **Code / security / perf analysis**: `/cdf:analyze` — repo-wide multi-domain audit (diff review belongs to ce-code-review)
 
-Real-expertise agents (invoke via `/cdf:task` or the relevant CDF command): codebase-navigator, library-researcher, deep-research-agent, quality-engineer, refactoring-expert, e2e-specialist, tdd-guide, requirements-analyst, socratic-mentor, business-research-strategist, business-panel-experts, media-interpreter.
+Real-expertise agents (invoke via `/cdf:task` or the relevant CDF command): codebase-navigator, library-researcher, deep-research-agent, quality-engineer, refactoring-expert, e2e-specialist, tdd-guide, socratic-mentor, business-research-strategist, business-panel-experts, media-interpreter.
 
-Skills auto-trigger from context (coding-standards, backend-patterns, frontend-patterns, tdd-workflow, e2e-patterns, frontend-design, failure-recovery, visual-explainer). Do not invoke manually.
+Skills auto-trigger from context (coding-standards, backend-patterns, frontend-patterns, tdd-workflow, e2e-patterns, frontend-design, failure-recovery). Do not invoke manually.
 
 For role-based work (backend, frontend, devops, security, perf, system design, docs) where no specific CDF tool fits, invoke `/cdf:task` directly — Opus 4.7 plays the role from the `## Role` line above plus `xhigh` effort.
 
-Dispatch by task shape: simple changes use direct edit or `/cdf:implement`; bugs use `/cdf:troubleshoot`; audits use `/cdf:analyze`; plan-first work uses `/cdf:brainstorm` or `/cdf:design`, then `/cdf:plan-review`, then `/cdf:approve`; full lifecycle work uses a clear prompt with `xhigh` effort rather than `/cdf:flow` or `/cdf:workflow`.
+Dispatch by task shape: simple changes use direct edit or `/cdf:implement`; bugs use `/cdf:troubleshoot`; audits use `/cdf:analyze`; plan-first work uses `/cdf:brainstorm` → `/cdf:design` → `/cdf:plan-review` → `/cdf:approve` (all CE-delegated); full lifecycle work uses a clear prompt with high effort rather than a monolithic orchestrator command.
 
 <plans_instruction>
 ## Plans Format

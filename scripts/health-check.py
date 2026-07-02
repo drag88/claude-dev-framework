@@ -9,6 +9,7 @@ Validates plugin integrity:
 4. Component counts in docs/marketplace metadata match the actual tree
 5. Marketplace plugin version matches plugin.json
 6. Deleted commands are not advertised as active commands
+7. CE delegated command references point at installed CE skill directories
 """
 
 import json
@@ -237,9 +238,58 @@ def check_removed_command_refs(project_root: Path) -> list:
     return issues
 
 
+def _ce_version_key(skills_dir: Path) -> tuple:
+    version_dir = skills_dir.parent
+    numbers = tuple(int(part) for part in re.findall(r"\d+", version_dir.name))
+    try:
+        mtime = version_dir.stat().st_mtime
+    except OSError:
+        mtime = 0
+    return mtime, numbers
+
+
+def check_ce_skill_refs(project_root: Path) -> list:
+    """Warn when delegated CE skill references in commands are stale.
+
+    Newest install wins by directory mtime (version digits as tiebreaker) so
+    digit-less cache dirs are never shadowed by stale numeric ones.
+    """
+    messages = []
+    ce_cache = Path.home() / ".claude" / "plugins" / "cache" / "compound-engineering-plugin"
+
+    if not ce_cache.exists():
+        return [
+            "INFO: compound-engineering plugin cache not found; skipping CE skill reference validation"
+        ]
+
+    skills_dirs = [path for path in ce_cache.rglob("skills") if path.is_dir()]
+    if not skills_dirs:
+        return [
+            "WARNING: compound-engineering plugin cache found, but no skills directory was found"
+        ]
+
+    newest_skills_dir = max(skills_dirs, key=_ce_version_key)
+    commands_dir = project_root / "commands"
+    ref_pattern = re.compile(r"compound-engineering:ce-[a-z0-9-]+")
+
+    for command_file in sorted(commands_dir.glob("*.md")):
+        content = command_file.read_text(errors="ignore")
+        for ref in sorted(set(ref_pattern.findall(content))):
+            skill_name = ref.removeprefix("compound-engineering:")
+            if not (newest_skills_dir / skill_name).is_dir():
+                rel = command_file.relative_to(project_root)
+                messages.append(
+                    f"WARNING: {rel} has stale CE skill reference {ref} "
+                    f"(missing {skill_name} under {newest_skills_dir})"
+                )
+
+    return messages
+
+
 def main():
     project_root = get_project_root()
     all_issues = []
+    warning_messages = []
 
     # 1. Validate hooks.json
     all_issues.extend(check_hooks_json(project_root))
@@ -256,12 +306,21 @@ def main():
     # 5. Check removed command references
     all_issues.extend(check_removed_command_refs(project_root))
 
+    # 6. Check CE delegated skill references (warn-only)
+    warning_messages.extend(check_ce_skill_refs(project_root))
+
     if all_issues:
         print(f"Health check FAILED - {len(all_issues)} issue(s):\n")
         for issue in all_issues:
             print(f"  - {issue}")
+        if warning_messages:
+            print("\nWarnings:\n")
+            for warning in warning_messages:
+                print(f"  - {warning}")
         sys.exit(1)
     else:
+        for warning in warning_messages:
+            print(warning)
         print("Health check PASSED - all checks OK")
         sys.exit(0)
 

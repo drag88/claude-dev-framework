@@ -37,19 +37,25 @@ invoke all relevant tools simultaneously rather than sequentially.
 
 CDF is the project being developed here. When working on it, reach for these:
 
-- **Debugging bugs**: `/cdf:troubleshoot` — root-cause methodology, adds regression test
-- **Pre-PR quality check**: `/cdf:verify --mode pre-pr` — types + lint + tests + security
-- **Tests**: `/cdf:test` (coverage-aware), `/cdf:tdd` for RED-GREEN-REFACTOR
-- **Plan review**: `/cdf:plan-review` — product + engineering + UX/DX + risk gauntlet before approval
-- **Multi-file investigation**: `/cdf:task` with codebase-navigator agent (returns summary, not raw dumps)
-- **Library research / evaluation**: `/cdf:task` with library-researcher agent
-- **Refactoring**: `/cdf:improve` — systematic with safety checks
-- **Code / security / perf analysis**: `/cdf:analyze`
-- **Commit / ship**: `/cdf:git`, `/cdf:ship` — conventional commits, no AI attribution
+### CE-first routes
 
-Real-expertise agents (via `/cdf:task` or the relevant CDF command): codebase-navigator, library-researcher, deep-research-agent, quality-engineer, refactoring-expert, e2e-specialist, tdd-guide, requirements-analyst, socratic-mentor, business-research-strategist, business-panel-experts, media-interpreter.
+| Need | CDF route | CE skill |
+|------|-----------|----------|
+| Ideation | (no wrapper — invoke the skill directly) | `compound-engineering:ce-ideate` |
+| Requirements discovery | `/cdf:brainstorm` | `compound-engineering:ce-brainstorm` |
+| Design or plan | `/cdf:design`, `/cdf:docs plan` | `compound-engineering:ce-plan` |
+| Pre-approval review | `/cdf:plan-review` | `compound-engineering:ce-doc-review` |
+| Implementation | `/cdf:implement` | `compound-engineering:ce-work` |
+| Debugging | `/cdf:troubleshoot` | `compound-engineering:ce-debug` |
+| Git commit | `/cdf:git commit` | `compound-engineering:ce-commit` |
+| Ship review and PR | `/cdf:ship` | `compound-engineering:ce-code-review`, `compound-engineering:ce-commit-push-pr` |
 
-For role-based work (backend, frontend, devops, etc.) where no specific CDF tool fits, invoke `/cdf:task` directly — Opus 4.7 plays the role from the Role line above plus `xhigh` effort.
+### CDF complement layer (the ++)
+
+- Rules generation, lifecycle hooks, host adapters, `/cdf:learn`, and session memory.
+- Real-expertise agents and `/cdf:task` fan-out for multi-file investigation.
+- Quality gates: `/cdf:test`, `/cdf:tdd`, `/cdf:e2e`, `/cdf:verify`.
+- Specialist commands: `/cdf:estimate`, `/cdf:explain`, `/cdf:research`, `/cdf:analyze` repo-wide audits.
 
 <plans_instruction>
 ## Plans Format
@@ -67,31 +73,17 @@ Requirements:
 
 ## Memory
 - Check auto-memory for prior context at session start.
-- Save key decisions, debugging insights, and project patterns to auto-memory during work as `feedback_*.md` files.
-- Reserve `.claude/rules/` for human-curated, durable standards. Do not write new rules files there autonomously — auto-memory exists for that.
+- `compound-engineering:ce-compound` writes durable repo knowledge to `docs/solutions/` and `CONCEPTS.md`; commit those artifacts.
+- `/cdf:learn` captures skill-preference corrections only.
+- Auto-memory captures session decisions only; promote them to `compound-engineering:ce-compound` when they harden.
+- `CONCEPTS.md` is seeded by `compound-engineering:ce-compound` on first capture; do not create it manually.
 
 ## Commit Messages
 Conventional format (`feat:`, `fix:`, `docs:`), no Claude attribution. See `/cdf:git`.
 
 ## CDF Agents
 
-| Task Type | Agent | Command |
-|-----------|-------|---------|
-| Research topics | deep-research-agent | `/cdf:research` |
-| Find code/patterns | codebase-navigator | `/cdf:task` |
-| Evaluate libraries | library-researcher | `/cdf:task` |
-| Write tests | quality-engineer | `/cdf:test` |
-| Refactor code | refactoring-expert | `/cdf:improve` |
-| TDD workflow | tdd-guide | `/cdf:tdd` |
-| E2E testing | e2e-specialist | `/cdf:e2e` |
-| Requirements discovery | requirements-analyst | `/cdf:brainstorm` |
-| Socratic explanation | socratic-mentor | `/cdf:explain` |
-| Business strategy | business-panel-experts, business-research-strategist | `/cdf:research` |
-| Image / PDF interpretation | media-interpreter | `/cdf:task` |
-
-For role-based work (backend/frontend/security/perf/system design/docs), invoke `/cdf:task` directly — the Role line above plus 4.7's `xhigh` effort handles persona work without dedicated stub agents.
-
-**Auto-activation**: Agents activate automatically via `/cdf:task` based on task context.
+Real-expertise agents: codebase-navigator, library-researcher, deep-research-agent, quality-engineer, refactoring-expert, e2e-specialist, tdd-guide, socratic-mentor, business-research-strategist, business-panel-experts, media-interpreter. Use via `/cdf:task` or the relevant CDF command; auto-activation follows context.
 
 ## Project Rules
 Auto-generated rules in `.claude/rules/` - Claude loads automatically.

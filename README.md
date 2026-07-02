@@ -150,6 +150,8 @@ npx skills update --frozen-lockfile
 
 CDF's durable core is the methodology in `commands/`, `agents/`, `skills/`, `rules-templates/`, and `docs/`. Host adapters load that core into a specific agent runtime. Claude Code gets slash commands and hooks; Codex gets `.codex-plugin/`, `AGENTS.md` routing, skills, agents, and explicit command prompts. Do not put host-specific assumptions in core command or skill behavior unless the file is clearly adapter-specific.
 
+CDF wraps compound-engineering's engineering loop behind the stable `/cdf:*` surface, then complements it with rules generation, lifecycle hooks, host adapters, session memory, quality gates, and specialist agents.
+
 ### Commands
 
 Slash commands prefixed with `/cdf:` covering development, analysis, planning, review, and quality verification. Core commands include `implement`, `test`, `tdd`, `git`, `analyze`, `research`, `troubleshoot`, `design`, `plan-review`, `task`, `verify`, and `ship`.
@@ -242,6 +244,7 @@ python3 --version      # Verify Python 3 available
 ## Requirements
 
 - **Claude Code CLI** - Latest version
+- **compound-engineering plugin** - Required for delegated engineering-loop commands. Claude Code: `/plugin install compound-engineering@compound-engineering-plugin`; Codex: `codex plugin marketplace add` (it ships a `.codex-plugin` too)
 - **Python 3.x** - For hook scripts
 - **Bash** - For shell scripts (macOS/Linux)
 

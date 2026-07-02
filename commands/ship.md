@@ -53,66 +53,33 @@ Run all discovered test suites. If multiple exist (e.g., backend + frontend), ru
 
 ## Step 4: Pre-Landing Review
 
-Review the diff for structural issues tests don't catch.
+Delegate pre-landing diff review to the `compound-engineering:ce-code-review` host skill.
 
-1. Get full diff: `git diff origin/main`
+**Requires**: the compound-engineering plugin. If it is not installed, stop and tell the user to install the compound-engineering plugin for their host (install commands are in the README) — do not improvise a replacement flow.
 
-2. Two-pass review:
-   - **Pass 1 (CRITICAL):** SQL injection (string interpolation in queries), race conditions (check-then-set without atomicity, find_or_create without unique index), XSS (html_safe/raw on user data), LLM trust boundary (unvalidated LLM outputs persisted to DB)
-   - **Pass 2 (INFORMATIONAL):** Conditional side effects (branches forgetting effects), dead code, test gaps, magic numbers, type coercion at boundaries
+Pass the diff from `git diff origin/main` and request report-only review output. CDF handles any follow-up fixes.
 
-3. Output: `Pre-Landing Review: N issues (X critical, Y informational)`
-
-4. For each CRITICAL issue: separate question with:
+For each CRITICAL issue: separate question with:
    - Problem (`file:line` + description)
    - Recommended fix
    - Options: A) Fix now (recommend), B) Acknowledge and ship, C) False positive
 
-   If user chose A on any issue: apply fixes, commit them (`fix: apply pre-landing review fixes`), then **STOP** and tell user to run `/cdf:ship` again.
+If user chose A on any issue: apply fixes, commit them through `compound-engineering:ce-commit-push-pr` as a fix commit, then **STOP** and tell user to run `/cdf:ship` again.
 
-5. If only informational or no issues: continue.
+If only informational or no issues: continue.
 
-## Step 5: Commit
+## Step 5: Commit, Push, and Create PR
 
-Create bisectable commits — logical groups, not one-file-per-commit.
+Delegate to the `compound-engineering:ce-commit-push-pr` host skill **once** — a single invocation runs commit, push, and PR creation end to end. Pass the test results, review findings, branch, and diff context.
 
-**Ordering** (dependencies first):
-1. Infrastructure: migrations, config, routes
-2. Models & services (with their tests)
-3. Controllers, views, components (with their tests)
-4. Everything else
-
-**Rules:**
-- A module and its test file go in the same commit
-- If total diff is small (<50 lines across <4 files), single commit is fine
-- Each commit must be independently valid — no broken imports
-- Conventional format: `feat:`, `fix:`, `chore:`, `refactor:`, `docs:`
-- No Claude attribution in commit messages
-
-## Step 6: Push
-
-```bash
-git push -u origin $(git branch --show-current)
-```
-
-## Step 7: Create PR
-
-```bash
-gh pr create --title "<type>: <summary>" --body "$(cat <<'EOF'
-## Summary
-<bullet points describing what changed and why>
-
-## Pre-Landing Review
-<findings from Step 4, or "No issues found.">
-
-## Tests
-- All tests pass (N tests)
-
-EOF
-)"
-```
+**CDF constraints (bind on top of the skill)**:
+- Preserve the pre-flight, merge-main, tests, and abort conditions above.
+- Use conventional commit format.
+- Do not include AI attribution of any kind.
 
 Output the PR URL — this is the final output the user sees.
+
+If the shipped work solved a non-obvious problem, capture the learning with the `compound-engineering:ce-compound` host skill after the PR is open.
 
 ## Important Rules
 

@@ -22,7 +22,7 @@ CDF has four layers. You only need the first one to start.
 Slash commands that trigger specific workflows. The command handles tool selection, agent activation, and quality checks automatically.
 
 **Layer 2 — Agents** (real-expertise subagents you can invoke)
-Specialized agents like `codebase-navigator`, `library-researcher`, `quality-engineer`, `e2e-specialist`, `tdd-guide`, `requirements-analyst`, `socratic-mentor`, `media-interpreter`. Persona-stub agents (security-engineer, backend-architect, etc.) were removed in the leanness pass — Opus 4.7 plays those roles from the Role line in your CLAUDE.md plus `xhigh` effort.
+Specialized agents like `codebase-navigator`, `library-researcher`, `quality-engineer`, `e2e-specialist`, `tdd-guide`, `socratic-mentor`, `media-interpreter`. Persona-stub agents (security-engineer, backend-architect, etc.) were removed in the leanness pass — Opus 4.7 plays those roles from the Role line in your CLAUDE.md plus `xhigh` effort.
 
 **Layer 3 — Skills** (trigger automatically)
 Background behaviors like coding standards enforcement, failure recovery, and intent classification. You don't interact with these — they just run.

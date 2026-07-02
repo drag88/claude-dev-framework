@@ -4,38 +4,6 @@ description: "Interactive requirements discovery through Socratic dialogue and s
 
 # /cdf:brainstorm - Interactive Requirements Discovery
 
-> Transform ambiguous ideas into concrete specifications through Socratic dialogue.
-
-## Quick Start
-
-```bash
-# Explore a product idea
-/cdf:brainstorm "AI-powered project management tool"
-
-# Deep systematic exploration
-/cdf:brainstorm "real-time collaboration features" --strategy systematic --depth deep
-
-# Parallel exploration with multiple personas
-/cdf:brainstorm "mobile app monetization" --parallel
-```
-
-## When to Use
-
-Use `/cdf:brainstorm` when:
-- You have a vague idea that needs exploration and refinement
-- Requirements are unclear and need Socratic questioning
-- You need multi-persona analysis before implementation
-- Starting a new project without clear specifications
-
-**Don't use this command for**: Executing defined tasks (use `/cdf:task`), breaking down known tasks (use `/cdf:task --breakdown`).
-
-| Scenario | Command |
-|----------|---------|
-| Have an idea, need requirements | `/cdf:brainstorm` |
-| Have a PRD/spec, need workflow | Write a clear prompt and let 4.7 plan with `xhigh` effort |
-| Have complex task, need breakdown | `/cdf:task --breakdown` |
-| Have defined task, ready to execute | `/cdf:task` |
-
 ## Triggers
 - Ambiguous project ideas requiring structured exploration
 - Requirements discovery and specification development needs
@@ -46,76 +14,16 @@ Use `/cdf:brainstorm` when:
 ```
 /cdf:brainstorm [topic/idea] [--strategy systematic|agile|enterprise] [--depth shallow|normal|deep] [--parallel]
 ```
-**Usage**: Type this pattern in your Claude Code conversation to activate brainstorming behavioral mode with systematic exploration and multi-persona coordination.
+**Usage**: Type this pattern in the host conversation to activate brainstorming through the delegated host skill.
 
-## Behavioral Flow
-1. **Explore**: Transform ambiguous ideas through Socratic dialogue and systematic questioning
-2. **Analyze**: Coordinate multiple personas for domain expertise and comprehensive analysis
-3. **Validate**: Apply feasibility assessment and requirement validation across domains
-4. **Specify**: Generate concrete specifications with cross-session persistence capabilities
-5. **Handoff**: Create actionable briefs ready for implementation or further development
+## Delegation: compound-engineering
 
-Key behaviors:
-- Multi-persona orchestration across architecture, analysis, frontend, backend, security domains
-- Advanced MCP coordination with intelligent routing for specialized analysis
-- Systematic execution with progressive dialogue enhancement and parallel exploration
-- Cross-session persistence with comprehensive requirements discovery documentation
+This command delegates to the `compound-engineering:ce-brainstorm` host skill.
 
-## MCP Integration
-- **Sequential MCP**: Complex multi-step reasoning for systematic exploration and validation
-- **Context7 MCP**: Framework-specific feasibility assessment and pattern analysis
-- **Magic MCP**: UI/UX feasibility and design system integration analysis
-- **Playwright MCP**: User experience validation and interaction pattern testing
+**Requires**: the compound-engineering plugin. If it is not installed, stop and tell the user to install the compound-engineering plugin for their host (install commands are in the README) — do not improvise a replacement flow.
 
-## Tool Coordination
-- **Read/Write/Edit**: Requirements documentation and specification generation
-- **TodoWrite**: Progress tracking for complex multi-phase exploration
-- **Task**: Advanced delegation for parallel exploration paths and multi-agent coordination
-- **WebSearch**: Market research, competitive analysis, and technology validation
-- **sequentialthinking**: Structured reasoning for complex requirements analysis
+**Flow**: Invoke the `compound-engineering:ce-brainstorm` host skill, passing the user's arguments and any flags as context.
 
-## Key Patterns
-- **Socratic Dialogue**: Question-driven exploration → systematic requirements discovery
-- **Multi-Domain Analysis**: Cross-functional expertise → comprehensive feasibility assessment
-- **Progressive Coordination**: Systematic exploration → iterative refinement and validation
-- **Specification Generation**: Concrete requirements → actionable implementation briefs
-
-## Examples
-
-### Systematic Product Discovery
-```
-/cdf:brainstorm "AI-powered project management tool" --strategy systematic --depth deep
-# Multi-persona analysis: architect (system design), analyzer (feasibility), project-manager (requirements)
-# Sequential MCP provides structured exploration framework
-```
-
-### Agile Feature Exploration
-```
-/cdf:brainstorm "real-time collaboration features" --strategy agile --parallel
-# Parallel exploration paths with frontend, backend, and security personas
-# Context7 and Magic MCP for framework and UI pattern analysis
-```
-
-### Enterprise Solution Validation
-```
-/cdf:brainstorm "enterprise data analytics platform" --strategy enterprise --validate
-# Comprehensive validation with security, devops, and architect personas
-```
-
-### Cross-Session Refinement
-```
-/cdf:brainstorm "mobile app monetization strategy" --depth normal
-# Progressive dialogue enhancement with memory-driven insights
-```
-
-## Boundaries
-
-**Will:**
-- Transform ambiguous ideas into concrete specifications through systematic exploration
-- Coordinate multiple personas and MCP servers for comprehensive analysis
-- Provide cross-session persistence and progressive dialogue enhancement
-
-**Will Not:**
-- Make implementation decisions without proper requirements discovery
-- Override user vision with prescriptive solutions during exploration phase
-- Bypass systematic exploration for complex multi-domain projects
+**CDF constraints (bind on top of the skill)**:
+- Requirements documentation lands in `docs/brainstorms/`.
+- When the idea is ready for execution planning, hand off to `/cdf:design`, which delegates to `compound-engineering:ce-plan`.

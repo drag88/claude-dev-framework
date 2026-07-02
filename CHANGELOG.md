@@ -1,5 +1,12 @@
 # Changelog
 
+## [2.0.0] - 2026-07-02
+
+### Breaking Changes
+- Engineering-loop commands now delegate to and require the compound-engineering plugin.
+- Native duplicated flows for implementation, brainstorming, planning, troubleshooting, plan review, review, commit, and PR delivery were removed.
+- Knowledge base is unified on `compound-engineering:ce-compound` → `docs/solutions/` + `CONCEPTS.md`.
+
 ## [1.13.0] - 2026-04-22
 
 ### Breaking Changes

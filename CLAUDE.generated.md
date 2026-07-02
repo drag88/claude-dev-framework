@@ -47,8 +47,8 @@ Conventional format (`feat:`, `fix:`, `docs:`), no Claude attribution.
 
 ## Key Directories
 - `commands/` - 21 slash command definitions (markdown + YAML frontmatter)
-- `agents/` - 12 real-expertise agent definitions
-- `skills/` - 24 auto-invoked skill directories (`SKILL.md`)
+- `agents/` - 11 real-expertise agent definitions
+- `skills/` - 10 auto-invoked skill directories (`SKILL.md`)
 - `scripts/` - Hook implementation scripts (Python + Bash)
 - `hooks/` - Lifecycle hook configuration (`hooks.json`)
 - `rules-templates/` - 15 rule generation templates

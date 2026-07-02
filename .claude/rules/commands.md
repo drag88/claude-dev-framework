@@ -55,27 +55,27 @@ claude --plugin-dir ./claude-dev-framework
 
 | Command | Purpose |
 |---------|---------|
-| `/cdf:analyze` | Code analysis (quality, security, performance, architecture) |
+| `/cdf:analyze` | Code analysis (quality, security, performance, architecture); diff review -> `ce-code-review` |
 | `/cdf:approve` | Approve plan from plan mode, generate docs, recommend execution strategy |
-| `/cdf:brainstorm` | Interactive requirements discovery |
-| `/cdf:design` | System architecture and API design |
-| `/cdf:docs` | Planning and documentation generation |
+| `/cdf:brainstorm` | Interactive requirements discovery (-> `ce-brainstorm`) |
+| `/cdf:design` | System architecture and API design (-> `ce-plan`) |
+| `/cdf:docs` | Planning and documentation generation (`plan` -> `ce-plan`) |
 | `/cdf:e2e` | E2E testing with Playwright |
 | `/cdf:estimate` | Development estimates |
 | `/cdf:explain` | Code and concept explanations |
-| `/cdf:git` | Git operations with smart commit messages |
-| `/cdf:implement` | Feature implementation with agent activation |
+| `/cdf:git` | Git operations; commits -> `ce-commit` |
+| `/cdf:implement` | Feature implementation (-> `ce-work`) |
 | `/cdf:improve` | Code quality improvements |
 | `/cdf:learn` | Universal skill learning: capture, view, remove, reset, consolidate preferences |
-| `/cdf:plan-review` | Pre-implementation plan review gauntlet |
+| `/cdf:plan-review` | Pre-implementation plan review gauntlet (-> `ce-doc-review`) |
 | `/cdf:research` | Deep web research |
 | `/cdf:rules` | Project rules management |
-| `/cdf:ship` | Automated release pipeline: merge, test, review, push, PR |
+| `/cdf:ship` | Automated release pipeline: merge, test, review, push, PR (-> `ce-code-review`, `ce-commit-push-pr`) |
 | `/cdf:task` | Complex task execution with delegation |
 | `/cdf:tdd` | Test-Driven Development workflow |
 | `/cdf:test` | Test execution with coverage analysis |
-| `/cdf:troubleshoot` | Issue diagnosis and resolution |
-| `/cdf:verify` | Pre-PR quality checks |
+| `/cdf:troubleshoot` | Issue diagnosis and resolution (-> `ce-debug`) |
+| `/cdf:verify` | Pre-PR quality checks; review -> `ce-code-review` |
 
 ## Removed Orchestrators
 
