@@ -120,7 +120,7 @@ Use the narrowest CDF surface that matches the request:
 - **Quality or risk audit** -> `/cdf:analyze` (repo-wide audits)
 - **Tests or TDD** -> `/cdf:test` or `/cdf:tdd`
 - **Complex multi-file work** -> `/cdf:task` with real-expertise agents
-- **Full lifecycle work** -> `/cdf:brainstorm` (delegates to `compound-engineering:ce-brainstorm`) -> `/cdf:design` (delegates to `compound-engineering:ce-plan`) -> `/cdf:plan-review` (delegates to `compound-engineering:ce-doc-review`) -> `/cdf:approve`
+- **Full lifecycle work** -> `/cdf:brainstorm` (delegates to `compound-engineering:ce-brainstorm`) -> `/cdf:design` (delegates to `compound-engineering:ce-plan`) -> `/cdf:plan-review` (delegates to `compound-engineering:ce-doc-review`) for high-stakes work
 
 Deleted orchestrators stay deleted: do not reintroduce `/cdf:flow` or `/cdf:workflow`.
 

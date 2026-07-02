@@ -1,5 +1,5 @@
 ---
-name: enforcing-coding-standards
+name: coding-standards
 description: "Activates during code implementation and review for naming conventions, DRY/KISS/YAGNI, and code quality standards"
 ---
 

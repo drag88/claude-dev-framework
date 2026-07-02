@@ -6,7 +6,7 @@ argument-hint: "[plan-file-path or inline plan]"
 # /cdf:plan-review - Plan Review Gauntlet
 
 ## Triggers
-- Mandatory review gate before `/cdf:approve`
+- Review gate for high-stakes plans produced by `/cdf:plan`
 - Review of `docs/plans/*.md` and `docs/brainstorms/*.md`
 - Review of inline plans before implementation
 - Product, engineering, UX/DX, risk, or execution-readiness challenge requests
@@ -25,6 +25,6 @@ This command delegates to the `compound-engineering:ce-doc-review` host skill.
 **Flow**: Invoke the `compound-engineering:ce-doc-review` host skill, passing the document path (or the inline plan) as the argument. Do not forward `--flag`-style tokens — the skill parses a document path plus its own `mode:` tokens only.
 
 **CDF constraints (bind on top of the skill)**:
-- This is the mandatory gate before `/cdf:approve`.
+- This is the review gate for high-stakes plans from `/cdf:plan` before execution.
 - Review `docs/plans/*.md`, `docs/brainstorms/*.md`, and inline plans.
 - Keep CDF approval readiness as the framing for the review result.

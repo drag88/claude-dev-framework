@@ -9,7 +9,7 @@ argument-hint: "Describe what you need planned (e.g., 'refactor auth system', 'i
 
 ## Default Behavior
 
-**When invoked without a subcommand, `/cdf:docs` defaults to the `plan` subcommand.**
+**When invoked without a subcommand, `/cdf:docs` defaults to strategic planning mode.**
 
 ```bash
 # These are equivalent:
@@ -106,9 +106,107 @@ Create strategic plans with structured task breakdown for complex features.
 /cdf:docs plan [task-description] [--strategy systematic|agile] [--detail brief|full]
 ```
 
-**Delegation**: The `plan` subcommand delegates to the `compound-engineering:ce-plan` host skill. The compound-engineering plugin is required; if it is not installed, stop and tell the user to install the compound-engineering plugin for their host (install commands are in the README) rather than creating a replacement planning flow.
+**Delegation**: The `plan` subcommand delegates to the `compound-engineering:ce-plan` host skill, which grounds the plan in the codebase and writes it to `docs/plans/` (committed — plans compound). The compound-engineering plugin is required; if it is not installed, stop and tell the user to install the compound-engineering plugin for their host (install commands are in the README) rather than creating a replacement planning flow. `/cdf:plan` is the richer front door for raw ideas/bugs; `/cdf:docs plan` remains a thin alias to the same skill. Documentation-generation scopes below stay native.
 
-**CDF constraint**: Plan documentation lands in `docs/plans/`.
+### Plan Subcommand — session tracking (optional, machine-local)
+
+Checklist/context scratch for the session may additionally live in `dev/active/[task-name]/` (gitignored):
+
+1. **Create the scratch directory when needed**:
+   ```bash
+   mkdir -p dev/active/[task-name]
+   ```
+
+2. **Use the checkbox format** so progress is trackable:
+
+   ```markdown
+   ## Phase 1: [Name] [0/N]
+   - [ ] Task 1
+   - [ ] Task 2
+
+   ## Phase 2: [Name] [0/N]
+   - [ ] Task 3
+
+   **Progress**: 0/N tasks (0%)
+   ```
+
+Anti-patterns:
+- Plans without checkbox format (untrackable progress)
+- Skipping the directory creation (orphan plans with no home)
+- Prose-only plans for multi-step work (no granular tracking)
+
+**Output Structure:**
+```
+docs/plans/<plan>.md          # Durable plan written by ce-plan (committed)
+dev/active/[task-name]/       # Optional session scratch (gitignored)
+├── [task-name]-context.md   # Key files, decisions, dependencies
+└── [task-name]-tasks.md     # Checklist format for tracking
+```
+
+**Plan Contents — section contract (floor + include-when-material):**
+
+Five sections are a hard floor and always appear: Summary (lead with the answer), Problem Frame, Requirements, Key Decisions (each as `decision: rationale`), and Implementation Units. Everything else (Current State, Risk Assessment, Success Metrics, Timeline) appears **only when it carries real content** — a padded section is worse than an omitted one. Do not fill a heading to look thorough.
+
+**Task Breakdown Structure:**
+- Each major section represents a phase or component
+- Number and prioritize tasks within sections
+- Include clear acceptance criteria for each task
+- Specify dependencies between tasks
+- Estimate effort levels (S/M/L/XL)
+
+**Checkbox Format for trackable plans:**
+Use checkbox format so progress can be marked as work proceeds:
+
+```markdown
+## Phase 1: Setup [0/2]
+- [ ] Create module directory structure
+- [ ] Add dependencies to package.json
+
+## Phase 2: Implementation [0/4]
+- [ ] Implement core service class
+- [ ] Add API endpoints
+- [ ] Create database migrations
+- [ ] Add validation logic
+
+## Phase 3: Testing [0/2]
+- [ ] Write unit tests
+- [ ] Add integration tests
+
+---
+**Progress**: 0/8 tasks (0%)
+**Last Updated**: YYYY-MM-DD HH:MM
+```
+
+Give each phase or unit a `Verification:` line stating how to prove it done — the concrete command, not a vague "tests pass":
+
+```markdown
+## Phase 2: Implementation [0/4]
+- [ ] Implement core service class
+- [ ] Add API endpoints
+Verification: `pytest tests/test_service.py` passes; `curl localhost:8000/health` returns 200
+```
+
+The checkbox format enables:
+- Visual progress tracking during implementation
+- Manual or scripted updates as work progresses ([ ] -> [x])
+- Easy resume after interruption — and the `Verification:` line lets a resumed session confirm a unit really shipped before moving on
+- Progress percentage calculation
+
+**Quality Standards:**
+- Plans must be self-contained with all necessary context
+- Use clear, actionable language
+- Include specific technical details where relevant
+- Consider both technical and business perspectives
+- Account for potential risks and edge cases
+
+**Context References (check if exists):**
+- `PROJECT_KNOWLEDGE.md` - Architecture overview
+- `BEST_PRACTICES.md` - Coding standards
+- `TROUBLESHOOTING.md` - Common issues to avoid
+- `dev/README.md` - Task management guidelines
+- `CLAUDE.md` - Project-specific development standards
+
+**Note**: Ideal to use AFTER exiting plan mode when you have a clear vision. Creates persistent task structure that survives context resets.
 
 **Examples:**
 ```bash
@@ -135,10 +233,9 @@ Update development documentation before context compaction or session end.
 
 **What Gets Updated:**
 
-1. **Plan Documents** (`docs/plans/`, written by `compound-engineering:ce-plan`):
-   - Update the relevant plan's status notes rather than duplicating state elsewhere.
+1. **Plan Documents** (`docs/plans/`, written by `compound-engineering:ce-plan`): update the relevant plan's status notes rather than duplicating state elsewhere.
 
-2. **Session Context** (`dev/active/[task-name]/`, machine-local scratch, gitignored):
+2. **Session Scratch** (`dev/active/[task-name]/`, machine-local, gitignored):
    - `[task-name]-context.md`:
      - Current implementation state
      - Key decisions made this session
@@ -152,7 +249,7 @@ Update development documentation before context compaction or session end.
      - Update in-progress tasks with current status
      - Reorder priorities if needed
 
-3. **Capture Session Context** (include relevant info about):
+2. **Capture Session Context** (include relevant info about):
    - Complex problems solved
    - Architectural decisions made
    - Tricky bugs found and fixed
@@ -265,7 +362,7 @@ Update development documentation before context compaction or session end.
 
 **Will:**
 - Generate documentation at any scope from inline to strategic
-- Delegate strategic planning to `compound-engineering:ce-plan`
+- Create task management structure for complex planning
 - Update documentation while preserving manual additions
 - Apply framework-specific patterns and standards
 

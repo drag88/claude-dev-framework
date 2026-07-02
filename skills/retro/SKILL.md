@@ -1,5 +1,5 @@
 ---
-name: running-retrospectives
+name: retro
 description: "Engineering retrospective analyzing git history for velocity, work patterns, quality signals, and trends with persistent snapshots"
 ---
 

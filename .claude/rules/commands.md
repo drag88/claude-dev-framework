@@ -56,7 +56,7 @@ claude --plugin-dir ./claude-dev-framework
 | Command | Purpose |
 |---------|---------|
 | `/cdf:analyze` | Code analysis (quality, security, performance, architecture); diff review -> `ce-code-review` |
-| `/cdf:approve` | Approve plan from plan mode, generate docs, recommend execution strategy |
+| `/cdf:plan` | Plan front door: idea/bug/error → grounded durable plan (→ `ce-plan`) |
 | `/cdf:brainstorm` | Interactive requirements discovery (-> `ce-brainstorm`) |
 | `/cdf:design` | System architecture and API design (-> `ce-plan`) |
 | `/cdf:docs` | Planning and documentation generation (`plan` -> `ce-plan`) |

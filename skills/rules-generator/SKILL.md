@@ -1,5 +1,5 @@
 ---
-name: generating-rules
+name: rules-generator
 description: "Auto-generates .claude/rules/ documentation for any codebase"
 ---
 

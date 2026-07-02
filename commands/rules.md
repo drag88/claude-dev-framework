@@ -1,23 +1,41 @@
 ---
-description: "Project rules management: generate .claude/rules/ and CLAUDE.md documentation"
+description: "Project rules management: generate .claude/rules/, CLAUDE.md, and AGENTS.md documentation"
 ---
 
 # /cdf:rules - Project Rules Management
 
-> Generate and manage project rules in `.claude/rules/` and `CLAUDE.md`.
+> Generate and manage project rules in `.claude/rules/`, `CLAUDE.md` (Claude Code), and `AGENTS.md` (Codex and other coding agents).
 
 ## Quick Start
 
 ```bash
-# Generate full rules from codebase analysis (now project-type aware)
+# No subcommand — full chain: status → generate (if missing) → claudemd + agentsmd
+/cdf:rules
+
+# Generate full rules + both host instruction files from codebase analysis
 /cdf:rules generate
 
-# Generate CLAUDE.md from existing rules
+# Generate CLAUDE.md (Claude Code, Opus 4.7) from existing rules
 /cdf:rules claudemd
+
+# Generate AGENTS.md (Codex / GPT-5.5 and 20+ other agents) from existing rules
+/cdf:rules agentsmd
 
 # Check if rules need refresh
 /cdf:rules status
 ```
+
+## Default Behavior (No Subcommand)
+
+When invoked as bare `/cdf:rules` with no argument, run the full chain in order:
+
+1. **Inspect state**: check whether `.claude/rules/` and at least one rule file exist.
+2. **Generate rules if missing**: if `.claude/rules/` is empty or absent, run the `generate` subcommand first.
+3. **Generate CLAUDE.md if missing**: if neither `CLAUDE.md` nor `CLAUDE.generated.md` exists in the project root, run the `claudemd` subcommand.
+4. **Generate AGENTS.md if missing**: if neither `AGENTS.md` nor `AGENTS.generated.md` exists in the project root, run the `agentsmd` subcommand.
+5. **Report**: tell the user exactly which files were created or skipped (and why each was skipped).
+
+This default is the safety net for the most common ask ("set up rules for this repo"). Never stop after CLAUDE.md without also writing AGENTS.md — both host files come from the same `.claude/rules/` source and must stay in sync.
 
 ## When to Use
 
@@ -25,7 +43,8 @@ Use `/cdf:rules` when:
 - Setting up a new project (generate initial rules)
 - After major refactors (refresh rules to match new architecture)
 - Rules are outdated (regenerate to match current code)
-- Need `CLAUDE.md` for quick reference (generate from rules)
+- Need `CLAUDE.md` (Claude Code) or `AGENTS.md` (Codex) for quick reference
+- Working in a repo that targets both Claude Code and Codex — both files stay in sync from one source
 
 **Don't use this command for**: Dev documentation or task planning (use `/cdf:docs plan` instead).
 
@@ -203,7 +222,7 @@ paths: src/api/**/*.py
    - `.claude/rules/workflow.md`
    - Any project-type-specific files
 
-**Auto-Chain**: After generating rules, automatically runs `/cdf:rules claudemd`.
+**Auto-Chain**: After generating rules, automatically runs `/cdf:rules claudemd` and then `/cdf:rules agentsmd` so both Claude Code and Codex pick up the same source. Skip `agentsmd` only if the project explicitly targets a single host.
 
 ### claudemd - Generate CLAUDE.md from Rules
 
@@ -234,7 +253,7 @@ Generate a concise `CLAUDE.generated.md` file from existing `.claude/rules/`.
 | Content | In CLAUDE.md? | Why |
 |---------|--------------|-----|
 | Overview, Quick Start | YES | Essential orientation for every interaction |
-| Critical Rules (4 standard) | YES | High-signal, prevents common mistakes |
+| Critical Rules (6 standard) | YES | High-signal, prevents common mistakes |
 | Workflow summary (3 lines) | YES | Quick orientation — details in `.claude/rules/workflow.md` |
 | Plans Format (`<plans_instruction>`) | YES | XML processing tag — safest in guaranteed-load file |
 | Commit message convention | YES | 1-line pointer, high-frequency need |
@@ -266,10 +285,12 @@ You are a [senior/staff] [language/discipline] engineer working on [project], a 
 ```
 
 ## Critical Rules
-1. **Read before edit** - understand code before changes
-2. **DRY** - search with `rg` before writing similar code
-3. **No backwards compat** - delete deprecated code immediately
-4. **Tests required** - no feature complete without tests
+1. **Read before edit** — understand the full context before changing anything.
+2. **Search before write** — run `rg` or `grep` to find existing implementations before adding new code.
+3. **Delete deprecated code immediately** — no backwards-compat shims, no `_unused` renames.
+4. **Tests required** — every feature ships with a test that proves it works.
+5. **Surface conflicts, don't average them** — when two patterns disagree, pick the more recent/more tested one, explain why, and flag the other for cleanup.
+6. **Fail loud** — "completed" is wrong if any step was skipped. Surface uncertainty rather than smoothing it.
 
 ## Workflow
 See `@.claude/rules/workflow.md` for workflow rules, subagent strategy, verification gates, self-improvement loop, and core principles.
@@ -329,7 +350,7 @@ Skills auto-trigger from context (coding-standards, backend-patterns, frontend-p
 
 For role-based work (backend, frontend, devops, security, perf, system design, docs) where no specific CDF tool fits, invoke `/cdf:task` directly — Opus 4.7 plays the role from the `## Role` line above plus `xhigh` effort.
 
-Dispatch by task shape: simple changes use direct edit or `/cdf:implement`; bugs use `/cdf:troubleshoot`; audits use `/cdf:analyze`; plan-first work uses `/cdf:brainstorm` → `/cdf:design` → `/cdf:plan-review` → `/cdf:approve` (all CE-delegated); full lifecycle work uses a clear prompt with high effort rather than a monolithic orchestrator command.
+Dispatch by task shape: simple changes use direct edit or `/cdf:implement`; bugs use `/cdf:troubleshoot`; audits use `/cdf:analyze`; plan-first work uses `/cdf:plan` as the front door (delegates to `compound-engineering:ce-plan`), then optional `/cdf:plan-review` (delegates to `compound-engineering:ce-doc-review`) for high-stakes plans; full lifecycle work uses a clear prompt with high effort rather than a monolithic orchestrator command.
 
 <plans_instruction>
 ## Plans Format
@@ -370,7 +391,7 @@ Only include if project-type rules exist. Examples:]
 1. **Role** - One sentence anchoring tone and scope (4.7 responds well to a clear role)
 2. **Overview** - 1-2 sentence description
 3. **Quick Start** - 4-5 bash commands (setup, test, lint, run)
-4. **Critical Rules** - 4 standard rules
+4. **Critical Rules** - 6 standard rules (curated from CDF defaults + audited additions; see `rules-templates/extended-rules.md` for the opt-in longer set with anti-pattern notes)
 5. **Workflow** - 1-line pointer to `.claude/rules/workflow.md` (workflow content lives there, not duplicated here)
 6. **Tool and subagent policy** - Authorize subagent fan-out + parallel calls explicitly (4.7 defaults are conservative)
 7. **Model Routing** - Planning on Fable (else Opus); execution and subagents on Sonnet. Ship verbatim.
@@ -409,6 +430,126 @@ After generating `CLAUDE.generated.md`, inform the user:
 - File created at `CLAUDE.generated.md`
 - Review and rename to `CLAUDE.md` if satisfied, or merge into existing `CLAUDE.md`
 - Note: full workflow, agents, and memory details live in `.claude/rules/workflow.md`
+
+### agentsmd - Generate AGENTS.md from Rules
+
+Generate a concise `AGENTS.generated.md` file from existing `.claude/rules/`. This is the Codex / GPT-5.5 counterpart to `CLAUDE.md`. Also picked up by Cursor, Aider, Jules, Devin, Zed, GitHub Copilot, and other coding agents that follow the AGENTS.md convention.
+
+```bash
+/cdf:rules agentsmd
+```
+
+**Prerequisites**: `.claude/rules/` must exist. If not, run `/cdf:rules generate` first.
+
+**Core Principle**: Single source of truth (`.claude/rules/`), two host-tailored outputs. `AGENTS.md` shares project facts with `CLAUDE.md` but differs in framing because Codex parses Markdown rather than Anthropic-specific conventions. Codex caps the combined chain at 32 KiB (`project_doc_max_bytes`), so AGENTS.md targets under 60 lines.
+
+**Pre-generation step (Step 0):**
+Read `rules-templates/agentsmd-codex-rulebook.md`. It is the authoritative rulebook for Codex AGENTS.md generation, covering the four core differences from CLAUDE.md authoring: no `@file` imports, no XML-tag semantics, nested `AGENTS.md` replaces path-scoped rules, and `AGENTS.override.md` for overlay rules.
+
+**Behavioral Flow:**
+1. **Verify**: Check for `.claude/rules/` with at least one `.md` file.
+2. **Read rule files** (same set as `claudemd`):
+   - From `architecture.md`: Project name, description, key directories
+   - From `tech-stack.md`: Language, framework, key libraries
+   - From `commands.md`: Setup, test, lint, run commands
+   - From `patterns.md`: Critical coding patterns
+   - From project-type-specific rules (if they exist): 2-3 non-obvious gotchas
+3. **Translate host-specific framing**:
+   - Strip every `@file` import — Codex does not expand them. Inline the content if needed.
+   - Replace `<use_parallel_tool_calls>` XML with one-sentence prose authorization.
+   - Replace Claude-only tool names (`Task tool`, `TeamCreate`, `Agent tool`) with neutral terms (`subagent`, `parallel investigation`, `host skill`).
+   - Compress the routing block — Codex sessions are token-sensitive.
+4. **Synthesize**: Generate concise `AGENTS.generated.md` using the Output Template below.
+5. **Output**: Write to project root as `AGENTS.generated.md`. If the project has multiple polyglot subdirectories (different `package.json`, `pyproject.toml`, `go.mod`, etc.), also recommend nested `AGENTS.md` files per package and list the candidate paths.
+
+**What Goes Where:**
+
+| Content | In AGENTS.md? | Why |
+|---------|---------------|-----|
+| Overview, Quick Start | YES | Essential orientation |
+| Critical Rules (6 standard) | YES | Same core as CLAUDE.md |
+| Tool and subagent policy (prose) | YES | Codex needs explicit parallel-work authorization, no XML |
+| Commit message convention | YES | High-frequency need |
+| Key directories | YES | Orientation |
+| Project-specific gotchas | YES | Non-obvious things any model would get wrong |
+| `@file` imports | NO | Codex parses literally |
+| `<xml_tag>` blocks | NO | No host semantics in Codex |
+| Claude-specific tool names | NO | Confuses Codex users |
+| Full workflow detail | NO | Codex picks it up from nested `AGENTS.md` per directory, not from a single root file |
+
+**Output Template:**
+```markdown
+# [Project Name]
+
+## Role
+You are a [senior/staff] [language/discipline] engineer working on [project], a [one-clause description]. You ship to production and care about correctness, observability, and code quality.
+
+## Overview
+[1-2 sentence description derived from architecture.md]
+
+## Quick Start
+```bash
+[install/setup command]
+[test command]
+[lint command]
+[run command]
+```
+
+## Critical Rules
+1. **Read before edit** — understand the full context before changing anything.
+2. **Search before write** — run `rg` or `grep` to find existing implementations before adding new code.
+3. **Delete deprecated code immediately** — no backwards-compat shims, no `_unused` renames.
+4. **Tests required** — every feature ships with a test that proves it works.
+5. **Surface conflicts, don't average them** — when two patterns disagree, pick the more recent/more tested one, explain why, and flag the other for cleanup.
+6. **Fail loud** — "completed" is wrong if any step was skipped. Surface uncertainty rather than smoothing it.
+
+## Tool and subagent policy
+Run independent commands in parallel when fanning out across items, reading multiple files, or running independent investigations. Skip fan-out for single-file edits or trivial reads.
+
+## CDF tools available
+This project uses CDF. Reach for these instead of generic approaches:
+- Debugging — `/cdf:troubleshoot` prompt (root-cause methodology, adds regression test)
+- Pre-PR check — `/cdf:verify --mode pre-pr` (types + lint + tests + security)
+- Tests — `/cdf:test`, or `/cdf:tdd` for RED-GREEN-REFACTOR
+- Multi-file investigation — `/cdf:task` with codebase-navigator
+- Library research — `/cdf:task` with library-researcher
+- Refactoring — `/cdf:improve`
+- Code / security / perf analysis — `/cdf:analyze`
+- Commit / ship — `/cdf:git`, `/cdf:ship`
+
+## Commit Messages
+Conventional format (`feat:`, `fix:`, `docs:`), no AI attribution.
+
+## Project-Specific Notes
+[2-3 non-obvious gotchas, each with a why. Omit section if none exist.]
+
+## Key Directories
+- `[dir1]/` — [brief purpose]
+- `[dir2]/` — [brief purpose]
+[Max 5-7 directories]
+```
+
+**Required Template Sections (9):** Role, Overview, Quick Start, Critical Rules (6), Tool and subagent policy, CDF tools available, Commit Messages, Project-Specific Notes (optional), Key Directories.
+
+**Guidelines (Codex-aligned):**
+- Target 40-60 lines. Hard ceiling 32 KiB combined across the chain.
+- Every line passes: "Would removing this cause Codex to make mistakes?"
+- No `@file` imports. If you need the content, inline a 2-line summary.
+- No `<xml_tag>` blocks that depend on host-specific parsing.
+- Use neutral tool vocabulary — Codex does not have `Task tool` or `TeamCreate`.
+- For polyglot repos, push per-package conventions into `<package>/AGENTS.md` instead of bloating root.
+
+**Final pass before writing:**
+Walk the audit checklist from `rules-templates/agentsmd-codex-rulebook.md`. Fix every "no" before writing the file.
+
+**Output Location**: Always writes to `AGENTS.generated.md` (not `AGENTS.md`) to preserve manual edits.
+
+**Inform User After Generation:**
+After generating `AGENTS.generated.md`, inform the user:
+- File created at `AGENTS.generated.md`
+- Review and rename to `AGENTS.md` if satisfied, or merge into existing `AGENTS.md`
+- For polyglot repos, consider nested `<subdir>/AGENTS.md` for per-package conventions
+- The same source (`.claude/rules/`) produced `CLAUDE.md`; both should be regenerated together when rules change
 
 ### status - Check Rules Status
 
@@ -481,10 +622,12 @@ uv run uvicorn app.main:app --reload    # Start dev server
 ```
 
 ## Critical Rules
-1. **Read before edit** - understand code before changes
-2. **DRY** - search with `rg` before writing similar code
-3. **No backwards compat** - delete deprecated code immediately
-4. **Tests required** - no feature complete without tests
+1. **Read before edit** — understand the full context before changing anything.
+2. **Search before write** — run `rg` or `grep` to find existing implementations before adding new code.
+3. **Delete deprecated code immediately** — no backwards-compat shims, no `_unused` renames.
+4. **Tests required** — every feature ships with a test that proves it works.
+5. **Surface conflicts, don't average them** — when two patterns disagree, pick the more recent/more tested one, explain why, and flag the other for cleanup.
+6. **Fail loud** — "completed" is wrong if any step was skipped. Surface uncertainty rather than smoothing it.
 
 ## Workflow
 See `@.claude/rules/workflow.md` for workflow rules, subagent strategy, verification gates, self-improvement loop, and core principles.
@@ -544,7 +687,7 @@ Skills auto-trigger from context (coding-standards, backend-patterns, frontend-p
 
 For role-based work (backend, frontend, devops, security, perf, system design, docs) where no specific CDF tool fits, invoke `/cdf:task` directly — Opus 4.7 plays the role from the `## Role` line above plus `xhigh` effort.
 
-Dispatch by task shape: simple changes use direct edit or `/cdf:implement`; bugs use `/cdf:troubleshoot`; audits use `/cdf:analyze`; plan-first work uses `/cdf:brainstorm` → `/cdf:design` → `/cdf:plan-review` → `/cdf:approve` (all CE-delegated); full lifecycle work uses a clear prompt with high effort rather than a monolithic orchestrator command.
+Dispatch by task shape: simple changes use direct edit or `/cdf:implement`; bugs use `/cdf:troubleshoot`; audits use `/cdf:analyze`; plan-first work uses `/cdf:plan` as the front door (delegates to `compound-engineering:ce-plan`), then optional `/cdf:plan-review` (delegates to `compound-engineering:ce-doc-review`) for high-stakes plans; full lifecycle work uses a clear prompt with high effort rather than a monolithic orchestrator command.
 
 <plans_instruction>
 ## Plans Format

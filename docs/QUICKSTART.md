@@ -81,9 +81,9 @@ Lifecycle scripts that fire on session start, before/after tool use, and on stop
 
 | Command | When to use |
 |---------|-------------|
+| `/cdf:plan "idea or bug"` | Front door: ground, structure, and persist a plan, then hand off |
 | `/cdf:task "complex thing"` | Break down and delegate with agents |
 | `/cdf:task --breakdown "X"` | Just the breakdown, no execution |
-| `/cdf:approve` | Persist a plan from plan mode, get execution strategy |
 | Clear prompt + `xhigh` effort | Full lifecycle (brainstorm → docs → implement → verify) — 4.7 plans this natively, the `/cdf:flow` orchestrator was removed |
 
 ### Meta
@@ -117,12 +117,11 @@ Lifecycle scripts that fire on session start, before/after tool use, and on stop
 
 ### "I need to challenge a plan"
 
-Enter plan mode, discuss the approach, then:
 ```
+/cdf:plan "the idea"               # Front door: ground, structure, persist the plan
 product review                     # Founder-mode skill: is this the right thing?
 /cdf:plan-review                   # Product + engineering + UX/DX + risk gauntlet
-/cdf:approve                       # Lock in the plan
-/cdf:implement                     # Build it
+/cdf:task                          # Execute the plan
 ```
 
 ### "I need to fix something fast"

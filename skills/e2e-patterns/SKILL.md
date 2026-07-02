@@ -1,5 +1,5 @@
 ---
-name: testing-e2e-patterns
+name: e2e-patterns
 description: "Activates for Playwright E2E test patterns, Page Object Model, locator strategies, and test reliability"
 ---
 

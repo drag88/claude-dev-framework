@@ -82,7 +82,11 @@ def main():
         if len(issues) > 5:
             print(f"  ... and {len(issues) - 5} more", file=sys.stderr)
 
-        print("\nRemember to remove debugging statements before commit.", file=sys.stderr)
+        print(
+            f"\nRemove these {len(issues)} statement(s) now — delete the line or route it "
+            "through the project logger. Debugging statements should not reach a commit.",
+            file=sys.stderr
+        )
 
 
 if __name__ == '__main__':

@@ -172,6 +172,14 @@ paths: src/api/**/*.py
 ...
 ```
 
+### Then generate both host instruction files
+
+After `.claude/rules/` is written, also generate:
+- `CLAUDE.generated.md` via `/cdf:rules claudemd` — for Claude Code / Opus 4.7.
+- `AGENTS.generated.md` via `/cdf:rules agentsmd` — for Codex, Cursor, Aider, and other agents following the AGENTS.md convention.
+
+Both files come from the same `.claude/rules/` source, so they stay in sync. Do not skip the AGENTS.md step.
+
 After generating, confirm completion to user."""
 
 # Instructions for empty/new projects
@@ -400,14 +408,20 @@ def check_rules_exist(project_dir: Path) -> dict:
 
             has_claude_md = (project_dir / "CLAUDE.md").exists()
             has_claude_generated = (project_dir / "CLAUDE.generated.md").exists()
-            claude_md_note = ""
+            has_agents_md = (project_dir / "AGENTS.md").exists()
+            has_agents_generated = (project_dir / "AGENTS.generated.md").exists()
+
+            notes = []
             if not has_claude_md and not has_claude_generated:
-                claude_md_note = "\n\nNo CLAUDE.md found. Run /cdf:rules claudemd to create one from your rules."
+                notes.append("No CLAUDE.md found. Run /cdf:rules claudemd to create one from your rules.")
+            if not has_agents_md and not has_agents_generated:
+                notes.append("No AGENTS.md found. Run /cdf:rules agentsmd to create one for Codex / other coding agents.")
+            host_md_note = ("\n\n" + "\n".join(notes)) if notes else ""
 
             return {
                 "additionalContext": (
                     f"Project rules loaded from .claude/rules/:\n{files_list}\n"
-                    f"These rules are automatically applied. Run /cdf:rules generate to refresh after major changes.{claude_md_note}"
+                    f"These rules are automatically applied. Run /cdf:rules generate to refresh after major changes.{host_md_note}"
                 )
             }
 

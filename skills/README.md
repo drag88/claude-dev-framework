@@ -26,12 +26,16 @@ Quick reference for all auto-invoked skills, organized by category.
 
 ---
 
-## Specialized Skills (2)
+## Specialized Skills (5)
 
 | Skill | Trigger | Description |
 |-------|---------|-------------|
+
 | [frontend-design](frontend-design/SKILL.md) | UI/UX design tasks | Design system guidance and component patterns |
 | [retro](retro/SKILL.md) | Retrospective requests | Git-history retrospective: velocity, quality signals, trends |
+| [agentsmd-generator](agentsmd-generator/SKILL.md) | After rules generation (Codex host) | Creates `AGENTS.generated.md` |
+| [comprehension-coach](comprehension-coach/SKILL.md) | Teaching/understanding requests | Guided comprehension of unfamiliar code |
+| [tuning-coding-agent-codebases](tuning-coding-agent-codebases/SKILL.md) | Agent-codebase audits | Practices for making codebases agent-friendly |
 
 ---
 

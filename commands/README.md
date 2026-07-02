@@ -29,10 +29,11 @@ Quick reference for all available `/cdf` commands, organized by purpose.
 
 ---
 
-## Planning & Design (4)
+## Planning & Design (5)
 
 | Command | Description | Complexity |
 |---------|-------------|------------|
+| [/cdf:plan](plan.md) | Plan front door: raw idea, bug, or error → durable plan; delegates to `compound-engineering:ce-plan` | advanced |
 | [/cdf:brainstorm](brainstorm.md) | Requirements discovery; delegates to `compound-engineering:ce-brainstorm` | advanced |
 | [/cdf:design](design.md) | System architecture and planning; delegates to `compound-engineering:ce-plan` | standard |
 | [/cdf:estimate](estimate.md) | Development estimates for tasks, features, or projects | standard |
@@ -40,12 +41,11 @@ Quick reference for all available `/cdf` commands, organized by purpose.
 
 ---
 
-## Orchestration (2)
+## Orchestration (1)
 
 | Command | Description | Complexity |
 |---------|-------------|------------|
 | [/cdf:task](task.md) | Execute complex tasks with breakdown, delegation, and workflow management | advanced |
-| [/cdf:approve](approve.md) | Persist a plan from plan mode and recommend execution strategy | standard |
 
 `/cdf:flow` and `/cdf:workflow` were removed in the 4.7 leanness pass. Opus 4.7 plans multi-step workflows natively when given a clear prompt and `xhigh` effort — the orchestrator wrappers added scaffolding the model already does well.
 
@@ -80,10 +80,9 @@ Quick reference for all available `/cdf` commands, organized by purpose.
 | Explore an idea | `/cdf:brainstorm` |
 | Design a system | `/cdf:design` |
 | Estimate effort | `/cdf:estimate` |
+| Turn an idea, bug, or error into a plan | `/cdf:plan` |
 | Challenge or harden a plan | `/cdf:plan-review` |
-| Plan implementation or run full development workflow | `/cdf:task` (or write a clear prompt and let 4.7 plan) |
 | Execute or break down a complex task | `/cdf:task` |
-| Persist a plan from plan mode | `/cdf:approve` |
 | Manage documentation | `/cdf:docs` |
 | Manage learned skill preferences | `/cdf:learn` |
 | Generate rules | `/cdf:rules` |

@@ -1,5 +1,5 @@
 ---
-name: applying-frontend-patterns
+name: frontend-patterns
 description: "Activates for React component patterns, state management, hooks, and frontend performance optimization"
 ---
 
