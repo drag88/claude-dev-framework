@@ -328,7 +328,7 @@ CE-first routes (require the compound-engineering plugin):
 
 - **Requirements / brainstorm**: `/cdf:brainstorm` → `compound-engineering:ce-brainstorm` (writes `docs/brainstorms/`)
 - **Design / plan**: `/cdf:design`, `/cdf:docs plan` → `compound-engineering:ce-plan` (writes `docs/plans/`)
-- **Plan review**: `/cdf:plan-review` → `compound-engineering:ce-doc-review` — mandatory gate before `/cdf:approve`
+- **Plan review**: `/cdf:plan-review` → `compound-engineering:ce-doc-review` — review gate for high-stakes plans
 - **Implementation**: `/cdf:implement` → `compound-engineering:ce-work`
 - **Debugging**: `/cdf:troubleshoot` → `compound-engineering:ce-debug` — root cause + regression test
 - **Commit**: `/cdf:git commit` → `compound-engineering:ce-commit` — conventional commits, no AI attribution
@@ -665,7 +665,7 @@ CE-first routes (require the compound-engineering plugin):
 
 - **Requirements / brainstorm**: `/cdf:brainstorm` → `compound-engineering:ce-brainstorm` (writes `docs/brainstorms/`)
 - **Design / plan**: `/cdf:design`, `/cdf:docs plan` → `compound-engineering:ce-plan` (writes `docs/plans/`)
-- **Plan review**: `/cdf:plan-review` → `compound-engineering:ce-doc-review` — mandatory gate before `/cdf:approve`
+- **Plan review**: `/cdf:plan-review` → `compound-engineering:ce-doc-review` — review gate for high-stakes plans
 - **Implementation**: `/cdf:implement` → `compound-engineering:ce-work`
 - **Debugging**: `/cdf:troubleshoot` → `compound-engineering:ce-debug` — root cause + regression test
 - **Commit**: `/cdf:git commit` → `compound-engineering:ce-commit` — conventional commits, no AI attribution

@@ -31,7 +31,7 @@ claude --plugin-dir ./claude-dev-framework
 /cdf:design "system"
 /cdf:estimate "task"
 /cdf:plan-review "plan or PRD"
-/cdf:approve                          # After plan mode: persist + execute
+/cdf:plan "idea or bug"                # Plan front door (→ ce-plan)
 
 # Orchestration
 /cdf:task execute "complex task"
