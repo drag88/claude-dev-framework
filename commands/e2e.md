@@ -164,15 +164,6 @@ test('sometimes flaky test', async ({ page }) => {
 });
 ```
 
-## MCP Integration
-- **Playwright MCP**: Auto-activated for browser automation
-- **Enhanced Capabilities**: Cross-browser testing, visual comparison
-
-## Tool Coordination
-- **Bash**: Playwright CLI execution
-- **Read/Write**: Page object and test file management
-- **Glob**: Test discovery
-
 ## Test Organization
 
 ```

@@ -63,28 +63,7 @@
 ## Patterns
 
 ### Docstrings
-Every public function/class needs:
-```python
-def function_name(param: str, option: int = 10) -> Result:
-    """One-line summary of what this does.
-
-    Longer description if the one-liner isn't enough.
-
-    Args:
-        param: Description of param.
-        option: Description with default behavior.
-
-    Returns:
-        Description of return value.
-
-    Raises:
-        ValueError: When param is invalid.
-
-    Example:
-        >>> function_name("hello")
-        Result(status="ok")
-    """
-```
+Public symbols carry docstrings in the style already used in the module.
 
 ### Error Messages
 - Actionable: tell the user what to do, not just what went wrong
@@ -100,21 +79,3 @@ def function_name(param: str, option: int = 10) -> Result:
 - Output data to stdout, messages/progress to stderr
 - Structured output (JSON) available via `--json` or `--format json` flag
 - No color/formatting when output is piped (detect TTY)
-
-### Exit Codes
-| Code | Meaning |
-|------|---------|
-| 0 | Success |
-| 1 | General error (runtime failure) |
-| 2 | Usage error (bad arguments, missing required input) |
-| 130 | Interrupted (Ctrl+C / SIGINT) |
-
-## Critical Rules
-
-1. **Public API changes need explicit review** — never accidental
-2. **Minimal dependencies** — every dependency is a maintenance burden and supply chain risk
-3. **Backward compatible across minor versions** — users pin to `^major.minor`
-4. **Test across supported runtimes** — CI matrix for all supported Python/Node/etc versions
-5. **Actionable error messages** — every error tells the user what to do next
-6. **Support piping** — work well in shell pipelines (stdin, stdout, stderr separation)
-7. **Document every public symbol** — no undocumented public API

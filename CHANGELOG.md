@@ -1,5 +1,57 @@
 # Changelog
 
+## [2.1.0] - 2026-07-29
+
+Framework-wide unhobbling pass for the Claude 5 generation, applying Anthropic's "The new
+rules of context engineering for Claude 5 models" (the Claude Code team removed over 80% of
+their system prompt for these models with no eval loss). Rebased onto 2.0.0, so the pass
+covers the surfaces that survived the compound-engineering delegation.
+
+### Breaking Changes
+- **Retired `rules-templates/claudemd-4-7-rulebook.md`** in favor of the version-neutral
+  `rules-templates/claudemd-rulebook.md`, rewritten for current models: judgement over rules,
+  one home per fact, gotchas over derivable content, progressive disclosure, no
+  tool/subagent authorization boilerplate, and a reasoning-extraction caution. Generators and
+  references updated; the update path is now "edit the vendored rulebook against Anthropic's
+  current docs" (the prompt47 dependency is gone).
+- **Generated `CLAUDE.md` drops the `## Tool and subagent policy` section and
+  `<use_parallel_tool_calls>` block** — current models parallelize and dispatch subagents
+  natively; the generator now treats that boilerplate as a deletion target. The 2.0.0 Model
+  Routing and Communication sections stay. The Codex/`AGENTS.md` path keeps prose
+  authorization deliberately (no XML).
+
+### Changed
+- **rules-templates**: deleted stale Haiku/Sonnet/Opus model-routing and context-management
+  sections (`performance.md`), the duplicated `## Critical Rules` tails restating each
+  project-type file's own content, derivable tutorial bulk (React skeletons, HTTP tables,
+  Dockerfiles, import-order rules linters own), fictional CODEOWNERS/SLO placeholder data,
+  and contradictory checklists `extended-rules.md` itself condemns. `workflow-template.md`
+  slimmed ~70%: no more TeamCreate reference, `<use_parallel_tool_calls>` block,
+  spawn-pattern few-shots, self-improvement-loop section, or triple-stated plan-mode
+  thresholds. `extended-rules.md` de-versioned.
+- **commands**: removed the remaining persona/MCP-Integration scaffolding, boilerplate
+  `## Key Patterns`/`## Tool Coordination` sections, and fabricated example transcripts from
+  the native (non-delegated) commands. `verify.md` collapses its triple-stated pipeline and
+  now detects the project's toolchain instead of assuming npm/eslint/jest; `tdd.md` collapses
+  its triple-stated RED/GREEN/REFACTOR.
+- **agents**: deduplicated against the skills they already load (`tdd-guide`,
+  `e2e-specialist`, `quality-engineer`), converted rigid numbered recipes to judgement
+  framing, and cut the generic OWASP tutorial bulk from `security-checklists.md` while
+  keeping the Pre-Landing Review Patterns intact (file since removed upstream in 2.0.0 where
+  applicable).
+- **skills**: engineering skills updated — stale persona routing retitled to role framing,
+  numeric coverage/file-size absolutes replaced with repo-calibrated guidance, emoji status
+  rituals and duplicated ASCII/prose restatements removed (`tdd-workflow`,
+  `coding-standards`, `frontend-design`, `retro`); Stop-hook nudge language neutralized.
+- **All current-guidance "Opus 4.7" references made version-neutral** across README,
+  QUICKSTART, CLAUDE.md, AGENTS.md, commands, skills, agents, and the Codex rulebook
+  (changelog history untouched).
+
+### Fixed
+- CDF's own `CLAUDE.md` and `AGENTS.md` still carried `TeamCreate` +
+  `<use_parallel_tool_calls>` boilerplate; both are gone everywhere now, including the
+  embedded templates in `commands/rules.md`.
+
 ## [2.0.0] - 2026-07-02
 
 ### Breaking Changes

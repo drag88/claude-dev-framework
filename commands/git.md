@@ -41,18 +41,6 @@ Commit operations delegate to the `compound-engineering:ce-commit` host skill.
 - Do not include AI attribution of any kind.
 - Keep non-commit git operations native to this command.
 
-## Tool Coordination
-- **Bash**: Git command execution and repository operations
-- **Read**: Repository state analysis and configuration review
-- **Grep**: Log parsing and status analysis
-- **Host skill**: Commit creation through `compound-engineering:ce-commit`
-
-## Key Patterns
-- **Commit Delegation**: Commit request → `compound-engineering:ce-commit`
-- **Status Analysis**: Repository state → actionable recommendations
-- **Branch Strategy**: Consistent naming and workflow enforcement
-- **Error Recovery**: Conflict resolution and state restoration guidance
-
 ## Commit Message Rules
 
 ### No Claude Attribution

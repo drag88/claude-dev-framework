@@ -1,5 +1,5 @@
 ---
-description: "Feature and code implementation with intelligent persona activation and MCP integration"
+description: "Feature and code implementation that follows the conventions already in the repo"
 ---
 
 # /cdf:implement - Feature Implementation

@@ -4,29 +4,30 @@ Quick reference for all auto-invoked skills, organized by category.
 
 ---
 
-## Core Skills (3)
+## Core Skills
 
 | Skill | Trigger | Description |
 |-------|---------|-------------|
-| [rules-generator](rules-generator/SKILL.md) | Missing `.claude/rules/` | Auto-generates project documentation |
-| [claudemd-generator](claudemd-generator/SKILL.md) | After rules generation | Creates `CLAUDE.generated.md` |
-| [failure-recovery](failure-recovery/SKILL.md) | 3 consecutive failures | STOP → REVERT → DOCUMENT → CONSULT |
+| [rules-generator](rules-generator/SKILL.md) | Missing `.claude/rules/` | Auto-generates `.claude/rules/` documentation for any codebase |
+| [claudemd-generator](claudemd-generator/SKILL.md) | After rules generation | Auto-generates `CLAUDE.generated.md` from project rules |
+| [agentsmd-generator](agentsmd-generator/SKILL.md) | After rules generation | Auto-generates `AGENTS.generated.md` from project rules |
+| [failure-recovery](failure-recovery/SKILL.md) | 3 consecutive failures | Protocol for handling consecutive failures to prevent thrashing |
 
 ---
 
-## Development Pattern Skills (5)
+## Development Pattern Skills
 
 | Skill | Trigger | Description |
 |-------|---------|-------------|
-| [coding-standards](coding-standards/SKILL.md) | Code implementation | Enforces code quality, naming standards, immutability patterns |
-| [backend-patterns](backend-patterns/SKILL.md) | Backend development | API design, database patterns, authentication, rate limiting |
-| [frontend-patterns](frontend-patterns/SKILL.md) | Frontend development | React patterns, custom hooks, state management, performance |
-| [tdd-workflow](tdd-workflow/SKILL.md) | TDD mode active | RED-GREEN-REFACTOR cycle enforcement, 80% coverage gate |
-| [e2e-patterns](e2e-patterns/SKILL.md) | E2E testing | Playwright patterns, Page Object Model, flaky test handling |
+| [coding-standards](coding-standards/SKILL.md) | Code implementation | Naming conventions, DRY/KISS/YAGNI, and code quality standards |
+| [backend-patterns](backend-patterns/SKILL.md) | Backend development | API design, repository pattern, caching, auth middleware, error handling |
+| [frontend-patterns](frontend-patterns/SKILL.md) | Frontend development | React component patterns, state management, hooks, performance |
+| [tdd-workflow](tdd-workflow/SKILL.md) | TDD mode active | Test-driven development with RED-GREEN-REFACTOR cycle enforcement |
+| [e2e-patterns](e2e-patterns/SKILL.md) | E2E testing | Playwright patterns, Page Object Model, locator strategies, test reliability |
 
 ---
 
-## Specialized Skills (5)
+## Review & Planning Skills
 
 | Skill | Trigger | Description |
 |-------|---------|-------------|
@@ -47,7 +48,7 @@ Skills are automatically invoked based on context triggers. They provide special
 
 ```
 1. Request received
-2. Relevant skills activate based on triggers (no pre-classification — Opus 4.7 plans on the fly)
+2. Relevant skills activate based on triggers (no pre-classification — Claude plans on the fly)
 3. Skills provide context and patterns
 4. Claude executes with enhanced guidance
 ```
@@ -60,6 +61,7 @@ Skills are automatically invoked based on context triggers. They provide special
 | **Task type** | Backend development, E2E testing |
 | **Failure pattern** | 3 consecutive failures |
 | **Session event** | Session start, session end |
+| **Explicit invocation** | `/retro`, `/brand-dna <url>` |
 
 ---
 
@@ -68,6 +70,7 @@ Skills are automatically invoked based on context triggers. They provide special
 | If you need... | Skill activates |
 |----------------|-----------------|
 | Project rules generated | rules-generator |
+| `CLAUDE.md` / `AGENTS.md` regenerated | claudemd-generator / agentsmd-generator |
 | Code quality patterns | coding-standards |
 | API design guidance | backend-patterns |
 | React component patterns | frontend-patterns |

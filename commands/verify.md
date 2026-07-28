@@ -39,73 +39,44 @@ Each step completes before the next begins. If a step fails, report the failure 
 - `--fix`: Auto-fix fixable issues
 - `--skip`: Skip specific checks (comma-separated)
 
-## Verification Pipeline
+## Checks
 
-### Quick Mode
-```
-Types → Lint
-```
+Detect the project's actual toolchain from config files (package.json scripts, pyproject.toml, Gemfile, etc.) and run the equivalent check — do not assume npm/eslint/jest.
 
-### Pre-commit Mode (Default)
-```
-Types → Lint → Affected Tests
-```
-
-### Full Mode
-```
-Build → Types → Lint → Unit Tests → Integration Tests → E2E Tests
-```
-
-### Pre-PR Mode
-```
-Build → Types → Lint → Unit Tests → Integration Tests → E2E Tests → Security → Coverage → Review
-```
-
-## Behavioral Flow
-
-### 1. Build Check
+### Build
 ```bash
-# Verify project builds without errors
 npm run build
 ```
 
-### 2. Type Check
+### Types
 ```bash
-# TypeScript compilation
 npx tsc --noEmit
-
-# Check for any type
-npx tsc --noEmit | grep -c "any" || echo "0"
 ```
 
-### 3. Lint Check
+### Lint
 ```bash
-# ESLint with auto-fix option
 npx eslint . --ext .ts,.tsx
 
-# With fix flag
+# With --fix
 npx eslint . --ext .ts,.tsx --fix
 ```
 
-### 4. Unit Tests
+### Unit tests
 ```bash
-# Run unit tests with coverage
 npm run test:unit -- --coverage
 ```
 
-### 5. Integration Tests
+### Integration tests
 ```bash
-# Run integration tests
 npm run test:integration
 ```
 
-### 6. E2E Tests
+### E2E tests
 ```bash
-# Run e2e tests (full/pre-pr only)
 npx playwright test
 ```
 
-### 7. Security Scan
+### Security scan
 ```bash
 # Dependency vulnerabilities
 npm audit --audit-level=high
@@ -114,14 +85,8 @@ npm audit --audit-level=high
 npx trufflehog filesystem . --json 2>/dev/null | head -20
 ```
 
-### 8. Coverage Gate
-```bash
-# Verify coverage meets threshold
-# Statements: 80%
-# Branches: 80%
-# Functions: 80%
-# Lines: 80%
-```
+### Coverage gate
+Statements, branches, functions, and lines must each meet the configured threshold (default 80%).
 
 ### 9. Review Stage (`--mode pre-pr` only)
 
@@ -164,84 +129,13 @@ Run '/cdf:verify --fix' to auto-fix lint issues.
 
 ## Check Details
 
-### Types Check
+Report each check in this shape:
+
 ```markdown
-## Type Check Results
-
-**Status**: ✓ Passed
-
-**Details**:
-- Compiled 156 files
-- No type errors found
-- 0 implicit 'any' types
+## <Check>
+Status: pass/fail
+Details: <n> errors
 ```
-
-### Lint Check
-```markdown
-## Lint Check Results
-
-**Status**: ✗ Failed
-
-**Errors** (3):
-- src/utils.ts:15:5 - 'unusedVar' is defined but never used
-- src/api.ts:42:10 - Unexpected any. Specify a different type
-- src/hooks.ts:8:1 - Missing return type on function
-
-**Warnings** (2):
-- src/config.ts:3:1 - Prefer const over let
-- src/types.ts:20:5 - Use type instead of interface for function type
-
-**Auto-fixable**: 2 issues
-Run with --fix to resolve automatically.
-```
-
-### Test Check
-```markdown
-## Test Results
-
-**Status**: ✓ Passed
-
-**Summary**:
-- Test Suites: 12 passed, 12 total
-- Tests: 89 passed, 89 total
-- Snapshots: 5 passed, 5 total
-- Time: 3.2s
-
-**Coverage**:
-| Metric     | Covered | Total  | Percentage |
-|------------|---------|--------|------------|
-| Statements | 450     | 520    | 86.5%      |
-| Branches   | 120     | 145    | 82.8%      |
-| Functions  | 85      | 95     | 89.5%      |
-| Lines      | 440     | 510    | 86.3%      |
-```
-
-### Security Check
-```markdown
-## Security Scan Results
-
-**Status**: ✓ Passed
-
-**Dependency Audit**:
-- 0 critical vulnerabilities
-- 0 high vulnerabilities
-- 2 moderate vulnerabilities (in dev dependencies only)
-
-**Secret Scan**:
-- 0 secrets detected
-
-**Recommendations**:
-- Consider updating 'lodash' to fix moderate vulnerability
-```
-
-## MCP Integration
-- **Quality Engineer Persona**: Activated for comprehensive analysis
-- **Test Runner**: Executes test suites with coverage
-
-## Tool Coordination
-- **Bash**: Build, type check, lint, test, security commands
-- **Glob**: File discovery for affected tests
-- **Read**: Configuration file inspection
 
 ## Configuration
 

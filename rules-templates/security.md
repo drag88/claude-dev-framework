@@ -15,7 +15,7 @@ Copy this template to `.claude/rules/security.md` and customize for your project
 // REQUIRED: Use parameterized queries
 const user = await db.query("SELECT * FROM users WHERE id = $1", [userId]);
 
-// FORBIDDEN: String concatenation in queries
+// Use parameterized queries — interpolating user input into SQL is an injection.
 // const user = await db.query(`SELECT * FROM users WHERE id = ${userId}`);
 ```
 
@@ -96,19 +96,7 @@ const UserInput = z.object({
 ## Security Headers
 
 ### Required Headers
-```typescript
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'"],
-      imgSrc: ["'self'", "data:", "https:"],
-    }
-  },
-  referrerPolicy: { policy: "strict-origin-when-cross-origin" }
-}));
-```
+CSP and security headers are configured centrally — change them there, never per-route.
 
 ---
 

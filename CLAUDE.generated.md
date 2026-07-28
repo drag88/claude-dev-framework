@@ -26,15 +26,6 @@ python3 scripts/health-check.py      # Validate framework state
 ## Workflow
 See `@.claude/rules/workflow.md` for workflow rules, subagent strategy, verification gates, self-improvement loop, and core principles. CDF dogfoods its own template.
 
-## Tool and subagent policy
-
-Spawn multiple subagents in the same turn when fanning out across items, reading multiple files, or running independent investigations. Skip fan-out for single-file edits or trivial reads. For multi-agent debate or sustained parallel implementation, use TeamCreate + named teammates rather than ad-hoc subagents.
-
-<use_parallel_tool_calls>
-For maximum efficiency, whenever you perform multiple independent operations,
-invoke all relevant tools simultaneously rather than sequentially.
-</use_parallel_tool_calls>
-
 ## Model Routing
 
 Fable 5 (max reasoning) is the orchestrator: plan, decompose, synthesize. Keep its context lean — delegate the heavy lifting. If Fable is unavailable, Opus orchestrates.
@@ -76,7 +67,7 @@ Real-expertise agents (invoke via `/cdf:task` or the relevant CDF command): code
 
 Skills auto-trigger from context (coding-standards, backend-patterns, frontend-patterns, frontend-design, tdd-workflow, e2e-patterns, failure-recovery, rules-generator, claudemd-generator, agentsmd-generator, comprehension-coach, retro, tuning-coding-agent-codebases). Do not invoke manually.
 
-For role-based work (backend, frontend, devops, security, perf, system design, docs) where no specific CDF tool fits, invoke `/cdf:task` directly — Opus 4.7 plays the role from the `## Role` line above plus `xhigh` effort. The old persona-stub agents were removed in 1.13.0 — do not reintroduce them.
+For role-based work (backend, frontend, devops, security, perf, system design, docs) where no specific CDF tool fits, invoke `/cdf:task` directly — Claude plays the role from the `## Role` line above at high effort. The old persona-stub agents were removed in 1.13.0 — do not reintroduce them.
 
 Dispatch by task shape: simple changes use direct edit or `/cdf:implement`; bugs use `/cdf:troubleshoot`; audits use `/cdf:analyze`; plan-first work uses `/cdf:plan` as the front door (delegates to `compound-engineering:ce-plan`), then optional `/cdf:plan-review` (delegates to `compound-engineering:ce-doc-review`) for high-stakes plans; full lifecycle work uses a clear prompt with high effort rather than a monolithic orchestrator command.
 
@@ -123,6 +114,6 @@ Conventional format (`feat:`, `fix:`, `docs:`, `refactor:`, `chore:`, `test:`), 
 - `skills/` — 13 auto-invoked skill directories (`SKILL.md`)
 - `scripts/` — Hook implementation scripts (Python + Bash) and shared utilities in `scripts/lib/`
 - `hooks/` — Lifecycle hook configuration (`hooks.json`)
-- `rules-templates/` — 17 rule templates including the vendored `claudemd-4-7-rulebook.md` and `agentsmd-codex-rulebook.md`
+- `rules-templates/` — rule templates including the vendored `claudemd-rulebook.md` and `agentsmd-codex-rulebook.md`
 - `.claude-plugin/` — Claude Code adapter (`plugin.json`, `marketplace.json`)
 - `.codex-plugin/` — Codex adapter (`plugin.json`)

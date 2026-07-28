@@ -2,7 +2,7 @@
 
 Quick reference for all available agent personas, organized by category.
 
-For role-based work (backend / frontend / devops / system design / security / performance / docs / Python), invoke `/cdf:task` directly. The Role line in `CLAUDE.md` plus Opus 4.7's `xhigh` effort handles persona work without dedicated stub agents — these were removed in the 4.7 leanness pass.
+For role-based work (backend / frontend / devops / system design / security / performance / docs / Python), invoke `/cdf:task` directly. The Role line in `CLAUDE.md` plus the current model's high-effort role-based reasoning handles persona work without dedicated stub agents — these were removed in the 4.7 leanness pass.
 
 ---
 
@@ -67,7 +67,7 @@ For role-based work (backend / frontend / devops / system design / security / pe
 | Guided learning (Socratic) | socratic-mentor |
 | Business strategy panel | business-panel-experts |
 | Business research & market analysis | business-research-strategist |
-| Backend / API / database design | `/cdf:task` (4.7 plays this role from CLAUDE.md) |
+| Backend / API / database design | `/cdf:task` (the current model plays this role from CLAUDE.md) |
 | Frontend / UI work | `/cdf:task` |
 | DevOps / CI / CD | `/cdf:task` |
 | System design | `/cdf:task` |

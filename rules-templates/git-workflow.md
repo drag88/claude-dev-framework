@@ -17,12 +17,7 @@ refactor/PROJ-789-cleanup-utils
 ```
 
 ### Types
-- `feature/` - New features
-- `fix/` - Bug fixes
-- `refactor/` - Code refactoring
-- `docs/` - Documentation only
-- `test/` - Test additions/fixes
-- `chore/` - Build, config, dependencies
+`feature/` · `fix/` · `refactor/` · `docs/` · `test/` · `chore/`
 
 ---
 
@@ -38,32 +33,15 @@ refactor/PROJ-789-cleanup-utils
 ```
 
 ### Types
-- `feat` - New feature
-- `fix` - Bug fix
-- `docs` - Documentation
-- `style` - Formatting (no code change)
-- `refactor` - Refactoring (no feature/fix)
-- `test` - Tests
-- `chore` - Build, tools, dependencies
+`feat` · `fix` · `docs` · `style` · `refactor` · `test` · `chore`
 
-### Examples
+### Example
 ```bash
 feat(auth): add OAuth2 login support
 
 Implemented OAuth2 flow with Google and GitHub providers.
-- Added OAuth strategy selection
-- Created callback handlers
-- Updated user model for social login
 
 Closes #123
-
----
-
-fix(api): prevent timeout on large file uploads
-
-Increased upload timeout from 30s to 5min for files > 10MB.
-
-Fixes #456
 ```
 
 ### Rules
@@ -104,43 +82,8 @@ feat(auth): add OAuth2 login support
 Closes #123
 ```
 
-### PR Size Limits
-- Max 500 lines changed (excluding tests)
-- Max 10 files changed
-- Split larger changes into multiple PRs
-
----
-
-## Protected Branches
-
-### main/master
-- No direct pushes
-- Require PR with approval
-- Require passing CI
-- Require up-to-date branch
-
-### develop (if used)
-- No direct pushes
-- Require PR with approval
-- Require passing CI
-
----
-
-## Review Requirements
-
-### Required Reviewers
-- At least 1 approval required
-- Code owner approval for:
-  - `src/auth/*` - Security team
-  - `src/api/*` - API team lead
-  - `*.config.*` - DevOps
-
-### Review Checklist
-- [ ] Code follows style guide
-- [ ] Tests cover new code
-- [ ] No security issues
-- [ ] Documentation updated
-- [ ] No breaking changes (or documented)
+### PR Size
+Keep a PR to one reviewable idea; split when the reviewer would need two mental models.
 
 ---
 
@@ -150,14 +93,6 @@ Closes #123
 - Single commit on main
 - Clean history
 - PR description becomes commit body
-
-### When to Rebase
-- Multiple logical commits that should be preserved
-- Work that spans multiple features
-
-### Never
-- Regular merge commits
-- Force push to protected branches
 
 ---
 
@@ -189,12 +124,6 @@ git checkout -b hotfix/PROJ-999-critical-fix main
 ---
 
 ## Git Hygiene
-
-### Before Push
-- [ ] Run tests locally
-- [ ] Run linter
-- [ ] Check for console.log
-- [ ] Review own changes
 
 ### Avoid
 - Committing `.env` or secrets

@@ -61,7 +61,6 @@ def main():
         print_info(f"About to push {commits} commit(s) to {branch}")
         print("  Review checklist:", file=sys.stderr)
         print("  [ ] Tests pass locally", file=sys.stderr)
-        print("  [ ] No debugging statements", file=sys.stderr)
         print("  [ ] Commit messages are clear", file=sys.stderr)
 
 

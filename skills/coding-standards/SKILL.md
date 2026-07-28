@@ -103,9 +103,9 @@ interface User {
 
 ---
 
-## Immutability Pattern (CRITICAL)
+## Immutability
 
-Always prefer immutable operations. Mutating data leads to bugs.
+Prefer immutable updates for shared/React state and anything crossing a function boundary; local mutation that never escapes a function is fine.
 
 ### Arrays
 
@@ -178,10 +178,8 @@ type Status = typeof STATUSES[number]; // 'pending' | 'active' | 'complete'
 
 ## File Organization Standards
 
-### File Size Limits
-- **Components**: < 300 lines
-- **Utility files**: < 200 lines
-- **Test files**: < 500 lines
+### File Size
+Match this codebase's existing file-size norms; split when a file mixes unrelated concerns, not at a fixed line count.
 
 ### File Naming
 | Type | Convention | Example |
@@ -205,10 +203,10 @@ type Status = typeof STATUSES[number]; // 'pending' | 'active' | 'complete'
 
 ---
 
-## Related Agents
-- **quality-engineer** — Uses standards for code review and quality gates
-- **refactoring-expert** — Applies standards during code improvement
-- **tdd-guide** — Enforces standards in test-driven code
+## Related Routing
+- **/cdf:analyze with quality-engineer role framing** — Code review and quality gates against these standards
+- **/cdf:improve with refactoring role framing** — Applies standards during code improvement
+- **/cdf:tdd with test-first role framing** — Enforces standards in test-driven code
 - **/cdf:task with language-specific role framing** — Applies language-specific coding standards
 - **/cdf:docs with senior-writer framing** — Uses standards for documentation quality
 

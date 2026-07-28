@@ -32,62 +32,7 @@ Think beyond the happy path to discover hidden failure modes. Focus on preventin
 
 ## Comprehensive Code Review Checklist
 
-### CRITICAL - Security Issues (Block immediately)
-- [ ] **Hardcoded credentials** - API keys, passwords, tokens in source
-- [ ] **SQL injection** - String concatenation in queries
-- [ ] **Command injection** - User input in shell commands
-- [ ] **XSS vulnerabilities** - Unsanitized output in HTML
-- [ ] **Sensitive data exposure** - PII logged or returned in errors
-- [ ] **Missing authentication** - Unprotected endpoints
-- [ ] **Insecure deserialization** - Untrusted data deserialization
-
-### HIGH - Code Quality Issues
-- [ ] **Large functions** (>50 lines) - Split into smaller units
-- [ ] **Large files** (>800 lines) - Consider modularization
-- [ ] **Deep nesting** (>4 levels) - Flatten with early returns/guards
-- [ ] **Missing error handling** - Try/catch, error boundaries
-- [ ] **Resource leaks** - Unclosed connections, file handles
-- [ ] **Race conditions** - Concurrent access without synchronization
-- [ ] **Circular dependencies** - Module import cycles
-- [ ] **Missing null checks** - Potential null pointer exceptions
-- [ ] **Unused variables/imports** - Dead code cleanup needed
-- [ ] **Inconsistent error handling** - Mixed patterns
-
-### MEDIUM - Performance Issues
-- [ ] **O(n²) algorithms** - Nested loops over same data
-- [ ] **N+1 query patterns** - Database queries in loops
-- [ ] **Missing memoization** - Repeated expensive computations
-- [ ] **Unbounded data loading** - Missing pagination
-- [ ] **Synchronous blocking** - Blocking main thread operations
-- [ ] **Large bundle imports** - Importing entire libraries
-- [ ] **Memory leaks** - Event listeners not cleaned up
-- [ ] **Missing indexes** - Slow database queries
-- [ ] **Excessive re-renders** - React components re-rendering unnecessarily
-- [ ] **Missing caching** - Repeated identical API calls
-
-### MEDIUM - Best Practices
-- [ ] **Magic numbers** - Unexplained literals (use named constants)
-- [ ] **TODO without tickets** - Unfollowed-up technical debt
-- [ ] **Missing accessibility** - No ARIA labels, alt text
-- [ ] **Inconsistent naming** - Mixed conventions (camelCase/snake_case)
-- [ ] **Missing types** - Any types, missing interfaces
-- [ ] **Overly complex conditions** - Hard-to-read boolean expressions
-- [ ] **Copy-paste code** - Duplicated logic that should be abstracted
-- [ ] **Missing logging** - No observability for critical operations
-- [ ] **Hardcoded config** - Environment-specific values not configurable
-- [ ] **Missing documentation** - Complex logic without comments
-
-### LOW - Style and Conventions
-- [ ] **Inconsistent formatting** - Mixed indentation, spacing
-- [ ] **Long lines** (>120 chars) - Hard to read
-- [ ] **Missing semicolons** - Inconsistent with codebase style
-- [ ] **Trailing whitespace** - Unnecessary diff noise
-- [ ] **Console.log statements** - Debug code left in
-- [ ] **Commented-out code** - Dead code should be removed
-- [ ] **Inconsistent file naming** - Mixed conventions
-- [ ] **Missing newline at EOF** - POSIX compliance
-- [ ] **Unused dependencies** - package.json bloat
-- [ ] **Outdated dependencies** - Known vulnerabilities
+Check functions >50 lines, security patterns per `agents/references/security-checklists.md`, and style/smells per the coding-standards skill.
 
 ---
 

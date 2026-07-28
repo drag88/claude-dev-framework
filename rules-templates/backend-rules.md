@@ -32,42 +32,8 @@ Response ← Serialization ← Error Handling ← Service Response
 - Consistent casing: [kebab-case / camelCase — detect from existing routes]
 - Version prefix: `/api/v1/` (or header-based)
 
-### HTTP Methods
-| Method | Purpose | Idempotent | Response |
-|--------|---------|-----------|----------|
-| GET | Read | Yes | 200 + body |
-| POST | Create | No | 201 + body + Location |
-| PUT | Full replace | Yes | 200 + body |
-| PATCH | Partial update | Yes | 200 + body |
-| DELETE | Remove | Yes | 204 no body |
-
-### Pagination
-```json
-{
-  "data": [...],
-  "pagination": {
-    "page": 1,
-    "per_page": 20,
-    "total": 150,
-    "total_pages": 8
-  }
-}
-```
-- Default page size: 20, max: 100
-- Cursor-based for large/real-time datasets
-
-### Error Response Format
-```json
-{
-  "error": {
-    "code": "VALIDATION_ERROR",
-    "message": "Human-readable description",
-    "details": [
-      {"field": "email", "message": "Invalid email format"}
-    ]
-  }
-}
-```
+### Response Shapes
+Error envelope and pagination shape: copy the first real endpoint, don't invent.
 
 ## Database Rules (`database-rules.md`)
 
@@ -104,15 +70,7 @@ Response ← Serialization ← Error Handling ← Service Response
 - Never trust client-side role claims
 
 ### Error Handling
-| Status | When | Example |
-|--------|------|---------|
-| 400 | Invalid input | Missing required field |
-| 401 | Not authenticated | Missing/expired token |
-| 403 | Not authorized | Insufficient permissions |
-| 404 | Not found | Resource doesn't exist |
-| 409 | Conflict | Duplicate unique value |
-| 422 | Unprocessable | Valid syntax, invalid semantics |
-| 500 | Server error | Never expose internals |
+Never return internal errors to clients — log internally, return a generic 500.
 
 ### Idempotency
 - POST endpoints accept idempotency keys for safe retries
@@ -124,13 +82,3 @@ Response ← Serialization ← Error Handling ← Service Response
 - Additive changes (new fields) don't need new versions
 - Deprecation headers before removal
 - Minimum deprecation period: [detect or default 3 months]
-
-## Critical Rules
-
-1. **Never modify existing migrations** — create new ones to alter schema
-2. **Parameterized queries only** — never interpolate user input into SQL
-3. **Never return internal errors** to clients — log internally, return generic 500
-4. **Validate all input** at the boundary — never trust client data
-5. **Auth on every endpoint** — no endpoint should be accidentally public
-6. **Rate limiting** on public and auth endpoints
-7. **Log structured data** — JSON logs with request ID for traceability

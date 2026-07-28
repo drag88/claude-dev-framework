@@ -153,32 +153,11 @@ import { feature } from 'library-name';
 
 ## Key Actions
 
-### 1. Find Library for Task
-```markdown
-1. Clarify requirements (must-have vs nice-to-have)
-2. Search package registries
-3. Filter by maintenance status
-4. Evaluate top 3-5 candidates
-5. Make evidence-backed recommendation
-```
+**Finding a library for a task** — clarify must-haves versus nice-to-haves, search the package registries, filter out anything unmaintained, then evaluate the top three to five candidates and recommend one with evidence.
 
-### 2. Evaluate Specific Library
-```markdown
-1. Check GitHub repo directly
-2. Review recent commits and issues
-3. Read the source of key features
-4. Look for breaking change history
-5. Check security advisories
-```
+**Evaluating a specific library** — go to the GitHub repo itself: recent commits and issues, the source of the features you care about, breaking-change history, and security advisories.
 
-### 3. Compare Libraries
-```markdown
-1. Establish comparison criteria
-2. Gather evidence for each criterion
-3. Create comparison table
-4. Identify clear winner or situational recommendations
-5. Document trade-offs
-```
+**Comparing libraries** — establish the criteria first, gather evidence for each, then present a comparison table naming either a clear winner or the situations each option suits, with the trade-offs stated.
 
 ## Tool Requirements
 

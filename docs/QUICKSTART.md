@@ -22,7 +22,7 @@ CDF has four layers. You only need the first one to start.
 Slash commands that trigger specific workflows. The command handles tool selection, agent activation, and quality checks automatically.
 
 **Layer 2 — Agents** (real-expertise subagents you can invoke)
-Specialized agents like `codebase-navigator`, `library-researcher`, `quality-engineer`, `e2e-specialist`, `tdd-guide`, `socratic-mentor`, `media-interpreter`. Persona-stub agents (security-engineer, backend-architect, etc.) were removed in the leanness pass — Opus 4.7 plays those roles from the Role line in your CLAUDE.md plus `xhigh` effort.
+Specialized agents like `codebase-navigator`, `library-researcher`, `quality-engineer`, `e2e-specialist`, `tdd-guide`, `socratic-mentor`, `media-interpreter`. Persona-stub agents (security-engineer, backend-architect, etc.) were removed in the leanness pass — Claude plays those roles from the Role line in your CLAUDE.md at high effort.
 
 **Layer 3 — Skills** (trigger automatically)
 Background behaviors like coding standards enforcement, failure recovery, and intent classification. You don't interact with these — they just run.
@@ -58,7 +58,7 @@ Lifecycle scripts that fire on session start, before/after tool use, and on stop
 | `/cdf:brainstorm "problem"` | Requirements discovery (what to build) |
 | `/cdf:plan-review` | Challenge and harden a plan before implementation |
 | `/cdf:estimate "task"` | Effort estimation |
-| Write a clear prompt + `xhigh` effort | Generate implementation steps from a spec (4.7 plans natively) |
+| Write a clear prompt + `xhigh` effort | Generate implementation steps from a spec (Claude plans natively) |
 
 ### Fix
 
@@ -84,7 +84,7 @@ Lifecycle scripts that fire on session start, before/after tool use, and on stop
 | `/cdf:plan "idea or bug"` | Front door: ground, structure, and persist a plan, then hand off |
 | `/cdf:task "complex thing"` | Break down and delegate with agents |
 | `/cdf:task --breakdown "X"` | Just the breakdown, no execution |
-| Clear prompt + `xhigh` effort | Full lifecycle (brainstorm → docs → implement → verify) — 4.7 plans this natively, the `/cdf:flow` orchestrator was removed |
+| Clear prompt + `xhigh` effort | Full lifecycle (brainstorm → docs → implement → verify) — Claude plans this natively, the `/cdf:flow` orchestrator was removed |
 
 ### Meta
 
@@ -111,7 +111,7 @@ Lifecycle scripts that fire on session start, before/after tool use, and on stop
 ```
 /cdf:brainstorm "requirements"     # Discover what to build
 /cdf:plan-review                   # Stress-test the plan
-# Then write a clear prompt and let 4.7 plan the full lifecycle with xhigh effort
+# Then write a clear prompt and let Claude plan the full lifecycle at high effort
 # (brainstorm → docs → implement → verify)
 ```
 
@@ -166,9 +166,9 @@ You don't need to configure these. They run on their own.
 
 **Start simple.** `/cdf:implement` and `/cdf:ship` cover 80% of daily work.
 
-**Let agents activate.** Don't try to pick agents manually — `/cdf:task` routes to the right one based on context, and most "persona" work (backend, frontend, devops, etc.) is handled by 4.7 directly from the Role line in CLAUDE.md.
+**Let agents activate.** Don't try to pick agents manually — `/cdf:task` routes to the right one based on context, and most "persona" work (backend, frontend, devops, etc.) is handled by Claude directly from the Role line in CLAUDE.md.
 
-**For big features, write a clear prompt and let 4.7 plan natively.** The `/cdf:flow` orchestrator was removed in the leanness pass — `xhigh` effort handles the brainstorm → docs → implement → verify chain when given a complete prompt.
+**For big features, write a clear prompt and let Claude plan natively.** The `/cdf:flow` orchestrator was removed in the leanness pass — high effort handles the brainstorm → docs → implement → verify chain when given a complete prompt.
 
 **Run `/retro` weekly.** Takes 30 seconds, surfaces patterns you'd never notice.
 

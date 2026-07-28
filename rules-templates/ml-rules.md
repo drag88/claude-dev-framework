@@ -36,12 +36,7 @@ Every training run must log:
 - Environment info (GPU type, library versions)
 
 ### Integration Pattern
-```python
-# [MLflow / W&B / custom] — detect from imports and config
-[tracker].log_params({...})
-[tracker].log_metrics({...}, step=epoch)
-[tracker].log_artifact(model_path)
-```
+Follow the tracker already wired up in this repo — detect it from imports and config rather than introducing a second one.
 
 ## Data Contracts (`data-contracts.md`)
 
@@ -59,32 +54,15 @@ Every training run must log:
 - [DVC / Delta Lake / manual versioning — detect from project]
 - Raw data is immutable — never modify in place
 - Feature sets are versioned alongside model versions
+- Never commit model artifacts (`.pt`, `.pkl`, `.h5`, `.onnx`), large datasets, checkpoints, or credentials
 
 ## Patterns
 
 ### Experiment Configuration
-```yaml
-# config/experiment.yaml (Hydra / plain YAML / argparse)
-model:
-  type: [model_class]
-  hidden_size: [N]
-training:
-  lr: [float]
-  batch_size: [int]
-  epochs: [int]
-  seed: [int]
-data:
-  version: [tag/hash]
-  split_ratio: [train/val/test]
-```
+Experiments are config-driven — extend the repo's existing experiment config rather than hardcoding hyperparameters in training scripts.
 
 ### Notebook Conventions
-1. First cell: imports and config (no credentials)
-2. Early cells: data loading and exploration
-3. Middle cells: processing and modeling
-4. Final cells: results and visualization
-5. Clear all outputs before committing
-6. Notebooks are for exploration — production code goes in `src/`
+Notebooks are exploration; clear outputs before committing; production code goes in `src/`.
 
 ### Reproducibility Rules
 - Set ALL random seeds explicitly (numpy, torch, tensorflow, python random)
@@ -97,13 +75,3 @@ data:
 - Feature transforms are pure functions (input → output, no side effects)
 - Same transform code runs in training and serving (no training-serving skew)
 - Feature pipelines are versioned with the model
-
-## Critical Rules
-
-1. **Never commit**: model artifacts (`.pt`, `.pkl`, `.h5`, `.onnx`), large datasets, checkpoints, credentials
-2. **Pin versions exactly** in training environments — no `>=` or `~=`
-3. **Config-driven experiments** — no hyperparameters hardcoded in training scripts
-4. **No credentials in notebooks** — use environment variables or secret managers
-5. **Validate data before training** — schema checks, null checks, distribution checks
-6. **Log everything** — if you can't reproduce it, it didn't happen
-7. **Separate concerns** — notebooks for exploration, `src/` for production code

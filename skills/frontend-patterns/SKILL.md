@@ -98,7 +98,7 @@ Provide guidance on frontend architecture patterns, React best practices, and UI
 - `/cdf:design` -- Design component architecture with pattern guidance
 - `/cdf:analyze --focus performance` -- Check frontend performance against standards
 
-Opus 4.7 plays the frontend-engineer and performance-engineer roles from the Role line in CLAUDE.md when given pattern context — no dedicated stub agents needed.
+Claude plays the frontend-engineer and performance-engineer roles from the Role line in CLAUDE.md when given pattern context — no dedicated stub agents needed.
 
 ## Reference Files
 

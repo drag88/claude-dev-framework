@@ -2,31 +2,6 @@
 
 > Template for generating rules in Frontend / React / Next.js projects.
 
-## Architecture Additions
-
-### Component Hierarchy
-```
-app/ (or pages/)
-├── layout.tsx          — Root layout (server component)
-├── page.tsx            — Home page
-├── [route]/
-│   ├── page.tsx        — Route page
-│   └── loading.tsx     — Suspense boundary
-components/
-├── ui/                 — Generic reusable (Button, Modal, Input)
-├── features/           — Feature-specific (UserCard, CartSummary)
-└── layouts/            — Layout wrappers (Sidebar, Header)
-lib/                    — Utilities, API clients, helpers
-hooks/                  — Custom React hooks
-types/                  — TypeScript type definitions
-```
-
-### Server vs Client Boundaries (App Router)
-- **Server Components** (default): Data fetching, static content, no interactivity
-- **Client Components** (`'use client'`): Event handlers, hooks, browser APIs
-- Push `'use client'` as far down the tree as possible
-- Server components can import client components, not vice versa
-
 ## Component Conventions (`component-conventions.md`)
 
 ### File Structure
@@ -84,13 +59,6 @@ export interface ComponentNameProps {
 - **URL state**: Search params for shareable/bookmarkable state
 - Avoid global state for data that belongs on the server
 
-### Rendering Optimization
-- Memoize expensive computations with `useMemo`
-- Stabilize callback references with `useCallback` (only when passed to memoized children)
-- Use `React.memo` for components that re-render with same props
-- Virtualize long lists (>100 items)
-- Lazy load routes and heavy components with `React.lazy` or `next/dynamic`
-
 ### Image Optimization
 - Use `next/image` (Next.js) or responsive `<picture>` elements
 - Always specify `width` and `height` to prevent layout shift
@@ -103,12 +71,9 @@ export interface ComponentNameProps {
 - Avoid testing internal state — test what the user sees
 - Integration tests > unit tests for components
 
-## Critical Rules
+## Conventions
 
-1. **No `any`** in TypeScript — use `unknown` and narrow, or define proper types
-2. **No hardcoded API URLs** — use environment variables (`NEXT_PUBLIC_API_URL`)
-3. **Images need `alt`, `width`, `height`** — no exceptions
-4. **Test behavior, not implementation** — no testing internal state or CSS classes
-5. **No direct DOM manipulation** — use refs only when React can't handle it
-6. **No `// eslint-disable` without justification** in a comment
-7. **Bundle size matters** — check impact of new dependencies (`bundlephobia`)
+- **No `any`** in TypeScript — use `unknown` and narrow, or define proper types
+- **No hardcoded API URLs** — use environment variables (`NEXT_PUBLIC_API_URL`)
+- **No `// eslint-disable` without justification** in a comment
+- **Bundle size matters** — check impact of new dependencies (`bundlephobia`)

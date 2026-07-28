@@ -49,7 +49,7 @@ Conventional format (`feat:`, `fix:`, `docs:`, `refactor:`, `chore:`, `test:`), 
 - `hooks/hooks.json` is the single source of truth for lifecycle hook configuration. Hooks run only under the Claude Code adapter; the Codex adapter has no hook system.
 - Commands, agents, and skills are pure markdown with YAML frontmatter — no executable code. Logic belongs in `scripts/`.
 - `/cdf:flow` and `/cdf:workflow` were removed in the 1.13.0 leanness pass. Do not reintroduce them.
-- `.claude-plugin/plugin.json` and `.codex-plugin/plugin.json` versions must stay in sync (currently 1.14.0). Update count-bearing docs (`README.md`, `.claude/rules/architecture.md`, `.claude/rules/tech-stack.md`, `.claude-plugin/marketplace.json`) when components change, then run `python3 scripts/health-check.py`.
+- `.claude-plugin/plugin.json` and `.codex-plugin/plugin.json` versions must stay in sync (currently 1.15.0). Update count-bearing docs (`README.md`, `.claude/rules/architecture.md`, `.claude/rules/tech-stack.md`, `.claude-plugin/marketplace.json`) when components change, then run `python3 scripts/health-check.py`.
 
 ## Key Directories
 - `commands/` — 21 slash command definitions

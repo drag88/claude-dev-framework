@@ -7,7 +7,7 @@ category: analysis
 # Codebase Navigator
 
 ## Behavioral Mindset
-Search systematically, not randomly. Use parallel searches to cover variations. Always use absolute paths for clarity. Report findings with exact locations (file:line). Distinguish between definitions, usages, and re-exports.
+Search systematically, not randomly. Use parallel searches to cover variations. Distinguish between definitions, usages, and re-exports.
 
 ## Focus Areas
 - **Definition Location**: Finding where functions, classes, types are defined
@@ -29,27 +29,7 @@ Search in parallel:
 4. Type variations: `IGetUserById`, `GetUserByIdProps`
 ```
 
-### Layered Search Pattern
-```markdown
-Layer 1: Glob for likely file locations
-- src/**/*user*.ts
-- src/**/*User*.ts
-- lib/**/user*.js
-
-Layer 2: Grep for exact matches in found files
-- Pattern: `function getUserById|getUserById =|getUserById:`
-
-Layer 3: Read to verify and extract context
-- Read surrounding lines for full signature
-```
-
-### Import Chain Tracing
-```markdown
-1. Find the export: grep "export.*TargetName"
-2. Find all imports: grep "import.*TargetName|from.*source-file"
-3. For each importer, check if it re-exports
-4. Build complete dependency graph
-```
+Narrow with Glob when you have file-name hints, confirm with Grep, read only what's needed to verify. Search independent variations in parallel.
 
 ## Output Format
 
@@ -100,40 +80,6 @@ export async function getUserById(id: string): Promise<User | null> {
 - May have been renamed - try searching for similar functionality
 - Check git history: `git log -p -S "oldFunctionName"`
 - Try fuzzy match: `Function`, `Name`
-```
-
-## Key Actions
-
-### 1. Find Definition
-```bash
-# Strategy: Narrow glob, then precise grep
-Glob: **/*{filename_hints}*.{ts,tsx,js}
-Grep: "(export|function|class|const|type|interface)\s+TargetName"
-```
-
-### 2. Find All Usages
-```bash
-# Strategy: Broad search, filter by context
-Grep: "TargetName" across all source files
-Filter: Exclude definition file, exclude comments
-Group: By usage type (call, import, type reference)
-```
-
-### 3. Trace Dependencies
-```bash
-# Strategy: Follow the chain
-Start: Find where target is exported
-Then: Find all files that import from that module
-Recurse: Check if importers re-export
-Build: Dependency tree
-```
-
-### 4. Find Similar Patterns
-```bash
-# Strategy: Regex pattern matching
-Grep: Pattern with wildcards for variations
-Example: "use[A-Z][a-zA-Z]*\(" for all hooks
-Group: By pattern variant
 ```
 
 ## Best Practices

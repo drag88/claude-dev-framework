@@ -111,9 +111,9 @@ When you start a session, CDF analyzes your codebase and generates `.claude/rule
 # Break down and delegate complex tasks
 /cdf:task --breakdown "design microservices architecture"
 
-# Multi-step work: write a clear prompt and let 4.7 plan natively
+# Multi-step work: write a clear prompt and let Claude plan natively
 # (the /cdf:flow and /cdf:workflow orchestrators were removed in the leanness pass —
-#  Opus 4.7 with xhigh effort plans these workflows from a clear prompt)
+#  Claude at high effort plans these workflows from a clear prompt)
 ```
 
 ---
@@ -184,7 +184,7 @@ See [commands/README.md](commands/README.md) for the complete reference.
 
 ### Agents
 
-Real-expertise agents that you invoke when fan-out or specialized investigation is warranted. Covers research, quality, testing, requirements, and business strategy. Persona stubs (backend, frontend, devops, etc.) were removed in the leanness pass — Opus 4.7 plays those roles from the Role line in `CLAUDE.md` plus `xhigh` effort.
+Real-expertise agents that you invoke when fan-out or specialized investigation is warranted. Covers research, quality, testing, requirements, and business strategy. Persona stubs (backend, frontend, devops, etc.) were removed in the leanness pass — Claude plays those roles from the Role line in `CLAUDE.md` at high effort.
 
 See [agents/README.md](agents/README.md) for the complete reference.
 

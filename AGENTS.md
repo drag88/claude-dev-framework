@@ -26,12 +26,7 @@ See `@rules-templates/workflow-template.md` for workflow rules, subagent strateg
 
 ## Tool and subagent policy
 
-Spawn multiple subagents in the same turn when fanning out across items, reading multiple files, or running independent investigations. Skip fan-out for single-file edits or trivial reads. For multi-agent debate or implementation work, use TeamCreate + named teammates rather than ad-hoc subagents.
-
-<use_parallel_tool_calls>
-For maximum efficiency, whenever you perform multiple independent operations,
-invoke all relevant tools simultaneously rather than sequentially.
-</use_parallel_tool_calls>
+Spawn parallel subagent investigations for independent reads; keep single-file edits and trivial reads inline.
 
 ## Model Routing
 Strongest available model orchestrates; deep-reasoning subtasks on a strong reasoning tier; mechanical work on a fast tier. High-stakes decisions get two independent takes, synthesized.
@@ -106,7 +101,7 @@ Conventional format (`feat:`, `fix:`, `docs:`), no Codex attribution. See `/cdf:
 | Business strategy | business-panel-experts, business-research-strategist | `/cdf:research` |
 | Image / PDF interpretation | media-interpreter | `/cdf:task` |
 
-For role-based work (backend/frontend/security/perf/system design/docs), invoke `/cdf:task` directly — the Role line above plus 4.7's `xhigh` effort handles persona work without dedicated stub agents.
+For role-based work (backend/frontend/security/perf/system design/docs), invoke `/cdf:task` directly — the Role line above at high effort handles persona work without dedicated stub agents.
 
 **Auto-activation**: Agents activate automatically via `/cdf:task` based on task context.
 
@@ -123,4 +118,4 @@ Run `/cdf:rules generate` to refresh after major changes.
 - `skills/` - Auto-invoked skill directories (`SKILL.md`)
 - `scripts/` - Hook implementation scripts (Python + Bash)
 - `hooks/` - Lifecycle hook configuration (`hooks.json`)
-- `rules-templates/` - Rule generation templates, includes vendored `claudemd-4-7-rulebook.md`
+- `rules-templates/` - Rule generation templates, includes vendored `claudemd-rulebook.md`

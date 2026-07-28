@@ -13,7 +13,7 @@ Before engaging the user, silently check for prior research:
 
 ## Phase 2: Deep Socratic Interview
 
-**CRITICAL: Do NOT start any web research until this phase is complete and the user approves the research plan.**
+Do not start web research until this phase is complete and the user approves the research plan.
 
 Conduct 3-5 rounds of progressively deeper questioning.
 
@@ -95,18 +95,12 @@ Map business frameworks to research dimensions:
 
 ---
 
-## Phase 4: Parallel Research Execution -- MANDATORY Team Spawning
+## Phase 4: Parallel Research Execution
 
-**THIS IS NON-NEGOTIABLE. Every research session MUST create a team and spawn sub-agents.**
+For multi-dimensional questions, spawn parallel sub-agents per research dimension (market/competitor/customer/strategy/risk) — scale the count to the actual scope; a narrow question may need only one or two.
 
-### Team Creation
-Use `TeamCreate` to create a named research team:
-```
-TeamCreate(team_name="biz-research-{sanitized-topic}")
-```
-
-### Sub-Agent Spawning
-Use the `Task` tool with `team_name` to spawn ALL research agents in a SINGLE message (maximum parallelism):
+### Sub-Agent Menu
+Pick the agents the question actually needs from the menu below, and spawn them in a single message so they run in parallel:
 
 | Agent Name | Subagent Type | Research Brief |
 |------------|---------------|----------------|
@@ -243,7 +237,7 @@ Score each item PASS or FAIL. For each FAIL, fix it directly in the draft before
 
 ### Self-Critique Process
 
-1. Re-read the full draft report
+1. Score the draft against the checklist below
 2. Score each checklist item as PASS or FAIL with a one-line justification
 3. For each FAIL: make the specific fix directly in the report
 4. If the report cannot meet a criterion due to data limitations, note it as a known limitation rather than faking a pass

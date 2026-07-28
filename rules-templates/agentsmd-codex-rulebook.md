@@ -1,6 +1,6 @@
 # AGENTS.md Best Practices for Codex (GPT-5.5)
 
-Source-backed guidance for writing and auditing `AGENTS.md` files for OpenAI Codex CLI. Use this reference when `/cdf:rules agentsmd` runs, or when opportunistically reviewing a Codex setup. Companion to `claudemd-4-7-rulebook.md`.
+Source-backed guidance for writing and auditing `AGENTS.md` files for OpenAI Codex CLI. Use this reference when `/cdf:rules agentsmd` runs, or when opportunistically reviewing a Codex setup. Companion to `claudemd-rulebook.md`.
 
 ## What is AGENTS.md
 
@@ -53,14 +53,14 @@ Four differences that directly affect the file format:
 
 ### Verification and reporting
 
-13. **Make verification gates concrete commands.** "Run `pnpm typecheck && pnpm test` and paste the output" beats "make sure things pass." Codex self-filters less than Opus 4.7 but still benefits from explicit gates.
-14. **Report everything, filter later, for coverage tasks.** Same as 4.7. Words like "be conservative" cause silent drops in any modern coding agent.
+13. **Make verification gates concrete commands.** "Run `pnpm typecheck && pnpm test` and paste the output" beats "make sure things pass." Codex self-filters less than Claude but still benefits from explicit gates.
+14. **Report everything, filter later, for coverage tasks.** Same as the Claude rulebook. Words like "be conservative" cause silent drops in any modern coding agent.
 
 ### Deprecated patterns
 
 15. **No `@file` syntax.** Codex parses these literally.
 16. **No XML-tagged sections** that rely on the host treating the tag specially. Wrap with `##` headers and prose instead.
-17. **No multi-turn drip-feed style guidance.** Same as 4.7. AGENTS.md is durable context loaded once.
+17. **No multi-turn drip-feed style guidance.** Same as the Claude rulebook. AGENTS.md is durable context loaded once.
 18. **No API-parameter scaffolding** (temperature, top_p, prefills) — these do not belong in any agent-instructions file.
 
 ## Sync with CLAUDE.md

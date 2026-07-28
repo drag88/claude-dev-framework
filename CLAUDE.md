@@ -24,15 +24,6 @@ claude --plugin-dir .         # Run with plugin
 ## Workflow
 See `@rules-templates/workflow-template.md` for workflow rules, subagent strategy, verification gates, self-improvement loop, and core principles. (CDF dogfoods its own template.)
 
-## Tool and subagent policy
-
-Spawn multiple subagents in the same turn when fanning out across items, reading multiple files, or running independent investigations. Skip fan-out for single-file edits or trivial reads. For multi-agent debate or implementation work, use TeamCreate + named teammates rather than ad-hoc subagents.
-
-<use_parallel_tool_calls>
-For maximum efficiency, whenever you perform multiple independent operations,
-invoke all relevant tools simultaneously rather than sequentially.
-</use_parallel_tool_calls>
-
 ## Model Routing
 
 Fable 5 (max reasoning) is the orchestrator: plan, decompose, synthesize. Keep its context lean — delegate the heavy lifting. If Fable is unavailable, Opus orchestrates.
@@ -110,4 +101,4 @@ Run `/cdf:rules generate` to refresh after major changes.
 - `skills/` - Auto-invoked skill directories (`SKILL.md`)
 - `scripts/` - Hook implementation scripts (Python + Bash)
 - `hooks/` - Lifecycle hook configuration (`hooks.json`)
-- `rules-templates/` - Rule generation templates, includes vendored `claudemd-4-7-rulebook.md`
+- `rules-templates/` - Rule generation templates, includes vendored `claudemd-rulebook.md`

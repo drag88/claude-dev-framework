@@ -18,16 +18,6 @@ Automatically enforce Test-Driven Development practices during implementation.
 
 ### RED-GREEN-REFACTOR Cycle
 ```
-┌─────────────────────────────────────────────────────┐
-│                                                     │
-│   ┌─────┐    ┌───────┐    ┌──────────┐             │
-│   │ RED │───▶│ GREEN │───▶│ REFACTOR │─┐           │
-│   └─────┘    └───────┘    └──────────┘ │           │
-│      ▲                                  │           │
-│      └──────────────────────────────────┘           │
-│                                                     │
-└─────────────────────────────────────────────────────┘
-
 RED:      Write a failing test
 GREEN:    Make it pass with minimal code
 REFACTOR: Improve the code, keep tests green
@@ -126,12 +116,7 @@ For comprehensive coverage, consider:
 
 ## Coverage Requirements
 
-| Metric | Minimum |
-|--------|---------|
-| Statements | 80% |
-| Branches | 80% |
-| Functions | 80% |
-| Lines | 80% |
+Target the repo's existing coverage threshold (check package.json/CI config); if none exists, propose one.
 
 ## Anti-Patterns to Avoid
 
@@ -199,28 +184,16 @@ After TDD implementation:
 /cdf:test --coverage
 
 # Verify coverage meets threshold
-# If below 80%, add more test cases
+# If below the repo's threshold, add more test cases
 ```
 
 ## Reporting Progress
 
-During TDD session, report:
-1. Current phase (RED/GREEN/REFACTOR)
-2. Test being worked on
-3. Coverage status
-4. Next step
+State the current TDD phase and next step briefly as you go.
 
-Example:
-```
-🔴 RED: Writing test for email validation
-📝 Test: "should reject emails without @ symbol"
-📊 Coverage: 75% → Need 5% more
-⏭️ Next: Implement minimal validation
-```
-
-## Related Agents
-- **tdd-guide** — Primary consumer enforcing RED-GREEN-REFACTOR cycle
-- **quality-engineer** — Uses TDD workflow for test strategy and coverage
+## Related Routing
+- **/cdf:tdd with test-first role framing** — Enforces the RED-GREEN-REFACTOR cycle
+- **/cdf:test with quality-engineer role framing** — Test strategy and coverage review
 
 ## Suggested Commands
 - `/cdf:tdd` — Run full TDD workflow

@@ -47,7 +47,7 @@ Quick reference for all available `/cdf` commands, organized by purpose.
 |---------|-------------|------------|
 | [/cdf:task](task.md) | Execute complex tasks with breakdown, delegation, and workflow management | advanced |
 
-`/cdf:flow` and `/cdf:workflow` were removed in the 4.7 leanness pass. Opus 4.7 plans multi-step workflows natively when given a clear prompt and `xhigh` effort — the orchestrator wrappers added scaffolding the model already does well.
+`/cdf:flow` and `/cdf:workflow` were removed in the leanness pass. Claude plans multi-step workflows natively from a clear prompt at high effort — the orchestrator wrappers added scaffolding the model already does well.
 
 ---
 

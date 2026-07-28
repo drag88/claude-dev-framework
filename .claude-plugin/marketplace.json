@@ -10,7 +10,7 @@
     {
       "name": "cdf",
       "description": "Development framework that wraps the compound-engineering loop with commands, agent personas, skills, and lifecycle hooks",
-      "version": "2.0.0",
+      "version": "2.1.0",
       "author": {
         "name": "Aswin Sreenivas",
         "url": "https://github.com/drag88/claude-dev-framework"

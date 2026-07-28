@@ -171,50 +171,9 @@ npm install bcrypt jsonwebtoken
 
 Before removing any code, verify:
 
-### 1. Static Analysis Complete
-- [ ] Run dead code detection tools (knip, ts-prune, depcheck)
-- [ ] Check ESLint for unused variables/imports
-- [ ] Verify no dynamic usage patterns (`require(variable)`, `import()`)
-
-### 2. Search for Usage
-- [ ] Global search for function/class/variable name
-- [ ] Check for string-based references (`"functionName"`)
-- [ ] Search configuration files (webpack, jest, etc.)
-- [ ] Check package.json scripts and bin entries
-
-### 3. External Consumer Check
-- [ ] Is this exported from the package?
-- [ ] Check for usage in dependent packages
-- [ ] Verify no external API consumers
-- [ ] Check documentation for public API references
-
-### 4. Test Coverage Review
-- [ ] Are there tests for this code?
-- [ ] Do tests still pass after removal?
-- [ ] Add regression tests if needed before removal
-
-### 5. Version Control Preparation
-- [ ] Create a dedicated branch for cleanup
-- [ ] Make small, atomic commits
-- [ ] Document reason in commit messages
-- [ ] Tag version before major deletions
-
-### 6. Staged Removal
-- [ ] First: deprecate with `@deprecated` JSDoc
-- [ ] Second: add console.warn for usage
-- [ ] Third: remove after deprecation period
-
-### 7. Post-Removal Validation
-- [ ] All tests pass
-- [ ] Application builds successfully
-- [ ] No runtime errors in staging
-- [ ] Monitor production for 24-48h after deploy
-
-### 8. Documentation Update
-- [ ] Update README if public API changed
-- [ ] Update CHANGELOG.md
-- [ ] Add entry to DELETION_LOG.md
-- [ ] Archive any related documentation
+- [ ] **No static or dynamic usage remains** — dead-code tools (knip, ts-prune, depcheck) plus a grep for string-based and dynamic references (`require(variable)`, `import()`, `utils[methodName]()`), config files, and package.json scripts
+- [ ] **Tests still pass** — after the removal, not just before it
+- [ ] **No external consumers** — check package exports, dependent packages, and public API documentation
 
 ---
 

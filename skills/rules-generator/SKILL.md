@@ -17,7 +17,7 @@ Auto-generate `.claude/rules/` documentation for any codebase.
 
 ## Actions
 
-0. **Load rulebook**: Read `rules-templates/claudemd-4-7-rulebook.md` (vendored into CDF) as the authoritative reference for rule framing (positive imperatives, explicit scope, why-statements, neutral tone). Falls back to the embedded principles in this file only if the rulebook is missing.
+0. **Load rulebook**: Read `rules-templates/claudemd-rulebook.md` (vendored into CDF) as the authoritative reference for rule framing (positive imperatives, explicit scope, why-statements, neutral tone). Falls back to the embedded principles in this file only if the rulebook is missing.
 
 1. **Explore codebase** using the Explore agent to understand:
    - Directory structure and key files

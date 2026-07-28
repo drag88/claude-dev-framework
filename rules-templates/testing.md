@@ -7,18 +7,7 @@ Copy this template to `.claude/rules/testing.md` and customize for your project.
 ## Coverage Requirements
 
 ### Minimum Thresholds
-```json
-{
-  "coverageThreshold": {
-    "global": {
-      "statements": 80,
-      "branches": 80,
-      "functions": 80,
-      "lines": 80
-    }
-  }
-}
-```
+Coverage gates live in the test config (jest.config/vitest.config) — run the coverage script rather than assuming a number.
 
 ### Critical Paths
 The following must have 100% coverage:
@@ -57,7 +46,7 @@ tests/
 ### Every Test Must Have
 1. **Clear description**: "should [expected behavior] when [condition]"
 2. **Arrange-Act-Assert**: Clear separation of setup, action, verification
-3. **Single assertion focus**: Test one behavior per test
+3. **Named by behavior**: assert the thing the test is named for
 
 ### Test Template
 ```typescript
@@ -133,17 +122,7 @@ const mockEmailService = {
 
 ## TDD Requirements
 
-When implementing new features:
-
-1. **RED**: Write failing test first
-2. **GREEN**: Implement minimal code to pass
-3. **REFACTOR**: Improve code quality
-
-### TDD Checklist
-- [ ] Test written before implementation
-- [ ] Test fails for expected reason
-- [ ] Minimal code written to pass
-- [ ] Refactored without breaking tests
+For behavior changes with a clear contract, write the failing test first — /cdf:tdd runs the full cycle.
 
 ---
 
@@ -156,7 +135,6 @@ When implementing new features:
 ### Pre-merge
 - Run full test suite
 - Coverage gate enforcement
-- No skipped tests allowed
 
 ### Nightly
 - Full E2E suite
@@ -166,16 +144,6 @@ When implementing new features:
 ---
 
 ## Test Maintenance
-
-### Flaky Tests
-- Tag with `@flaky` immediately
-- Fix within 1 sprint
-- Delete if not fixed
-
-### Slow Tests
-- Unit tests < 100ms each
-- Integration tests < 1s each
-- E2E tests < 30s each
 
 ### Test Data
 - Use factories for test data

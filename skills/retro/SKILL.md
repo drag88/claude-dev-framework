@@ -27,7 +27,7 @@ Validate argument format: number + `d`/`h`/`w`, or `compare` optionally followed
 
 ### Step 1: Gather Raw Data
 
-Fetch origin first, then run ALL git commands in parallel:
+Fetch origin first, then run the remaining git commands.
 
 ```bash
 git fetch origin --quiet

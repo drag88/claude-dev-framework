@@ -57,7 +57,7 @@ The session has **$INCOMPLETE_COUNT incomplete task(s)**.
 3. Remove tasks that are no longer relevant
 4. Use \`/compact\` to preserve progress if context is running low
 
-**Do not end the session with incomplete tasks unless absolutely necessary.**"
+$INCOMPLETE_COUNT todo(s) still pending/in_progress."
 
     # Output the warning as additional context
     echo "{\"additionalContext\": $(echo "$WARNING_MSG" | jq -Rs .)}"

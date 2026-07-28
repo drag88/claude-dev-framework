@@ -175,7 +175,7 @@ paths: src/api/**/*.py
 ### Then generate both host instruction files
 
 After `.claude/rules/` is written, also generate:
-- `CLAUDE.generated.md` via `/cdf:rules claudemd` — for Claude Code / Opus 4.7.
+- `CLAUDE.generated.md` via `/cdf:rules claudemd` — for Claude Code.
 - `AGENTS.generated.md` via `/cdf:rules agentsmd` — for Codex, Cursor, Aider, and other agents following the AGENTS.md convention.
 
 Both files come from the same `.claude/rules/` source, so they stay in sync. Do not skip the AGENTS.md step.

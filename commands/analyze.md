@@ -58,47 +58,10 @@ Key behaviors:
 - Severity-based prioritization of findings and recommendations
 - Comprehensive reporting with metrics, trends, and actionable insights
 
-## Tool Coordination
-- **Glob**: File discovery and project structure analysis
-- **Grep**: Pattern analysis and code search operations
-- **Read**: Source code inspection and configuration analysis
-- **Bash**: External analysis tool execution and validation
-- **Write**: Report generation and metrics documentation
-
-## Key Patterns
-- **Domain Analysis**: Quality/Security/Performance/Architecture → specialized assessment
-- **Pattern Recognition**: Language detection → appropriate analysis techniques
-- **Severity Assessment**: Issue classification → prioritized recommendations
-- **Report Generation**: Analysis results → structured documentation
-
 ## Examples
 
-### Comprehensive Project Analysis
-```
-/cdf:analyze
-# Multi-domain analysis of entire project
-# Generates comprehensive report with key findings and roadmap
-```
-
-### Focused Security Assessment
 ```
 /cdf:analyze src/auth --focus security --depth deep
-# Deep security analysis of authentication components
-# Vulnerability assessment with detailed remediation guidance
-```
-
-### Performance Optimization Analysis
-```
-/cdf:analyze --focus performance --format report
-# Performance bottleneck identification
-# Generates HTML report with optimization recommendations
-```
-
-### Quick Quality Check
-```
-/cdf:analyze src/components --focus quality --depth quick
-# Rapid quality assessment of component directory
-# Identifies code smells and maintainability issues
 ```
 
 ## Boundaries

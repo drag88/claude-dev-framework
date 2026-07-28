@@ -25,54 +25,14 @@ description: "Execute tests with coverage analysis and automated quality reporti
 Key behaviors:
 - Auto-detect test framework and configuration
 - Generate comprehensive coverage reports with metrics
-- Activate Playwright MCP for e2e browser testing
 - Provide intelligent test failure analysis
 - Support continuous watch mode for development
-
-## MCP Integration
-- **Playwright MCP**: Auto-activated for `--type e2e` browser testing
-- **QA Specialist Persona**: Activated for test analysis and quality assessment
-- **Enhanced Capabilities**: Cross-browser testing, visual validation, performance metrics
-
-## Tool Coordination
-- **Bash**: Test runner execution and environment management
-- **Glob**: Test discovery and file pattern matching
-- **Grep**: Result parsing and failure analysis
-- **Write**: Coverage reports and test summaries
-
-## Key Patterns
-- **Test Discovery**: Pattern-based categorization → appropriate runner selection
-- **Coverage Analysis**: Execution metrics → comprehensive coverage reporting
-- **E2E Testing**: Browser automation → cross-platform validation
-- **Watch Mode**: File monitoring → continuous test execution
+- Use judgement on conventions already in the repo; delegate via `/cdf:task` with role framing only when multi-file fan-out is warranted.
 
 ## Examples
 
-### Basic Test Execution
-```
-/cdf:test
-# Discovers and runs all tests with standard configuration
-# Generates pass/fail summary and basic coverage
-```
-
-### Targeted Coverage Analysis
 ```
 /cdf:test src/components --type unit --coverage
-# Unit tests for specific directory with detailed coverage metrics
-```
-
-### Browser Testing
-```
-/cdf:test --type e2e
-# Activates Playwright MCP for comprehensive browser testing
-# Cross-browser compatibility and visual validation
-```
-
-### Development Watch Mode
-```
-/cdf:test --watch --fix
-# Continuous testing with automatic simple failure fixes
-# Real-time feedback during development
 ```
 
 ## Boundaries

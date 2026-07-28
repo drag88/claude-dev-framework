@@ -5,7 +5,7 @@ argument-hint: "[action] [target] [--strategy systematic|agile|enterprise] [--pa
 
 # /cdf:task — Task Execution
 
-> Execute defined tasks with structured delegation when fan-out is warranted. For multi-step work, write a clear prompt and let Opus 4.7 plan — orchestration scaffolding has been removed in favor of native planning.
+> Execute defined tasks with structured delegation when fan-out is warranted. For multi-step work, write a clear prompt and let Claude plan — orchestration scaffolding has been removed in favor of native planning.
 
 ## Quick Start
 
@@ -21,7 +21,7 @@ argument-hint: "[action] [target] [--strategy systematic|agile|enterprise] [--pa
 - You want a documented delegation contract (tools whitelist + scope boundaries) for each subagent
 - Long-running work where state persistence matters
 
-For single-subagent work or simple sequential steps, just write the prompt — `xhigh` effort plans well without this command.
+For single-subagent work or simple sequential steps, just write the prompt — Claude plans that well from a clear prompt at high effort.
 
 ## Delegation contract (when fanning out)
 
@@ -56,38 +56,29 @@ Explicit tool whitelist (e.g. "Read, Grep, Glob"). No tools outside this list.
 - Constraints: time, scope, dependencies
 ```
 
-### Example
+### Skeleton
 
 ```markdown
 ### 1. Task
-Implement input validation for the user registration form.
+<one atomic goal>
 
 ### 2. Expected outcome
-- Validation functions for email, password, username fields
-- Error messages displayed inline
-- Form prevents submission until valid
+<deliverables and success criteria>
 
 ### 3. Required skills
-frontend-patterns (skill, auto-invoked on React work)
+<skill or agent name>
 
 ### 4. Required tools
-Read, Edit, Write, Grep
+<explicit tool whitelist>
 
 ### 5. Required actions
-- Use the existing validation utility in src/utils/validators.ts
-- Follow the project's error message conventions
-- Add unit tests for each validator
-- Ensure accessibility (aria-invalid, aria-describedby)
+<one requirement per line>
 
 ### 6. Out of scope
-- Form layout or styling changes
-- New dependencies
-- Backend validation logic
+<forbidden actions and boundaries>
 
 ### 7. Context
-- File paths: src/components/RegisterForm.tsx, src/utils/validators.ts
-- Patterns: project uses Zod for schema validation
-- Constraints: must work with existing form state management
+<file paths, patterns, constraints>
 ```
 
 ## Breakdown mode (`--breakdown`)
@@ -99,7 +90,7 @@ Decomposes a complex operation into a coordinated subtask hierarchy (Epic → St
 /cdf:task --breakdown "migrate monolith to microservices" --strategy enterprise --parallel
 ```
 
-For most multi-step features, skip `--breakdown` and let 4.7 plan from the prompt — the breakdown is only needed when you explicitly want a documented hierarchy you can review before execution.
+For most multi-step features, skip `--breakdown` and let Claude plan from the prompt — the breakdown is only needed when you explicitly want a documented hierarchy you can review before execution.
 
 ## Behavioral flow
 
@@ -122,6 +113,6 @@ For most multi-step features, skip `--breakdown` and let 4.7 plan from the promp
 - Coordinate multiple subagents and surface results
 
 **Will not:**
-- Add orchestration scaffolding for tasks 4.7 plans natively
+- Add orchestration scaffolding for tasks Claude plans natively
 - Compromise correctness for speed
 - Skip the seven-section delegation contract when fanning out (the structure is what makes delegation reliable)

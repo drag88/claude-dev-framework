@@ -27,12 +27,15 @@ App Entry → Auth Flow → Main Navigator
 | Keychain / Keystore | Secrets | Auth tokens, API keys |
 | File system | Large blobs | Downloaded media, exports |
 
+Secrets go in Keychain/Keystore, never in plain AsyncStorage or SharedPrefs.
+
 ## Platform Rules (`platform-rules.md`)
 
 ### Platform-Specific Code
 - Isolate in `*.ios.ts` / `*.android.ts` or `platform/[ios|android]/`
 - Shared logic stays in common modules — only UI/native APIs diverge
-- Test on both platforms before merging
+- Test on both platforms before merging, on real devices — simulators miss performance and permission issues
+- Follow platform guidelines for privacy, permissions, and content — app store review depends on it
 
 ### Native Module Bridging
 - Bridge methods return Promises (async by default)
@@ -67,13 +70,7 @@ App Entry → Auth Flow → Main Navigator
 - Network state detection and UI feedback
 
 ### Permission Handling
-```
-1. Check permission status
-2. If not determined → request permission
-3. If denied → show rationale and link to settings
-4. Never block app usage on non-critical permissions
-5. Request permissions contextually (at point of use, not on launch)
-```
+Request permissions at point of use, show a rationale on denial, never hard-fail on a non-critical grant.
 
 ### Memory Management
 - Dispose listeners and subscriptions in cleanup/unmount
@@ -81,20 +78,3 @@ App Entry → Auth Flow → Main Navigator
 - Release image/media resources when off-screen
 - Monitor memory usage in development (Xcode Instruments / Android Profiler)
 - Avoid storing large objects in state
-
-### Performance
-- Measure and optimize startup time (cold + warm)
-- Flatten component trees — deep nesting hurts render performance
-- Use `FlatList` / `ListView` with proper key extraction for lists
-- Minimize bridge calls in React Native (batch when possible)
-- Profile animations — target 60fps
-
-## Critical Rules
-
-1. **Never block the UI thread** — heavy work goes to background threads/isolates
-2. **Handle all permissions gracefully** — never crash on denial
-3. **Support multiple screen sizes** — test on small phones and tablets
-4. **Test on real devices** — simulators miss performance and permission issues
-5. **Secure storage for secrets** — Keychain/Keystore, never plain AsyncStorage
-6. **Graceful degradation offline** — app should function with cached data
-7. **App store compliance** — follow platform guidelines for privacy, permissions, content

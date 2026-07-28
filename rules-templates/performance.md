@@ -4,52 +4,6 @@ Copy this template to `.claude/rules/performance.md` and customize for your proj
 
 ---
 
-## Model Selection (Claude Code)
-
-### Haiku (Quick Tasks)
-Use for:
-- Simple code fixes (< 20 lines)
-- Straightforward questions
-- File reads and searches
-- Command execution
-
-### Sonnet (Default)
-Use for:
-- Standard development tasks
-- Code refactoring
-- Bug fixes
-- Documentation
-
-### Opus (Complex Tasks)
-Use for:
-- Architectural decisions
-- Complex debugging
-- Multi-file refactoring
-- System design
-
----
-
-## Context Management
-
-### Token Efficiency
-- Keep prompts concise
-- Don't repeat information already in context
-- Use references instead of copying code
-- Summarize long outputs
-
-### File Reading
-- Read only necessary files
-- Use line ranges for large files
-- Avoid reading generated files
-- Skip node_modules, dist, etc.
-
-### Strategic Compaction
-- Compact after major task completion
-- Save state before compaction
-- Save state before compaction
-
----
-
 ## Code Performance
 
 ### Database Queries
@@ -94,6 +48,8 @@ return user;
 ## Frontend Performance
 
 ### Bundle Size
+Budgets below are placeholders — replace with measured numbers or delete; assume none until measured.
+
 - Max initial bundle: 200KB (gzipped)
 - Max chunk size: 100KB (gzipped)
 - Use dynamic imports for routes
@@ -130,6 +86,8 @@ import { useVirtualizer } from '@tanstack/react-virtual';
 ---
 
 ## API Performance
+
+Budgets below are placeholders — replace with measured numbers or delete; assume none until measured.
 
 ### Response Time Targets
 | Endpoint Type | Target | Max |
@@ -208,14 +166,3 @@ logger.info({
 - Minify and compress
 - Generate source maps (separate files)
 - Optimize images
-
----
-
-## Performance Review Checklist
-
-Before merge:
-- [ ] No N+1 query patterns
-- [ ] Large lists are paginated
-- [ ] Heavy operations are cached
-- [ ] Async operations are parallelized
-- [ ] Bundle size impact assessed

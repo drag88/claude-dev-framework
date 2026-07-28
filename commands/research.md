@@ -4,8 +4,6 @@ description: "Deep web research with adaptive planning and intelligent search"
 
 # /cdf:research - Deep Research Command
 
-> **Context Framework Note**: This command activates comprehensive research capabilities with adaptive planning, multi-hop reasoning, and evidence-based synthesis.
-
 ## Triggers
 - Research questions beyond knowledge cutoff
 - Complex research questions
@@ -20,64 +18,7 @@ description: "Deep web research with adaptive planning and intelligent search"
 
 ## Behavioral Flow
 
-### 1. Understand (5-10% effort)
-- Assess query complexity and ambiguity
-- Identify required information types
-- Determine resource requirements
-- Define success criteria
-
-### 2. Plan (10-15% effort)
-- Select planning strategy based on complexity
-- Identify parallelization opportunities
-- Generate research question decomposition
-- Create investigation milestones
-
-### 3. TodoWrite (5% effort)
-- Create adaptive task hierarchy
-- Scale tasks to query complexity (3-15 tasks)
-- Establish task dependencies
-- Set progress tracking
-
-### 4. Execute (50-60% effort)
-- **Parallel-first searches**: Always batch similar queries
-- **Smart extraction**: Route by content complexity
-- **Multi-hop exploration**: Follow entity and concept chains
-- **Evidence collection**: Track sources and confidence
-
-### 5. Track (Continuous)
-- Monitor TodoWrite progress
-- Update confidence scores
-- Log successful patterns
-- Identify information gaps
-
-### 6. Validate (10-15% effort)
-- Verify evidence chains
-- Check source credibility
-- Resolve contradictions
-- Ensure completeness
-
-## Key Patterns
-
-### Parallel Execution
-- Batch all independent searches
-- Run concurrent extractions
-- Only sequential for dependencies
-
-### Evidence Management
-- Track search results
-- Provide clear citations when available
-- Note uncertainties explicitly
-
-### Adaptive Depth
-- **Quick**: Basic search, 1 hop, summary output
-- **Standard**: Extended search, 2-3 hops, structured report
-- **Deep**: Comprehensive search, 3-4 hops, detailed analysis
-- **Exhaustive**: Maximum depth, 5 hops, complete investigation
-
-## MCP Integration
-- **Tavily**: Primary search and extraction engine
-- **Sequential**: Complex reasoning and synthesis
-- **Playwright**: JavaScript-heavy content extraction
+Scope the question, decide how many hops of research it needs, search in parallel batches, and synthesize with sources cited — deeper or more ambiguous questions warrant more hops.
 
 ## Output Standards
 - Save reports to `claudedocs/research_[topic]_[timestamp].md`

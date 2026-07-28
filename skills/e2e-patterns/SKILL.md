@@ -174,8 +174,8 @@ When a test fails:
 
 ---
 
-## Related Agents
-- **e2e-specialist** — Primary consumer for Playwright test patterns and reliability
+## Related Routing
+- **/cdf:e2e with e2e-specialist role framing** — Playwright test patterns and reliability
 
 ## Suggested Commands
 - `/cdf:e2e` — Run E2E test workflows with pattern enforcement

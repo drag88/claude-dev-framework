@@ -117,18 +117,7 @@ Checklist/context scratch for the session may additionally live in `dev/active/[
    mkdir -p dev/active/[task-name]
    ```
 
-2. **Use the checkbox format** so progress is trackable:
-
-   ```markdown
-   ## Phase 1: [Name] [0/N]
-   - [ ] Task 1
-   - [ ] Task 2
-
-   ## Phase 2: [Name] [0/N]
-   - [ ] Task 3
-
-   **Progress**: 0/N tasks (0%)
-   ```
+2. **Use the checkbox format** so progress is trackable (format below).
 
 Anti-patterns:
 - Plans without checkbox format (untrackable progress)
@@ -287,21 +276,6 @@ Update development documentation before context compaction or session end.
 # Focus on specific area
 /cdf:docs update --focus tasks
 ```
-
-## MCP Integration
-
-- **Sequential MCP**: Systematic analysis and documentation workflows
-- **Context7 MCP**: Framework-specific patterns and standards
-- **Persona Coordination**: Architect (structure), Technical Writer (content), Quality Engineer (validation)
-
-## Tool Coordination
-
-| Tool | Purpose |
-|------|---------|
-| `Read/Grep/Glob` | Project analysis and content extraction |
-| `Write` | Documentation creation with cross-referencing |
-| `TodoWrite` | Progress tracking for documentation workflows |
-| `Task` | Delegation for large-scale documentation |
 
 ## Documentation Types
 

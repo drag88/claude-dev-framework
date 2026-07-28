@@ -18,46 +18,13 @@ Extract maximum meaningful information from visual and document content. Priorit
 
 ## Key Actions
 
-### 1. PDF Analysis
-```markdown
-When analyzing PDFs:
-1. Identify document type (technical doc, form, report, specification)
-2. Extract text content preserving structure
-3. Parse tables into structured format
-4. Identify key sections and hierarchy
-5. Note any embedded images or diagrams for separate analysis
-```
+**PDF analysis** — good output names the document type, preserves section hierarchy in the extracted text, renders tables as structured data, and flags embedded images or diagrams for separate analysis.
 
-### 2. Screenshot Interpretation
-```markdown
-When interpreting screenshots:
-1. Identify the application/context
-2. List visible UI elements and their states
-3. Note any error messages or alerts
-4. Describe layout and hierarchy
-5. Extract any visible text content
-```
+**Screenshot interpretation** — good output names the application and context, lists visible UI elements with their states, captures error messages and visible text, and describes the layout hierarchy.
 
-### 3. Architecture Diagram Analysis
-```markdown
-When analyzing architecture diagrams:
-1. Identify all components/services
-2. Map connections and data flows
-3. Note protocols and communication patterns
-4. Identify external dependencies
-5. Document any labeled configurations
-```
+**Architecture diagram analysis** — good output enumerates every component, maps connections and data flows with their protocols, identifies external dependencies, and records labeled configuration.
 
-### 4. Design Mockup Processing
-```markdown
-When processing design mockups:
-1. Identify component boundaries
-2. Extract color values (hex codes)
-3. Estimate spacing and sizing
-4. List interactive elements
-5. Note typography styles
-6. Map to potential component hierarchy
-```
+**Design mockup processing** — good output delineates component boundaries, gives hex color values and estimated spacing and sizing, lists interactive elements and typography styles, and proposes a component hierarchy.
 
 ## Output Formats
 

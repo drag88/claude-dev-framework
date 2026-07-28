@@ -15,7 +15,7 @@ description: "Project rules management: generate .claude/rules/, CLAUDE.md, and 
 # Generate full rules + both host instruction files from codebase analysis
 /cdf:rules generate
 
-# Generate CLAUDE.md (Claude Code, Opus 4.7) from existing rules
+# Generate CLAUDE.md (Claude Code, current models) from existing rules
 /cdf:rules claudemd
 
 # Generate AGENTS.md (Codex / GPT-5.5 and 20+ other agents) from existing rules
@@ -201,7 +201,7 @@ Quality rules require deep understanding of the entire codebase. Use sub-agents 
 | Infrastructure | `iac-conventions.md`, `security-baseline.md` | Infra Topology, Module Tree |
 
 #### `.claude/rules/workflow.md` (required)
-Generate at `.claude/rules/workflow.md` using `rules-templates/workflow-template.md` as the source. Customize only the "Project-Specific Spawn Patterns" section based on the detected project type — replace the placeholder block with 2-3 concrete subagent patterns relevant to this project's domain and tech stack. If project type is undetected, use the generic patterns. Keep all other sections verbatim from the template.
+Generate at `.claude/rules/workflow.md` using `rules-templates/workflow-template.md` as the source, verbatim. The template is deliberately lean — do not pad it with project-specific spawn examples or tool-authorization blocks; current models handle dispatch natively.
 
 **Path-Specific Rules** (Optional):
 ```markdown
@@ -234,7 +234,7 @@ Generate a concise `CLAUDE.generated.md` file from existing `.claude/rules/`.
 
 **Prerequisites**: `.claude/rules/` must exist. If not, run `/cdf:rules generate` first.
 
-**Core Principle** (from code.claude.com/docs/en/best-practices): For every line in the generated file, ask: *"Would removing this cause Claude to make mistakes?"* If not, cut it. Target under 200 lines — the first 200 lines are prioritized. Content that lives in `.claude/rules/` (auto-loaded) does not get duplicated in CLAUDE.md — duplication causes 4.7 to pick one source arbitrarily when they conflict.
+**Core Principle** (from code.claude.com/docs/en/best-practices): For every line in the generated file, ask: *"Would removing this cause Claude to make mistakes?"* If not, cut it. Target under 200 lines — the first 200 lines are prioritized. Content that lives in `.claude/rules/` (auto-loaded) does not get duplicated in CLAUDE.md — duplication causes the model to pick one source arbitrarily when they conflict.
 
 **Behavioral Flow:**
 1. **Verify**: Check for `.claude/rules/` with at least one `.md` file
@@ -295,15 +295,6 @@ You are a [senior/staff] [language/discipline] engineer working on [project], a 
 ## Workflow
 See `@.claude/rules/workflow.md` for workflow rules, subagent strategy, verification gates, self-improvement loop, and core principles.
 
-## Tool and subagent policy
-
-Spawn multiple subagents in the same turn when fanning out across items, reading multiple files, or running independent investigations. Skip fan-out for single-file edits or trivial reads. For multi-agent debate or implementation work, use TeamCreate + named teammates rather than ad-hoc subagents.
-
-<use_parallel_tool_calls>
-For maximum efficiency, whenever you perform multiple independent operations,
-invoke all relevant tools simultaneously rather than sequentially.
-</use_parallel_tool_calls>
-
 ## Model Routing
 
 Fable 5 (max reasoning) is the orchestrator: plan, decompose, synthesize. Keep its context lean — delegate the heavy lifting. If Fable is unavailable, Opus orchestrates.
@@ -353,7 +344,7 @@ Real-expertise agents (invoke via `/cdf:task` or the relevant CDF command): code
 
 Skills auto-trigger from context (coding-standards, backend-patterns, frontend-patterns, frontend-design, tdd-workflow, e2e-patterns, failure-recovery, rules-generator, claudemd-generator, agentsmd-generator, comprehension-coach, retro, tuning-coding-agent-codebases). Do not invoke manually.
 
-For role-based work (backend, frontend, devops, security, perf, system design, docs) where no specific CDF tool fits, invoke `/cdf:task` directly — Opus 4.7 plays the role from the `## Role` line above plus `xhigh` effort.
+For role-based work (backend, frontend, devops, security, perf, system design, docs) where no specific CDF tool fits, invoke `/cdf:task` directly — Claude plays the role from the `## Role` line above at high effort.
 
 Dispatch by task shape: simple changes use direct edit or `/cdf:implement`; bugs use `/cdf:troubleshoot`; audits use `/cdf:analyze`; plan-first work uses `/cdf:plan` as the front door (delegates to `compound-engineering:ce-plan`), then optional `/cdf:plan-review` (delegates to `compound-engineering:ce-doc-review`) for high-stakes plans; full lifecycle work uses a clear prompt with high effort rather than a monolithic orchestrator command.
 
@@ -380,7 +371,7 @@ Only include if project-type rules exist. Examples:]
 - [e.g., "All API handlers use the `@validate_input` decorator. Reason: centralized request schema enforcement."]
 - [e.g., "Database migrations require running `make migrate-check` before commit. Reason: catches missing reverse migrations."]
 - [e.g., "Component tests use `renderWithProviders()` not bare `render()`. Reason: tests need theme + router context."]
-[If no project-type rules exist, omit this section entirely. Each gotcha includes the why so 4.7 generalizes correctly.]
+[If no project-type rules exist, omit this section entirely. Each gotcha includes the why so the model generalizes correctly.]
 
 ## Imports
 @README.md
@@ -392,13 +383,19 @@ Only include if project-type rules exist. Examples:]
 [Max 5-7 directories from architecture.md codemap]
 ```
 
-**Required Template Sections (12):**
-1. **Role** - One sentence anchoring tone and scope (4.7 responds well to a clear role)
+6. **Model Routing** - Planning on Fable (else Opus); execution and subagents on Sonnet. Ship verbatim.
+7. **Communication** - Plain-simple-English rules (explain like I'm five, answer first, no filler). Apply the sync rule: if the user-level `~/.claude/CLAUDE.md` already defines Communication, emit a one-line pointer instead of duplicating — user level is canonical.
+8. **CDF tools available** - Routing table telling Claude which `/cdf:*` commands and agents to prefer for which tasks. Without this section, Claude does not reliably reach for CDF tools and falls back to generic approaches. Ship the section verbatim from the template.
+9. **Plans Format** - `<plans_instruction>` XML block
+10. **Commit Messages** - 1-line convention
+11. **Key Directories** - Max 5-7 most important directories
+
+Do NOT emit a "Tool and subagent policy" section or `<use_parallel_tool_calls>` blocks — current models parallelize and dispatch subagents natively; that boilerplate is deleted, not generated.
 2. **Overview** - 1-2 sentence description
 3. **Quick Start** - 4-5 bash commands (setup, test, lint, run)
-4. **Critical Rules** - 6 standard rules (curated from CDF defaults + audited additions; see `rules-templates/extended-rules.md` for the opt-in longer set with anti-pattern notes)
+4. **Critical Rules** - a few standard rules, absolutes reserved for security/secrets/irreversible operations (see `rules-templates/extended-rules.md` for the opt-in longer set with anti-pattern notes)
 5. **Workflow** - 1-line pointer to `.claude/rules/workflow.md` (workflow content lives there, not duplicated here)
-6. **Tool and subagent policy** - Authorize subagent fan-out + parallel calls explicitly (4.7 defaults are conservative)
+6. **Tool and subagent policy** - Prose authorization for parallel work (no XML — Codex ignores it)
 7. **Model Routing** - Planning on Fable (else Opus); execution and subagents on Sonnet. Ship verbatim.
 8. **Communication** - Plain-simple-English rules (explain like I'm five, answer first, no filler). Apply the sync rule: if the user-level `~/.claude/CLAUDE.md` already defines Communication, emit a one-line pointer instead of duplicating — user level is canonical.
 9. **CDF tools available** - Routing table telling Claude which `/cdf:*` commands and agents to prefer for which tasks. Without this section, Claude does not reliably reach for CDF tools and falls back to generic approaches. Ship the section verbatim from the template.
@@ -410,23 +407,23 @@ Only include if project-type rules exist. Examples:]
 - **Project-Specific Notes** - Only if project-type rules exist. Include 2-3 concrete, verifiable gotchas, each with the why.
 - **Imports** - `@README.md` and other always-relevant top-level docs.
 
-**Guidelines (Opus 4.7-aligned):**
+**Guidelines (current-Claude-aligned):**
 - Target 80-120 lines. Never exceed 180 (excluding `<plans_instruction>` block).
 - Every line must pass: "Would removing this cause Claude to make mistakes?"
 - Progressive disclosure: point to `.claude/rules/` for details. Workflow content lives in `workflow.md`, not duplicated in CLAUDE.md.
 - **No code style** — let linters handle formatting.
 - **No content duplicated from `.claude/rules/`** — those files load automatically (path-scoped ones load when matching files are touched).
-- Make instructions **concrete and verifiable**: "Run `npm test` and paste the output" beats "test your changes." 4.7 self-filters vague checks.
-- **Frame rules as positive imperatives**, not prohibitions. "Use X" beats "Never Y." 4.7 wastes tokens on "don't" rules and may pattern-match into them.
-- **State scope explicitly** on every rule. "Apply to every component, including third-party wrappers" beats "apply to components." 4.7 will not silently generalize.
-- **Tone down forceful language**. Avoid CAPS, MUST, CRITICAL, "ANY", "ALWAYS". Use neutral imperatives. Forceful negatives cause overcompliance and hostile reading on 4.7.
+- Make instructions **concrete and verifiable**: "Run `npm test` and paste the output" beats "test your changes." Vague checks get silently skipped.
+- **Frame rules as positive imperatives**, not prohibitions. "Use X" beats "Never Y." Prohibitions waste tokens and invite pattern-matching.
+- **State scope explicitly** on non-obvious rules. "Apply to every component, including third-party wrappers" beats "apply to components."
+- **Tone down forceful language**. Avoid CAPS, MUST, CRITICAL, "ANY", "ALWAYS". Use neutral imperatives; reserve absolutes for security, secrets, and irreversible operations.
 - **Provide the why** behind non-obvious constraints. "Use Helvetica because react-pdf has no Unicode font" beats a bare "use Helvetica."
 
 **Pre-generation step (Step 0):**
-Read `rules-templates/claudemd-4-7-rulebook.md` (vendored into CDF). It is the authoritative rulebook for 4.7 CLAUDE.md generation. The Guidelines above become a fallback baseline only if the rulebook file is missing (which should never happen on a clean CDF install). The point is to generate a correct file by construction rather than auditing a possibly-wrong one after the fact. To update the rulebook, replace `rules-templates/claudemd-4-7-rulebook.md` with the latest version from your prompt47 skill (`~/.claude/skills/prompt47/references/claudemd-4-7.md`) and commit. The vendored copy makes the dependency travel with CDF rather than depending on a separately-installed user-global skill.
+Read `rules-templates/claudemd-rulebook.md` (vendored into CDF). It is the authoritative rulebook for CLAUDE.md generation. The Guidelines above become a fallback baseline only if the rulebook file is missing (which should never happen on a clean CDF install). The point is to generate a correct file by construction rather than auditing a possibly-wrong one after the fact. To update the rulebook, edit it directly against Anthropic's current prompting and context-engineering docs and commit. The vendored copy makes the dependency travel with CDF rather than depending on a separately-installed user-global skill.
 
 **Final pass before writing:**
-Walk the audit checklist from the rulebook (17 questions if using prompt47 reference). Fix every "no" before writing the file. Report which rulebook was used in the completion message.
+Walk the audit checklist from the rulebook. Fix every "no" before writing the file. Report which rulebook was used in the completion message.
 
 **Output Location**: Always writes to `CLAUDE.generated.md` (not `CLAUDE.md`) to preserve manual edits.
 
@@ -637,15 +634,6 @@ uv run uvicorn app.main:app --reload    # Start dev server
 ## Workflow
 See `@.claude/rules/workflow.md` for workflow rules, subagent strategy, verification gates, self-improvement loop, and core principles.
 
-## Tool and subagent policy
-
-Spawn multiple subagents in the same turn when fanning out across items, reading multiple files, or running independent investigations. Skip fan-out for single-file edits or trivial reads. For multi-agent debate or implementation work, use TeamCreate + named teammates rather than ad-hoc subagents.
-
-<use_parallel_tool_calls>
-For maximum efficiency, whenever you perform multiple independent operations,
-invoke all relevant tools simultaneously rather than sequentially.
-</use_parallel_tool_calls>
-
 ## Model Routing
 
 Fable 5 (max reasoning) is the orchestrator: plan, decompose, synthesize. Keep its context lean — delegate the heavy lifting. If Fable is unavailable, Opus orchestrates.
@@ -695,7 +683,7 @@ Real-expertise agents (invoke via `/cdf:task` or the relevant CDF command): code
 
 Skills auto-trigger from context (coding-standards, backend-patterns, frontend-patterns, frontend-design, tdd-workflow, e2e-patterns, failure-recovery, rules-generator, claudemd-generator, agentsmd-generator, comprehension-coach, retro, tuning-coding-agent-codebases). Do not invoke manually.
 
-For role-based work (backend, frontend, devops, security, perf, system design, docs) where no specific CDF tool fits, invoke `/cdf:task` directly — Opus 4.7 plays the role from the `## Role` line above plus `xhigh` effort.
+For role-based work (backend, frontend, devops, security, perf, system design, docs) where no specific CDF tool fits, invoke `/cdf:task` directly — Claude plays the role from the `## Role` line above at high effort.
 
 Dispatch by task shape: simple changes use direct edit or `/cdf:implement`; bugs use `/cdf:troubleshoot`; audits use `/cdf:analyze`; plan-first work uses `/cdf:plan` as the front door (delegates to `compound-engineering:ce-plan`), then optional `/cdf:plan-review` (delegates to `compound-engineering:ce-doc-review`) for high-stakes plans; full lifecycle work uses a clear prompt with high effort rather than a monolithic orchestrator command.
 

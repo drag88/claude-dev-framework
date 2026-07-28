@@ -29,6 +29,7 @@ Sources → Staging → Intermediate → Marts → Dashboards/APIs
 - No circular dependencies — DAG must be acyclic
 - Cross-DAG dependencies use sensors or event triggers, not direct references
 - Shared resources (connections, pools) are configured centrally
+- Credentials live in the secrets manager — never in DAG code or config files
 
 ### Scheduling
 - Idempotent tasks — safe to re-run for any date range
@@ -58,21 +59,6 @@ Every model/table must have:
 
 ## Patterns
 
-### Layered Model Architecture (dbt-style)
-| Layer | Prefix | Purpose | Rules |
-|-------|--------|---------|-------|
-| Staging | `stg_` | 1:1 with source, rename + type cast | No joins, no aggregations |
-| Intermediate | `int_` | Business logic, joins, filtering | Reusable building blocks |
-| Marts | `fct_` / `dim_` | Final business entities | One grain per model, documented |
-
-### SQL Style
-- Explicit column lists — never `SELECT *`
-- CTEs over subqueries for readability
-- Meaningful aliases (`orders AS o` is fine, `t1` is not)
-- One CTE per logical step, named descriptively
-- Leading commas for easy column addition/removal
-- Lowercase SQL keywords (or uppercase — detect from existing code)
-
 ### Incremental Patterns
 ```sql
 -- Incremental load pattern
@@ -88,14 +74,3 @@ Every model/table must have:
 - Use `MERGE` or `DELETE + INSERT` for reprocessable loads
 - No `INSERT` without deduplication logic
 - Partition-based overwrites for large tables
-
-## Critical Rules
-
-1. **Never use `SELECT *`** — explicit columns prevent silent schema drift
-2. **Every model needs tests** — unique key + not-null at minimum
-3. **Tasks must be idempotent** — safe to re-run without duplicating data
-4. **Source freshness checks** — alert when source data is stale
-5. **No hardcoded dates or values** — parameterize everything
-6. **Document grain** — every mart model states its grain explicitly
-7. **Review downstream impact** before changing any shared model
-8. **Credentials in secrets manager** — never in DAG code or config files

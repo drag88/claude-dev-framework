@@ -132,10 +132,6 @@ Choose a direction and commit fully—these are starting points, not limits:
 | Lo-fi/zine | Raw, handmade, photocopied |
 | Handcrafted/artisanal | Warm, human, imperfect |
 
-### Critical Principle
-
-**Choose a clear conceptual direction and execute it with precision.** Bold maximalism and refined minimalism both work—the key is intentionality, not intensity.
-
 > See `references/typography.md` for font selection tables by aesthetic, contrast rules, and banned fonts.
 
 > See `references/visual-system.md` for color/theme palettes, spatial composition, motion/animation, and backgrounds.
@@ -199,17 +195,11 @@ Design all states, not just default:
 
 ---
 
-## Final Reminder
-
-**Claude is capable of extraordinary creative work.** The default patterns exist because they're statistically common—not because they're good. Reject the median. Make bold choices. Execute with precision.
-
-Every design decision is an opportunity to create something memorable instead of forgettable.
-
 ## Suggested Commands
 - `/cdf:implement` — Build interfaces with design skill guidance
 - `/cdf:design` — Design UI components and pages
 
-Opus 4.7 plays the frontend-engineer role from the Role line in CLAUDE.md when given visual design context — no dedicated frontend-architect agent needed.
+Claude plays the frontend-engineer role from the Role line in CLAUDE.md when given visual design context — no dedicated frontend-architect agent needed.
 
 ## Reference Files
 

@@ -39,5 +39,5 @@ See `agents/references/panel-expert-personas.md` for detailed persona specificat
 ### Socratic Mode Patterns
 - **Question Progression**: Start with framework-specific questions, deepen based on responses
 - **Strategic Thinking Development**: Questions designed to develop analytical capability
-- **Multiple Perspective Training**: Each expert's questions reveal their thinking process
+- **Multiple Perspective Training**: Each expert's questions surface their distinct analytical lens
 - **Synthesis Questions**: Integration questions that bridge frameworks
