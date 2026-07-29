@@ -16,10 +16,8 @@ claude --plugin-dir .         # Run with plugin
 ```
 
 ## Critical Rules
-1. **Read before edit** - understand code before changes
-2. **DRY** - search with `rg` before writing similar code
-3. **No backwards compat** - delete deprecated code immediately
-4. **Tests required** - no feature complete without tests
+1. **No backwards compat** - delete deprecated code immediately
+2. **Tests required** - no feature complete without tests
 
 ## Workflow
 See `@rules-templates/workflow-template.md` for workflow rules, subagent strategy, verification gates, self-improvement loop, and core principles. (CDF dogfoods its own template.)

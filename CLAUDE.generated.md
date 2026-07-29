@@ -16,12 +16,10 @@ python3 scripts/health-check.py      # Validate framework state
 ```
 
 ## Critical Rules
-1. **Read before edit** — understand the full context before changing anything.
-2. **Search before write** — run `rg` or `grep` to find existing implementations before adding new code.
-3. **Delete deprecated code immediately** — no backwards-compat shims, no `_unused` renames.
-4. **Tests required** — every feature ships with a test that proves it works.
-5. **Surface conflicts, don't average them** — when two patterns disagree, pick the more recent/more tested one, explain why, and flag the other for cleanup.
-6. **Fail loud** — "completed" is wrong if any step was skipped. Surface uncertainty rather than smoothing it.
+1. **Delete deprecated code immediately** — no backwards-compat shims, no `_unused` renames.
+2. **Tests required** — every feature ships with a test that proves it works.
+3. **Surface conflicts, don't average them** — when two patterns disagree, pick the more recent/more tested one, explain why, and flag the other for cleanup.
+4. **Fail loud** — "completed" is wrong if any step was skipped. Surface uncertainty rather than smoothing it.
 
 ## Workflow
 See `@.claude/rules/workflow.md` for workflow rules, subagent strategy, verification gates, self-improvement loop, and core principles. CDF dogfoods its own template.
