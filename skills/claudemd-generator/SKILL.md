@@ -45,7 +45,7 @@ Executes the `/cdf:rules claudemd` behavioral flow. The command definition in `c
 | Role (one sentence) | `CLAUDE.md` | Anchors tone and scope cheaply |
 | Overview, Quick Start, Critical Rules | `CLAUDE.md` | Essential context for every interaction |
 | Gotchas (the non-obvious only, each with the why) | `CLAUDE.md` | The section that earns the file its tokens |
-| Model Routing (Fable/Opus plan, Sonnet execute + subagents) | `CLAUDE.md` | Model choice is a per-task decision; needs guaranteed load |
+| Model Routing (Fable orchestrates; Opus reasoning, Sonnet mechanical, Codex adversarial review) | `CLAUDE.md` | Model choice is a per-task decision; needs guaranteed load |
 | Communication (plain-simple-English rules) | `CLAUDE.md` | One-line pointer when user-level CLAUDE.md already defines it — user level is canonical, never duplicate |
 | CDF tools available (routing table) | `CLAUDE.md` | Without explicit routing, Claude falls back to generic approaches instead of `/cdf:troubleshoot`, `/cdf:verify`, codebase-navigator, etc. — defeats the point of having CDF installed |
 | Plans Format block (`<plans_instruction>`) | `CLAUDE.md` | XML processing tag — safest in guaranteed-load file |

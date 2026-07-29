@@ -28,10 +28,10 @@ See `@rules-templates/workflow-template.md` for workflow rules, subagent strateg
 
 Fable 5 (max reasoning) is the orchestrator: plan, decompose, synthesize. Keep its context lean — delegate the heavy lifting. If Fable is unavailable, Opus orchestrates.
 
-- **Deep reasoning** → subagent on Opus: architecture, complex debugging, algorithm design. Think thoroughly, return a concise conclusion the orchestrator can act on.
-- **Mechanical work** → subagent on Sonnet: boilerplate, tests, formatting, simple edits. Execute efficiently.
-- **Peer engineer** → Codex (`/codex:rescue --background`, when the codex plugin is installed): on par with the Opus reasoner but a different perspective. Treat as a peer, not a reviewer.
-- **High-stakes decisions** → task Opus and Codex on the same problem in parallel, without showing either the other's answer, then synthesize the best of both.
+- **Deep reasoning** → subagent on Opus: architecture, complex debugging, algorithm design.
+- **Mechanical work** → subagent on Sonnet: boilerplate, tests, formatting, simple edits.
+- **Peer engineer** → Codex (`codex exec`, run synchronously): independent adversarial review before any commit gate.
+- **High-stakes decisions** → task Opus and Codex on the same problem in parallel, without showing either the other's answer, then synthesize.
 
 ## Communication
 Communication style: follows the user-level CLAUDE.md (plain simple English, answer first).

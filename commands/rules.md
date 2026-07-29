@@ -299,10 +299,10 @@ See `@.claude/rules/workflow.md` for workflow rules, subagent strategy, verifica
 
 Fable 5 (max reasoning) is the orchestrator: plan, decompose, synthesize. Keep its context lean — delegate the heavy lifting. If Fable is unavailable, Opus orchestrates.
 
-- **Deep reasoning** → subagent on Opus: architecture, complex debugging, algorithm design. Think thoroughly, return a concise conclusion the orchestrator can act on.
-- **Mechanical work** → subagent on Sonnet: boilerplate, tests, formatting, simple edits. Execute efficiently.
-- **Peer engineer** → Codex (`/codex:rescue --background`, when the codex plugin is installed): on par with the Opus reasoner but a different perspective. Treat as a peer, not a reviewer.
-- **High-stakes decisions** → task Opus and Codex on the same problem in parallel, without showing either the other's answer, then synthesize the best of both.
+- **Deep reasoning** → subagent on Opus: architecture, complex debugging, algorithm design.
+- **Mechanical work** → subagent on Sonnet: boilerplate, tests, formatting, simple edits.
+- **Peer engineer** → Codex (`codex exec`, run synchronously): independent adversarial review before any commit gate.
+- **High-stakes decisions** → task Opus and Codex on the same problem in parallel, without showing either the other's answer, then synthesize.
 
 ## Communication
 - **Plain, simple English for EVERYTHING — explain like I'm five.** Answers, questions, status updates, summaries, options. Not just when asked.
@@ -383,7 +383,7 @@ Only include if project-type rules exist. Examples:]
 [Max 5-7 directories from architecture.md codemap]
 ```
 
-6. **Model Routing** - Planning on Fable (else Opus); execution and subagents on Sonnet. Ship verbatim.
+6. **Model Routing** - Fable orchestrates (else Opus); Opus deep reasoning, Sonnet mechanical work, Codex adversarial review before commit gates. Ship verbatim.
 7. **Communication** - Plain-simple-English rules (explain like I'm five, answer first, no filler). Apply the sync rule: if the user-level `~/.claude/CLAUDE.md` already defines Communication, emit a one-line pointer instead of duplicating — user level is canonical.
 8. **CDF tools available** - Routing table telling Claude which `/cdf:*` commands and agents to prefer for which tasks. Without this section, Claude does not reliably reach for CDF tools and falls back to generic approaches. Ship the section verbatim from the template.
 9. **Plans Format** - `<plans_instruction>` XML block
@@ -396,7 +396,7 @@ Do NOT emit a "Tool and subagent policy" section or `<use_parallel_tool_calls>` 
 4. **Critical Rules** - a few standard rules, absolutes reserved for security/secrets/irreversible operations (see `rules-templates/extended-rules.md` for the opt-in longer set with anti-pattern notes)
 5. **Workflow** - 1-line pointer to `.claude/rules/workflow.md` (workflow content lives there, not duplicated here)
 6. **Tool and subagent policy** - Prose authorization for parallel work (no XML — Codex ignores it)
-7. **Model Routing** - Planning on Fable (else Opus); execution and subagents on Sonnet. Ship verbatim.
+7. **Model Routing** - Fable orchestrates (else Opus); Opus deep reasoning, Sonnet mechanical work, Codex adversarial review before commit gates. Ship verbatim.
 8. **Communication** - Plain-simple-English rules (explain like I'm five, answer first, no filler). Apply the sync rule: if the user-level `~/.claude/CLAUDE.md` already defines Communication, emit a one-line pointer instead of duplicating — user level is canonical.
 9. **CDF tools available** - Routing table telling Claude which `/cdf:*` commands and agents to prefer for which tasks. Without this section, Claude does not reliably reach for CDF tools and falls back to generic approaches. Ship the section verbatim from the template.
 10. **Plans Format** - `<plans_instruction>` XML block
@@ -638,10 +638,10 @@ See `@.claude/rules/workflow.md` for workflow rules, subagent strategy, verifica
 
 Fable 5 (max reasoning) is the orchestrator: plan, decompose, synthesize. Keep its context lean — delegate the heavy lifting. If Fable is unavailable, Opus orchestrates.
 
-- **Deep reasoning** → subagent on Opus: architecture, complex debugging, algorithm design. Think thoroughly, return a concise conclusion the orchestrator can act on.
-- **Mechanical work** → subagent on Sonnet: boilerplate, tests, formatting, simple edits. Execute efficiently.
-- **Peer engineer** → Codex (`/codex:rescue --background`, when the codex plugin is installed): on par with the Opus reasoner but a different perspective. Treat as a peer, not a reviewer.
-- **High-stakes decisions** → task Opus and Codex on the same problem in parallel, without showing either the other's answer, then synthesize the best of both.
+- **Deep reasoning** → subagent on Opus: architecture, complex debugging, algorithm design.
+- **Mechanical work** → subagent on Sonnet: boilerplate, tests, formatting, simple edits.
+- **Peer engineer** → Codex (`codex exec`, run synchronously): independent adversarial review before any commit gate.
+- **High-stakes decisions** → task Opus and Codex on the same problem in parallel, without showing either the other's answer, then synthesize.
 
 ## Communication
 - **Plain, simple English for EVERYTHING — explain like I'm five.** Answers, questions, status updates, summaries, options. Not just when asked.
